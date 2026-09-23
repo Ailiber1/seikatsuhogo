@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>生活保護と家族への通知</title>
+<style>
+:root{
+  /* 常に白基調。配信の画面共有と視聴者の画面で見え方を揃えるため、ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4;
+  --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea;
+  --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:16px; line-height:1.75; -webkit-text-size-adjust:100%;
+}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.wrap{max-width:680px; margin:0 auto; padding:0 18px; padding-block:26px 44px}
+
+section{padding-block:26px; border-top:1px solid var(--line)}
+section:first-of-type{border-top:none; padding-top:0}
+
+h1{font-size:clamp(25px,5.6vw,36px); line-height:1.35; margin:0 0 10px; font-weight:700;
+   text-wrap:balance; color:var(--navy)}
+h2{font-size:clamp(20px,3.6vw,25px); line-height:1.4; margin:0 0 12px; font-weight:700;
+   text-wrap:balance; display:flex; gap:11px; align-items:flex-start}
+h2 .n{flex:none; font-size:.66em; font-weight:700; color:var(--on-navy); background:var(--navy);
+  min-width:1.9em; height:1.9em; border-radius:50%; display:grid; place-items:center; margin-top:.22em}
+h3{font-size:17px; margin:0 0 5px; font-weight:700}
+p{margin:0 0 12px}
+p:last-child{margin-bottom:0}
+.lede{font-size:15.5px; color:var(--sub)}
+.for-who{background:var(--navy-soft); color:var(--ink); border-left:5px solid var(--navy);
+  border-radius:0 11px 11px 0; padding:14px 18px; margin-bottom:16px}
+.for-who b{display:block; font-size:13px; letter-spacing:.06em; color:var(--navy); margin-bottom:5px}
+.for-who ul{margin:0; padding-left:1.15em; font-size:16.5px; font-weight:700; line-height:1.65}
+
+.answer{background:var(--panel); border:3px solid var(--navy); border-radius:13px; padding:16px 18px}
+.answer .big{font-size:clamp(19px,3.4vw,23px); font-weight:700; line-height:1.5; color:var(--navy); margin:0 0 8px}
+
+.src{display:inline-flex; align-items:center; gap:7px; margin-top:12px; font-size:12.5px;
+  color:var(--navy); background:var(--navy-soft); border-radius:5px; padding:6px 11px;
+  text-decoration:none; font-weight:700; line-height:1.5}
+.src:hover{text-decoration:underline}
+.quote{background:var(--panel); border-left:5px solid var(--navy); border-radius:0 8px 8px 0;
+  padding:12px 15px; margin:0 0 12px; font-size:15px; line-height:1.7}
+.quote .lbl{display:block; font-size:11.5px; font-weight:700; letter-spacing:.05em;
+  color:var(--sub); margin-bottom:5px}
+.quote b{color:var(--navy)}
+
+.card{background:var(--panel); border:2.5px solid var(--line); border-radius:13px;
+  padding:15px 17px; margin-bottom:13px}
+.card.ok{border-color:var(--ok); background:var(--ok-bg)}
+.card.ng{border-color:var(--ng); background:var(--ng-bg)}
+.card.warn{border-color:var(--warn); background:var(--warn-bg)}
+.card .tag{display:inline-block; font-size:12px; font-weight:700; letter-spacing:.04em;
+  padding:2px 9px; border-radius:4px; margin-bottom:7px}
+.card.ok .tag{background:var(--ok); color:var(--panel)}
+.card.ng .tag{background:var(--ng); color:var(--panel)}
+.card.warn .tag{background:var(--warn); color:var(--panel)}
+.card h3{color:var(--ink)}
+.card p{font-size:15px}
+.card .small{font-size:13.5px; color:var(--sub); margin-top:7px}
+
+figure{margin:0 0 14px}
+figure svg{width:100%; height:auto; display:block}
+figcaption{font-size:13px; color:var(--sub); margin-top:7px; line-height:1.6}
+
+.say{background:var(--ok-bg); border:2.5px dashed var(--ok); border-radius:11px; padding:14px 17px; margin-bottom:13px}
+.say .lbl{font-size:12.5px; font-weight:700; color:var(--ok); letter-spacing:.04em; display:block; margin-bottom:6px}
+.say p{font-size:16.5px; font-weight:700; line-height:1.65; margin:0}
+
+.mine{background:var(--panel); border:2.5px solid var(--line); border-radius:13px; padding:15px 17px}
+.mine .lbl{font-size:12.5px; font-weight:700; letter-spacing:.05em; color:var(--sub); display:block; margin-bottom:6px}
+
+.place{background:var(--navy-soft); border-radius:11px; padding:15px 17px; margin-bottom:13px}
+.place dl{display:grid; grid-template-columns:5.5em 1fr; gap:5px 12px; margin:8px 0 0; font-size:14.5px}
+.place dt{color:var(--sub); font-weight:700}
+.place dd{margin:0}
+
+footer{margin-top:26px; padding-top:18px; border-top:1px solid var(--line);
+  font-size:12.5px; color:var(--sub); line-height:1.8}
+footer h2{font-size:14px; color:var(--ink); display:block; margin-bottom:7px}
+footer ul{margin:0 0 13px; padding-left:1.2em}
+footer a{color:var(--navy); word-break:break-all}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ① 誰向け・結論 -->
+<section>
+  <h1 class="mincho">生活保護を申請すると、家族に通知は行くのか</h1>
+  <div class="for-who">
+    <b>このページは、こういう方へ</b>
+    <ul>
+      <li>もう働きたくない、限界が近い</li>
+      <li>生活保護を考えている</li>
+      <li>でも、家族に知られたくない</li>
+    </ul>
+  </div>
+  <div class="answer">
+    <p class="big">行く人と、行かない人がいます。</p>
+    <p>家族への通知は「扶養照会（ふようしょうかい）」といいます。国が定めた条件に当てはまれば、<b>照会をしない扱いにできます</b>。条件は3つ。このページで順に見ていきます。</p>
+  </div>
+  <a class="src" href="https://www.mhlw.go.jp/content/000746078.pdf" target="_blank" rel="noopener noreferrer">証拠：厚生労働省の事務連絡を開く（令和3年2月26日）</a>
+</section>
+
+<!-- ② 大前提 -->
+<section>
+  <h2><span class="n">1</span>まず、いちばん大事な前提</h2>
+  <p>「家族が援助できると言ったら、生活保護は受けられない」——これは<b>誤解</b>です。法律にこう書かれています。</p>
+  <div class="quote">
+    <span class="lbl">生活保護法 第4条第2項</span>
+    民法に定める扶養義務者の扶養及び他の法律に定める扶助は、すべてこの法律による保護に<b>優先して行われる</b>ものとする。
+  </div>
+  <p>「優先」であって「条件」ではありません。厚生労働省も、はっきりこう説明しています。</p>
+  <div class="quote">
+    <span class="lbl">厚生労働省の事務連絡（令和3年2月26日）</span>
+    扶養義務者の扶養は「保護に優先して行われる」ものと定められており、<b>「保護の要件」とは異なる位置づけ</b>のものとして規定されている。……扶養義務者による扶養の可否等が、<b>保護の要否の判定に影響を及ぼすものではなく</b>
+  </div>
+  <p>つまり、<b>家族が「援助できる」と答えただけでは、生活保護は止まりません</b>。実際にお金が送られてきたときに、その分を収入として扱う、という意味です。</p>
+</section>
+
+<!-- ③ フロー図 -->
+<section>
+  <h2><span class="n">2</span>通知が行くまでの流れ</h2>
+  <p>申請すると、いきなり家族に手紙が届くわけではありません。段階があります。</p>
+  <figure>
+    <svg viewBox="0 0 660 470" role="img" aria-label="扶養照会に至るまでの流れ図">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <g font-family="Hiragino Sans, sans-serif" color="var(--sub)">
+        <!-- step1 -->
+        <rect x="180" y="6" width="300" height="52" rx="9" fill="var(--panel)" stroke="var(--line)" stroke-width="2.5"/>
+        <text x="330" y="29" text-anchor="middle" font-size="16" font-weight="700" fill="var(--ink)">① 生活保護を申請する</text>
+        <text x="330" y="48" text-anchor="middle" font-size="12.5" fill="var(--sub)">福祉事務所の窓口</text>
+        <path d="M330 58 L330 84" stroke="var(--sub)" stroke-width="2.5" marker-end="url(#ar)"/>
+        <!-- step2 -->
+        <rect x="180" y="88" width="300" height="52" rx="9" fill="var(--panel)" stroke="var(--line)" stroke-width="2.5"/>
+        <text x="330" y="111" text-anchor="middle" font-size="16" font-weight="700" fill="var(--ink)">② 家族がいるかを確認</text>
+        <text x="330" y="130" text-anchor="middle" font-size="12.5" fill="var(--sub)">まず本人からの申告をもとに</text>
+        <path d="M330 140 L330 166" stroke="var(--sub)" stroke-width="2.5" marker-end="url(#ar)"/>
+        <!-- step3 -->
+        <rect x="140" y="170" width="380" height="70" rx="9" fill="var(--navy-soft)" stroke="var(--navy)" stroke-width="3"/>
+        <text x="330" y="194" text-anchor="middle" font-size="16" font-weight="700" fill="var(--navy)">③ 援助できそうかを聞き取る</text>
+        <text x="330" y="214" text-anchor="middle" font-size="12.5" fill="var(--ink)">「可能性調査」。ここで事情を伝えます</text>
+        <text x="330" y="232" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--navy)">★ ここが分かれ道</text>
+        <path d="M330 240 L330 262" stroke="var(--sub)" stroke-width="2.5"/>
+        <path d="M330 262 L170 262 L170 288" stroke="var(--sub)" stroke-width="2.5" marker-end="url(#ar)"/>
+        <path d="M330 262 L500 262 L500 288" stroke="var(--sub)" stroke-width="2.5" marker-end="url(#ar)"/>
+        <!-- left: not sent -->
+        <rect x="26" y="292" width="288" height="96" rx="9" fill="var(--ok-bg)" stroke="var(--ok)" stroke-width="3"/>
+        <text x="170" y="317" text-anchor="middle" font-size="15.5" font-weight="700" fill="var(--ok)">3つの条件のどれかに当てはまる</text>
+        <text x="170" y="345" text-anchor="middle" font-size="18" font-weight="700" fill="var(--ok)">通知は行かない</text>
+        <text x="170" y="370" text-anchor="middle" font-size="12.5" fill="var(--ink)">「扶養義務履行が期待できない者」</text>
+        <!-- right: sent -->
+        <rect x="346" y="292" width="288" height="96" rx="9" fill="var(--ng-bg)" stroke="var(--ng)" stroke-width="3"/>
+        <text x="490" y="317" text-anchor="middle" font-size="15.5" font-weight="700" fill="var(--ng)">どれにも当てはまらない</text>
+        <text x="490" y="345" text-anchor="middle" font-size="18" font-weight="700" fill="var(--ng)">通知が行く</text>
+        <text x="490" y="370" text-anchor="middle" font-size="12.5" fill="var(--ink)">書類が家族のもとへ届きます</text>
+        <!-- note -->
+        <rect x="26" y="404" width="608" height="56" rx="9" fill="var(--panel)" stroke="var(--line)" stroke-width="2.5"/>
+        <text x="330" y="427" text-anchor="middle" font-size="13.5" fill="var(--ink)">③で事情を伝えないと、そのまま右へ進みます。</text>
+        <text x="330" y="448" text-anchor="middle" font-size="13.5" font-weight="700" fill="var(--navy)">黙っていると、止まりません。</text>
+      </g>
+    </svg>
+    <figcaption>厚生労働省の事務連絡「２ 扶養に関する調査の手順」をもとに作図。原文には「扶養照会は、（1）から（3）までの作業の結果、『扶養義務の履行が期待できる』と判断される者に対して行うもの」とあります。</figcaption>
+  </figure>
+</section>
+
+<!-- ④⑤⑥ 3つの条件 -->
+<section>
+  <h2><span class="n">3</span>通知が行かない、3つの条件</h2>
+  <p>厚生労働省が「扶養義務履行が期待できない者」として挙げている3つの類型です。どれかに当てはまれば、照会しない扱いにできます。</p>
+
+  <div class="card ok">
+    <span class="tag">条件 ①</span>
+    <h3>相手が、援助できる立場にない</h3>
+    <p>原文で挙げられているのは次の方です。</p>
+    <p><b>生活保護を受けている人／施設に入所している人／長期入院中の人／専業主婦(主夫)など主な稼ぎ手でない人／未成年／おおむね70歳以上の高齢者</b></p>
+    <p class="small">高齢のご両親は、ここに入ります。70歳以上なら基本的に照会されません。</p>
+  </div>
+
+  <div class="card ok">
+    <span class="tag">条件 ②</span>
+    <h3>関係が著しく悪い</h3>
+    <p>借金を重ねている、相続をめぐって対立している、<b>縁が切られている</b>など。そして、ここが大きなポイントです。</p>
+    <div class="quote" style="margin-top:10px">
+      <span class="lbl">厚生労働省の事務連絡より</span>
+      一定期間（例えば <b>10年程度</b>）音信不通であるなど交流が断絶している場合には、これをもって「著しい関係不良等」と判断してよいこと。なお、10年程度音信不通である場合は、<b>その他の個別事情の有無を問わず</b>、交流断絶と判断してよいこと。
+    </div>
+    <div class="quote">
+      <span class="lbl">続けて、こう書かれています</span>
+      音信不通となっている<b>正確な期間が判明しない場合であっても</b>、これに相当する期間音信不通であるとの<b>申出があり、その申出の内容が否定される明確な根拠がないことをもって、該当するものと判断して差し支えない</b>
+    </div>
+    <p class="small">つまり「10年くらい連絡を取っていません」と伝えれば、基本的にそれで通ります。証明書を出す必要はありません。以前は20年でしたが、短くなりました。</p>
+  </div>
+
+  <div class="card ok">
+    <span class="tag">条件 ③</span>
+    <h3>知られると、生活の立て直しを妨げられる</h3>
+    <p>原文の例は<b>「夫の暴力から逃れてきた母子」「虐待等の経緯がある者」</b>です。この場合は、<b>夫婦や中学3年生以下の子どもに対してさえ、照会を控える</b>と書かれています。</p>
+    <div class="quote" style="margin-top:10px">
+      <span class="lbl">別の方法で事実確認をするときも</span>
+      当該扶養義務者本人に、関係先調査を行っている事実や当該要保護者の<b>居住地はもとより、その手がかりとなる情報（例えば、福祉事務所名等）も知られることのないよう</b>、特に慎重に調査を行うこと。
+    </div>
+    <p class="small">どこに住んでいるかはもちろん、どこの福祉事務所に相談したかすら相手に知らせるな、と国が指示しています。</p>
+  </div>
+
+  <a class="src" href="https://www.mhlw.go.jp/content/000746078.pdf" target="_blank" rel="noopener noreferrer">証拠：3つの条件が書かれた厚生労働省の事務連絡</a>
+</section>
+
+<!-- ⑦ 僕の場合 -->
+<section>
+  <h2><span class="n">4</span>僕の場合は、全員に通知が行きました</h2>
+  <div class="mine">
+    <span class="lbl">生活保護3年目の実体験</span>
+    <p>申請したとき、家族構成を聞かれました。家族との関係、仲がいいのか悪いのか、連絡を取り合っているかも聞かれました。</p>
+    <p>僕は母と兄と弟がいて、たまにLINEでやり取りをしていました。それぞれ何の仕事をしているかも知っていたので、そのまま話しました。</p>
+    <p>結果、<b>家族全員に書類が届きました</b>。「この人を養えますか」という内容で、僕の家族は「自分の生活でいっぱいなので無理です」と答えました。</p>
+    <p style="margin-top:12px"><b>なぜ通知が行ったのか。</b>僕は3つの条件のどれにも当てはまらなかったからです。連絡を取っていて、関係も悪くなく、家族も現役世代でした。<b>運用として正しい結果</b>です。</p>
+  </div>
+  <p style="margin-top:13px">だから、僕の話をそのまま「あなたにも通知が行く」と受け取らないでください。<b>あなたの事情が違えば、結果も変わります。</b></p>
+</section>
+
+<!-- ⑧ どうすればいいか -->
+<section>
+  <h2><span class="n">5</span>では、どうすればいいか</h2>
+  <p>いちばん大事なのは、<b>申請するときに自分から事情を話すこと</b>です。黙っていると、そのまま照会に進みます。</p>
+  <div class="say">
+    <span class="lbl">伝え方の例</span>
+    <p>「◯◯とは、もう10年くらい連絡を取っていません。連絡を取りたくないので、扶養照会はしないでほしいです」</p>
+  </div>
+  <div class="say">
+    <span class="lbl">暴力や虐待があった場合</span>
+    <p>「◯◯から暴力を受けて逃げてきました。居場所を知られたくありません」</p>
+  </div>
+  <p class="small" style="color:var(--sub); font-size:14px">言いにくいことを口で説明するのが難しければ、紙に書いて渡しても構いません。</p>
+</section>
+
+<!-- ⑨ 相談先 -->
+<section>
+  <h2><span class="n">6</span>不安なら、福祉事務所より先に相談できる場所があります</h2>
+  <p>いきなり窓口に行くのが怖い、うまく説明できる自信がない。その場合は、<b>先に相談だけできる場所</b>があります。</p>
+  <div class="place">
+    <h3 style="color:var(--navy)">自立相談支援機関</h3>
+    <p style="font-size:15px">生活困窮者自立支援法にもとづく相談窓口で、<b>全国どの自治体にもあります</b>。相談は無料です。運営は自治体のほか、<b>社会福祉協議会・社会福祉法人・NPO法人</b>などに委託されています。</p>
+    <p style="font-size:14.5px; color:var(--sub)">名前は地域によって違います（くらしサポートセンター、生活支援相談センター、自立相談支援センターなど）。<b>「お住まいの市区町村名＋自立相談支援機関」</b>で検索すると見つかります。</p>
+  </div>
+  <div class="mine">
+    <span class="lbl">僕が実際に行った場所</span>
+    <p><b>長崎市生活支援相談センター</b>（長崎市社会福祉協議会が運営）</p>
+    <p>申請する前に、ここに<b>何回か通って相談しました</b>。3時間くらい話したこともあります。</p>
+    <p>おかげで、<b>持っていく書類が全部わかった状態</b>で窓口に行けました。自分では知らなかった給付制度も教えてもらいました。だから申請当日はスムーズでした。</p>
+  </div>
+  <p style="margin-top:13px"><b>ここが大事です。</b>福祉事務所は申請を受ける場所ですが、相談支援機関は<b>あなたの側に立って一緒に考えてくれる場所</b>です。扶養照会が不安なら、まずここで話してみてください。</p>
+  <a class="src" href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000059425.html" target="_blank" rel="noopener noreferrer">厚生労働省：生活困窮者自立支援制度のページ</a>
+</section>
+
+<footer>
+  <h2>このページの根拠</h2>
+  <ul>
+    <li>【一次】厚生労働省 社会・援護局保護課「扶養義務履行が期待できない者の判断基準の留意点等について」（事務連絡・令和3年2月26日）<br>
+      <a href="https://www.mhlw.go.jp/content/000746078.pdf" target="_blank" rel="noopener noreferrer">https://www.mhlw.go.jp/content/000746078.pdf</a><br>
+      ※このページの引用文と3つの条件は、すべてこの文書に書かれているものです</li>
+    <li>【法令】生活保護法 第4条第2項（扶養は保護に優先して行われる）</li>
+    <li>【一次】厚生労働省「生活困窮者自立支援制度」<br>
+      <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000059425.html" target="_blank" rel="noopener noreferrer">https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000059425.html</a></li>
+    <li>長崎市生活支援相談センター（長崎市社会福祉協議会）<br>
+      <a href="https://www.city.nagasaki.lg.jp/page/3431.html" target="_blank" rel="noopener noreferrer">https://www.city.nagasaki.lg.jp/page/3431.html</a></li>
+  </ul>
+  <h2>読むときの注意</h2>
+  <p>ここに書いたのは、国が示している考え方と、配信者ひとりの実体験です。実際の対応は自治体や担当者によって差があります。<b>最終的な判断は、お住まいの地域の窓口で確認してください。</b>このページは法律上の助言ではありません。</p>
+  <p>確認日：2026年9月23日</p>
+</footer>
+
+</div>
+</body>
+</html>

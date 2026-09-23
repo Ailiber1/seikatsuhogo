@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>生活保護費 特例加算の説明（配信用）</title>
+<style>
+:root{
+  --ink:#16202b; --muted:#56616e; --paper:#f7f4ec; --card:#ffffff; --line:#d8d1bf;
+  --navy:#12355b;
+  --green:#17703f; --gbg:#e0f2e6;
+  --red:#b3261e;   --rbg:#fcdedb;
+  --amber:#8f5400; --abg:#fff0c9;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-snap-type:y proximity}
+body{
+  background:var(--paper);color:var(--ink);
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;
+  font-size:clamp(18px,1.9vw,30px);line-height:1.6;-webkit-text-size-adjust:100%;
+}
+section{
+  min-height:100vh;scroll-snap-align:start;
+  padding:clamp(28px,6vh,72px) clamp(16px,6vw,120px);
+  display:flex;flex-direction:column;justify-content:center;gap:clamp(14px,2.6vh,28px);
+  border-bottom:6px solid var(--navy);
+}
+.eyebrow{font-size:.8em;font-weight:800;color:var(--navy);letter-spacing:.05em}
+h1{font-size:clamp(30px,4.7vw,78px);line-height:1.25;font-weight:900;color:var(--navy)}
+h1 em{font-style:normal;color:var(--red);background:linear-gradient(transparent 62%,#ffe08a 62%);white-space:nowrap}
+h2{font-size:clamp(30px,4vw,64px);line-height:1.2;font-weight:900}
+.what{background:var(--card);border-left:10px solid var(--navy);padding:.5em .9em;font-size:.82em;color:var(--muted);line-height:1.6}
+.what b{color:var(--ink)}
+.band{display:flex;flex-wrap:wrap;align-items:center;gap:.5em 1em;background:var(--navy);color:#fff;padding:.7em 1em;border-radius:14px}
+.band .term{font-weight:800}
+.band .amt{font-size:1.5em;font-weight:900;white-space:nowrap}
+.band .arrow{font-size:1.3em;opacity:.85}
+.band .amt.new{color:#ffe08a}
+.proof{display:inline-flex;align-items:center;gap:.6em;align-self:flex-start;background:var(--green);color:#fff;text-decoration:none;font-weight:800;padding:.65em 1.1em;border-radius:12px;font-size:.95em;box-shadow:0 3px 0 rgba(0,0,0,.18)}
+.proof small{display:block;font-weight:500;font-size:.68em;opacity:.95}
+.note{font-size:.78em;color:var(--muted)}
+.url{font-size:.66em;color:var(--muted);word-break:break-all;margin-top:-.4em}
+.ev{font-size:.62em;margin-top:.35em;line-height:1.5;color:var(--muted)}
+.ev a{color:var(--navy);font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.next{align-self:flex-start;margin-top:.2em;color:var(--navy);font-weight:800;text-decoration:none;font-size:.85em;border-bottom:3px solid var(--navy)}
+.lead{font-size:1em}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(10px,1.6vw,22px)}
+.card{background:var(--card);border:3px solid var(--line);border-radius:16px;padding:.7em .9em;display:flex;flex-direction:column;gap:.15em}
+.card .who{font-weight:800;line-height:1.35}
+.card .sub{font-size:.68em;color:var(--muted);line-height:1.45}
+.card .amt{font-size:1.7em;font-weight:900;line-height:1.15}
+.up h2,.up .amt{color:var(--green)}.up .card{border-color:#9fd3b1;background:var(--gbg)}
+.up .grid{grid-template-columns:repeat(3,1fr)}
+.up .card .amt{font-size:1.5em;white-space:nowrap}
+@media (max-width:1000px){.up .grid{grid-template-columns:1fr}.up .card .amt{font-size:1.3em}}
+.down h2{color:var(--red)}
+.down .card{border-color:#e9a29d;background:var(--rbg)}.down .card .amt{color:var(--red)}
+.down .card.small{background:var(--abg);border-color:#e6c46a}.down .card.small .amt{color:var(--amber)}
+.why{background:var(--card);border:3px solid var(--navy);border-radius:16px;padding:.8em 1em}
+.why h3{font-size:1.05em;color:var(--navy);margin-bottom:.3em}
+.why p{font-size:1em}
+.calc{margin-top:.8em;display:grid;gap:.7em}
+.calc .row{display:flex;flex-wrap:wrap;align-items:center;gap:.4em .5em;font-size:1em}
+.calc .lab{flex:0 0 100%;font-weight:800;color:var(--muted);font-size:.85em}
+.chip{border-radius:10px;padding:.25em .6em;font-weight:800;line-height:1.35;text-align:center}
+.chip small{display:block;font-weight:600;font-size:.62em;opacity:.9}
+.c-base{background:#e6ebf2;color:var(--navy)}
+.c-tok{background:var(--gbg);color:var(--green)}
+.c-key{background:var(--abg);color:var(--amber)}
+.c-sum{background:var(--navy);color:#fff}
+.op{font-weight:900;color:var(--muted)}
+.same{font-weight:900;color:var(--red);font-size:.9em}
+.close h2{color:var(--navy)}
+.close .final{font-size:1.15em;font-weight:900;line-height:1.5;color:var(--ink)}
+.who2{background:var(--card);border:3px solid var(--line);border-radius:16px;padding:.7em 1em}
+.who2 h3{font-size:1em;color:var(--navy)}
+.who2 p{font-size:.92em;margin-top:.15em}
+details{background:var(--card);border:3px solid var(--line);border-radius:14px;padding:.6em 1em}
+summary{cursor:pointer;font-weight:800;color:var(--navy)}
+details ul{margin-top:.6em;padding-left:1.2em;font-size:.72em;line-height:1.7}
+details a{color:var(--navy);word-break:break-all}
+.foot{font-size:.62em;color:var(--muted);line-height:1.6}
+@media (max-width:640px){ .band .amt{font-size:1.25em} }
+</style>
+</head>
+<body>
+
+<!-- ① 見出し・特例加算とは・証拠 -->
+<section id="s1">
+  <p class="eyebrow">2026年10月から</p>
+  <h1>特例加算により、生活保護費が<em>1人あたり月1,000円</em>上がります</h1>
+  <p class="what"><b>特例加算とは？</b>　物価高への対応として、2023年度から生活扶助（食費・光熱費などの日常の生活費）に、1人あたり毎月上乗せされている臨時の加算です。</p>
+  <div class="band">
+    <span class="term">2026年10月〜2027年9月の1年間</span>
+    <span>特例加算（1人あたり・月）</span>
+    <span class="amt">1,500円</span><span class="arrow">→</span><span class="amt new">2,500円</span>
+  </div>
+  <a class="proof" href="https://www.mhlw.go.jp/content/12002000/001662704.pdf#page=2" target="_blank" rel="noopener noreferrer">
+    <span>証拠：厚労省の資料を開く<small>第55回 社会保障審議会 生活保護基準部会 資料4（令和8年2月27日）p.2 の赤枠</small></span>
+  </a>
+  <p class="url">証拠のリンク：<a href="https://www.mhlw.go.jp/content/12002000/001662704.pdf#page=2" target="_blank" rel="noopener noreferrer" style="color:inherit">https://www.mhlw.go.jp/content/12002000/001662704.pdf</a>（p.2 に「令和8年10月から1年間、①の特例加算の額を1,000円引き上げ、一人当たり月額2,500円とする」と書かれています）</p>
+  <p class="note">※全員が+1,000円になるわけではありません。次の画面から「上がる人」「上がらない人」を説明します。</p>
+  <a class="next" href="#s2">▼ 上がる人</a>
+</section>
+
+<!-- ② 上がる人 -->
+<section id="s2" class="up">
+  <h2>上がる人</h2>
+  <p class="lead">自宅で暮らしている受給者の多くは、増額されます。加算は<b>1人あたり</b>なので、世帯の人数ぶん増えます。</p>
+  <div class="grid">
+    <div class="card"><span class="who">単身世帯（多くの地方の市町村）</span><span class="amt">+1,000円</span><span class="sub">地域や年齢で変わることがあります</span></div>
+    <div class="card"><span class="who">高齢夫婦（65歳）</span><span class="amt">+2,000円</span><span class="sub">大都市でも地方でも同じ</span></div>
+    <div class="card"><span class="who">母子世帯（子1人）</span><span class="amt">+1,610〜2,000円</span><span class="sub">大都市はやや小さい</span></div>
+    <div class="card"><span class="who">夫婦と子ども1人（3人世帯）</span><span class="amt">+2,660〜3,000円</span><span class="sub">大都市はやや小さい</span></div>
+    <div class="card"><span class="who">夫婦と子ども2人（4人世帯）</span><span class="amt">+3,000〜4,000円</span><span class="sub">大都市はやや小さい</span></div>
+  </div>
+  <p class="note">厚労省資料のモデル世帯での、月額の増額です（令和7年度基準→令和8年度基準案の差）。実際の金額は、世帯の年齢・住む地域などで変わります。<br>
+  <span class="ev">証拠：<a href="https://www.mhlw.go.jp/content/12002000/001662704.pdf#page=3" target="_blank" rel="noopener noreferrer">厚労省 資料4 p.3「世帯類型ごとの生活扶助基準額」</a>の「令和7年度基準」と「令和8年度基準案」の列の差です（差額の引き算は配信者の計算）。</span></p>
+  <a class="next" href="#s3">▼ 上がらない人</a>
+</section>
+
+<!-- ③ 上がらない人と理由 -->
+<section id="s3" class="down">
+  <h2>上がらない人（ほとんど上がらない人）</h2>
+  <div class="grid">
+    <div class="card"><span class="who">入院している人・介護施設に入所している人</span><span class="amt">増額なし</span><span class="sub">特例加算は月1,000円のまま。食費・光熱費が現物給付されているため</span><span class="ev">証拠：<a href="https://www.mhlw.go.jp/content/12002000/001662704.pdf#page=2" target="_blank" rel="noopener noreferrer">資料4 p.2</a>「入院患者・介護施設入所者の加算額は、一人当たり月額1,000円を維持」</span></div>
+    <div class="card"><span class="who">大都市の単身世帯<br>（41〜59歳・65〜69歳・75歳以上）</span><span class="amt">増額0円</span><span class="sub">東京23区・横浜市・名古屋市・京都市・大阪市・神戸市など（1級地-1）。同じ大都市でも、20〜40歳は+800円など年齢で変わります（試算）</span><span class="ev">証拠：<a href="https://www.mhlw.go.jp/content/12002000/001662704.pdf#page=3" target="_blank" rel="noopener noreferrer">資料4 p.3</a>の「若年単身世帯（50代）・1級地1」は令和7年度 77,240円 → 令和8年度 77,240円（65歳・75歳の単身も同じく変わらず）</span></div>
+    <div class="card small"><span class="who">大都市の75歳の夫婦</span><span class="amt">+80円だけ</span><span class="sub">2人分で+2,000円のはずが、ほとんど増えない</span><span class="ev">証拠：<a href="https://www.mhlw.go.jp/content/12002000/001662704.pdf#page=3" target="_blank" rel="noopener noreferrer">資料4 p.3</a>「高齢夫婦世帯（75歳夫婦）・1級地1」は 112,390円 → 112,470円</span></div>
+  </div>
+  <a class="next" href="#s3b">▼ なぜ上がらない？</a>
+</section>
+
+<!-- ③b なぜ上がらない？（理由の図解） -->
+<section id="s3b" class="down">
+  <h2 style="color:var(--navy)">なぜ上がらないの？</h2>
+  <div class="why">
+    <p>これまで、生活費が下がらないように「<b>経過的加算</b>」という上乗せが付いていました。特例加算が1人あたり1,000円増えると、この上乗せが<b>増えた分だけ（1人あたり最大1,000円）減ります</b>。だから合計が変わらない（または少ししか増えない）のです。</p>
+    <div class="calc">
+      <div class="row"><span class="lab">例：東京23区などに住む50代の単身世帯（厚労省資料のモデル）</span></div>
+      <div class="ev" style="margin:0">基本の額と合計は<a href="https://www.mhlw.go.jp/content/12002000/001662704.pdf#page=3" target="_blank" rel="noopener noreferrer">資料4 p.3</a>。経過的加算1,020円は下の「根拠資料」の別表の数字です。10月からの20円は、その1,020円が1,000円下がった額です（練馬区の委員会資料でも「単身41〜59歳は20円」と説明されています）。</div>
+      <div class="row"><span class="lab">これまで</span>
+        <span class="chip c-base">基本の額<small>74,720円</small></span><span class="op">＋</span>
+        <span class="chip c-tok">特例加算<small>1,500円</small></span><span class="op">＋</span>
+        <span class="chip c-key">経過的加算<small>1,020円</small></span><span class="op">＝</span>
+        <span class="chip c-sum">77,240円</span></div>
+      <div class="row"><span class="lab">10月から</span>
+        <span class="chip c-base">基本の額<small>74,720円</small></span><span class="op">＋</span>
+        <span class="chip c-tok">特例加算<small>2,500円（+1,000円）</small></span><span class="op">＋</span>
+        <span class="chip c-key">経過的加算<small>20円（−1,000円）</small></span><span class="op">＝</span>
+        <span class="chip c-sum">77,240円</span><span class="same">→ 増額0円</span></div>
+    </div>
+  </div>
+  <a class="next" href="#s4">▼ 自分はどっち？</a>
+</section>
+
+<!-- ④ 締め -->
+<section id="s4" class="close">
+  <h2>自分はどっち？</h2>
+  <p class="final">自分がどれに当てはまるかは、結局、自分で確かめるのがいちばん確実です。</p>
+  <div class="who2"><h3>生活保護を検討している方</h3><p>役所の福祉課（福祉事務所）に行くか、電話で聞くのが早いです。</p></div>
+  <div class="who2"><h3>すでに受けている方</h3><p>担当のケースワーカーに聞いてみる。または、10月分以降の振込額を、これまでと比べてみるとわかりやすいです。</p></div>
+  <p class="note">※この引き上げは2026年10月〜2027年9月の1年間の措置で、令和9年度以降は未定です（厚労省資料に記載）。この画面は一般的な説明で、実際の金額は世帯の年齢・地域などで異なります。中規模の市（2級地-2）など、この画面で挙げていない地域には例外があります。</p>
+  <a class="next" href="#s5">▼ 根拠資料</a>
+</section>
+
+<!-- ⑤ 根拠資料 -->
+<section id="s5">
+  <details>
+    <summary>根拠資料（詳しく見たい人向け・クリックで開く）</summary>
+    <ul>
+      <li>【一次】厚労省 第55回 社会保障審議会 生活保護基準部会 資料4「令和8年度生活扶助基準の見直しについて」（令和8年2月27日）<br>
+        p.2 見直しの内容：<a href="https://www.mhlw.go.jp/content/12002000/001662704.pdf#page=2" target="_blank" rel="noopener noreferrer">https://www.mhlw.go.jp/content/12002000/001662704.pdf#page=2</a><br>
+        p.3 世帯類型ごとの基準額（「令和8年度基準案」表記）：<a href="https://www.mhlw.go.jp/content/12002000/001662704.pdf#page=3" target="_blank" rel="noopener noreferrer">…#page=3</a></li>
+      <li>【一次】厚労省 第55回基準部会の資料ページ：<a href="https://www.mhlw.go.jp/stf/newpage_70765.html" target="_blank" rel="noopener noreferrer">https://www.mhlw.go.jp/stf/newpage_70765.html</a></li>
+      <li>【一次】厚労省「生活扶助基準額の算出方法（令和8年4月）」（経過的加算の別表・p.2）：<a href="https://www.mhlw.go.jp/content/001152601.pdf#page=2" target="_blank" rel="noopener noreferrer">https://www.mhlw.go.jp/content/001152601.pdf#page=2</a></li>
+      <li>【一次】厚労省「生活保護法による保護の級地区分」（平成25年4月1日現在・大都市の範囲）：<a href="https://www.mhlw.go.jp/bunya/seikatsuhogo/dl/seikatuhogo02.pdf" target="_blank" rel="noopener noreferrer">https://www.mhlw.go.jp/bunya/seikatsuhogo/dl/seikatuhogo02.pdf</a></li>
+      <li>【最新の確認】練馬区保健福祉委員会資料（2026年8月25日）の23区の例を紹介した記事（2026年8月29日）：<a href="https://iwasetakeshi.net/2026/08/welfare-2/" target="_blank" rel="noopener noreferrer">https://iwasetakeshi.net/2026/08/welfare-2/</a></li>
+      <li>【報道】福祉新聞（2026年1月18日）：<a href="https://fukushishimbun.com/series08/44152" target="_blank" rel="noopener noreferrer">https://fukushishimbun.com/series08/44152</a></li>
+    </ul>
+    <p class="foot" style="margin-top:.7em">最終確認日 2026-09-22。資料4 p.3の表は「令和8年度<b>基準案</b>」表記で、最終の告示原本は未確認です。上の増額は、資料4の表と別表の2つの資料で計算し、27通りすべて一致することを確認しています。「20〜40歳は+800円」などの年齢別の数字は、別表からの試算です。級地の一覧は平成25年4月1日現在のもので、その後の市町村合併などで変わっている場合があります。自分の級地は福祉事務所で確認してください。また、資料4に数字が載っているのは1級地-1・2級地-1・3級地-2の3つで、残りの級地（1級地-2・2級地-1以外の2級地・3級地-1）には、この画面の説明から外れる場合があります（例：2級地-2の75歳夫婦は増額0円）。</p>
+  </details>
+</section>
+
+<script>
+// ▼リンクだけなめらかにスクロール（ページ全体の挙動は変えない）
+document.querySelectorAll('a.next').forEach(function(a){
+  a.addEventListener('click', function(e){
+    var t = document.querySelector(a.getAttribute('href'));
+    if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth', block:'start'}); }
+  });
+});
+</script>
+</body>
+</html>

@@ -180,6 +180,19 @@ figcaption{font-size:13px; color:var(--sub); margin-top:7px; line-height:1.6}
 .people i{aspect-ratio:1; border-radius:50%; background:var(--line)}
 .people i.g{background:var(--navy)}
 
+/* 2×2の表 */
+.grid2{display:grid; grid-template-columns:6.5em 1fr 1fr; gap:6px; margin:10px 0 0}
+.grid2 .gh{font-size:12.5px; text-align:center; color:var(--sub); align-self:end; line-height:1.4}
+.grid2 .gv{font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:flex-end; text-align:right; padding-right:4px}
+.cell{font:inherit; font-weight:800; font-size:clamp(14px,3.6vw,17px); border-radius:10px; padding:18px 6px; cursor:pointer;
+  transition:transform .15s, box-shadow .15s}
+.cell:hover, .cell.on{transform:translateY(-2px); box-shadow:0 4px 12px rgba(36,44,54,.12)}
+.cell.ok{background:var(--ok-bg); color:var(--ok); border:2.5px solid var(--ok)}
+.cell.ng{background:var(--ng-bg); color:var(--ng); border:2.5px solid var(--ng)}
+.cell.on{outline:3px solid var(--navy); outline-offset:2px}
+.lane-top,.lane-bot{opacity:0; transition:opacity .8s, transform .8s}
+.lane-top{transform:translateY(-10px)} .lane-bot{transform:translateY(10px); transition-delay:.5s}
+.in .lane-top,.in .lane-bot{opacity:1; transform:none}
 .know{display:grid; grid-template-columns:1fr 1fr; gap:10px}
 
 footer{margin-top:26px; padding-top:18px; border-top:1px solid var(--line); font-size:12.5px; color:var(--sub); line-height:1.8}
@@ -201,7 +214,7 @@ footer a{color:var(--navy); word-break:break-all}
 }
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important; animation:none!important}
-  .reveal,.pill,.mt-item,.cmp .col{opacity:1!important; transform:none!important}
+  .reveal,.pill,.mt-item,.cmp .col,.lane-top,.lane-bot{opacity:1!important; transform:none!important}
 }
 </style>
 </head>
@@ -218,6 +231,7 @@ footer a{color:var(--navy); word-break:break-all}
     <li><a href="#japan">日本では</a></li>
     <li><a href="#musk">マスク氏の発言</a></li>
     <li><a href="#ai">AIで本当に来る？</a></li>
+    <li><a href="#nisa">NISAと矛盾？</a></li>
     <li><a href="#sum">まとめ</a></li>
   </ul>
 </nav>
@@ -233,6 +247,7 @@ footer a{color:var(--navy); word-break:break-all}
       <li>ベーシックインカムって、結局どういうもの？</li>
       <li>「AIで仕事がなくなる、貯金はいらない」って本当？</li>
       <li>生活保護とは何が違う？ 日本でも始まるの？</li>
+      <li>「貯金はいらない」なら、なぜ国はNISAをすすめるの？</li>
     </ul>
   </div>
   <div class="answer">
@@ -872,9 +887,131 @@ footer a{color:var(--navy); word-break:break-all}
   </figure>
 </section>
 
-<!-- ⑩ まとめ -->
+<!-- ⑪ NISAと矛盾？ -->
+<section id="nisa">
+  <h2><span class="n">9</span>「お金はいらなくなる」なら、なぜ国はNISAや「老後2,000万円」を言うのか</h2>
+  <div class="answer reveal" style="border-color:var(--warn); background:var(--warn-bg)">
+    <p class="big" style="color:var(--warn)">これ、矛盾していませんか？</p>
+    <p>マスク氏は「貯金はいらなくなる」「2036年にはお金は意味を持たなくなる」と言う。一方で日本の国は「老後に2,000万円必要」と言い、NISAで投資しようと勧めている。<b>どちらを信じればいいのか。</b>この章では、まず事実を並べ、そのあとで<b>このページの推測</b>を書きます。</p>
+  </div>
+
+  <h3 style="margin-top:22px">① 国が言ってきたこと</h3>
+  <div class="quote reveal">
+    <span class="lbl">金融審議会 市場ワーキング・グループ報告書（2019年6月3日）</span>
+    夫 65 歳以上、妻 60 歳以上の夫婦のみの無職の世帯では毎月の不足額の平均は約５万円であり、まだ 20～30 年の人生があるとすれば、<b>不足額の総額は単純計算で 1,300 万円～2,000 万円になる</b>。この金額はあくまで平均の不足額から導きだしたものであり、不足額は各々の収入・支出の状況やライフスタイル等によって大きく異なる。
+  </div>
+  <a class="src" href="https://www.fsa.go.jp/singi/singi_kinyu/tosin/20190603/01.pdf" target="_blank" rel="noopener noreferrer">証拠：金融庁の報告書（PDF）を開く</a>
+
+  <div class="quote reveal" style="margin-top:14px">
+    <span class="lbl">資産所得倍増プラン（2022年11月28日 新しい資本主義実現会議決定）</span>
+    我が国の家計に眠る<b>現預金を投資につなげ</b>、家計の勤労所得に加え金融資産所得も増やしていくことが重要である。……家計の資金が<b>企業の成長投資の原資となれば、企業の成長が促進され</b>、企業価値が向上する。
+  </div>
+  <a class="src" href="https://www.cas.go.jp/jp/seisaku/atarashii_sihonsyugi/pdf/dabiplan2022.pdf" target="_blank" rel="noopener noreferrer">証拠：資産所得倍増プラン（内閣官房・PDF）を開く</a>
+
+  <div class="card reveal" style="margin-top:14px">
+    <span class="tag">NISAの今（金融庁・2025年12月末）</span>
+    <h3>買った金額は、国の目標をもう超えた</h3>
+    <div class="legend"><span><i style="background:var(--navy)"></i>実際（2025年12月末）</span><span><i style="background:var(--base)"></i>国の目標（2027年12月末まで）</span></div>
+    <p class="small" style="margin:6px 0 0; font-weight:700; color:var(--ink)">口座の数</p>
+    <div class="bars" data-max="3800">
+      <div class="bar-row"><div class="lab">実際</div><div class="bar-track"><div class="bar" data-v="2821"></div><div class="bar-val" data-v="2821">2,821万口座</div></div></div>
+      <div class="bar-row"><div class="lab">目標</div><div class="bar-track"><div class="bar base" data-v="3400"></div><div class="bar-val" data-v="3400">3,400万口座</div></div></div>
+    </div>
+    <p class="small" style="margin:6px 0 0; font-weight:700; color:var(--ink)">買った金額の合計</p>
+    <div class="bars" data-max="80">
+      <div class="bar-row"><div class="lab">実際</div><div class="bar-track"><div class="bar" data-v="71"></div><div class="bar-val" data-v="71">71兆円</div></div></div>
+      <div class="bar-row"><div class="lab">目標</div><div class="bar-track"><div class="bar base" data-v="56"></div><div class="bar-val" data-v="56">56兆円</div></div></div>
+    </div>
+    <a class="src" href="https://www.fsa.go.jp/policy/nisa/20260703/2512nisa-graph.pdf" target="_blank" rel="noopener noreferrer">証拠：金融庁「NISAの利用状況」を開く（2026年7月3日公表）</a>
+  </div>
+
+  <div class="card reveal">
+    <span class="tag">公的年金の見通し（厚生労働省・2024年財政検証）</span>
+    <h3>年金の「水準」は、これから下がっていく見通し</h3>
+    <p class="small" style="margin-bottom:4px">所得代替率＝モデル夫婦の年金が、現役世代の手取り収入の何割にあたるか</p>
+    <div class="bars" data-max="70">
+      <div class="bar-row"><div class="lab">2024年度</div><div class="bar-track"><div class="bar" data-v="61.2"></div><div class="bar-val" data-v="61.2">61.2%</div></div></div>
+      <div class="bar-row"><div class="lab">2057年度</div><div class="bar-track"><div class="bar" data-v="50.4" style="background:var(--ng)"></div><div class="bar-val" data-v="50.4">50.4%</div></div></div>
+    </div>
+    <p class="small">経済が過去30年と同じくらいの伸びだった場合（「過去30年投影ケース」）の見通しです。年金額そのものがゼロになるわけではありませんが、<b>現役世代と比べた年金の水準は約2割下がる</b>計算です。</p>
+    <a class="src" href="https://www.mhlw.go.jp/nenkinkenshou/report/r6.html" target="_blank" rel="noopener noreferrer">証拠：厚生労働省 令和6年財政検証のページを開く</a>
+  </div>
+
+  <h3 style="margin-top:22px">② じつは、アメリカも「貯めよう」と言っている</h3>
+  <div class="card reveal">
+    <span class="tag">アメリカ政府「トランプ・アカウント」　2026年7月4日開始</span>
+    <h3>赤ちゃんの投資口座に、国が1,000ドルを入れる</h3>
+    <p>2025〜2028年に生まれた子どもに、国が<b>株価指数に連動する投資の口座</b>をつくり、1,000ドルを入れる制度が2026年7月に始まりました。</p>
+    <p>そして、第7章で紹介したマスク氏の「お金を貯める必要はない」という投稿は、<b>まさにこの口座に寄付すると表明した投資家への返信</b>でした。つまりマスク氏の発言は、日本だけでなく、自分の国の政策に対しても逆のことを言っている形です。</p>
+    <a class="src" href="https://home.treasury.gov/news/press-releases/sb0372" target="_blank" rel="noopener noreferrer">証拠：アメリカ財務省の発表を開く</a>
+  </div>
+  <div class="card reveal">
+    <span class="tag">マスク氏自身の行動　2026年7月27日</span>
+    <h3>「お金は意味を持たなくなる」の数日後に、お金のサービスを開始</h3>
+    <p>エコノミスト誌のインタビュー（7月23日公開）の数日後、マスク氏はX（旧Twitter）で送金やデビットカードが使える<b>「X Money」</b>を始め、「This is money（これがお金だ）」と投稿したと報じられています。</p>
+    <a class="src" href="https://fortune.com/2026/07/29/elon-musk-money-matters-x-money-former-trillionaire/" target="_blank" rel="noopener noreferrer">報道：Fortuneの記事を開く（2026年7月29日）</a>
+  </div>
+
+  <h3 style="margin-top:22px">③ 並べてみると</h3>
+  <figure class="reveal">
+    <svg viewBox="0 0 660 300" role="img" aria-label="国の発言とマスク氏の発言の年表"><g font-family="Hiragino Sans, sans-serif"><text x="8" y="18" font-size="13" font-weight="700" fill="var(--navy)">▲ 国（日本・アメリカ）</text><text x="8" y="296" font-size="13" font-weight="700" fill="var(--warn)">▼ マスク氏</text><line x1="20" y1="150" x2="650" y2="150" stroke="var(--line)" stroke-width="3"/><line x1="40" y1="144" x2="40" y2="156" stroke="var(--line)" stroke-width="2"/><line x1="118" y1="144" x2="118" y2="156" stroke="var(--line)" stroke-width="2"/><line x1="196" y1="144" x2="196" y2="156" stroke="var(--line)" stroke-width="2"/><line x1="274" y1="144" x2="274" y2="156" stroke="var(--line)" stroke-width="2"/><line x1="352" y1="144" x2="352" y2="156" stroke="var(--line)" stroke-width="2"/><line x1="430" y1="144" x2="430" y2="156" stroke="var(--line)" stroke-width="2"/><line x1="508" y1="144" x2="508" y2="156" stroke="var(--line)" stroke-width="2"/><line x1="586" y1="144" x2="586" y2="156" stroke="var(--line)" stroke-width="2"/><text x="40" y="172" text-anchor="middle" font-size="11" fill="var(--sub)">2019</text><text x="274" y="172" text-anchor="middle" font-size="11" fill="var(--sub)">2022</text><g class="lane-top"><line x1="73" y1="150" x2="73" y2="102" stroke="var(--navy)" stroke-width="2"/><circle cx="73" cy="150" r="6" fill="var(--navy)"/><rect x="8" y="30" width="120" height="72" rx="7" fill="var(--navy-soft)" stroke="var(--navy)" stroke-width="1.5"/><text x="68.0" y="50" text-anchor="middle" font-size="11" font-weight="700" fill="var(--sub)">2019年6月</text><text x="68.0" y="71" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--navy)">老後2,000万円</text><text x="68.0" y="90" text-anchor="middle" font-size="11" fill="var(--ink)">金融庁の報告書</text><line x1="344" y1="150" x2="344" y2="102" stroke="var(--navy)" stroke-width="2"/><circle cx="344" cy="150" r="6" fill="var(--navy)"/><rect x="262" y="30" width="110" height="72" rx="7" fill="var(--navy-soft)" stroke="var(--navy)" stroke-width="1.5"/><text x="317.0" y="50" text-anchor="middle" font-size="11" font-weight="700" fill="var(--sub)">2022年11月</text><text x="317.0" y="71" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--navy)">資産所得倍増</text><text x="317.0" y="90" text-anchor="middle" font-size="11" fill="var(--ink)">貯蓄から投資へ</text><line x1="430" y1="150" x2="430" y2="102" stroke="var(--navy)" stroke-width="2"/><circle cx="430" cy="150" r="6" fill="var(--navy)"/><rect x="384" y="30" width="94" height="72" rx="7" fill="var(--navy-soft)" stroke="var(--navy)" stroke-width="1.5"/><text x="431.0" y="50" text-anchor="middle" font-size="11" font-weight="700" fill="var(--sub)">2024年1月</text><text x="431.0" y="71" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--navy)">新NISA</text><text x="431.0" y="90" text-anchor="middle" font-size="11" fill="var(--ink)">開始</text><line x1="629" y1="150" x2="629" y2="102" stroke="var(--navy)" stroke-width="2"/><circle cx="629" cy="150" r="6" fill="var(--navy)"/><rect x="490" y="30" width="162" height="72" rx="7" fill="var(--navy-soft)" stroke="var(--navy)" stroke-width="1.5"/><text x="571.0" y="50" text-anchor="middle" font-size="11" font-weight="700" fill="var(--sub)">2026年7〜8月</text><text x="571.0" y="71" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--navy)">米：赤ちゃん投資口座</text><text x="571.0" y="90" text-anchor="middle" font-size="11" fill="var(--ink)">日：給付付き税額控除</text></g><g class="lane-bot"><path d="M577 150 V182 H410 V206" fill="none" stroke="var(--warn)" stroke-width="2"/><circle cx="577" cy="150" r="6" fill="var(--warn)"/><rect x="330" y="206" width="160" height="72" rx="7" fill="var(--warn-bg)" stroke="var(--warn)" stroke-width="1.5"/><text x="410.0" y="226" text-anchor="middle" font-size="11" font-weight="700" fill="var(--sub)">2025年11〜12月</text><text x="410.0" y="247" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--warn)">働くのは自由に</text><text x="410.0" y="266" text-anchor="middle" font-size="11" fill="var(--ink)">貯金は不要</text><line x1="630" y1="150" x2="630" y2="206" stroke="var(--warn)" stroke-width="2"/><circle cx="630" cy="150" r="6" fill="var(--warn)"/><rect x="500" y="206" width="152" height="72" rx="7" fill="var(--warn-bg)" stroke="var(--warn)" stroke-width="1.5"/><text x="576.0" y="226" text-anchor="middle" font-size="11" font-weight="700" fill="var(--sub)">2026年7月</text><text x="576.0" y="247" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--warn)">2036年にお金は無意味</text><text x="576.0" y="266" text-anchor="middle" font-size="11" fill="var(--ink)">→ 直後にX Money開始</text></g></g></svg>
+    <figcaption>上が国、下がマスク氏。国は2019年から一貫して「自分でも備えよう」と言い続けています。マスク氏の「貯金は不要」は2025年の終わりから強まった発言です。</figcaption>
+  </figure>
+
+  <h3 style="margin-top:22px">④ ここからは推測です：なぜ国は「備えよう」と言うのか</h3>
+  <p class="small" style="color:var(--warn); background:var(--warn-bg); border:1.5px solid var(--warn); border-radius:6px; padding:6px 10px">この④は、ここまでの資料をもとにした<b>このページの考え</b>です。国が公式にこう説明しているわけではありません。投資をすすめる・すすめないという助言でもありません。</p>
+
+  <div class="card reveal">
+    <span class="tag">推測 1</span>
+    <h3>「予想を語る人」と「外れたら困る制度を作る人」の違い</h3>
+    <p>マスク氏は起業家で、予想が外れても責任を負う立場ではありません。AIやロボットの会社を持っているので、明るい未来を語ることは事業の追い風にもなります。一方で国は、年金の見通しを立てるとき「過去30年と同じくらいの経済」という<b>控えめな前提</b>を置いています。<b>明るい予想に賭けて制度を作り、外れたら、困るのは国民全員</b>だからです。</p>
+  </div>
+
+  <div class="card reveal">
+    <span class="tag">推測 2</span>
+    <h3>外れたときの「損の大きさ」がまったく違う</h3>
+    <p>「備える／備えない」と「豊かな時代が来る／来ない」の組み合わせは4通りです。<b>マスを押すと説明が出ます。</b></p>
+    <div class="grid2" role="group" aria-label="備えるかどうかと、豊かな時代が来るかどうかの4通り">
+      <div></div><div class="gh">豊かな時代が<b>来た</b></div><div class="gh">豊かな時代が<b>来なかった</b></div>
+      <div class="gv">備えた</div>
+      <button type="button" class="cell ok" data-m="備えたお金は、結果的にいらなかったかもしれません。でも困ることはありません。<b>損は小さい</b>。">困らない</button>
+      <button type="button" class="cell ok" data-m="年金の水準が下がっても、備えた分で暮らしを支えられます。<b>備えが役に立った</b>ケースです。">助かった</button>
+      <div class="gv">備えなかった</div>
+      <button type="button" class="cell ok" data-m="マスク氏の言うとおりの未来。お金がなくても困りません。<b>結果オーライ</b>です。">困らない</button>
+      <button type="button" class="cell ng" data-m="老後に年金だけでは足りず、取り返しもつきません。<b>いちばん損が大きい</b>ケースです。国はこのマスを避けたいので「備えよう」と言う、というのがこのページの見立てです。">いちばん困る</button>
+    </div>
+    <div class="tl-detail" id="grid-out" aria-live="polite" style="min-height:70px"><p class="tl-hint">▲ マスを押すと、ここに説明が出ます。</p></div>
+    <p class="small" style="margin-top:8px">「来た」の列は、どちらを選んでも困りません。差が出るのは<b>「来なかった」の列だけ</b>です。だから、どちらが来るか分からないなら、備えておくほうが損が小さい、という考え方になります。</p>
+  </div>
+
+  <div class="card reveal">
+    <span class="tag">推測 3</span>
+    <h3>豊かな時代が来ても、「どう分けるか」はまだ決まっていない</h3>
+    <p>AIとロボットで物があふれても、それを全員に配る仕組みがなければ、手元にお金は届きません。第6章のとおり、日本が決めたのは<b>働いている人を対象にした</b>給付付き税額控除で、全員に配るものではありません。<b>配る法律ができていない未来を前提に、今の貯金をゼロにする</b>のは危ない、という判断だと考えられます。</p>
+  </div>
+
+  <div class="card ok reveal">
+    <span class="tag" style="background:var(--ok); color:#fff">推測 4（いちばん面白いところ）</span>
+    <h3>NISAは、むしろ「AIの利益を受け取る方法」とも読める</h3>
+    <p>第8章のOpenAIの提案は「国民全員がAI企業の株を持つ基金をつくり、利益を配る」というものでした。アメリカの赤ちゃん口座も、アラスカの配当金も、<b>「会社や資源の持ち主の一人になって、利益を分けてもらう」</b>仕組みです。</p>
+    <p>NISAで世界の株に投資するのも、<b>ロボットやAIを持つ会社の持ち主の一人になる</b>ことです。そう考えると、NISAとマスク氏の未来は正反対ではなく、<b>「AIが稼ぐ時代に、その稼ぎを受け取る側に回る」</b>という点で同じ方向を向いている、とも読めます。</p>
+  </div>
+
+  <div class="card reveal">
+    <span class="tag">推測 5</span>
+    <h3>国には国の事情もある</h3>
+    <p>資産所得倍増プランは、家計の現預金を投資に回して<b>「企業の成長投資の原資」にしたい</b>と書いています。NISAは個人の老後のためだけでなく、<b>日本の会社にお金を回して経済を伸ばしたい</b>という国の狙いも含んだ政策です。ここは知っておいたほうがいい点です。</p>
+  </div>
+
+  <div class="answer reveal" style="margin-top:16px">
+    <p class="big">矛盾というより、「立場」と「時間」の違い。</p>
+    <p>マスク氏は「10〜20年後にうまくいけば」という<b>未来の予想</b>を語り、国は「うまくいかなかったときに困らないように」という<b>今の備え</b>を語っています。見ている時間と、外れたときの責任が違うので、言うことも違う。<b>予想が当たるかどうかは、まだ誰にも分かりません</b>。</p>
+  </div>
+</section>
+
+<!-- ⑫ まとめ -->
 <section id="sum">
-  <h2><span class="n">9</span>まとめ</h2>
+  <h2><span class="n">10</span>まとめ</h2>
   <div class="know">
     <div class="card ok reveal">
       <span class="tag" style="background:var(--ok); color:#fff">分かっていること</span>
@@ -892,6 +1029,7 @@ footer a{color:var(--navy); word-break:break-all}
       <ul style="margin:0; padding-left:1.15em; font-size:15px">
         <li>国民<b>全員に、ずっと</b>配ったらどうなるか（実験はすべて一部の人・期間限定）</li>
         <li>財源をどうするか（日本で月7万円なら年100兆円規模の試算）</li>
+        <li>「貯金がいらない」が当たらなかったときの備えは、今のところ<b>自分と今の制度</b>しかない</li>
         <li>AIで本当に「貯金がいらない」時代が来るのか（AI企業は「段階的に」、慎重派は「当分来ない」と見ている）</li>
       </ul>
     </div>
@@ -924,6 +1062,8 @@ footer a{color:var(--navy); word-break:break-all}
     <li>【AI企業】Anthropic Economic Policy Framework <a href="https://www.anthropic.com/policy-on-the-ai-exponential/epf" target="_blank" rel="noopener noreferrer">anthropic.com</a> ／ OpenAI「Industrial Policy for the Intelligence Age」（2026年4月） <a href="https://cdn.openai.com/pdf/561e7512-253e-424b-9734-ef4098440601/Industrial%20Policy%20for%20the%20Intelligence%20Age.pdf" target="_blank" rel="noopener noreferrer">cdn.openai.com</a></li>
     <li>【一次・日本】国会会議録（2026年7月8日 参議院 デジタル社会の形成及び人工知能の活用等に関する特別委員会） <a href="https://kokkai.ndl.go.jp/txt/122115385X00820260708/131" target="_blank" rel="noopener noreferrer">質問</a>・<a href="https://kokkai.ndl.go.jp/txt/122115385X00820260708/132" target="_blank" rel="noopener noreferrer">答弁</a></li>
     <li>【YouTube】<a href="https://www.youtube.com/watch?v=i9J4fR0MMwg" target="_blank" rel="noopener noreferrer">貯金が紙切れに!?</a> ／ <a href="https://www.youtube.com/watch?v=btfzbJ1bNss" target="_blank" rel="noopener noreferrer">普遍的高所得の正体</a> ／ <a href="https://www.youtube.com/watch?v=Wqsz6eUSem0" target="_blank" rel="noopener noreferrer">ひろゆき×安野</a> ／ <a href="https://www.youtube.com/watch?v=s_kAHOIw8qg" target="_blank" rel="noopener noreferrer">2035年 AI大量失業</a> ／ <a href="https://www.youtube.com/watch?v=Em9pI1Db_bI" target="_blank" rel="noopener noreferrer">チームみらい AI失業対策</a></li>
+    <li>【一次・日本】金融審議会 市場ワーキング・グループ報告書「高齢社会における資産形成・管理」（2019年6月3日） <a href="https://www.fsa.go.jp/singi/singi_kinyu/tosin/20190603/01.pdf" target="_blank" rel="noopener noreferrer">fsa.go.jp</a> ／ 資産所得倍増プラン（2022年11月28日） <a href="https://www.cas.go.jp/jp/seisaku/atarashii_sihonsyugi/pdf/dabiplan2022.pdf" target="_blank" rel="noopener noreferrer">cas.go.jp</a> ／ 金融庁「NISAの利用状況」（2025年12月末） <a href="https://www.fsa.go.jp/policy/nisa/20260703/2512nisa-graph.pdf" target="_blank" rel="noopener noreferrer">fsa.go.jp</a> ／ 厚生労働省 令和6年財政検証 <a href="https://www.mhlw.go.jp/nenkinkenshou/report/r6.html" target="_blank" rel="noopener noreferrer">mhlw.go.jp</a></li>
+    <li>【一次・アメリカ】財務省 Trump Accounts <a href="https://home.treasury.gov/news/press-releases/sb0372" target="_blank" rel="noopener noreferrer">treasury.gov</a> ／ X Moneyの報道 <a href="https://fortune.com/2026/07/29/elon-musk-money-matters-x-money-former-trillionaire/" target="_blank" rel="noopener noreferrer">Fortune（2026年7月29日）</a></li>
     <li>【SNS】Reddit r/BasicIncome <a href="https://www.reddit.com/r/BasicIncome/top/?t=year" target="_blank" rel="noopener noreferrer">reddit.com</a> ／ Hacker News「UBI as a productivity dividend」（2026年3月） <a href="https://news.ycombinator.com/item?id=47378399" target="_blank" rel="noopener noreferrer">news.ycombinator.com</a></li>
   </ul>
   <h2>読むときの注意</h2>
@@ -1069,6 +1209,13 @@ footer a{color:var(--navy); word-break:break-all}
     const io2 = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { fadeDots(); io2.disconnect(); } }), {threshold:.3});
     io2.observe(tlWrap);
   } else fadeDots();
+
+  // 2×2の表
+  const gout = document.getElementById('grid-out');
+  document.querySelectorAll('.cell').forEach(c => c.addEventListener('click', () => {
+    document.querySelectorAll('.cell').forEach(x => x.classList.toggle('on', x === c));
+    gout.innerHTML = '<p>' + c.dataset.m + '</p>';
+  }));
 
   // 試算スライダー
   const amt = document.getElementById('amt'), out = document.getElementById('amt-out');

@@ -193,6 +193,25 @@ figcaption{font-size:13px; color:var(--sub); margin-top:7px; line-height:1.6}
 .lane-top,.lane-bot{opacity:0; transition:opacity .8s, transform .8s}
 .lane-top{transform:translateY(-10px)} .lane-bot{transform:translateY(10px); transition-delay:.5s}
 .in .lane-top,.in .lane-bot{opacity:1; transform:none}
+/* まとめ */
+.take-h{display:flex; align-items:center; gap:8px; font-size:17px; margin:18px 0 10px}
+.take-h::before{content:""; width:5px; height:1.2em; border-radius:3px}
+.take-h.ok{color:var(--ok)} .take-h.ok::before{background:var(--ok)}
+.take-h.warn{color:var(--warn)} .take-h.warn::before{background:var(--warn)}
+.takes{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:10px}
+.take{display:flex; gap:12px; align-items:flex-start; border-radius:11px; padding:13px 15px; border-left:5px solid;
+  opacity:0; transform:translateY(10px); transition:opacity .5s, transform .5s}
+.take.ok{background:var(--ok-bg); border-color:var(--ok)}
+.take.warn{background:var(--warn-bg); border-color:var(--warn)}
+.take .mk{flex:none; width:28px; height:28px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:15px; background:var(--ground)}
+.take.ok .mk{color:var(--ok); border:2px solid var(--ok)}
+.take.warn .mk{color:var(--warn); border:2px solid var(--warn)}
+.take b{display:block; font-size:16.5px; line-height:1.45; color:var(--ink)}
+.take span{display:block; font-size:13.5px; color:var(--sub); line-height:1.55; margin-top:3px}
+.takes.in .take{opacity:1; transform:none}
+.takes.in .take:nth-child(2){transition-delay:.08s} .takes.in .take:nth-child(3){transition-delay:.16s}
+.takes.in .take:nth-child(4){transition-delay:.24s} .takes.in .take:nth-child(5){transition-delay:.32s}
+.takes.in .take:nth-child(6){transition-delay:.4s}
 .know{display:grid; grid-template-columns:1fr 1fr; gap:10px}
 
 footer{margin-top:26px; padding-top:18px; border-top:1px solid var(--line); font-size:12.5px; color:var(--sub); line-height:1.8}
@@ -214,7 +233,7 @@ footer a{color:var(--navy); word-break:break-all}
 }
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important; animation:none!important}
-  .reveal,.pill,.mt-item,.cmp .col,.lane-top,.lane-bot{opacity:1!important; transform:none!important}
+  .reveal,.pill,.mt-item,.cmp .col,.lane-top,.lane-bot,.take{opacity:1!important; transform:none!important}
 }
 </style>
 </head>
@@ -1012,27 +1031,21 @@ footer a{color:var(--navy); word-break:break-all}
 <!-- ⑫ まとめ -->
 <section id="sum">
   <h2><span class="n">10</span>まとめ</h2>
-  <div class="know">
-    <div class="card ok reveal">
-      <span class="tag" style="background:var(--ok); color:#fff">分かっていること</span>
-      <ul style="margin:0; padding-left:1.15em; font-size:15px">
-        <li>多くの実験で、<b>心の健康と安心感は良くなった</b></li>
-        <li>「お酒やタバコに消える」は、データでは起きていない</li>
-        <li>働く量は<b>国や額によって違う</b>。ほぼ変わらない例も、少し減った例もある</li>
-        <li>対象をしぼった制度は、<b>実際に恒久化され始めている</b></li>
-        <li>AIの影響は、アメリカでは<b>若い人の採用</b>から出始めている。日本では政府は「まだ大きな影響はない」としている</li>
-        <li>AIを作る会社自身が、<b>AIで得た富を配る仕組み</b>を提案し始めている</li>
-      </ul>
-    </div>
-    <div class="card warn reveal">
-      <span class="tag" style="background:var(--warn-bg); color:var(--warn); border:1.5px solid var(--warn)">まだ分からないこと</span>
-      <ul style="margin:0; padding-left:1.15em; font-size:15px">
-        <li>国民<b>全員に、ずっと</b>配ったらどうなるか（実験はすべて一部の人・期間限定）</li>
-        <li>財源をどうするか（日本で月7万円なら年100兆円規模の試算）</li>
-        <li>「貯金がいらない」が当たらなかったときの備えは、今のところ<b>自分と今の制度</b>しかない</li>
-        <li>AIで本当に「貯金がいらない」時代が来るのか（AI企業は「段階的に」、慎重派は「当分来ない」と見ている）</li>
-      </ul>
-    </div>
+  <h3 class="take-h ok">分かっていること</h3>
+  <div class="takes reveal">
+    <div class="take ok"><span class="mk" aria-hidden="true">✓</span><div><b>心の健康と安心感は、良くなった</b><span>多くの実験で共通した結果</span></div></div>
+    <div class="take ok"><span class="mk" aria-hidden="true">✓</span><div><b>お酒やタバコには、消えていない</b><span>使い道の1位は食べもの。お酒・タバコは1%未満</span></div></div>
+    <div class="take ok"><span class="mk" aria-hidden="true">✓</span><div><b>働く量は、国や金額で違う</b><span>ほぼ変わらない例も、週1〜2時間減った例もある</span></div></div>
+    <div class="take ok"><span class="mk" aria-hidden="true">✓</span><div><b>対象をしぼった制度は、もう始まっている</b><span>アイルランドの芸術家・韓国の農村・アメリカの郡</span></div></div>
+    <div class="take ok"><span class="mk" aria-hidden="true">✓</span><div><b>AIの影響は、若い人の採用から</b><span>日本では政府は「まだ大きな影響はない」</span></div></div>
+    <div class="take ok"><span class="mk" aria-hidden="true">✓</span><div><b>AI企業自身が「富を配る仕組み」を提案</b><span>AnthropicやOpenAIが、基金や課税を提案</span></div></div>
+  </div>
+  <h3 class="take-h warn">まだ分からないこと</h3>
+  <div class="takes reveal">
+    <div class="take warn"><span class="mk" aria-hidden="true">？</span><div><b>全員に、ずっと配ったらどうなるか</b><span>実験はすべて一部の人・期間限定</span></div></div>
+    <div class="take warn"><span class="mk" aria-hidden="true">？</span><div><b>お金をどこから出すか</b><span>日本で月7万円なら、年に約100兆円（試算）</span></div></div>
+    <div class="take warn"><span class="mk" aria-hidden="true">？</span><div><b>「貯金がいらない」時代は本当に来るか</b><span>「段階的に来る」派と「当分来ない」派に分かれる</span></div></div>
+    <div class="take warn"><span class="mk" aria-hidden="true">？</span><div><b>来なかったときの備えは</b><span>今のところ、自分と今の制度だけ</span></div></div>
   </div>
 </section>
 

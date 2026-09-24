@@ -1,0 +1,1098 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ベーシックインカムの世界地図</title>
+<style>
+:root{
+  /* 常に白基調。配信の画面共有と視聴者の画面で見え方を揃えるため、ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4;
+  --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea;
+  --line:#e2e7ec; --line-soft:#f0f3f6;
+  --base:#a9b4bf; /* 比較グループ（もらっていない人）の棒 */
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:16px; line-height:1.75; -webkit-text-size-adjust:100%;
+}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.wrap{max-width:780px; margin:0 auto; padding:0 16px; padding-block:26px 44px}
+
+section{padding-block:30px; border-top:1px solid var(--line); scroll-margin-top:60px}
+section:first-of-type{border-top:none; padding-top:0}
+
+h1{font-size:clamp(26px,5.6vw,38px); line-height:1.35; margin:0 0 10px; font-weight:700; text-wrap:balance; color:var(--navy)}
+h2{font-size:clamp(20px,3.6vw,26px); line-height:1.4; margin:0 0 12px; font-weight:700; text-wrap:balance; display:flex; gap:11px; align-items:flex-start}
+h2 .n{flex:none; font-size:.66em; font-weight:700; color:var(--on-navy); background:var(--navy);
+  min-width:1.9em; height:1.9em; border-radius:50%; display:grid; place-items:center; margin-top:.22em}
+h3{font-size:17.5px; margin:0 0 5px; font-weight:700}
+p{margin:0 0 12px}
+p:last-child{margin-bottom:0}
+.lede{font-size:15.5px; color:var(--sub)}
+.small{font-size:13.5px; color:var(--sub)}
+
+/* 目次（配信中に飛べるように上に固定） */
+.toc{position:sticky; top:0; z-index:5; background:rgba(255,255,255,.96); border-bottom:1px solid var(--line);
+  backdrop-filter:blur(4px)}
+.toc ul{list-style:none; margin:0 auto; padding:8px 16px; max-width:780px; display:flex; gap:6px; overflow-x:auto; scrollbar-width:none}
+.toc ul::-webkit-scrollbar{display:none}
+.toc a{display:block; white-space:nowrap; font-size:13px; font-weight:700; color:var(--navy); text-decoration:none;
+  padding:5px 11px; border-radius:999px; background:var(--navy-soft)}
+.toc a.on{background:var(--navy); color:var(--on-navy)}
+
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:14px 18px; margin-bottom:16px}
+.for-who b{display:block; font-size:13px; letter-spacing:.06em; color:var(--navy); margin-bottom:5px}
+.for-who ul{margin:0; padding-left:1.15em; font-size:16.5px; font-weight:700; line-height:1.65}
+
+.answer{background:var(--panel); border:3px solid var(--navy); border-radius:13px; padding:16px 18px}
+.answer .big{font-size:clamp(19px,3.4vw,24px); font-weight:700; line-height:1.5; color:var(--navy); margin:0 0 8px}
+
+/* ひと目で分かる数字 */
+.stats{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:16px 0 0}
+.stat{background:var(--panel); border:2px solid var(--line); border-radius:12px; padding:12px 10px; text-align:center}
+.stat .v{font-size:clamp(28px,6vw,40px); font-weight:800; color:var(--navy); line-height:1.1; font-variant-numeric:tabular-nums}
+.stat .v small{font-size:.45em; font-weight:700; margin-left:2px}
+.stat .k{font-size:12.5px; color:var(--sub); margin-top:4px; line-height:1.45}
+
+.src{display:inline-flex; align-items:center; gap:7px; margin-top:10px; font-size:12.5px; color:var(--navy); background:var(--navy-soft);
+  border-radius:5px; padding:6px 11px; text-decoration:none; font-weight:700; line-height:1.5}
+.src:hover{text-decoration:underline}
+.quote{background:var(--panel); border-left:5px solid var(--navy); border-radius:0 8px 8px 0; padding:12px 15px; margin:0 0 12px; font-size:15px; line-height:1.7}
+.quote .lbl{display:block; font-size:11.5px; font-weight:700; letter-spacing:.05em; color:var(--sub); margin-bottom:5px}
+.quote .en{display:block; font-family:Georgia,"Times New Roman",serif; font-size:15.5px; color:var(--ink); margin-bottom:6px}
+.quote .ja{display:block; font-weight:700; color:var(--navy)}
+.quote b{color:var(--navy)}
+
+.card{background:var(--panel); border:2.5px solid var(--line); border-radius:13px; padding:15px 17px; margin-bottom:14px}
+.card.ok{border-color:var(--ok); background:var(--ok-bg)}
+.card.ng{border-color:var(--ng); background:var(--ng-bg)}
+.card.warn{border-color:var(--warn); background:var(--warn-bg)}
+.card .tag{display:inline-block; font-size:12px; font-weight:700; letter-spacing:.04em; padding:2px 9px; border-radius:4px; margin-bottom:7px;
+  background:var(--navy-soft); color:var(--navy)}
+.card p{font-size:15px}
+.meta{display:flex; flex-wrap:wrap; gap:6px; margin:4px 0 10px}
+.meta span{font-size:12.5px; font-weight:700; background:var(--ground); border:1.5px solid var(--line); border-radius:5px; padding:2px 8px; color:var(--sub)}
+.meta span b{color:var(--ink)}
+
+figure{margin:0 0 14px}
+figure svg{width:100%; height:auto; display:block}
+figcaption{font-size:13px; color:var(--sub); margin-top:7px; line-height:1.6}
+
+/* ── 横棒グラフ（スクロールで伸びる） ── */
+.bars{margin:10px 0 6px}
+.bar-row{display:grid; grid-template-columns:8.5em 1fr; gap:10px; align-items:center; margin-bottom:9px}
+.bar-row .lab{font-size:13.5px; font-weight:700; line-height:1.35; text-align:right}
+.bar-track{position:relative; height:30px}
+.bar{position:absolute; left:0; top:0; bottom:0; width:0; border-radius:0 4px 4px 0; background:var(--navy);
+  transition:width 1.3s cubic-bezier(.2,.8,.2,1)}
+.bar.base{background:var(--base)}
+.bar-val{position:absolute; top:50%; transform:translateY(-50%); left:0; font-size:14px; font-weight:800; white-space:nowrap;
+  font-variant-numeric:tabular-nums; color:var(--ink); transition:left 1.3s cubic-bezier(.2,.8,.2,1); padding-left:8px}
+.bar-val.inside{left:auto; right:8px; color:#fff; padding:0 8px 0 0}
+.legend{display:flex; flex-wrap:wrap; gap:14px; font-size:12.5px; color:var(--sub); margin-bottom:6px}
+.legend i{display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:5px; vertical-align:-1px}
+
+/* 100%帯グラフ */
+.split{display:flex; height:46px; border-radius:6px; overflow:hidden; gap:2px; background:var(--ground); margin:8px 0 6px}
+.split div{width:0; transition:width 1.4s cubic-bezier(.2,.8,.2,1); display:flex; align-items:center; justify-content:center;
+  font-size:14px; font-weight:800; color:#fff; white-space:nowrap; overflow:hidden}
+.split .s1{background:var(--navy)}
+.split .s2{background:var(--ok)}
+.split .s3{background:var(--base); color:var(--ink)}
+.split .s4{background:var(--ng)}
+
+/* 大きな数字 */
+.hero-nums{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; margin:10px 0}
+.hero-num{background:var(--ground); border:2px solid var(--line); border-radius:11px; padding:12px; text-align:center}
+.hero-num .v{font-size:clamp(26px,5vw,34px); font-weight:800; line-height:1.15; font-variant-numeric:tabular-nums}
+.hero-num .v.down{color:var(--ng)} .hero-num .v.up{color:var(--ok)} .hero-num .v.nt{color:var(--navy)}
+.hero-num .k{font-size:12.5px; color:var(--sub); margin-top:4px; line-height:1.45}
+
+/* 年表 */
+.tl-wrap{background:var(--panel); border:2px solid var(--line); border-radius:13px; padding:14px 12px 10px}
+.tl-svg text{font-family:"Hiragino Sans",sans-serif}
+.tl-dot{cursor:pointer}
+.tl-dot circle.c{transition:r .25s, fill .25s}
+.tl-dot:hover circle.c, .tl-dot.on circle.c{fill:var(--navy); r:11}
+.tl-dot:focus{outline:none}
+.tl-dot:focus-visible circle.ring{stroke:var(--navy); stroke-width:3}
+.tl-detail{margin-top:10px; background:var(--ground); border:2px solid var(--navy); border-radius:11px; padding:13px 15px; min-height:92px}
+.tl-detail .when{font-size:12.5px; font-weight:700; color:var(--navy)}
+.tl-detail h3{margin:2px 0 4px}
+.tl-detail p{font-size:14.5px}
+.tl-hint{color:var(--sub); font-size:14px}
+.tl-nav{display:flex; gap:8px; justify-content:flex-end; margin-top:8px}
+.tl-nav button{font:inherit; font-size:13px; font-weight:700; color:var(--navy); background:var(--navy-soft); border:none; border-radius:6px; padding:6px 12px; cursor:pointer}
+
+/* 結果の一覧表 */
+.matrix{width:100%; border-collapse:separate; border-spacing:0; font-size:14px}
+.matrix th, .matrix td{padding:9px 8px; border-bottom:1px solid var(--line); text-align:left; vertical-align:middle}
+.matrix th{font-size:12.5px; color:var(--sub); font-weight:700}
+.matrix td:first-child{font-weight:700}
+.pill{display:inline-flex; align-items:center; gap:5px; font-weight:700; font-size:13px; border-radius:999px; padding:3px 10px; white-space:nowrap;
+  opacity:0; transform:translateY(6px); transition:opacity .5s, transform .5s}
+.in .pill{opacity:1; transform:none}
+.pill.up{background:var(--ok-bg); color:var(--ok); border:1.5px solid var(--ok)}
+.pill.dn{background:var(--ng-bg); color:var(--ng); border:1.5px solid var(--ng)}
+.pill.eq{background:var(--navy-soft); color:var(--navy); border:1.5px solid var(--navy)}
+.scroll-x{overflow-x:auto; max-width:100%}
+
+/* マスク年表 */
+.mt{position:relative; padding-left:26px}
+.mt::before{content:""; position:absolute; left:8px; top:6px; bottom:6px; width:3px; background:var(--line); border-radius:2px}
+.mt .fill{position:absolute; left:8px; top:6px; width:3px; height:0; background:var(--navy); border-radius:2px; transition:height 2s ease}
+.in .mt .fill{height:calc(100% - 12px)}
+.mt-item{position:relative; margin-bottom:16px; opacity:0; transform:translateX(12px); transition:opacity .6s, transform .6s}
+.in .mt-item{opacity:1; transform:none}
+.mt-item::before{content:""; position:absolute; left:-24px; top:7px; width:13px; height:13px; border-radius:50%; background:var(--ground); border:3px solid var(--navy)}
+.mt-item .d{font-size:13px; font-weight:800; color:var(--navy)}
+.mt-item .w{font-size:12.5px; color:var(--sub)}
+
+/* 試算スライダー */
+.calc{background:var(--navy-soft); border-radius:13px; padding:16px 17px}
+.calc label{font-weight:700; display:block; margin-bottom:6px}
+.calc input[type=range]{width:100%; accent-color:var(--navy); height:28px}
+.calc .row{display:flex; justify-content:space-between; font-size:12.5px; color:var(--sub)}
+.calc .out{margin-top:10px; background:var(--ground); border:2px solid var(--navy); border-radius:11px; padding:12px 14px; text-align:center}
+.calc .out .v{font-size:clamp(30px,7vw,46px); font-weight:800; color:var(--navy); font-variant-numeric:tabular-nums; line-height:1.15}
+.calc .out .f{font-size:13.5px; color:var(--sub)}
+.calc .note{font-size:12.5px; color:var(--warn); background:var(--warn-bg); border:1.5px solid var(--warn); border-radius:6px; padding:6px 10px; margin-top:10px}
+
+/* 3つの違い（図） */
+.cmp{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+.cmp .col{background:var(--panel); border:2.5px solid var(--line); border-radius:12px; padding:12px; opacity:0; transform:translateY(14px); transition:opacity .6s, transform .6s}
+.in .cmp .col, .cmp.in .col{opacity:1; transform:none}
+.in .cmp .col:nth-child(2), .cmp.in .col:nth-child(2){transition-delay:.15s}
+.in .cmp .col:nth-child(3), .cmp.in .col:nth-child(3){transition-delay:.3s}
+.cmp .col.bi{border-color:var(--navy); background:var(--navy-soft)}
+.cmp h3{font-size:15.5px; margin-bottom:8px; text-align:center}
+.cmp dl{margin:0; font-size:13px}
+.cmp dt{color:var(--sub); font-weight:700; font-size:11.5px; margin-top:7px}
+.cmp dd{margin:0; font-weight:700; line-height:1.5}
+.people{display:grid; grid-template-columns:repeat(10,1fr); gap:3px; margin:8px 0 2px}
+.people i{aspect-ratio:1; border-radius:50%; background:var(--line)}
+.people i.g{background:var(--navy)}
+
+.know{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+
+footer{margin-top:26px; padding-top:18px; border-top:1px solid var(--line); font-size:12.5px; color:var(--sub); line-height:1.8}
+footer h2{font-size:14px; color:var(--ink); display:block; margin-bottom:7px}
+footer ul{margin:0 0 13px; padding-left:1.2em}
+footer a{color:var(--navy); word-break:break-all}
+
+.reveal{opacity:0; transform:translateY(16px); transition:opacity .7s, transform .7s}
+.reveal.in{opacity:1; transform:none}
+
+@media (max-width:600px){
+  .stats{grid-template-columns:1fr}
+  .cmp{grid-template-columns:1fr}
+  .know{grid-template-columns:1fr}
+  .bar-row{grid-template-columns:6.5em 1fr}
+  .matrix{font-size:13px}
+  .matrix th, .matrix td{padding:8px 4px}
+  .pill{white-space:normal; font-size:12px; padding:3px 8px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important; animation:none!important}
+  .reveal,.pill,.mt-item,.cmp .col{opacity:1!important; transform:none!important}
+}
+</style>
+</head>
+<body>
+
+<nav class="toc" aria-label="目次">
+  <ul>
+    <li><a href="#top">結論</a></li>
+    <li><a href="#what">そもそも何？</a></li>
+    <li><a href="#timeline">世界の年表</a></li>
+    <li><a href="#tests">実験の結果</a></li>
+    <li><a href="#real">制度になった例</a></li>
+    <li><a href="#views">世界の見方</a></li>
+    <li><a href="#japan">日本では</a></li>
+    <li><a href="#musk">マスク氏の発言</a></li>
+    <li><a href="#ai">AIで本当に来る？</a></li>
+    <li><a href="#sum">まとめ</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<!-- ① 誰向け・結論 -->
+<section id="top">
+  <h1 class="mincho">ベーシックインカムは、世界でどうなっているのか</h1>
+  <div class="for-who">
+    <b>このページは、こういう方へ</b>
+    <ul>
+      <li>ベーシックインカムって、結局どういうもの？</li>
+      <li>「AIで仕事がなくなる、貯金はいらない」って本当？</li>
+      <li>生活保護とは何が違う？ 日本でも始まるの？</li>
+    </ul>
+  </div>
+  <div class="answer">
+    <p class="big">国民全員に毎月お金を配っている国は、まだ1つもありません。</p>
+    <p>ただし<b>実験は世界中で行われています</b>。多くの実験で「お金を配っても、働くのをやめる人はほとんど増えず、心の健康は良くなった」という結果が出ました。一方、アメリカの大規模な実験では<b>働く時間が少し減った</b>という結果も出ています。</p>
+    <p>日本は、ベーシックインカムではなく<b>「給付付き税額控除」</b>を<b>2029年度（令和11年度）</b>に始めると、2026年8月に決めました。</p>
+  </div>
+  <div class="stats reveal">
+    <div class="stat"><div class="v" data-count="0">0</div><div class="k">全国民に毎月配っている国</div></div>
+    <div class="stat"><div class="v"><span data-count="12">0</span><small>件</small></div><div class="k">このページで紹介する<br>世界の実験・制度</div></div>
+    <div class="stat"><div class="v"><span data-count="2029" data-plain="1">0</span><small>年度</small></div><div class="k">日本で「給付付き税額控除」が<br>始まる予定</div></div>
+  </div>
+</section>
+
+<!-- ② そもそも -->
+<section id="what">
+  <h2><span class="n">1</span>そもそも、ベーシックインカムとは</h2>
+  <p>世界のベーシックインカム研究者のネットワーク（BIEN）は、次の<b>5つ</b>がそろったものをベーシックインカムと呼んでいます。</p>
+  <div class="quote">
+    <span class="lbl">BIEN（Basic Income Earth Network）の定義</span>
+    <span class="en">"A periodic cash payment unconditionally delivered to all on an individual basis, without means-test or work requirement."</span>
+    <span class="ja">定期的に・現金で・一人ひとりに・全員へ・条件なしで配られるお金。収入や資産の審査も、働くことの条件もない。</span>
+  </div>
+  <a class="src" href="https://basicincome.org/about-basic-income/" target="_blank" rel="noopener noreferrer">証拠：BIENの定義ページを開く</a>
+
+  <h3 style="margin-top:22px">生活保護・日本の新制度・ベーシックインカムの違い</h3>
+  <p class="small">10人の人がいたら、誰がもらえるか（●が受け取る人のイメージ）</p>
+  <div class="cmp reveal">
+    <div class="col">
+      <h3>生活保護</h3>
+      <div class="people" aria-label="10人中、困っている一部の人だけ"><i class="g"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <dl>
+        <dt>誰が</dt><dd>生活に困っている人</dd>
+        <dt>条件</dt><dd>収入・資産の審査あり</dd>
+        <dt>働くと</dt><dd>収入の分だけ減る</dd>
+      </dl>
+    </div>
+    <div class="col">
+      <h3>給付付き税額控除<br><span class="small">（日本・2029年度〜予定）</span></h3>
+      <div class="people" aria-label="10人中、働いている中低所得の人"><i></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i></i><i></i><i></i><i></i><i></i></div>
+      <dl>
+        <dt>誰が</dt><dd>働いている中低所得の人</dd>
+        <dt>条件</dt><dd>一定の「働いた所得」があること</dd>
+        <dt>働くと</dt><dd>一定までは給付が増える</dd>
+      </dl>
+    </div>
+    <div class="col bi">
+      <h3>ベーシックインカム</h3>
+      <div class="people" aria-label="10人全員"><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i><i class="g"></i></div>
+      <dl>
+        <dt>誰が</dt><dd>全員</dd>
+        <dt>条件</dt><dd>なし</dd>
+        <dt>働くと</dt><dd>減らない（同じ額）</dd>
+      </dl>
+    </div>
+  </div>
+  <p class="small" style="margin-top:8px">●の数は仕組みを示すイメージで、実際の割合ではありません。給付付き税額控除の条件は、2026年8月5日の閣議決定の文書（第6章で引用）によります。</p>
+</section>
+
+<!-- ③ 年表 -->
+<section id="timeline">
+  <h2><span class="n">2</span>世界の年表：どこで、いつ</h2>
+  <p>点を押すと、その国の中身が下に出ます。<b>紺の点は実験、緑の点は本当の制度になったもの</b>です。</p>
+  <div class="tl-wrap reveal">
+    <svg class="tl-svg" id="tl" viewBox="0 0 720 200" role="group" aria-label="ベーシックインカムの世界年表">
+      <line x1="30" y1="150" x2="700" y2="150" stroke="var(--line)" stroke-width="3"/>
+      <g id="tl-ticks" font-size="12" fill="var(--sub)"></g>
+      <g id="tl-dots"></g>
+    </svg>
+    <div class="tl-detail" id="tl-detail" aria-live="polite">
+      <p class="tl-hint">▲ 上の点を押すと、ここに説明が出ます。</p>
+    </div>
+    <div class="tl-nav"><button type="button" id="tl-prev">← 前へ</button><button type="button" id="tl-next">次へ →</button></div>
+  </div>
+</section>
+
+<!-- ④ 実験の結果 -->
+<section id="tests">
+  <h2><span class="n">3</span>実験の結果：お金を配ると、人はどうなったか</h2>
+  <p>くじ引きで「もらう人」と「もらわない人」に分けて比べた実験（ランダム化比較試験）を中心に紹介します。<b>比べる相手がいるので、「お金の効果」だけを取り出せる</b>やり方です。</p>
+
+  <!-- まとめ表 -->
+  <div class="card reveal" style="background:var(--ground)">
+    <span class="tag">先に一覧で</span>
+    <div class="scroll-x">
+    <table class="matrix">
+      <thead><tr><th>実験</th><th>働く量</th><th>心の健康・安心感</th></tr></thead>
+      <tbody>
+        <tr><td>フィンランド</td><td><span class="pill eq">＝ ほぼ変わらず</span></td><td><span class="pill up">↑ 良くなった</span></td></tr>
+        <tr><td>ドイツ</td><td><span class="pill eq">＝ 減らなかった</span></td><td><span class="pill up">↑ 良くなった</span></td></tr>
+        <tr><td>アメリカ（ストックトン）</td><td><span class="pill up">↑ 1年目はフルタイム就職が増</span></td><td><span class="pill up">↑ 不安が減った</span></td></tr>
+        <tr><td>アメリカ（2州・1,000人）</td><td><span class="pill dn">↓ 少し減った</span></td><td><span class="pill eq">＝ 1年目だけ改善</span></td></tr>
+        <tr><td>ケニア</td><td><span class="pill eq">＝ 減らなかった</span></td><td><span class="pill up">↑ 良くなった</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="small" style="margin-top:8px">色だけでなく記号（↑ ↓ ＝）でも区別しています。詳しい数字は下のカードで。</p>
+  </div>
+
+  <!-- フィンランド -->
+  <div class="card reveal" id="fi">
+    <span class="tag">フィンランド　2017〜2018年</span>
+    <h3>失業中の人2,000人に、毎月560ユーロ</h3>
+    <div class="meta"><span>対象 <b>失業手当を受けていた25〜58歳</b></span><span>期間 <b>2年</b></span><span>実施 <b>国（社会保険庁Kela）</b></span></div>
+    <p>国が行った、世界で最初の全国規模の実験です。参加者はくじで選ばれ、辞退はできませんでした。</p>
+    <div class="legend"><span><i style="background:var(--navy)"></i>もらった人</span><span><i style="background:var(--base)"></i>もらわなかった人</span></div>
+    <div class="bars" data-max="90">
+      <div class="bar-row"><div class="lab">もらった人</div><div class="bar-track"><div class="bar" data-v="78"></div><div class="bar-val" data-v="78">78日</div></div></div>
+      <div class="bar-row"><div class="lab">もらわなかった人</div><div class="bar-track"><div class="bar base" data-v="72"></div><div class="bar-val" data-v="72">72日</div></div></div>
+    </div>
+    <p class="small">2年目（2017年11月〜2018年10月）に働いた日数の平均。差は<b>約6日</b>。「もらった人」の78日と「約6日多い」は原文の数字、72日はそこからの引き算です。</p>
+    <div class="quote">
+      <span class="lbl">フィンランド社会保健省の発表（2020年5月6日）</span>
+      <span class="ja">雇用への効果は小さかった。一方で、もらった人は生活の満足度が高く、精神的な負担が少なく、将来への自信も高かった。</span>
+    </div>
+    <a class="src" href="https://stm.fi/en/-/perustulokokeilun-tulokset-tyollisyysvaikutukset-vahaisia-toimeentulo-ja-psyykkinen-terveys-koettiin-paremmaksi" target="_blank" rel="noopener noreferrer">証拠：フィンランド社会保健省の発表を開く</a>
+  </div>
+
+  <!-- ドイツ -->
+  <div class="card reveal" id="de">
+    <span class="tag">ドイツ　2021〜2024年</span>
+    <h3>122人に、毎月1,200ユーロを3年間</h3>
+    <div class="meta"><span>対象 <b>21〜40歳の一人暮らし</b></span><span>比べた人 <b>1,580人</b></span><span>研究 <b>ドイツ経済研究所（DIW）ほか</b></span></div>
+    <p>市民団体が寄付で集めたお金を配り、国の研究所が分析しました。<b>もらったお金の使い道</b>はこうなりました。</p>
+    <div class="split" data-split="37,7,56" aria-label="貯金37%、家族や寄付7%、残り56%">
+      <div class="s1">貯金 37%</div><div class="s2">7%</div><div class="s3">残り 56%</div>
+    </div>
+    <div class="legend"><span><i style="background:var(--navy)"></i>貯金</span><span><i style="background:var(--ok)"></i>家族・友人の支援や寄付</span><span><i style="background:var(--base)"></i>残り（生活費など）</span></div>
+    <div class="hero-nums">
+      <div class="hero-num"><div class="v nt">減らず</div><div class="k">働く時間</div></div>
+      <div class="hero-num"><div class="v up">+<span data-count="42">0</span>%</div><div class="k">生活の満足度<br>（標準偏差の42%ぶん上昇）</div></div>
+      <div class="hero-num"><div class="v up">+<span data-count="30">0</span>%</div><div class="k">心の健康<br>（標準偏差の30%ぶん上昇）</div></div>
+    </div>
+    <div class="quote">
+      <span class="lbl">ドイツ経済研究所（DIW）の発表（2025年4月9日）</span>
+      <span class="en">"Die Resultate widerlegen gängige Mythen über das bedingungslose Grundeinkommen, insbesondere die Vorstellung, dass es zu einem Rückzug aus dem Arbeitsmarkt kommt"</span>
+      <span class="ja">この結果は、ベーシックインカムについてのよくある思い込み、とくに「働くのをやめてしまう」という考えを否定するものだ。</span>
+    </div>
+    <p class="small">37%と7%は原文の数字、56%は残りを計算したものです。</p>
+    <a class="src" href="https://www.diw.de/de/diw_01.c.945271.de/pilotprojekt_grundeinkommen__feldstudie_entkraeftet_mythos_von_der_sozialen_haengematte.html" target="_blank" rel="noopener noreferrer">証拠：DIWの発表を開く</a>
+  </div>
+
+  <!-- ストックトン -->
+  <div class="card reveal" id="us1">
+    <span class="tag">アメリカ・カリフォルニア州ストックトン市　2019〜2021年</span>
+    <h3>125人に、毎月500ドルを2年間</h3>
+    <div class="meta"><span>財源 <b>全額寄付（300万ドル）</b></span><span>主導 <b>当時の市長</b></span></div>
+    <p>「タバコやお酒に消えるのでは」という心配がよく言われます。実際の使い道を、カードの記録で調べました。</p>
+    <div class="bars" data-max="40">
+      <div class="bar-row"><div class="lab">食べもの</div><div class="bar-track"><div class="bar" data-v="37"></div><div class="bar-val" data-v="37">37%</div></div></div>
+      <div class="bar-row"><div class="lab">日用品・買い物</div><div class="bar-track"><div class="bar" data-v="22"></div><div class="bar-val" data-v="22">22%</div></div></div>
+      <div class="bar-row"><div class="lab">電気・水道など</div><div class="bar-track"><div class="bar" data-v="11"></div><div class="bar-val" data-v="11">11%</div></div></div>
+      <div class="bar-row"><div class="lab">車の費用</div><div class="bar-track"><div class="bar" data-v="10"></div><div class="bar-val" data-v="10">10%</div></div></div>
+      <div class="bar-row"><div class="lab">お酒・タバコ</div><div class="bar-track"><div class="bar" data-v="0.8" style="background:var(--ng)"></div><div class="bar-val" data-v="0.8">1%未満</div></div></div>
+    </div>
+    <p>1年目は、<b>もらった人がフルタイムの仕事に就いた割合が、もらわなかった人の2倍以上</b>でした。ただし2年目はコロナ禍と重なり、最終的な分析では雇用への効果ははっきりしなくなっています。</p>
+    <a class="src" href="https://www.stocktondemonstration.org/press-landing/guaranteed-income-increases-employment-improves-financial-and-physical-health" target="_blank" rel="noopener noreferrer">証拠：ストックトンの実験の発表を開く（2021年3月3日）</a>
+  </div>
+
+  <!-- OpenResearch -->
+  <div class="card warn reveal" id="us2">
+    <span class="tag" style="background:var(--warn-bg); color:var(--warn); border:1.5px solid var(--warn)">アメリカ・イリノイ州とテキサス州　2020〜2023年</span>
+    <h3>1,000人に、毎月1,000ドルを3年間</h3>
+    <div class="meta"><span>比べた人 <b>2,000人（毎月50ドル）</b></span><span>研究 <b>OpenResearch／全米経済研究所（NBER）論文</b></span></div>
+    <p>アメリカで最大規模のくじ引き実験です。<b>ここでは「働く量が減った」という結果</b>が出ました。</p>
+    <div class="hero-nums">
+      <div class="hero-num"><div class="v down">−<span data-count="1900">0</span>ドル</div><div class="k">働いて得た収入（1年あたり）</div></div>
+      <div class="hero-num"><div class="v down">−<span data-count="4.2" data-dec="1">0</span>pt</div><div class="k">働いている人の割合</div></div>
+      <div class="hero-num"><div class="v down">−1〜2時間</div><div class="k">1週間に働く時間<br>（本人もパートナーも）</div></div>
+    </div>
+    <div class="quote">
+      <span class="lbl">NBER論文の要旨より（Vivalt ほか）</span>
+      <span class="en">"a moderate labor supply effect that does not appear offset by other productive activities"</span>
+      <span class="ja">働く量がほどほどに減り、その分の時間が、勉強など別の生産的なことに使われた様子は見られなかった。</span>
+    </div>
+    <p class="small">増えた時間の多くは余暇に使われました。心の健康の改善は1年目だけで、その後は続きませんでした。<b>「働かなくなる人はいない」と言い切れない</b>ことを示す、大事な結果です。</p>
+    <a class="src" href="https://www.nber.org/papers/w32719" target="_blank" rel="noopener noreferrer">証拠：NBER論文 w32719 を開く</a>
+  </div>
+
+  <!-- ケニア -->
+  <div class="card reveal" id="ke">
+    <span class="tag">ケニア　2017年〜（12年間の予定）</span>
+    <h3>約2万3千人に、1日0.75ドル相当を最長12年</h3>
+    <div class="meta"><span>規模 <b>195の村＋比べる村100</b></span><span>運営 <b>寄付団体GiveDirectly</b></span><span>研究 <b>ノーベル賞学者バナジー氏ら</b></span></div>
+    <p>「世界最大・最長のベーシックインカム実験」です。村ごとに、配り方を3通りに分けて比べています。</p>
+    <figure>
+      <svg viewBox="0 0 660 150" role="img" aria-label="ケニアの実験の3つのグループ">
+        <g font-family="Hiragino Sans, sans-serif">
+          <rect x="4" y="8" width="206" height="134" rx="10" fill="var(--navy-soft)" stroke="var(--navy)" stroke-width="2.5"/>
+          <text x="107" y="38" text-anchor="middle" font-size="16" font-weight="700" fill="var(--navy)">長期グループ</text>
+          <text x="107" y="66" text-anchor="middle" font-size="14" fill="var(--ink)">毎月　×　12年</text>
+          <text x="107" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ok)">事業への投資が</text>
+          <text x="107" y="120" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ok)">いちばん増えた</text>
+          <rect x="227" y="8" width="206" height="134" rx="10" fill="var(--panel)" stroke="var(--line)" stroke-width="2.5"/>
+          <text x="330" y="38" text-anchor="middle" font-size="16" font-weight="700" fill="var(--ink)">短期グループ</text>
+          <text x="330" y="66" text-anchor="middle" font-size="14" fill="var(--ink)">毎月　×　2年</text>
+          <text x="330" y="100" text-anchor="middle" font-size="13" fill="var(--sub)">同じ額をもらっても</text>
+          <text x="330" y="120" text-anchor="middle" font-size="13" fill="var(--sub)">効果は小さめ</text>
+          <rect x="450" y="8" width="206" height="134" rx="10" fill="var(--panel)" stroke="var(--line)" stroke-width="2.5"/>
+          <text x="553" y="38" text-anchor="middle" font-size="16" font-weight="700" fill="var(--ink)">一括グループ</text>
+          <text x="553" y="66" text-anchor="middle" font-size="14" fill="var(--ink)">約500ドルを一度に</text>
+          <text x="553" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ok)">世帯の収入が</text>
+          <text x="553" y="120" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ok)">大きく増えた</text>
+        </g>
+      </svg>
+      <figcaption>2年時点の結果（GiveDirectly、2023年12月6日発表）。どのグループでも<b>働く時間は減らず</b>、お酒を飲む量が増えることもありませんでした。「12年もらえる」と分かっている人は、仲間内の積み立て（講）でまとまったお金を作り、商売に投資していました。</figcaption>
+    </figure>
+    <a class="src" href="https://www.givedirectly.org/2023-ubi-results" target="_blank" rel="noopener noreferrer">証拠：GiveDirectlyの結果発表を開く</a>
+  </div>
+
+  <!-- ウェールズ -->
+  <div class="card reveal" id="wales">
+    <span class="tag">イギリス・ウェールズ　2022年〜</span>
+    <h3>児童養護施設などを出た18歳に、毎月1,600ポンドを2年間</h3>
+    <div class="meta"><span>参加 <b>644人（対象者の97%）</b></span><span>実施 <b>ウェールズ政府</b></span><span>最終報告 <b>2027年夏の予定</b></span></div>
+    <p>頼れる家族がいないことが多い若者に、社会に出る最初の2年間を支えるお金です。配るのは終わり、いまは効果を調べている段階です。</p>
+    <a class="src" href="https://www.gov.wales/written-statement-basic-income-care-leavers-wales-pilot-evaluation-annual-report-2025-2026" target="_blank" rel="noopener noreferrer">証拠：ウェールズ政府の声明を開く（2026年2月26日）</a>
+  </div>
+</section>
+
+<!-- ⑤ 制度化 -->
+<section id="real">
+  <h2><span class="n">4</span>実験で終わらず、本当の制度になった例</h2>
+  <p>「全員に・無条件で」とまではいかなくても、<b>対象をしぼって恒久的な制度にした</b>ところが出てきています。</p>
+
+  <div class="card ok reveal">
+    <span class="tag" style="background:var(--ok); color:#fff">アメリカ・アラスカ州　1982年〜</span>
+    <h3>州民全員に、毎年1回の配当金</h3>
+    <p>石油で得たお金を基金で運用し、その利益を<b>州に住む人全員</b>（約60万人）に配っています。40年以上続く、世界でいちばん古い「全員に配る」制度です。ただし年1回で、額も毎年変わります。</p>
+    <div class="legend"><span><i style="background:var(--navy)"></i>配当金</span><span><i style="background:var(--ok)"></i>エネルギー支援（2026年だけ上乗せ）</span></div>
+    <div class="bars" data-max="1300">
+      <div class="bar-row"><div class="lab">2025年</div><div class="bar-track"><div class="bar" data-v="1000"></div><div class="bar-val" data-v="1000">1,000ドル</div></div></div>
+      <div class="bar-row"><div class="lab">2026年</div><div class="bar-track"><div class="bar" data-v="1000"></div><div class="bar" data-v="200" data-offset="1000" style="background:var(--ok)"></div><div class="bar-val" data-v="1200">1,200ドル</div></div></div>
+    </div>
+    <p class="small">2025年はアラスカ州歳入局の発表。2026年は、配当1,000ドル＋エネルギー支援200ドルで10月1日から支払うと報道されています（Anchorage Daily News、2026年9月19日）。</p>
+    <a class="src" href="https://pfd.alaska.gov/" target="_blank" rel="noopener noreferrer">証拠：アラスカ州 配当金の公式ページを開く</a>
+  </div>
+
+  <div class="card ok reveal">
+    <span class="tag" style="background:var(--ok); color:#fff">アイルランド　2022年試行 → 2026年から恒久化</span>
+    <h3>芸術家2,000人に、毎週325ユーロを3年間</h3>
+    <p>アーティストに対象をしぼったベーシックインカムです。3年間の試行のあと、<b>2026年から恒久的な制度</b>になりました。この種の制度を恒久化したのは世界で初めてとされています。</p>
+    <p>外部の費用対効果の分析では、<b>1ユーロ使うごとに、社会に1.39ユーロの効果</b>があったとされました。</p>
+    <div class="bars" data-max="1.6">
+      <div class="bar-row"><div class="lab">使ったお金</div><div class="bar-track"><div class="bar base" data-v="1"></div><div class="bar-val" data-v="1">1.00ユーロ</div></div></div>
+      <div class="bar-row"><div class="lab">社会への効果</div><div class="bar-track"><div class="bar" data-v="1.39" style="background:var(--ok)"></div><div class="bar-val" data-v="1.39">1.39ユーロ</div></div></div>
+    </div>
+    <a class="src" href="https://www.gov.ie/en/department-of-culture-communications-and-sport/press-releases/minister-odonovan-announces-the-new-basic-income-for-the-arts-scheme/" target="_blank" rel="noopener noreferrer">証拠：アイルランド政府の発表を開く</a>
+  </div>
+
+  <div class="card ok reveal">
+    <span class="tag" style="background:var(--ok); color:#fff">韓国　2026〜2027年</span>
+    <h3>人口が減る農村の住民全員に、毎月15万ウォン</h3>
+    <p>国（農林畜産食品部）の事業です。<b>その郡に住んでいる人なら、収入に関係なく全員</b>が対象。現金ではなく、地元でしか使えない<b>地域商品券</b>で配ります。お金を地元で回して、町を元気にする狙いです。</p>
+    <div class="hero-nums">
+      <div class="hero-num"><div class="v nt"><span data-count="10">0</span>郡</div><div class="k">2026年2月、最初の支給</div></div>
+      <div class="hero-num"><div class="v up"><span data-count="17">0</span>郡</div><div class="k">2026年8月から拡大</div></div>
+    </div>
+    <a class="src" href="https://mafra.go.kr/bbs/home/792/578154/artclView.do" target="_blank" rel="noopener noreferrer">証拠：韓国 農林畜産食品部の発表を開く（2026年6月11日）</a>
+  </div>
+
+  <div class="card ok reveal">
+    <span class="tag" style="background:var(--ok); color:#fff">アメリカ・イリノイ州クック郡（シカゴ周辺）　2026年〜</span>
+    <h3>「保証所得」を郡の恒久予算に</h3>
+    <p>3,250世帯に毎月500ドルを2年間配った試行のあと、<b>2026年度予算で750万ドルを恒久的に確保</b>しました。郡レベルで恒久化したのはアメリカで初めて。新しい制度の中身は2026年末までに決める予定です。</p>
+    <a class="src" href="https://www.cookcountyil.gov/promise" target="_blank" rel="noopener noreferrer">証拠：クック郡の公式ページを開く</a>
+  </div>
+
+  <div class="card ng reveal">
+    <span class="tag" style="background:var(--ng); color:#fff">スイス　2016年</span>
+    <h3>国民投票で「全員に配る」案を否決</h3>
+    <p>国全体でベーシックインカムを導入するかを、国民が直接投票で決めた唯一の例です。</p>
+    <div class="split" data-split="76.9,23.1" aria-label="反対76.9%、賛成23.1%">
+      <div class="s4">反対 76.9%</div><div class="s1">賛成 23.1%</div>
+    </div>
+    <p class="small">2016年6月5日の国民投票。財源や、移民が増えることへの心配が反対の理由として報じられました。</p>
+    <a class="src" href="https://www.loc.gov/item/global-legal-monitor/2016-06-06/switzerland-voters-reject-unconditional-basic-income/" target="_blank" rel="noopener noreferrer">証拠：米国議会図書館の記録を開く</a>
+  </div>
+</section>
+
+<!-- ⑥ 世界の見方 -->
+<section id="views">
+  <h2><span class="n">5</span>世界の国や機関は、どう見ているか</h2>
+  <div class="card reveal">
+    <span class="tag">国際通貨基金（IMF）　2017年</span>
+    <h3>「条件つきで検討の余地あり」</h3>
+    <p>報告書『財政モニター』で1章を割いて分析しました。ベーシックインカムは<b>格差を小さくし、技術の変化で仕事を失う人を守る手段になりうる</b>とする一方、今ある手当を全員に均等に配り直すと、<b>今もらっている低所得の人の取り分が減るおそれ</b>がある、と指摘しています。</p>
+    <a class="src" href="https://www.imf.org/en/publications/fm/issues/2017/10/05/fiscal-monitor-october-2017" target="_blank" rel="noopener noreferrer">証拠：IMF 財政モニター（2017年10月）を開く</a>
+  </div>
+  <div class="card reveal">
+    <span class="tag">世界銀行　2020年</span>
+    <h3>「国の事情しだい」</h3>
+    <p>約300ページの手引き書をまとめ、ベーシックインカムを<b>他の支援策と、目的・対象・財源・働く意欲への影響などで比べる</b>枠組みを示しました。「どこでも正解」とはせず、国ごとに判断すべきものとしています。</p>
+    <a class="src" href="https://openknowledge.worldbank.org/handle/10986/32677" target="_blank" rel="noopener noreferrer">証拠：世界銀行『Exploring Universal Basic Income』を開く</a>
+  </div>
+  <div class="card warn reveal">
+    <span class="tag" style="background:var(--warn-bg); color:var(--warn); border:1.5px solid var(--warn)">イギリス　2026年1月（報道）</span>
+    <h3>AIで仕事を失う人のために「政府内で話が出ている」</h3>
+    <p>投資担当のストックウッド大臣が、AIの影響を受ける人のためにベーシックインカムが政府内で議論されていると発言したと報じられました。ただし<b>政府の正式な方針ではない</b>とも述べています。</p>
+    <a class="src" href="https://www.peoplemanagement.co.uk/article/1946845/universal-basic-income-needed-support-workers-displaced-ai-minister-says" target="_blank" rel="noopener noreferrer">報道：People Managementの記事を開く</a>
+  </div>
+</section>
+
+<!-- ⑦ 日本 -->
+<section id="japan">
+  <h2><span class="n">6</span>日本では、どうなっているのか</h2>
+
+  <h3>政府の答え：「社会保険の仕組みから切り替えるのは難しい」</h3>
+  <div class="quote">
+    <span class="lbl">岸田文雄 内閣総理大臣（参議院 決算委員会・2022年3月28日）</span>
+    我が国が今現在、本人と事業主が保険料を拠出するという形で備えるこの社会保険方式を基本としていることから、これを全ての個人に対して最低限の所得保障を無条件に与える<b>ベーシックインカムに切り替えるということになりますと、これは現実問題、これは大変な大きな壁にもぶち当たる</b>、課題もあるということなんだと思います。
+  </div>
+  <a class="src" href="https://kokkai.ndl.go.jp/txt/120814103X00120220328/260" target="_blank" rel="noopener noreferrer">証拠：国会会議録を開く</a>
+
+  <h3 style="margin-top:22px">2026年の決定：ベーシックインカムではなく「給付付き税額控除」</h3>
+  <p>政府は2026年8月5日、<b>働いている中低所得の人</b>に、所得に合わせたお金を配る新しい制度を始めると閣議決定しました。</p>
+  <div class="quote">
+    <span class="lbl">「給付付き税額控除」の制度導入の基本方針（令和8年8月5日 閣議決定）</span>
+    制度横断的に、負担（税・社会保険料）と現金給付を総合的に捉え、純負担率を調整する「所得に連動したきめ細かな給付」を行うこれまでにない新たな制度を早期に導入することが望ましい。……<b>令和 11 年度に導入する。</b><br><br>
+    <b>一定の勤労性の所得</b>※１があり、一定の税・社会保険料負担がある者を対象とする
+  </div>
+  <p>ポイントは<b>「働いていること」が条件</b>になっている点です。全員に無条件で配るベーシックインカムとは、ここが正反対です。</p>
+  <figure class="reveal">
+    <svg viewBox="0 0 660 190" role="img" aria-label="給付付き税額控除までの流れ">
+      <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--sub)"/></marker></defs>
+      <g font-family="Hiragino Sans, sans-serif">
+        <rect x="4" y="20" width="190" height="150" rx="10" fill="var(--panel)" stroke="var(--line)" stroke-width="2.5"/>
+        <text x="99" y="50" text-anchor="middle" font-size="14" font-weight="700" fill="var(--sub)">2026年8月5日</text>
+        <text x="99" y="82" text-anchor="middle" font-size="17" font-weight="700" fill="var(--ink)">基本方針を</text>
+        <text x="99" y="106" text-anchor="middle" font-size="17" font-weight="700" fill="var(--ink)">閣議決定</text>
+        <path d="M200 95 L228 95" stroke="var(--sub)" stroke-width="2.5" marker-end="url(#ar)"/>
+        <rect x="234" y="20" width="190" height="150" rx="10" fill="var(--warn-bg)" stroke="var(--warn)" stroke-width="2.5"/>
+        <text x="329" y="50" text-anchor="middle" font-size="14" font-weight="700" fill="var(--warn)">2027年4月から2年間</text>
+        <text x="329" y="80" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">つなぎの措置</text>
+        <text x="329" y="108" text-anchor="middle" font-size="13" fill="var(--ink)">飲食料品の消費税を1%に</text>
+        <text x="329" y="130" text-anchor="middle" font-size="13" fill="var(--ink)">＋ 所得に連動した給付を</text>
+        <text x="329" y="150" text-anchor="middle" font-size="13" fill="var(--ink)">先行して導入</text>
+        <path d="M430 95 L458 95" stroke="var(--sub)" stroke-width="2.5" marker-end="url(#ar)"/>
+        <rect x="464" y="20" width="192" height="150" rx="10" fill="var(--navy-soft)" stroke="var(--navy)" stroke-width="3"/>
+        <text x="560" y="50" text-anchor="middle" font-size="14" font-weight="700" fill="var(--navy)">2029年度（令和11年度）</text>
+        <text x="560" y="82" text-anchor="middle" font-size="17" font-weight="700" fill="var(--navy)">給付付き税額控除</text>
+        <text x="560" y="106" text-anchor="middle" font-size="17" font-weight="700" fill="var(--navy)">本格導入</text>
+        <text x="560" y="138" text-anchor="middle" font-size="12.5" fill="var(--ink)">働く中低所得の人が対象</text>
+      </g>
+    </svg>
+    <figcaption>基本方針の「４．制度の経過措置（つなぎ）」をもとに作図。制度の名前は、実態に合った名前に変えることも検討するとされています。</figcaption>
+  </figure>
+  <a class="src" href="https://www.cas.go.jp/jp/seisaku/kokuminkaigi/contents/20260805/01_siryou1.pdf" target="_blank" rel="noopener noreferrer">証拠：基本方針（内閣官房）を開く</a>
+
+  <div class="card reveal" style="margin-top:16px">
+    <span class="tag">政党の公約</span>
+    <h3>与党・日本維新の会は「ベーシックインカム」も選択肢に</h3>
+    <div class="quote" style="margin-top:8px">
+      <span class="lbl">維新八策2026 個別政策集</span>
+      国民一人一人が「自立する個人」として挑戦するための<b>最低所得保障制度（給付付き税額控除、負の所得税またはベーシックインカム）を導入</b>し、活力ある社会を実現します。
+    </div>
+    <p class="small">国民民主党も「日本型ベーシックインカム」という言葉を使っていますが、中身は給付付き税額控除が中心とされています。</p>
+    <a class="src" href="https://o-ishin.jp/policy/8saku2026.html" target="_blank" rel="noopener noreferrer">証拠：維新八策2026を開く</a>
+  </div>
+
+  <h3 style="margin-top:22px">もし日本で全員に配ったら、いくらかかる？</h3>
+  <div class="calc reveal">
+    <label for="amt">1人に毎月いくら配る？　<span id="amt-out" style="color:var(--navy)">7万円</span></label>
+    <input type="range" id="amt" min="1" max="15" step="1" value="7" aria-describedby="calc-v">
+    <div class="row"><span>1万円</span><span>15万円</span></div>
+    <div class="out">
+      <div class="f">1年間に必要なお金</div>
+      <div class="v" id="calc-v">約100兆円</div>
+      <div class="f" id="calc-f">7万円 × 12か月 × 1億2,000万人</div>
+    </div>
+    <p class="note">これは<b>試算</b>です。人口を1億2,000万人として単純に掛け算しただけで、今ある年金や手当をやめて置き換える分や、税金で戻ってくる分は入れていません。</p>
+  </div>
+</section>
+
+<!-- ⑧ マスク -->
+<section id="musk">
+  <h2><span class="n">7</span>イーロン・マスク氏は、何と言っているのか</h2>
+  <p>「近い将来、貯金はいらなくなる」という発言が話題になっています。<b>いつ・どこで・何と言ったか</b>を、発言の原文で時系列に並べます。</p>
+  <div class="reveal">
+  <div class="mt"><div class="fill"></div>
+
+    <div class="mt-item">
+      <div class="d">2025年11月19日</div>
+      <div class="w">アメリカ・サウジアラビア投資フォーラム（ワシントン）</div>
+      <div class="quote" style="margin-top:6px">
+        <span class="en">"I don't know what long term is, maybe it's 10, 20 years or something like that. My prediction is that work will be optional."</span>
+        <span class="ja">長期がどれくらいかは分からない。10年か20年か。私の予想では、働くことは「やりたい人がやるもの」になる。</span>
+      </div>
+    </div>
+
+    <div class="mt-item">
+      <div class="d">2025年12月</div>
+      <div class="w">X（旧Twitter）で投資家レイ・ダリオ氏への返信</div>
+      <div class="quote" style="margin-top:6px">
+        <span class="en">"there will be no poverty in the future and so no need to save money. There will be universal high income."</span>
+        <span class="ja">将来、貧困はなくなる。だからお金を貯める必要もない。「全員に高い収入」の時代が来る。</span>
+      </div>
+      <a class="src" href="https://x.com/elonmusk/status/2001361571407368589" target="_blank" rel="noopener noreferrer">本人の投稿を開く（X）</a>
+    </div>
+
+    <div class="mt-item">
+      <div class="d">2026年1月6日公開</div>
+      <div class="w">ポッドキャスト「Moonshots」#220（ピーター・ディアマンディス氏）</div>
+      <div class="quote" style="margin-top:6px">
+        <span class="en">"Don't worry about squirreling money away for retirement in 10 or 20 years. It won't matter."</span>
+        <span class="ja">10年後、20年後の老後のためにお金をため込む心配はしなくていい。関係なくなるから。</span>
+      </div>
+      <a class="src" href="https://www.youtube.com/watch?v=RSNuB9pj9P8" target="_blank" rel="noopener noreferrer">番組の動画を開く（YouTube）</a>
+    </div>
+
+    <div class="mt-item">
+      <div class="d">2026年4月</div>
+      <div class="w">Xへの投稿</div>
+      <div class="quote" style="margin-top:6px">
+        <span class="en">"Universal HIGH INCOME via checks issued by the Federal government is the best way to deal with unemployment caused by AI."</span>
+        <span class="ja">AIによる失業への一番の対策は、連邦政府が小切手を配る「全員に高い収入」だ。</span>
+      </div>
+      <a class="src" href="https://x.com/elonmusk/status/2044990537145753894" target="_blank" rel="noopener noreferrer">本人の投稿を開く（X）</a>
+    </div>
+
+    <div class="mt-item">
+      <div class="d">2026年7月23日公開</div>
+      <div class="w">英エコノミスト誌 編集長によるインタビュー（テキサスのテスラ工場）</div>
+      <div class="quote" style="margin-top:6px">
+        <span class="en">"Money won't matter in 2036."</span>
+        <span class="ja">2036年には、お金は意味を持たなくなる。</span>
+      </div>
+      <p class="small">「10年後の世界はどうなっているか」と聞かれ、AIが人類全体の知能を超え、ロボットが人の消費しきれないほどの物とサービスを作る「驚くべき豊かさの時代」になると答えた流れでの発言です。同じインタビューで「インフレではなくデフレが問題になる」とも述べています。</p>
+      <a class="src" href="https://www.youtube.com/live/8TjK-s0468w" target="_blank" rel="noopener noreferrer">インタビュー動画を開く（YouTube）</a>
+    </div>
+  </div>
+  </div>
+  <p class="small">訳はこのページで付けたものです。「2035年」とはっきり言った発言は、今回の調査では見つかりませんでした。はっきり年を言っているのは「2036年」です。</p>
+
+  <div class="card warn reveal" style="margin-top:14px">
+    <span class="tag" style="background:var(--warn-bg); color:var(--warn); border:1.5px solid var(--warn)">ここは冷静に</span>
+    <h3>これは「予想」で、どの国の制度でもありません</h3>
+    <p>マスク氏の「全員に高い収入（Universal High Income）」は、ロボットとAIで物の値段が大きく下がることが前提の<b>未来予想</b>です。実際に導入を決めた国はありません。経済学者からは「エネルギーや土地は、ロボットが増えても足りないままだ」といった反論も出ています。</p>
+    <p>また、ここまで見てきた実験では、<b>お金をもらっても貯金はあまり増えなかった</b>という結果も出ています（アメリカ2州の実験）。</p>
+    <a class="src" href="https://www.nber.org/papers/w32784" target="_blank" rel="noopener noreferrer">証拠：NBER論文 w32784（家計と貯蓄への影響）を開く</a>
+  </div>
+</section>
+
+<!-- ⑨ AIとロボットで本当に来るのか -->
+<section id="ai">
+  <h2><span class="n">8</span>AIとロボットで、ベーシックインカムのような制度は本当に来るのか</h2>
+  <p>国際機関の予測、AI企業のトップ、慎重な経済学者、日本の国会、そしてYouTubeやSNSの声まで、<b>いろいろな立場から</b>集めました。</p>
+
+  <h3 style="margin-top:18px">① 数字で見る：仕事はどれくらい変わるのか</h3>
+
+  <div class="card reveal">
+    <span class="tag">国際通貨基金（IMF）　2024年1月</span>
+    <h3>AIの影響を受ける仕事の割合</h3>
+    <div class="bars" data-max="70">
+      <div class="bar-row"><div class="lab">世界全体</div><div class="bar-track"><div class="bar" data-v="40"></div><div class="bar-val" data-v="40">約40%</div></div></div>
+      <div class="bar-row"><div class="lab">先進国</div><div class="bar-track"><div class="bar" data-v="60"></div><div class="bar-val" data-v="60">約60%</div></div></div>
+      <div class="bar-row"><div class="lab">新興国</div><div class="bar-track"><div class="bar" data-v="40"></div><div class="bar-val" data-v="40">約40%</div></div></div>
+      <div class="bar-row"><div class="lab">低所得国</div><div class="bar-track"><div class="bar" data-v="26"></div><div class="bar-val" data-v="26">約26%</div></div></div>
+    </div>
+    <p class="small">「影響を受ける」は、なくなるという意味ではありません。IMFは、影響を受ける仕事の<b>約半分はAIで生産性が上がる側</b>、残りは置き換えられる側になりうるとし、各国に<b>手厚い安全網（セーフティネット）と学び直しの支援</b>を求めています。</p>
+    <a class="src" href="https://www.imf.org/en/blogs/articles/2024/01/14/ai-will-transform-the-global-economy-lets-make-sure-it-benefits-humanity" target="_blank" rel="noopener noreferrer">証拠：IMF専務理事のブログを開く（2024年1月14日）</a>
+  </div>
+
+  <div class="card reveal">
+    <span class="tag">世界経済フォーラム（WEF）　2025年1月</span>
+    <h3>2030年までに、仕事は「消える」より「生まれる」ほうが多い予測</h3>
+    <div class="bars" data-max="190">
+      <div class="bar-row"><div class="lab">生まれる仕事</div><div class="bar-track"><div class="bar" data-v="170" style="background:var(--ok)"></div><div class="bar-val" data-v="170">＋1億7,000万</div></div></div>
+      <div class="bar-row"><div class="lab">消える仕事</div><div class="bar-track"><div class="bar" data-v="92" style="background:var(--ng)"></div><div class="bar-val" data-v="92">−9,200万</div></div></div>
+      <div class="bar-row"><div class="lab">差し引き</div><div class="bar-track"><div class="bar" data-v="78"></div><div class="bar-val" data-v="78">＋7,800万</div></div></div>
+    </div>
+    <p class="small">1,000社以上の企業への調査にもとづく予測です。増える仕事にはAI・データの専門職のほか、配達・介護・教育・農業も入っています。減るのは事務職が中心です。<b>消える側の9,200万人が、生まれる側の仕事にうまく移れるか</b>が問題になります。</p>
+    <a class="src" href="https://www.weforum.org/press/2025/01/future-of-jobs-report-2025-78-million-new-job-opportunities-by-2030-but-urgent-upskilling-needed-to-prepare-workforces/" target="_blank" rel="noopener noreferrer">証拠：世界経済フォーラムの発表を開く</a>
+  </div>
+
+  <div class="card warn reveal">
+    <span class="tag" style="background:var(--warn-bg); color:var(--warn); border:1.5px solid var(--warn)">スタンフォード大学　2026年8月（最新）</span>
+    <h3>すでに起きていること：若い人の仕事から影響が出始めている</h3>
+    <div class="hero-nums">
+      <div class="hero-num"><div class="v down">−<span data-count="19">0</span>%</div><div class="k">22〜25歳の、AIの影響が大きい職種の雇用<br>（影響の小さい職種と比べた差）</div></div>
+      <div class="hero-num"><div class="v nt">広い失業は<br>まだ</div><div class="k">全体として大量に仕事が<br>なくなっている状態ではない</div></div>
+    </div>
+    <p class="small">アメリカの給与データの分析です。カスタマーサポートやソフトウェア開発など、AIが得意な仕事で<b>若手の採用が減っている</b>一方、全体として大量失業が起きているわけではない、という結果です。差は1年前の15%から19%に広がりました。</p>
+    <a class="src" href="https://digitaleconomy.stanford.edu/news/canariesaug26/" target="_blank" rel="noopener noreferrer">証拠：スタンフォード大学デジタル経済研究所の発表を開く</a>
+  </div>
+
+  <div class="card reveal">
+    <span class="tag">人型ロボット（ヒューマノイド）の普及予測</span>
+    <h3>金融機関は「2050年に10億台」と見込む</h3>
+    <div class="bars" data-max="1000">
+      <div class="bar-row"><div class="lab">2035年<br><span class="small">ゴールドマン・サックス</span></div><div class="bar-track"><div class="bar" data-v="6.5"></div><div class="bar-val" data-v="6.5">650万台</div></div></div>
+      <div class="bar-row"><div class="lab">2035年<br><span class="small">モルガン・スタンレー</span></div><div class="bar-track"><div class="bar" data-v="13"></div><div class="bar-val" data-v="13">1,300万台</div></div></div>
+      <div class="bar-row"><div class="lab">2050年<br><span class="small">モルガン・スタンレー</span></div><div class="bar-track"><div class="bar" data-v="1000"></div><div class="bar-val inside">10億台</div></div></div>
+    </div>
+    <p class="small">単位は「百万台」でそろえた棒です。2035年の数字は2050年と比べると、まだほとんど見えないくらい小さいことが分かります。<b>ロボットが本格的に増えるのは2035年より後</b>という見立てです。ゴールドマンの650万台は2026年9月に上方修正されたと報じられた数字です。</p>
+    <a class="src" href="https://www.morganstanley.com/insights/articles/humanoid-robot-market-5-trillion-by-2050" target="_blank" rel="noopener noreferrer">証拠：モルガン・スタンレーの予測を開く</a>
+  </div>
+
+  <h3 style="margin-top:22px">② AIを作っている会社は、何を提案しているか</h3>
+
+  <div class="card reveal">
+    <span class="tag">Anthropic（Claudeを作る会社）　2026年6月</span>
+    <h3>失業率に合わせて、3段階で対策を変える</h3>
+    <figure>
+      <svg viewBox="0 0 660 230" role="img" aria-label="失業率に応じた3段階の対策">
+        <g font-family="Hiragino Sans, sans-serif">
+          <rect x="4" y="150" width="206" height="74" rx="9" fill="var(--panel)" stroke="var(--line)" stroke-width="2.5"/>
+          <text x="107" y="176" text-anchor="middle" font-size="15" font-weight="700" fill="var(--navy)">失業率 5%</text>
+          <text x="107" y="198" text-anchor="middle" font-size="12.5" fill="var(--ink)">職業訓練・賃金保険</text>
+          <text x="107" y="215" text-anchor="middle" font-size="12.5" fill="var(--ink)">など</text>
+          <rect x="227" y="80" width="206" height="144" rx="9" fill="var(--warn-bg)" stroke="var(--warn)" stroke-width="2.5"/>
+          <text x="330" y="106" text-anchor="middle" font-size="15" font-weight="700" fill="var(--warn)">失業率 10%</text>
+          <text x="330" y="130" text-anchor="middle" font-size="12.5" fill="var(--ink)">失業保険を広げる</text>
+          <text x="330" y="150" text-anchor="middle" font-size="12.5" fill="var(--ink)">＋業種ごとの移行支援</text>
+          <text x="330" y="170" text-anchor="middle" font-size="12.5" fill="var(--ink)">＋生活の基本的な支え</text>
+          <rect x="450" y="8" width="206" height="216" rx="9" fill="var(--ng-bg)" stroke="var(--ng)" stroke-width="3"/>
+          <text x="553" y="34" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ng)">前例のない失業</text>
+          <text x="553" y="62" text-anchor="middle" font-size="12.5" fill="var(--ink)">働く人の多くの収入を</text>
+          <text x="553" y="82" text-anchor="middle" font-size="12.5" fill="var(--ink)">長く肩代わりする段階</text>
+          <text x="553" y="118" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ng)">ベーシックインカム</text>
+          <text x="553" y="138" text-anchor="middle" font-size="12.5" fill="var(--ink)">国の基金・株の分配</text>
+          <text x="553" y="158" text-anchor="middle" font-size="12.5" fill="var(--ink)">なども選択肢に</text>
+        </g>
+      </svg>
+      <figcaption>Anthropic「Economic Policy Framework」をもとに作図。財源として新しい税を挙げています。</figcaption>
+    </figure>
+    <div class="quote">
+      <span class="lbl">Anthropic の政策提言より（前例のない失業の段階）</span>
+      <span class="en">"new ways of sharing this broadly, which might include basic income, sovereign wealth models, and equity-sharing mechanisms"</span>
+      <span class="ja">（AIが生む富を）広く分かち合う新しい方法。そこにはベーシックインカム、国の基金、株を分け合う仕組みが含まれうる。</span>
+    </div>
+    <a class="src" href="https://www.anthropic.com/policy-on-the-ai-exponential/epf" target="_blank" rel="noopener noreferrer">証拠：Anthropicの政策提言を開く</a>
+  </div>
+
+  <div class="card reveal">
+    <span class="tag">OpenAI（ChatGPTを作る会社）　2026年4月</span>
+    <h3>国民全員が持ち分を持つ「公共の基金」をつくり、利益を配る</h3>
+    <div class="quote">
+      <span class="lbl">OpenAI「Industrial Policy for the Intelligence Age」より</span>
+      <span class="en">"Returns from the Fund could be distributed directly to citizens, allowing more people to participate directly in the upside of AI-driven growth, regardless of their starting wealth or access to capital."</span>
+      <span class="ja">基金の利益は国民に直接配ることができる。もともとの資産に関係なく、より多くの人がAIによる成長の恩恵を直接受けられる。</span>
+    </div>
+    <p class="small">同じ文書で、ロボットやAIが働いた分への課税（「自動化された労働」への税）も検討すべきだとしています。お金を配るだけでなく、<b>AIの持ち主の一人に国民をする</b>という考え方です。アラスカの石油基金の配当（第4章）と似た形です。</p>
+    <a class="src" href="https://cdn.openai.com/pdf/561e7512-253e-424b-9734-ef4098440601/Industrial%20Policy%20for%20the%20Intelligence%20Age.pdf" target="_blank" rel="noopener noreferrer">証拠：OpenAIの政策提言（PDF）を開く</a>
+  </div>
+
+  <h3 style="margin-top:22px">③ 慎重な見方</h3>
+
+  <div class="card reveal">
+    <span class="tag">ダロン・アセモグル氏（MIT・2024年ノーベル経済学賞）</span>
+    <h3>「AIが置き換えられるのは、経済のおよそ5%」</h3>
+    <p>アセモグル氏は、AIが得意なのはデータの要約・画像の照合・パターン認識などの事務作業で、<b>経済全体のおよそ5%</b>にとどまると見ています。AIによるアメリカのGDPの押し上げも、<b>10年で約1%</b>程度という控えめな試算です。この見方に立つと、「働かなくていい社会」はすぐには来ません。</p>
+    <a class="src" href="https://economics.mit.edu/news/daron-acemoglu-what-do-we-know-about-economics-ai" target="_blank" rel="noopener noreferrer">証拠：MIT経済学部の記事を開く</a>
+  </div>
+
+  <div class="card reveal">
+    <span class="tag">日本の政府答弁　2026年7月8日</span>
+    <h3>「日本では、今のところ大きな影響は出ていない」</h3>
+    <div class="quote">
+      <span class="lbl">厚生労働省 大臣官房審議官（参議院 デジタル社会の形成及び人工知能の活用等に関する特別委員会）</span>
+      我が国の雇用動向全般といたしましては、<b>若年層を含め現時点で大きな影響は生じていないものと考えております</b>。……ＡＩの進展に伴う雇用への影響につきまして継続的かつ丁寧に調査分析に努めてまいりたい
+    </div>
+    <p class="small">この答弁は、チームみらいの安野貴博議員が「AI失業」の実態をどう把握しているか質問したことへの答えです。安野議員はその後も、YouTubeで<b>「給付付き税額控除は、ベーシックインカムの1つ手前の制度」</b>として導入を急ぐべきだと説明しています。</p>
+    <a class="src" href="https://kokkai.ndl.go.jp/txt/122115385X00820260708/132" target="_blank" rel="noopener noreferrer">証拠：国会会議録を開く</a>
+  </div>
+
+  <h3 style="margin-top:22px">④ YouTubeとSNSでは、どう受け止められているか</h3>
+  <p>2026年は「マスク氏の予言」を紹介する日本語の動画が<b>100万回を超えて</b>再生されています。</p>
+  <div class="reveal"><div class="bars" data-max="200">
+    <div class="bar-row"><div class="lab">「10年後、貯金が紙切れに!?」系<br><span class="small">2026年2月</span></div><div class="bar-track"><div class="bar" data-v="185"></div><div class="bar-val" data-v="185">185万回</div></div></div>
+    <div class="bar-row"><div class="lab">「普遍的高所得の正体」系<br><span class="small">2026年2月</span></div><div class="bar-track"><div class="bar" data-v="103"></div><div class="bar-val" data-v="103">103万回</div></div></div>
+    <div class="bar-row"><div class="lab">ひろゆき×安野 BI賛成？反対？<br><span class="small">2025年7月</span></div><div class="bar-track"><div class="bar" data-v="47"></div><div class="bar-val" data-v="47">47万回</div></div></div>
+    <div class="bar-row"><div class="lab">「2035年 AI大量失業」系<br><span class="small">2025年9月</span></div><div class="bar-track"><div class="bar" data-v="9.4"></div><div class="bar-val" data-v="9.4">9.4万回</div></div></div>
+  </div></div>
+  <p class="small">2026年9月24日時点の再生回数（yt-dlpで取得）。タイトルは要約しています。なお<b>「2035年」はYouTube動画のタイトルに出てくる年</b>で、マスク氏本人がはっきり年を言っているのは「2036年」です（第7章）。</p>
+
+  <p style="margin-top:14px">コメント欄と海外SNSの声を読むと、大きく3つに分かれます。</p>
+  <div class="cmp reveal">
+    <div class="col" style="border-color:var(--ok); background:var(--ok-bg)">
+      <h3 style="color:var(--ok)">期待</h3>
+      <dl>
+        <dd>遊びたいのではなく、<b>何度失敗しても挑戦できる</b>環境がほしい</dd>
+        <dd style="margin-top:7px">お金の不安がなければ、人に優しくなれる</dd>
+        <dd style="margin-top:7px">農家や芸術家の生活が安定する</dd>
+      </dl>
+    </div>
+    <div class="col" style="border-color:var(--ng); background:var(--ng-bg)">
+      <h3 style="color:var(--ng)">不安</h3>
+      <dl>
+        <dd>人間がいらなくなる未来しか見えない</dd>
+        <dd style="margin-top:7px">AIと働けるのは一握りの人だけでは</dd>
+        <dd style="margin-top:7px">今すでに仕事がない</dd>
+      </dl>
+    </div>
+    <div class="col" style="border-color:var(--warn); background:var(--warn-bg)">
+      <h3 style="color:var(--warn)">疑い</h3>
+      <dl>
+        <dd>「何でもタダ」は幻想。<b>一部の人が利益を独り占めする</b></dd>
+        <dd style="margin-top:7px">世界一のお金持ちが「お金は無意味」と言うのは矛盾</dd>
+        <dd style="margin-top:7px">予測の時期がいつも外れる</dd>
+      </dl>
+    </div>
+  </div>
+  <p class="small" style="margin-top:8px">YouTubeの上位コメント（高評価順）と、海外の掲示板Reddit「r/BasicIncome」・Hacker Newsで2026年に反応の多かった投稿をもとに、よく出てくる意見を要約したものです。特定の個人の発言をそのまま載せたものではありません。海外では「AIに課税してベーシックインカムの財源に」という意見が目立ちます。</p>
+
+  <h3 style="margin-top:22px">⑤ 全部を並べると：3つの見方</h3>
+  <figure class="reveal">
+    <svg viewBox="0 0 660 250" role="img" aria-label="AIとベーシックインカムについての3つの見方">
+      <g font-family="Hiragino Sans, sans-serif">
+        <rect x="4" y="8" width="206" height="234" rx="10" fill="var(--ok-bg)" stroke="var(--ok)" stroke-width="2.5"/>
+        <text x="107" y="36" text-anchor="middle" font-size="16" font-weight="700" fill="var(--ok)">すぐ来る</text>
+        <text x="107" y="58" text-anchor="middle" font-size="12" fill="var(--sub)">マスク氏など</text>
+        <text x="107" y="92" text-anchor="middle" font-size="13" fill="var(--ink)">2030年代に</text>
+        <text x="107" y="112" text-anchor="middle" font-size="13" fill="var(--ink)">AIとロボットで</text>
+        <text x="107" y="132" text-anchor="middle" font-size="13" fill="var(--ink)">物があふれ、</text>
+        <text x="107" y="152" text-anchor="middle" font-size="13" fill="var(--ink)">国が高い収入を配る</text>
+        <text x="107" y="196" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--ok)">貯金はいらなくなる</text>
+        <rect x="227" y="8" width="206" height="234" rx="10" fill="var(--navy-soft)" stroke="var(--navy)" stroke-width="3"/>
+        <text x="330" y="36" text-anchor="middle" font-size="16" font-weight="700" fill="var(--navy)">段階的に来る</text>
+        <text x="330" y="58" text-anchor="middle" font-size="12" fill="var(--sub)">Anthropic・OpenAI・IMF</text>
+        <text x="330" y="92" text-anchor="middle" font-size="13" fill="var(--ink)">失業の広がりに</text>
+        <text x="330" y="112" text-anchor="middle" font-size="13" fill="var(--ink)">合わせて、支援を</text>
+        <text x="330" y="132" text-anchor="middle" font-size="13" fill="var(--ink)">強める。財源は</text>
+        <text x="330" y="152" text-anchor="middle" font-size="13" fill="var(--ink)">AIへの課税や基金</text>
+        <text x="330" y="196" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--navy)">まず対象をしぼって</text>
+        <rect x="450" y="8" width="206" height="234" rx="10" fill="var(--warn-bg)" stroke="var(--warn)" stroke-width="2.5"/>
+        <text x="553" y="36" text-anchor="middle" font-size="16" font-weight="700" fill="var(--warn)">当分は来ない</text>
+        <text x="553" y="58" text-anchor="middle" font-size="12" fill="var(--sub)">アセモグル氏・日本政府</text>
+        <text x="553" y="92" text-anchor="middle" font-size="13" fill="var(--ink)">AIの影響は</text>
+        <text x="553" y="112" text-anchor="middle" font-size="13" fill="var(--ink)">一部の仕事に</text>
+        <text x="553" y="132" text-anchor="middle" font-size="13" fill="var(--ink)">とどまる。今の制度の</text>
+        <text x="553" y="152" text-anchor="middle" font-size="13" fill="var(--ink)">見直しで対応</text>
+        <text x="553" y="196" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--warn)">今の備えは今までどおり</text>
+      </g>
+    </svg>
+    <figcaption>この章で紹介した発言や予測を、このページで3つに整理したものです。どれが正しいかは、まだ誰にも分かりません。</figcaption>
+  </figure>
+</section>
+
+<!-- ⑩ まとめ -->
+<section id="sum">
+  <h2><span class="n">9</span>まとめ</h2>
+  <div class="know">
+    <div class="card ok reveal">
+      <span class="tag" style="background:var(--ok); color:#fff">分かっていること</span>
+      <ul style="margin:0; padding-left:1.15em; font-size:15px">
+        <li>多くの実験で、<b>心の健康と安心感は良くなった</b></li>
+        <li>「お酒やタバコに消える」は、データでは起きていない</li>
+        <li>働く量は<b>国や額によって違う</b>。ほぼ変わらない例も、少し減った例もある</li>
+        <li>対象をしぼった制度は、<b>実際に恒久化され始めている</b></li>
+        <li>AIの影響は、アメリカでは<b>若い人の採用</b>から出始めている。日本では政府は「まだ大きな影響はない」としている</li>
+        <li>AIを作る会社自身が、<b>AIで得た富を配る仕組み</b>を提案し始めている</li>
+      </ul>
+    </div>
+    <div class="card warn reveal">
+      <span class="tag" style="background:var(--warn-bg); color:var(--warn); border:1.5px solid var(--warn)">まだ分からないこと</span>
+      <ul style="margin:0; padding-left:1.15em; font-size:15px">
+        <li>国民<b>全員に、ずっと</b>配ったらどうなるか（実験はすべて一部の人・期間限定）</li>
+        <li>財源をどうするか（日本で月7万円なら年100兆円規模の試算）</li>
+        <li>AIで本当に「貯金がいらない」時代が来るのか（AI企業は「段階的に」、慎重派は「当分来ない」と見ている）</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <h2>このページの根拠</h2>
+  <ul>
+    <li>【定義】BIEN「About Basic Income」 <a href="https://basicincome.org/about-basic-income/" target="_blank" rel="noopener noreferrer">https://basicincome.org/about-basic-income/</a></li>
+    <li>【一次・フィンランド】フィンランド社会保健省 発表（2020年5月6日） <a href="https://stm.fi/en/-/perustulokokeilun-tulokset-tyollisyysvaikutukset-vahaisia-toimeentulo-ja-psyykkinen-terveys-koettiin-paremmaksi" target="_blank" rel="noopener noreferrer">stm.fi</a></li>
+    <li>【一次・ドイツ】DIW Berlin 発表（2025年4月9日） <a href="https://www.diw.de/de/diw_01.c.945271.de/pilotprojekt_grundeinkommen__feldstudie_entkraeftet_mythos_von_der_sozialen_haengematte.html" target="_blank" rel="noopener noreferrer">diw.de</a></li>
+    <li>【一次・アメリカ】SEED（ストックトン）発表（2021年3月3日） <a href="https://www.stocktondemonstration.org/press-landing/guaranteed-income-increases-employment-improves-financial-and-physical-health" target="_blank" rel="noopener noreferrer">stocktondemonstration.org</a></li>
+    <li>【一次・アメリカ】NBER Working Paper 32719「The Employment Effects of a Guaranteed Income」 <a href="https://www.nber.org/papers/w32719" target="_blank" rel="noopener noreferrer">nber.org/papers/w32719</a> ／ 同 32784 <a href="https://www.nber.org/papers/w32784" target="_blank" rel="noopener noreferrer">nber.org/papers/w32784</a></li>
+    <li>【一次・ケニア】GiveDirectly「Early findings from the world's largest UBI study」（2023年12月6日） <a href="https://www.givedirectly.org/2023-ubi-results" target="_blank" rel="noopener noreferrer">givedirectly.org</a></li>
+    <li>【一次・ウェールズ】ウェールズ政府 声明（2026年2月26日） <a href="https://www.gov.wales/written-statement-basic-income-care-leavers-wales-pilot-evaluation-annual-report-2025-2026" target="_blank" rel="noopener noreferrer">gov.wales</a></li>
+    <li>【一次・アラスカ】アラスカ州歳入局 配当金 <a href="https://pfd.alaska.gov/" target="_blank" rel="noopener noreferrer">pfd.alaska.gov</a> ／ 2026年額の報道 <a href="https://www.adn.com/alaska-news/2026/09/19/alaskans-will-start-getting-1200-permanent-fund-dividend-energy-relief-payments-on-oct-1/" target="_blank" rel="noopener noreferrer">Anchorage Daily News</a></li>
+    <li>【一次・アイルランド】アイルランド政府 発表 <a href="https://www.gov.ie/en/department-of-culture-communications-and-sport/press-releases/minister-odonovan-announces-the-new-basic-income-for-the-arts-scheme/" target="_blank" rel="noopener noreferrer">gov.ie</a> ／ 費用対効果1.39の報道 <a href="https://www.rte.ie/culture/2025/1007/1537249-budget-2026-basic-income-for-artists-scheme-to-become-permanent/" target="_blank" rel="noopener noreferrer">RTÉ</a></li>
+    <li>【一次・韓国】農林畜産食品部 発表（2026年6月11日） <a href="https://mafra.go.kr/bbs/home/792/578154/artclView.do" target="_blank" rel="noopener noreferrer">mafra.go.kr</a> ／ 最初の支給 <a href="https://www.korea.kr/news/policyNewsView.do?newsId=148960080" target="_blank" rel="noopener noreferrer">korea.kr（2026年2月27日）</a></li>
+    <li>【一次・クック郡】Cook County Promise <a href="https://www.cookcountyil.gov/promise" target="_blank" rel="noopener noreferrer">cookcountyil.gov/promise</a></li>
+    <li>【スイス】米国議会図書館 Global Legal Monitor（2016年6月6日） <a href="https://www.loc.gov/item/global-legal-monitor/2016-06-06/switzerland-voters-reject-unconditional-basic-income/" target="_blank" rel="noopener noreferrer">loc.gov</a></li>
+    <li>【国際機関】IMF Fiscal Monitor（2017年10月） <a href="https://www.imf.org/en/publications/fm/issues/2017/10/05/fiscal-monitor-october-2017" target="_blank" rel="noopener noreferrer">imf.org</a> ／ 世界銀行（2020年） <a href="https://openknowledge.worldbank.org/handle/10986/32677" target="_blank" rel="noopener noreferrer">openknowledge.worldbank.org</a></li>
+    <li>【一次・日本】国会会議録（2022年3月28日 参議院決算委員会） <a href="https://kokkai.ndl.go.jp/txt/120814103X00120220328/260" target="_blank" rel="noopener noreferrer">kokkai.ndl.go.jp</a></li>
+    <li>【一次・日本】内閣官房「給付付き税額控除」の制度導入の基本方針（令和8年8月5日閣議決定） <a href="https://www.cas.go.jp/jp/seisaku/kokuminkaigi/contents/20260805/01_siryou1.pdf" target="_blank" rel="noopener noreferrer">cas.go.jp</a></li>
+    <li>【政党】日本維新の会「維新八策2026 個別政策集」 <a href="https://o-ishin.jp/policy/8saku2026.html" target="_blank" rel="noopener noreferrer">o-ishin.jp</a></li>
+    <li>【マスク氏】X投稿 <a href="https://x.com/elonmusk/status/2001361571407368589" target="_blank" rel="noopener noreferrer">2025年12月</a>・<a href="https://x.com/elonmusk/status/2044990537145753894" target="_blank" rel="noopener noreferrer">2026年4月</a> ／ Moonshots #220 <a href="https://www.youtube.com/watch?v=RSNuB9pj9P8" target="_blank" rel="noopener noreferrer">YouTube</a> ／ エコノミスト誌インタビュー <a href="https://www.youtube.com/live/8TjK-s0468w" target="_blank" rel="noopener noreferrer">YouTube</a> ／ 2025年11月の発言の報道 <a href="https://fortune.com/2025/11/20/elon-musk-tesla-ai-work-optional-money-irrelevant/" target="_blank" rel="noopener noreferrer">Fortune</a></li>
+    <li>【AI・国際機関】IMF専務理事ブログ（2024年1月14日） <a href="https://www.imf.org/en/blogs/articles/2024/01/14/ai-will-transform-the-global-economy-lets-make-sure-it-benefits-humanity" target="_blank" rel="noopener noreferrer">imf.org</a> ／ 世界経済フォーラム Future of Jobs Report 2025 <a href="https://www.weforum.org/press/2025/01/future-of-jobs-report-2025-78-million-new-job-opportunities-by-2030-but-urgent-upskilling-needed-to-prepare-workforces/" target="_blank" rel="noopener noreferrer">weforum.org</a></li>
+    <li>【AI・研究】スタンフォード大学デジタル経済研究所（2026年8月） <a href="https://digitaleconomy.stanford.edu/news/canariesaug26/" target="_blank" rel="noopener noreferrer">digitaleconomy.stanford.edu</a> ／ MIT経済学部（アセモグル氏） <a href="https://economics.mit.edu/news/daron-acemoglu-what-do-we-know-about-economics-ai" target="_blank" rel="noopener noreferrer">economics.mit.edu</a></li>
+    <li>【ロボット予測】モルガン・スタンレー <a href="https://www.morganstanley.com/insights/articles/humanoid-robot-market-5-trillion-by-2050" target="_blank" rel="noopener noreferrer">morganstanley.com</a> ／ ゴールドマン・サックス上方修正の報道（2026年9月） <a href="https://247wallst.com/investing/2026/09/14/goldman-sachs-just-supercharged-its-humanoid-robot-prediction-5x-to-6-5-million-by-2035/" target="_blank" rel="noopener noreferrer">24/7 Wall St.</a></li>
+    <li>【AI企業】Anthropic Economic Policy Framework <a href="https://www.anthropic.com/policy-on-the-ai-exponential/epf" target="_blank" rel="noopener noreferrer">anthropic.com</a> ／ OpenAI「Industrial Policy for the Intelligence Age」（2026年4月） <a href="https://cdn.openai.com/pdf/561e7512-253e-424b-9734-ef4098440601/Industrial%20Policy%20for%20the%20Intelligence%20Age.pdf" target="_blank" rel="noopener noreferrer">cdn.openai.com</a></li>
+    <li>【一次・日本】国会会議録（2026年7月8日 参議院 デジタル社会の形成及び人工知能の活用等に関する特別委員会） <a href="https://kokkai.ndl.go.jp/txt/122115385X00820260708/131" target="_blank" rel="noopener noreferrer">質問</a>・<a href="https://kokkai.ndl.go.jp/txt/122115385X00820260708/132" target="_blank" rel="noopener noreferrer">答弁</a></li>
+    <li>【YouTube】<a href="https://www.youtube.com/watch?v=i9J4fR0MMwg" target="_blank" rel="noopener noreferrer">貯金が紙切れに!?</a> ／ <a href="https://www.youtube.com/watch?v=btfzbJ1bNss" target="_blank" rel="noopener noreferrer">普遍的高所得の正体</a> ／ <a href="https://www.youtube.com/watch?v=Wqsz6eUSem0" target="_blank" rel="noopener noreferrer">ひろゆき×安野</a> ／ <a href="https://www.youtube.com/watch?v=s_kAHOIw8qg" target="_blank" rel="noopener noreferrer">2035年 AI大量失業</a> ／ <a href="https://www.youtube.com/watch?v=Em9pI1Db_bI" target="_blank" rel="noopener noreferrer">チームみらい AI失業対策</a></li>
+    <li>【SNS】Reddit r/BasicIncome <a href="https://www.reddit.com/r/BasicIncome/top/?t=year" target="_blank" rel="noopener noreferrer">reddit.com</a> ／ Hacker News「UBI as a productivity dividend」（2026年3月） <a href="https://news.ycombinator.com/item?id=47378399" target="_blank" rel="noopener noreferrer">news.ycombinator.com</a></li>
+  </ul>
+  <h2>読むときの注意</h2>
+  <p>実験の結果は、それぞれの国・期間・金額・対象者のもとでのものです。<b>そのまま日本に当てはまるとは限りません</b>。「試算」と書いた数字は、このページで計算したもので、公式の数字ではありません。外国語の引用の訳は、このページで付けたものです。</p>
+  <p>このページは個人が作っているもので、行政の公式ページではありません。</p>
+  <p>確認日：2026年9月24日</p>
+</footer>
+
+</div>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 数字のカウントアップ
+  const countUp = (el) => {
+    const to = parseFloat(el.dataset.count), dec = +(el.dataset.dec || 0);
+    const fmt = v => el.dataset.plain ? String(Math.round(v)) : v.toLocaleString('ja-JP', {minimumFractionDigits:dec, maximumFractionDigits:dec});
+    if (reduce || to === 0) { el.textContent = fmt(to); return; }
+    const t0 = performance.now(), dur = 1400;
+    const step = (t) => {
+      const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(to * e);
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  // 棒を伸ばす
+  const growBars = (root) => {
+    root.querySelectorAll('.bars').forEach(b => {
+      const max = parseFloat(b.dataset.max);
+      b.querySelectorAll('.bar').forEach(bar => {
+        const off = parseFloat(bar.dataset.offset || 0);
+        bar.style.left = (off / max * 100) + '%';
+        bar.style.width = (parseFloat(bar.dataset.v) / max * 100) + '%';
+      });
+      b.querySelectorAll('.bar-val').forEach(v => {
+        if (!v.dataset.v) return;
+        const pct = parseFloat(v.dataset.v) / max;
+        if (pct > 0.62) { v.classList.add('inside'); if (v.parentNode.querySelector('.bar.base')) v.style.color = 'var(--ink)'; v.style.left = 'auto'; v.style.right = (100 - pct * 100) + '%'; }
+        else v.style.left = (pct * 100) + '%';
+      });
+    });
+    root.querySelectorAll('.split').forEach(s => {
+      const parts = s.dataset.split.split(',').map(Number);
+      [...s.children].forEach((c, i) => { c.style.width = parts[i] + '%'; });
+    });
+  };
+
+  const onIn = (el) => {
+    el.classList.add('in');
+    growBars(el);
+    el.querySelectorAll('[data-count]').forEach(countUp);
+  };
+  const targets = document.querySelectorAll('.reveal, .card');
+  if ('IntersectionObserver' in window && !reduce) {
+    const io = new IntersectionObserver((es) => es.forEach(e => {
+      if (e.isIntersecting) { onIn(e.target); io.unobserve(e.target); }
+    }), {threshold: 0.25});
+    targets.forEach(t => io.observe(t));
+  } else {
+    targets.forEach(onIn);
+  }
+
+  // 目次の現在地
+  const links = [...document.querySelectorAll('.toc a')];
+  const secs = links.map(a => document.querySelector(a.getAttribute('href')));
+  const markToc = () => {
+    let cur = 0;
+    secs.forEach((s, i) => { if (s && s.getBoundingClientRect().top < 120) cur = i; });
+    links.forEach((a, i) => a.classList.toggle('on', i === cur));
+  };
+  addEventListener('scroll', markToc, {passive:true}); markToc();
+
+  // 年表
+  const EV = [
+    {y:1982, t:'real', name:'アラスカ州（アメリカ）', h:'州民全員に毎年の配当金', p:'石油の収入を運用した基金から、州に住む全員に年1回配る。40年以上続く「全員に配る」制度。2025年は1,000ドル。', go:'#real'},
+    {y:2016, t:'ng', name:'スイス', h:'国民投票で否決', p:'全員に配る案を国民投票にかけ、反対76.9%で否決。国全体の導入を直接投票で決めた唯一の例。', go:'#real'},
+    {y:2017, t:'test', name:'フィンランド', h:'失業者2,000人に月560ユーロ（2年）', p:'働いた日数はほぼ変わらず（約6日増）。生活の満足度と心の健康は良くなった。', go:'#fi'},
+    {y:2017.6, t:'test', name:'ケニア', h:'約2万3千人に最長12年', p:'世界最大・最長の実験。働く時間は減らず、長くもらえる人ほど商売に投資した。', go:'#ke'},
+    {y:2019, t:'test', name:'ストックトン（アメリカ）', h:'125人に月500ドル（2年）', p:'使い道の1位は食べもの（37%）。お酒・タバコは1%未満。1年目はフルタイム就職が増えた。', go:'#us1'},
+    {y:2020.4, t:'test', name:'イリノイ州・テキサス州（アメリカ）', h:'1,000人に月1,000ドル（3年）', p:'アメリカ最大の実験。働く時間が週1〜2時間減り、働いて得る収入は年約1,900ドル減った。', go:'#us2'},
+    {y:2021.4, t:'test', name:'ドイツ', h:'122人に月1,200ユーロ（3年）', p:'働く時間は減らず。もらったお金の37%を貯金。生活の満足度と心の健康が上がった。', go:'#de'},
+    {y:2022.2, t:'test', name:'ウェールズ（イギリス）', h:'養護施設を出た18歳644人に月1,600ポンド（2年）', p:'参加率97%。配るのは終わり、最終報告は2027年夏の予定。', go:'#wales'},
+    {y:2022.9, t:'real', name:'アイルランド', h:'芸術家に週325ユーロ → 2026年に恒久化', p:'2022年からの試行を経て、2026年から恒久制度に。1ユーロあたり1.39ユーロの効果と分析された。', go:'#real'},
+    {y:2026, t:'real', name:'韓国', h:'農村の住民全員に月15万ウォン', p:'2026年2月に10郡で開始、8月から17郡に拡大。地元だけで使える商品券で配る。', go:'#real'},
+    {y:2026.6, t:'real', name:'クック郡（アメリカ）', h:'保証所得を恒久予算に', p:'2026年度予算で750万ドルを恒久確保。郡レベルではアメリカ初。', go:'#real'},
+    {y:2029, t:'jp', name:'日本', h:'給付付き税額控除を導入予定', p:'2026年8月5日に閣議決定。働いている中低所得の人が対象で、ベーシックインカムとは別のもの。', go:'#japan'}
+  ];
+  const X0 = 40, X1 = 690, Y0 = 1980, Y1 = 2031;
+  const xOf = y => X0 + (y - Y0) / (Y1 - Y0) * (X1 - X0);
+  const ns = 'http://www.w3.org/2000/svg';
+  const ticks = document.getElementById('tl-ticks');
+  [1980,1990,2000,2010,2020,2030].forEach(y => {
+    const t = document.createElementNS(ns,'text');
+    t.setAttribute('x', xOf(y)); t.setAttribute('y', 176); t.setAttribute('text-anchor','middle'); t.textContent = y;
+    ticks.appendChild(t);
+    const l = document.createElementNS(ns,'line');
+    l.setAttribute('x1', xOf(y)); l.setAttribute('x2', xOf(y)); l.setAttribute('y1', 144); l.setAttribute('y2', 156);
+    l.setAttribute('stroke','var(--line)'); l.setAttribute('stroke-width', 2);
+    ticks.appendChild(l);
+  });
+  const COL = {test:'var(--navy)', real:'var(--ok)', ng:'var(--ng)', jp:'var(--warn)'};
+  const dots = document.getElementById('tl-dots');
+  const detail = document.getElementById('tl-detail');
+  let cur = -1;
+  // 重なりを避けて段をずらす
+  const lanes = [118, 88, 58, 28];
+  let lastX = [-99,-99,-99,-99];
+  const nodes = EV.map((e, i) => {
+    const x = xOf(e.y);
+    let lane = lanes.findIndex((_, k) => x - lastX[k] > 26);
+    if (lane < 0) lane = 0;
+    lastX[lane] = x;
+    const y = lanes[lane];
+    const g = document.createElementNS(ns,'g');
+    g.setAttribute('class','tl-dot'); g.setAttribute('tabindex','0'); g.setAttribute('role','button');
+    g.setAttribute('aria-label', e.name + '：' + e.h);
+    g.innerHTML = `<line x1="${x}" y1="${y}" x2="${x}" y2="150" stroke="var(--line)" stroke-width="2"/>
+      <circle class="ring" cx="${x}" cy="${y}" r="15" fill="transparent" stroke="transparent"/>
+      <circle class="c" cx="${x}" cy="${y}" r="8" fill="${COL[e.t]}" stroke="#fff" stroke-width="2.5"/>`;
+    g.style.opacity = reduce ? 1 : 0;
+    g.style.transition = 'opacity .5s ' + (i * 0.12) + 's';
+    const pick = () => show(i);
+    g.addEventListener('click', pick);
+    g.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); pick(); } });
+    dots.appendChild(g);
+    return g;
+  });
+  const KIND = {test:'実験', real:'制度になった', ng:'否決', jp:'日本の予定'};
+  function show(i){
+    cur = i; const e = EV[i];
+    nodes.forEach((n, k) => n.classList.toggle('on', k === i));
+    detail.innerHTML = `<div class="when">${Math.floor(e.y)}年〜　／　${KIND[e.t]}</div><h3>${e.name}：${e.h}</h3><p>${e.p}</p>
+      <a class="src" href="${e.go}">くわしく見る ↓</a>`;
+  }
+  document.getElementById('tl-prev').onclick = () => show((cur <= 0 ? EV.length : cur) - 1);
+  document.getElementById('tl-next').onclick = () => show((cur + 1) % EV.length);
+  const tlWrap = document.querySelector('.tl-wrap');
+  const fadeDots = () => nodes.forEach(n => n.style.opacity = 1);
+  if ('IntersectionObserver' in window && !reduce) {
+    const io2 = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { fadeDots(); io2.disconnect(); } }), {threshold:.3});
+    io2.observe(tlWrap);
+  } else fadeDots();
+
+  // 試算スライダー
+  const amt = document.getElementById('amt'), out = document.getElementById('amt-out');
+  const cv = document.getElementById('calc-v'), cf = document.getElementById('calc-f');
+  const POP = 120000000;
+  let shown = 100.8, anim = 0;
+  const render = () => {
+    const m = +amt.value;
+    const target = m * 10000 * 12 * POP / 1e12; // 兆円
+    out.textContent = m + '万円';
+    cf.textContent = `${m}万円 × 12か月 × 1億2,000万人`;
+    cancelAnimationFrame(anim);
+    const from = shown, t0 = performance.now();
+    const step = t => {
+      const p = reduce ? 1 : Math.min(1, (t - t0) / 450);
+      shown = from + (target - from) * (1 - Math.pow(1 - p, 3));
+      cv.textContent = '約' + Math.round(shown).toLocaleString('ja-JP') + '兆円';
+      if (p < 1) anim = requestAnimationFrame(step);
+    };
+    anim = requestAnimationFrame(step);
+  };
+  amt.addEventListener('input', render);
+  render();
+})();
+</script>
+</body>
+</html>

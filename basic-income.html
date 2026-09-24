@@ -158,7 +158,7 @@ figcaption{font-size:13px; color:var(--sub); margin-top:7px; line-height:1.6}
 /* 試算スライダー */
 .calc{background:var(--navy-soft); border-radius:13px; padding:16px 17px}
 .calc label{font-weight:700; display:block; margin-bottom:6px}
-.calc input[type=range]{width:100%; accent-color:var(--navy); height:28px}
+.calc input[type=range]{width:100%; accent-color:var(--navy); height:40px; touch-action:pan-y}
 .calc .row{display:flex; justify-content:space-between; font-size:12.5px; color:var(--sub)}
 .calc .out{margin-top:10px; background:var(--ground); border:2px solid var(--navy); border-radius:11px; padding:12px 14px; text-align:center}
 .calc .out .v{font-size:clamp(30px,7vw,46px); font-weight:800; color:var(--navy); font-variant-numeric:tabular-nums; line-height:1.15}
@@ -212,6 +212,57 @@ figcaption{font-size:13px; color:var(--sub); margin-top:7px; line-height:1.6}
 .takes.in .take:nth-child(2){transition-delay:.08s} .takes.in .take:nth-child(3){transition-delay:.16s}
 .takes.in .take:nth-child(4){transition-delay:.24s} .takes.in .take:nth-child(5){transition-delay:.32s}
 .takes.in .take:nth-child(6){transition-delay:.4s}
+/* なぜ貯金がいらなくなるのか */
+.why{position:relative; padding-left:0}
+.why-line{position:absolute; left:21px; top:22px; bottom:40px; width:3px; background:var(--line); border-radius:2px}
+.why-line .fill{width:100%; height:0; background:var(--navy); border-radius:2px; transition:height 2.4s ease}
+.why.in .why-line .fill{height:100%}
+.step{position:relative; display:flex; gap:14px; margin-bottom:18px; opacity:0; transform:translateY(14px); transition:opacity .6s, transform .6s}
+.why.in .step{opacity:1; transform:none}
+.why.in .step:nth-child(3){transition-delay:.25s} .why.in .step:nth-child(4){transition-delay:.5s}
+.why.in .step:nth-child(5){transition-delay:.75s} .why.in .step:nth-child(6){transition-delay:1s} .why.in .step:nth-child(7){transition-delay:1.25s}
+.step .num{flex:none; position:relative; z-index:1; width:45px; height:45px; border-radius:50%; background:var(--ground); border:3px solid var(--navy);
+  color:var(--navy); font-weight:800; font-size:19px; display:grid; place-items:center}
+.step.last .num{background:var(--navy); color:#fff}
+.step .body{flex:1; min-width:0; background:var(--panel); border:2px solid var(--line); border-radius:12px; padding:13px 15px}
+.step.last .body{border-color:var(--navy); background:var(--navy-soft)}
+.step h3{font-size:17px; margin-bottom:6px}
+.step .body > p{font-size:15px}
+.step .quote{margin-top:4px}
+.weak{margin-top:8px; border:1.5px solid var(--warn); border-radius:8px; background:var(--warn-bg)}
+.weak summary{cursor:pointer; list-style:none; font-size:13.5px; font-weight:700; color:var(--warn); padding:8px 12px; min-height:40px; display:flex; align-items:center; gap:6px}
+.weak summary::-webkit-details-marker{display:none}
+.weak summary::before{content:"＋"; font-weight:800}
+.weak[open] summary::before{content:"−"}
+.weak p{font-size:14px; padding:0 12px 10px; margin:0}
+.cost{transform-box:fill-box; transform-origin:left center; transform:scaleX(0); transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.why.in .cost{transform:scaleX(1)}
+.why.in .cost.b,.why.in .cost.c{transition-delay:.9s}
+/* スマホで横長の図を読みやすく（横スクロール） */
+.hscroll{position:relative}
+.hscroll-hint{display:none; font-size:12px; font-weight:700; color:var(--navy); text-align:right; margin:2px 0 4px}
+@media (max-width:600px){
+  .hscroll{overflow-x:auto; -webkit-overflow-scrolling:touch; margin:0 -4px; padding:0 4px 6px}
+  .hscroll > svg{min-width:var(--minw,600px)}
+  .hscroll-hint{display:block}
+  .why-line{left:17px}
+  .step{gap:10px}
+  .step .num{width:37px; height:37px; font-size:16px}
+  .step .body{padding:12px 12px}
+  .src{min-height:42px; font-size:13px}
+  footer li{margin-bottom:6px; line-height:2}
+  footer a{padding:4px 0}
+  .tl-nav button{min-height:42px; padding:8px 16px}
+}
+.costfig{margin:6px 0 4px}
+.crow{display:grid; grid-template-columns:2.6em 1fr; gap:8px; align-items:center; margin-bottom:8px}
+.cl{font-size:13px; font-weight:700; text-align:right}
+.cb{display:flex; gap:3px; height:34px}
+.cb i{font-style:normal; display:flex; align-items:center; justify-content:center; border-radius:4px; font-size:clamp(11px,3vw,13px); letter-spacing:-.02em; font-weight:700; white-space:nowrap; overflow:hidden; min-width:0}
+.cb .c1{background:var(--navy); color:#fff}
+.cb .c2{background:var(--base); color:var(--ink)}
+.cnote{font-size:12px; color:var(--sub); margin:2px 0 0}
+.cnote b{color:var(--ok); font-size:15px}
 .know{display:grid; grid-template-columns:1fr 1fr; gap:10px}
 
 footer{margin-top:26px; padding-top:18px; border-top:1px solid var(--line); font-size:12.5px; color:var(--sub); line-height:1.8}
@@ -233,7 +284,7 @@ footer a{color:var(--navy); word-break:break-all}
 }
 @media (prefers-reduced-motion:reduce){
   *{transition:none!important; animation:none!important}
-  .reveal,.pill,.mt-item,.cmp .col,.lane-top,.lane-bot,.take{opacity:1!important; transform:none!important}
+  .reveal,.pill,.mt-item,.cmp .col,.lane-top,.lane-bot,.take,.step,.cost{opacity:1!important; transform:none!important}
 }
 </style>
 </head>
@@ -249,6 +300,7 @@ footer a{color:var(--navy); word-break:break-all}
     <li><a href="#views">世界の見方</a></li>
     <li><a href="#japan">日本では</a></li>
     <li><a href="#musk">マスク氏の発言</a></li>
+    <li><a href="#why">なぜ貯金不要？</a></li>
     <li><a href="#ai">AIで本当に来る？</a></li>
     <li><a href="#nisa">NISAと矛盾？</a></li>
     <li><a href="#sum">まとめ</a></li>
@@ -710,9 +762,91 @@ footer a{color:var(--navy); word-break:break-all}
   </div>
 </section>
 
+<!-- ⑧ なぜ貯金がいらなくなるのか -->
+<section id="why">
+  <h2><span class="n">8</span>なぜ「お金や貯金がいらなくなる」と言われるのか</h2>
+  <p>マスク氏の話を順番に並べると、<b>6つの段階</b>でつながっています。段階ごとに、根拠になった発言と、<b>反対の立場からの「弱点」</b>も添えました。</p>
+
+  <div class="why reveal">
+    <div class="why-line"><div class="fill"></div></div>
+
+    <div class="step">
+      <div class="num">1</div>
+      <div class="body">
+        <h3>AIが「頭を使う仕事」をこなせるようになる</h3>
+        <p>文章を書く、調べる、計算する、プログラムを書く。パソコンの中で完結する仕事から、AIが人より上手にこなせるようになる、という予想です。</p>
+        <div class="quote"><span class="en">"AI will be able to do any job better than any person can do that job. And that will be very quickly of jobs that are digital."</span><span class="ja">AIは、どんな仕事も人より上手にできるようになる。まずはパソコンでする仕事から、とても速く。</span></div>
+        <details class="weak"><summary>弱点を見る</summary><p>ノーベル賞学者のアセモグル氏は、AIが置き換えられるのは<b>経済のおよそ5%</b>と見ています（第9章）。日本の政府も「今のところ大きな影響はない」と答えています。</p></details>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">2</div>
+      <div class="body">
+        <h3>人型ロボットが「体を使う仕事」をこなし、大量に作られる</h3>
+        <p>工場、倉庫、配達、家事。体を使う仕事は人型ロボット（ヒューマノイド）が担う。しかも車のように大量生産されて、1台の値段が下がっていく、という予想です。</p>
+        <div class="hero-nums">
+          <div class="hero-num"><div class="v nt">2〜3万ドル</div><div class="k">マスク氏が見込む、大量生産後の<br>ロボット1台の値段（「車より安い」）</div></div>
+          <div class="hero-num"><div class="v nt"><span data-count="10">0</span>億台</div><div class="k">2050年の人型ロボットの数<br>（モルガン・スタンレーの予測）</div></div>
+        </div>
+        <details class="weak"><summary>弱点を見る</summary><p>値段は2024年のテスラの発表会で示した<b>長期の目標</b>で、まだ一般には売られていません。マスク氏自身、一般向けの販売は「2027年末までに」と話しています。これまでも生産の遅れが何度も指摘されています。</p></details>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">3</div>
+      <div class="body">
+        <h3>「人の手間」がかからなくなり、物を作るコストが下がる</h3>
+        <p>物の値段の多くは、作る人・運ぶ人・売る人の<b>人件費</b>です。ロボットとAIが24時間休まず働けば、その分のコストが小さくなります。</p>
+        <figure>
+          <div class="costfig" role="img" aria-label="物の値段のうち人件費が小さくなるイメージ">
+            <div class="crow"><span class="cl">今</span><div class="cb"><i class="cost c1" style="flex:300">人の手間（人件費）</i><i class="cost c2" style="flex:150">材料・電気</i></div></div>
+            <div class="crow"><span class="cl">未来</span><div class="cb"><i class="cost c1 b" style="flex:70">ロボ</i><i class="cost c2 c" style="flex:150">材料・電気</i><i style="flex:230; background:none"></i></div></div>
+            <p class="cnote"><b>→ 値段が下がる</b>　<span>※長さは考え方を示すイメージで、実際の割合ではありません</span></p>
+          </div>
+        </figure>
+        <details class="weak"><summary>弱点を見る</summary><p>ロボットを動かす<b>電気</b>、材料になる<b>資源</b>、家を建てる<b>土地</b>は、ロボットが増えても増えません。経済学者からは「エネルギーや土地は、2036年になっても足りないままだ」という反論が出ています。</p></details>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">4</div>
+      <div class="body">
+        <h3>物があふれ、値段が下がり続ける（デフレ）</h3>
+        <p>作れる量がどんどん増えて、世の中のお金の量より速く増えると、物の値段は下がっていきます。マスク氏は「心配すべきはインフレではなくデフレ」と言っています。</p>
+        <div class="quote"><span class="en">"If you have vast numbers of robots with vast amounts of digital intelligence, you have a sort of a quasi-infinite economy."</span><span class="ja">膨大な数のロボットと、膨大なAIの知能があれば、ほとんど無限の経済になる。</span></div>
+        <div class="quote"><span class="en">"Deflation will be the issue, not inflation."</span><span class="ja">問題になるのはインフレではなく、デフレだ。</span></div>
+        <details class="weak"><summary>弱点を見る</summary><p>いま日本で起きているのは、むしろ<b>物価の上昇</b>です。値段が下がるのは、ロボットで作れる「物」が中心。家賃・医療・介護のように人や土地が関わるものまで下がるかは分かりません。</p></details>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">5</div>
+      <div class="body">
+        <h3>仕事がなくなった人には、国がお金を配る</h3>
+        <p>AIとロボットに仕事を任せて、働けなくなった人には、国が小切手を配ればいい。物がたくさん作られているので、お金を刷ってもインフレにならない、という考えです。</p>
+        <div class="quote"><span class="en">"AI/robotics will produce goods &amp; services far in excess of the increase in the money supply, so there will not be inflation."</span><span class="ja">AIとロボットが、お金の増え方をはるかに上回る物とサービスを作るので、インフレは起きない。</span></div>
+        <details class="weak"><summary>弱点を見る</summary><p>そういう法律は、<b>まだどの国にもありません</b>。日本が決めたのは、働いている人が対象の給付付き税額控除です（第6章）。マスク氏自身も、そこに至るまでは<b>「でこぼこ道になる（bumpy road）」</b>と認めています。</p></details>
+      </div>
+    </div>
+
+    <div class="step last">
+      <div class="num">6</div>
+      <div class="body">
+        <h3>だから、老後のために貯める必要がなくなる</h3>
+        <p>ほしい物がほとんどタダ同然で手に入り、国からもお金が届くなら、お金を貯めておく意味は小さくなる。これが「貯金はいらなくなる」の理由です。</p>
+        <div class="quote"><span class="en">"You want money for goods and services, right? … if that is so abundant that the robots and AI are providing more goods and services than any human could possibly consume, what do you need money for in that case?"</span><span class="ja">お金がほしいのは、物やサービスのためでしょう。ロボットとAIが、人が使いきれないほどの物とサービスを用意してくれるなら、お金は何のために必要なのか。</span></div>
+        <details class="weak"><summary>弱点を見る</summary><p>1〜5のどれか1つでも予想どおりに進まなければ、6にはたどり着きません。しかも「いつ」そうなるかは、マスク氏の言う10〜20年という幅があります。<b>あなたの老後が、その前に来るかもしれません</b>（第10章）。</p></details>
+      </div>
+    </div>
+  </div>
+  <p class="small" style="margin-top:6px">引用はエコノミスト誌インタビュー（2026年7月23日公開）、X投稿（2026年4月）、テスラの発表会（2024年10月）より。インタビューの英文は、文字起こしサイトThe Singju Postによるものです。訳はこのページで付けたものです。</p>
+  <a class="src" href="https://www.youtube.com/live/8TjK-s0468w" target="_blank" rel="noopener noreferrer">証拠：エコノミスト誌インタビュー動画を開く</a>
+</section>
+
 <!-- ⑨ AIとロボットで本当に来るのか -->
 <section id="ai">
-  <h2><span class="n">8</span>AIとロボットで、ベーシックインカムのような制度は本当に来るのか</h2>
+  <h2><span class="n">9</span>AIとロボットで、ベーシックインカムのような制度は本当に来るのか</h2>
   <p>国際機関の予測、AI企業のトップ、慎重な経済学者、日本の国会、そしてYouTubeやSNSの声まで、<b>いろいろな立場から</b>集めました。</p>
 
   <h3 style="margin-top:18px">① 数字で見る：仕事はどれくらい変わるのか</h3>
@@ -908,7 +1042,7 @@ footer a{color:var(--navy); word-break:break-all}
 
 <!-- ⑪ NISAと矛盾？ -->
 <section id="nisa">
-  <h2><span class="n">9</span>「お金はいらなくなる」なら、なぜ国はNISAや「老後2,000万円」を言うのか</h2>
+  <h2><span class="n">10</span>「お金はいらなくなる」なら、なぜ国はNISAや「老後2,000万円」を言うのか</h2>
   <div class="answer reveal" style="border-color:var(--warn); background:var(--warn-bg)">
     <p class="big" style="color:var(--warn)">これ、矛盾していませんか？</p>
     <p>マスク氏は「貯金はいらなくなる」「2036年にはお金は意味を持たなくなる」と言う。一方で日本の国は「老後に2,000万円必要」と言い、NISAで投資しようと勧めている。<b>どちらを信じればいいのか。</b>この章では、まず事実を並べ、そのあとで<b>このページの推測</b>を書きます。</p>
@@ -1012,7 +1146,7 @@ footer a{color:var(--navy); word-break:break-all}
   <div class="card ok reveal">
     <span class="tag" style="background:var(--ok); color:#fff">推測 4（いちばん面白いところ）</span>
     <h3>NISAは、むしろ「AIの利益を受け取る方法」とも読める</h3>
-    <p>第8章のOpenAIの提案は「国民全員がAI企業の株を持つ基金をつくり、利益を配る」というものでした。アメリカの赤ちゃん口座も、アラスカの配当金も、<b>「会社や資源の持ち主の一人になって、利益を分けてもらう」</b>仕組みです。</p>
+    <p>第9章のOpenAIの提案は「国民全員がAI企業の株を持つ基金をつくり、利益を配る」というものでした。アメリカの赤ちゃん口座も、アラスカの配当金も、<b>「会社や資源の持ち主の一人になって、利益を分けてもらう」</b>仕組みです。</p>
     <p>NISAで世界の株に投資するのも、<b>ロボットやAIを持つ会社の持ち主の一人になる</b>ことです。そう考えると、NISAとマスク氏の未来は正反対ではなく、<b>「AIが稼ぐ時代に、その稼ぎを受け取る側に回る」</b>という点で同じ方向を向いている、とも読めます。</p>
   </div>
 
@@ -1030,7 +1164,7 @@ footer a{color:var(--navy); word-break:break-all}
 
 <!-- ⑫ まとめ -->
 <section id="sum">
-  <h2><span class="n">10</span>まとめ</h2>
+  <h2><span class="n">11</span>まとめ</h2>
   <h3 class="take-h ok">分かっていること</h3>
   <div class="takes reveal">
     <div class="take ok"><span class="mk" aria-hidden="true">✓</span><div><b>心の健康と安心感は、良くなった</b><span>多くの実験で共通した結果</span></div></div>
@@ -1136,7 +1270,7 @@ footer a{color:var(--navy); word-break:break-all}
   if ('IntersectionObserver' in window && !reduce) {
     const io = new IntersectionObserver((es) => es.forEach(e => {
       if (e.isIntersecting) { onIn(e.target); io.unobserve(e.target); }
-    }), {threshold: 0.25});
+    }), {threshold: 0, rootMargin: '0px 0px -12% 0px'});
     targets.forEach(t => io.observe(t));
   } else {
     targets.forEach(onIn);
@@ -1197,7 +1331,7 @@ footer a{color:var(--navy); word-break:break-all}
     g.setAttribute('class','tl-dot'); g.setAttribute('tabindex','0'); g.setAttribute('role','button');
     g.setAttribute('aria-label', e.name + '：' + e.h);
     g.innerHTML = `<line x1="${x}" y1="${y}" x2="${x}" y2="150" stroke="var(--line)" stroke-width="2"/>
-      <circle class="ring" cx="${x}" cy="${y}" r="15" fill="transparent" stroke="transparent"/>
+      <circle class="ring" cx="${x}" cy="${y}" r="19" fill="transparent" stroke="transparent"/>
       <circle class="c" cx="${x}" cy="${y}" r="8" fill="${COL[e.t]}" stroke="#fff" stroke-width="2.5"/>`;
     g.style.opacity = reduce ? 1 : 0;
     g.style.transition = 'opacity .5s ' + (i * 0.12) + 's';
@@ -1219,9 +1353,20 @@ footer a{color:var(--navy); word-break:break-all}
   const tlWrap = document.querySelector('.tl-wrap');
   const fadeDots = () => nodes.forEach(n => n.style.opacity = 1);
   if ('IntersectionObserver' in window && !reduce) {
-    const io2 = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { fadeDots(); io2.disconnect(); } }), {threshold:.3});
+    const io2 = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { fadeDots(); io2.disconnect(); } }), {threshold: 0, rootMargin: '0px 0px -12% 0px'});
     io2.observe(tlWrap);
   } else fadeDots();
+
+  // スマホで横長の図は横スクロールにする（文字が小さくなりすぎないように）
+  document.querySelectorAll('figure svg, .tl-wrap svg').forEach(svg => {
+    const vb = (svg.getAttribute('viewBox') || '').split(/\s+/).map(Number);
+    if (!(vb[2] >= 600)) return;
+    const box = document.createElement('div'); box.className = 'hscroll';
+    box.style.setProperty('--minw', Math.round(vb[2]) + 'px');
+    svg.parentNode.insertBefore(box, svg); box.appendChild(svg);
+    const hint = document.createElement('div'); hint.className = 'hscroll-hint'; hint.textContent = '← 横にスクロールできます →';
+    box.parentNode.insertBefore(hint, box);
+  });
 
   // 2×2の表
   const gout = document.getElementById('grid-out');

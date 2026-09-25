@@ -123,7 +123,7 @@ select:disabled{background:var(--line-soft); color:var(--sub)}
 
   <div class="foot">
     <p>この結果は、厚生労働省と自治体の公開資料をもとにした目安です。最終的な対象・金額・手続きは、自治体が決めます。入力した内容はこの画面の中だけで処理していて、どこにも送信していません。</p>
-    <p>根拠: <a href="https://www.mhlw.go.jp/stf/newpage_68902.html" target="_blank" rel="noopener">厚労省「最高裁判決への対応について」</a> ／ <a href="https://www.mhlw.go.jp/content/12000000/001708553.pdf" target="_blank" rel="noopener">追加給付の対象となる方へのご案内（PDF）</a> ／ <a href="https://www.mhlw.go.jp/content/12000000/001662197.pdf" target="_blank" rel="noopener">追加給付額の例（PDF）</a> ／ <a href="https://www.city.nagasaki.lg.jp/page/77525.html" target="_blank" rel="noopener">長崎市の案内（必要書類の例）</a> ／ 級地: <a href="https://www.mhlw.go.jp/content/kyuchi.3010.pdf" target="_blank" rel="noopener">厚労省「お住まいの地域の級地」（平成30年10月）</a></p>
+    <p>根拠: <a href="https://www.mhlw.go.jp/stf/newpage_68902.html" target="_blank" rel="noopener">厚労省「最高裁判決への対応について」</a> ／ <a href="https://www.mhlw.go.jp/content/12000000/001708553.pdf" target="_blank" rel="noopener">追加給付の対象となる方へのご案内（PDF）</a> ／ <a href="https://www.mhlw.go.jp/content/12000000/001662197.pdf" target="_blank" rel="noopener">追加給付額の例（PDF）</a> ／ <a href="https://www.city.nagasaki.lg.jp/page/77525.html" target="_blank" rel="noopener">長崎市の案内（必要書類の例）</a> ／ 期末一時扶助: <a href="https://www.mhlw.go.jp/web/t_doc?dataId=82051000&amp;dataType=0&amp;pageNo=4" target="_blank" rel="noopener">厚労省「生活保護法による保護の基準」（告示）</a> ／ 級地: <a href="https://www.mhlw.go.jp/content/kyuchi.3010.pdf" target="_blank" rel="noopener">厚労省「お住まいの地域の級地」（平成30年10月）</a></p>
     <p>確認日: 2026年9月25日 ／ 個人が作ったもので、行政の公式ツールではありません。</p>
     <p><a href="tsuika-setsumei.html">くわしい解説ページへ</a></p>
   </div>
@@ -263,7 +263,7 @@ function render() {
       <p class="small">厚労省「追加給付額の例」。受けていた期間が一部なら、その月数分だけです。</p></div>`;
   } else {
     money = `<div class="box"><h3>金額の目安</h3>
-      <p>12月の期末一時扶助の <b>2.4%分</b> が中心です。ひとり暮らしなら <b>12月1回につき約270〜350円</b>（試算）。</p>
+      <p>12月の期末一時扶助の <b>2.4%分</b> が中心です。ひとり暮らしなら <b>12月1回につき約270〜350円</b>（試算。期末一時扶助は地域により11,240〜14,500円：国の告示より）。</p>
       <p class="small">長崎市の案内にも「保護受給期間が短い場合などは、数百円程度となることもあります」とあります。加算や入院があった場合は増えます。</p></div>`;
   }
 

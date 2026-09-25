@@ -43,6 +43,46 @@ b.em{color:var(--ng)}
 .for-who b{display:block; font-size:13px; letter-spacing:.06em; color:var(--navy); margin-bottom:5px}
 .for-who ul{margin:0; padding-left:1.15em; font-size:16.5px; font-weight:700; line-height:1.65}
 
+/* そもそも何の話？（3ステップ） */
+.story{background:var(--panel); border:2px solid var(--line); border-radius:13px; padding:14px 16px; margin:4px 0 12px}
+.story-h{font-size:14px; font-weight:800; color:var(--navy); letter-spacing:.04em; margin-bottom:8px}
+.st{display:flex; gap:12px; align-items:flex-start; background:var(--ground); border:2px solid var(--line); border-radius:11px; padding:10px 13px;
+  opacity:0; transform:translateY(10px); transition:opacity .6s, transform .6s}
+.story.in .st{opacity:1; transform:none}
+.story.in .st:nth-of-type(4){transition-delay:.5s}
+.story.in .st:nth-of-type(6){transition-delay:1s}
+.st .no{flex:none; width:30px; height:30px; border-radius:50%; background:var(--navy-soft); color:var(--navy); font-weight:800; display:grid; place-items:center}
+.st b{display:block; font-size:16.5px; line-height:1.5}
+.st span:not(.no){display:block; font-size:14px; color:var(--sub); line-height:1.6}
+.st span b{display:inline; font-size:inherit; color:var(--ng)}
+.st.ok{border-color:var(--ok); background:var(--ok-bg)}
+.st.ok .no{background:var(--ok); color:#fff}
+.st.ok span b{color:var(--ok)}
+.story .arrow{text-align:center; color:var(--sub); font-size:12px; line-height:1; margin:4px 0}
+.story-sum{margin:12px 0 0; font-size:15.5px; background:var(--navy-soft); border-radius:9px; padding:10px 13px}
+.story-sum b{color:var(--navy)}
+details.words{border:2px solid var(--line); border-radius:11px; margin-bottom:14px; background:var(--ground)}
+details.words summary{cursor:pointer; list-style:none; font-size:14px; font-weight:700; color:var(--navy); padding:8px 13px; min-height:40px; display:flex; align-items:center; gap:6px}
+details.words summary::-webkit-details-marker{display:none}
+details.words summary::before{content:"＋"; font-weight:800}
+details.words[open] summary::before{content:"−"}
+details.words dl{margin:0; padding:0 14px 12px; display:grid; grid-template-columns:auto 1fr; gap:6px 12px; font-size:14px}
+details.words dt{font-weight:800; color:var(--navy); white-space:nowrap}
+details.words dd{margin:0; color:var(--ink)}
+@media (max-width:480px){ details.words dl{grid-template-columns:1fr; gap:0} details.words dd{margin-bottom:8px} }
+
+/* やさしく言うと */
+.easy{background:var(--ok-bg); border-left:5px solid var(--ok); border-radius:0 8px 8px 0; padding:10px 14px; margin:-4px 0 14px; font-size:15.5px; font-weight:700; line-height:1.7}
+.easy .lbl{display:block; font-size:11.5px; letter-spacing:.05em; color:var(--ok); margin-bottom:3px}
+.easy b{color:var(--ok)}
+/* お小遣いのたとえ */
+.kid{background:var(--warn-bg); border:2px solid var(--warn); border-radius:13px; padding:14px 16px; margin-bottom:14px}
+.kid h3{color:var(--warn)}
+.kid .bar.k1{background:var(--warn)}
+.kid .bar-row .lab{font-size:12.5px}
+.kid ol{margin:6px 0 10px; padding-left:1.3em; font-size:15px}
+.kid ol li{margin-bottom:4px}
+
 /* 結論：2つの人に分けて見せる */
 .answer{display:grid; grid-template-columns:1fr 1fr; gap:10px}
 .ans{border-radius:0 12px 12px 0; padding:14px 15px; border-left:5px solid}
@@ -192,7 +232,7 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
   .deadline .left{margin-left:0}
 }
 @media (prefers-reduced-motion:reduce){
-  .reveal,.mt-item,.flow .bx{opacity:1!important; transform:none!important}
+  .reveal,.easy,.mt-item,.flow .bx,.st{opacity:1!important; transform:none!important}
   .flow .ln{stroke-dashoffset:0!important}
   .bar,.mt .fill{transition:none!important}
 }
@@ -226,7 +266,29 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
   </div>
 
   <h1 class="mincho">保護費の追加給付、<br>期限までに申し出ないと0円</h1>
-  <p>最高裁判所が「2013年からの生活保護費の引き下げは違法」と判断しました。それを受けて国が、<b>当時の保護費の差額を追加で支払っています</b>。手続きがいるかどうかは、<b>今も生活保護を受けているかどうか</b>で分かれます。</p>
+  <div class="story reveal" aria-label="そもそも何の話か">
+    <div class="story-h">そもそも、何の話？</div>
+    <div class="st"><span class="no">1</span><div><b>2013年、国が生活保護費を下げた</b><span>食費や光熱費にあたる「生活扶助」を、3年かけて引き下げました。</span></div></div>
+    <div class="arrow" aria-hidden="true">▼</div>
+    <div class="st"><span class="no">2</span><div><b>「下げ方がおかしい」と裁判になった</b><span>2025年6月、最高裁判所が「この下げ方は<b>違法</b>」と判断しました。</span></div></div>
+    <div class="arrow" aria-hidden="true">▼</div>
+    <div class="st ok"><span class="no">3</span><div><b>下げすぎた分を、国があとから払っている</b><span>これが<b>「追加給付」</b>です。当時生活保護を受けていた人が対象です。</span></div></div>
+    <p class="story-sum">ひとことで言うと、<b>「減らされすぎていた生活保護費の一部が、今になって戻ってくる」</b>話です。</p>
+  </div>
+
+  <details class="words">
+    <summary>この話に出てくる言葉（押すと開きます）</summary>
+    <dl>
+      <dt>追加給付</dt><dd>あとから追加で払われるお金。今回は、下げすぎた保護費の差額のこと</dd>
+      <dt>申し出（もうしで）</dt><dd>自分から「払ってください」と書類を出すこと。やめた人はこれをしないともらえない</dd>
+      <dt>自治体</dt><dd>市役所・区役所・町村役場など。生活保護を担当している窓口のこと</dd>
+      <dt>世帯主</dt><dd>その家（世帯）の代表の人。追加給付は当時の世帯主に払われる</dd>
+      <dt>期末一時扶助</dt><dd>毎年12月だけ、年末の出費のために少し多く出る保護費</dd>
+      <dt>最高裁判所</dt><dd>日本でいちばん上の裁判所。ここの判断で裁判は終わる</dd>
+    </dl>
+  </details>
+
+  <p>手続きがいるかどうかは、<b>今も生活保護を受けているかどうか</b>で分かれます。</p>
 
   <div class="answer reveal">
     <div class="ans ok">
@@ -247,71 +309,68 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
     <span class="left">あと<span class="v" id="daysLeft">—</span>日</span>
   </div>
 
-  <div class="stats reveal">
-    <div class="stat"><div class="v">約<span data-count="10">0</span><small>万円</small></div><div class="k">1世帯あたりの目安<br>（国の見込み）</div></div>
-    <div class="stat"><div class="v"><span data-count="1055">0</span><small>億円</small></div><div class="k">追加給付に<br>国が用意したお金</div></div>
-    <div class="stat"><div class="v"><span data-count="12.5" data-dec="1">0</span><small>年</small></div><div class="k">対象の期間<br>2013年8月〜2026年3月</div></div>
+  <div class="stats reveal" style="grid-template-columns:1fr">
+    <div class="stat"><div class="v">約<span data-count="10">0</span><small>万円</small></div><div class="k">1世帯あたりの目安（国の見込み）。受けていた時期で大きく変わります</div></div>
   </div>
   <a class="src" href="https://www.mhlw.go.jp/content/12000000/001650369.pdf" target="_blank" rel="noopener">厚労省「最高裁判決を踏まえた保護費等の追加給付について」（PDF）↗</a>
 </section>
 
 <section id="listener">
   <h2><span class="n">1</span>きっかけは、リスナーさんのコメント</h2>
-  <p>この話は、配信のチャットで教えてもらいました。</p>
   <div class="quote chat reveal">
     <span class="lbl">リスナーさん（2026年9月4日の配信チャット）</span>
     <span class="msg">「今日、例の差額分のお金、生活保護費とプラスで、入金されましたよ。」</span><br>
     <span class="msg">「前の最高裁の結果で、生活保護費が少なかったから、その上乗せ分らしいです。」</span>
   </div>
-  <p>調べてみると、これは本当の話でした。今受けている人には自動で入金されます。ただ、<b class="em">すでに生活保護をやめた人には、黙っていても入金されません</b>。自分で申し出る必要があり、期限もあります。</p>
+  <p>調べてみると、本当の話でした。今受けている人には、何もしなくても振り込まれます。でも、<b class="em">もう生活保護をやめた人には、待っていても振り込まれません</b>。</p>
+<div class="easy reveal"><span class="lbl">やさしく言うと</span>落とし物と同じです。<b>自分で「私のです」と取りに行かないと、戻ってきません。</b>しかも、取りに行ける期限があります。</div>
 </section>
 
 <section id="what">
   <h2><span class="n">2</span>何があったのか</h2>
-  <p>13年前の引き下げが、去年「違法」と判断され、今年になって支払いが始まっています。</p>
+  <p>2013年に下げた分が、2025年に「違法」と決まり、2026年から返され始めています。</p>
   <div class="reveal">
     <div class="mt"><div class="fill"></div>
-      <div class="mt-item hot"><div class="d">2013年8月〜（3回に分けて）</div><div class="t">国が生活保護費を引き下げ</div><div class="w">物価が下がったことを理由に、基準生活費を一律4.78%下げる「デフレ調整」などを行った</div></div>
-      <div class="mt-item"><div class="d">その後</div><div class="t">全国で約660人が裁判を起こす</div><div class="w">最高裁の前までは、勝った裁判も負けた裁判もあった</div></div>
-      <div class="mt-item hot"><div class="d">2025年6月27日</div><div class="t">最高裁が「違法」と判断</div><div class="w">生活保護費の引き下げを最高裁が違法としたのは初めて</div></div>
-      <div class="mt-item"><div class="d">2025年11月</div><div class="t">国の専門委員会が対応をまとめる</div></div>
-      <div class="mt-item"><div class="d">2025年12月16日</div><div class="t">追加給付のお金（補正予算）が成立</div></div>
+      <div class="mt-item hot"><div class="d">2013年8月〜（3回に分けて）</div><div class="t">国が生活保護費を下げた</div><div class="w">「物の値段が下がったから、保護費も下げていい」と考えて、4.78%下げた（これを「デフレ調整」と呼ぶ）</div></div>
+      <div class="mt-item hot"><div class="d">2025年6月27日</div><div class="t">最高裁が「違法」と判断</div><div class="w">日本でいちばん上の裁判所が「この下げ方はルール違反」と決めた。初めてのこと</div></div>
       <div class="mt-item"><div class="d">2026年3月〜</div><div class="t">今受けている人へ、順次支払い開始</div><div class="w">手続きは不要。自治体の準備ができたところから</div></div>
       <div class="mt-item"><div class="d">2026年8月1日〜</div><div class="t">やめた人の申し出の受付が始まる</div></div>
       <div class="mt-item now"><div class="d">2027年7月31日</div><div class="t">申し出の期限</div></div>
     </div>
   </div>
   <a class="src" href="https://www.mhlw.go.jp/stf/newpage_68902.html" target="_blank" rel="noopener">厚労省「平成25年生活扶助基準改定に関する最高裁判決への対応について」↗</a>
+  <a class="src" href="https://www.mhlw.go.jp/stf/newpage_74654.html" target="_blank" rel="noopener">厚労省 報道発表（申し出の受付期間・2026年7月17日） ↗</a>
 </section>
 
 <section id="court">
   <h2><span class="n">3</span>最高裁は何と言ったのか</h2>
-  <p>判決の要点を、厚労省がまとめた資料から原文のまま引用します。</p>
+  <p>むずかしい言葉ですが、まず原文をそのまま見せます。そのあとに、やさしく言いかえます。</p>
   <div class="quote reveal">
     <span class="lbl">最高裁判決の概要（厚労省作成）より原文</span>
-    物価変動率のみを直接の指標として用いたことに、専門的知見との整合性を欠くところがあり、この点において、<b>デフレ調整に係る厚生労働大臣の判断の過程及び手続には過誤、欠落があったものというべき</b>。
-  </div>
-  <div class="quote reveal">
-    <span class="lbl">同じ資料より原文</span>
     デフレ調整が<b>一律に4.78％も減ずるもの</b>であり、生活扶助を受給していた者の生活に大きな影響を及ぼすものであることも考慮すると（中略）本件改定は、（中略）<b>生活保護法３条、８条２項に違反して違法</b>。
   </div>
-  <p>かみくだくと、<b>「物価の数字だけを使って、専門家の検討もせずに4.78%も下げたのは違法」</b>という判断です。一方で、年齢や世帯人数ごとの差をならす「ゆがみ調整」は違法とされていません。</p>
+  <div class="easy reveal"><span class="lbl">やさしく言うと</span>「物の値段が下がった」という<b>ひとつの数字だけ</b>を見て、専門家にも相談せずに、4.78%も下げた。<b>それは決め方がまちがっている</b>、ということです。</div>
   <a class="src" href="https://www.mhlw.go.jp/content/12000000/001648870.pdf" target="_blank" rel="noopener">厚労省「最高裁判決の概要」（PDF）↗</a>
-  <p class="small" style="margin-top:10px">厚労省は「深く反省し、原告の皆様を含め、広く国民の皆様にお詫び申し上げます」とホームページに書いています。</p>
 </section>
 
 <section id="money">
   <h2><span class="n">4</span>いくら戻ってくるのか</h2>
-  <p>国は引き下げをなくしたのではなく、<b>下げ幅を4.78%から2.49%に決め直し</b>、その差を支払う形にしました。</p>
-  <div class="card reveal">
-    <h3>引き下げの幅（デフレ調整にあたる部分）</h3>
-    <div class="bars" data-max="4.78">
-      <div class="bar-row"><div class="lab">2013年の引き下げ</div><div class="bar-track"><div class="bar ng" data-v="4.78"></div><span class="bar-val">−4.78%</span></div></div>
-      <div class="bar-row"><div class="lab">国が決め直した幅</div><div class="bar-track"><div class="bar nv" data-v="2.49"></div><span class="bar-val">−2.49%</span></div></div>
-      <div class="bar-row"><div class="lab">裁判の原告</div><div class="bar-track"><div class="bar ok" data-v="0"></div><span class="bar-val out">0%（特別給付金で上乗せ）</span></div></div>
+  <div class="kid reveal">
+    <h3>お小遣いでたとえると</h3>
+    <ol>
+      <li>毎月<b>1万円</b>のお小遣いを、親が「物の値段が下がったから」と<b>478円</b>減らした</li>
+      <li>家族会議で「その計算はおかしい」と決まった</li>
+      <li>親は計算し直して、「本当は<b>249円</b>減らすのが正しかった」とした</li>
+      <li>だから、減らしすぎた<b>229円</b>を、あとから返す ← <b>これが追加給付</b></li>
+    </ol>
+    <div class="bars" data-max="10000">
+      <div class="bar-row"><div class="lab">もとのお小遣い</div><div class="bar-track"><div class="bar nv" data-v="10000"></div><span class="bar-val">10,000円</span></div></div>
+      <div class="bar-row"><div class="lab">減らされた後</div><div class="bar-track"><div class="bar ng" data-v="9522"></div><span class="bar-val">9,522円</span></div></div>
+      <div class="bar-row"><div class="lab">計算し直した後</div><div class="bar-track"><div class="bar k1" data-v="9751"></div><span class="bar-val">9,751円（＋229円）</span></div></div>
     </div>
-    <div class="gap-note">赤と紺の<b>差の分</b>が、原告以外の人への追加給付です。当時の保護費に対して、<b>最大で2.4%分</b>が上乗せされます（時期によって0.8%・1.6%・2.4%）。</div>
+    <p class="small" style="margin:0">つまり、<b>全部は戻らない</b>。減らしすぎた分の<b>半分くらい</b>が戻ってくる、というイメージです。実際には、当時の保護費の<b>最大2.4%分</b>が戻ります。裁判を起こした人だけは、別のお金で全部戻ります。</p>
   </div>
+  <a class="src" href="https://www.mhlw.go.jp/content/12000000/001650369.pdf" target="_blank" rel="noopener">厚労省「最高裁判決を踏まえた保護費等の追加給付について」（▲4.78%→▲2.49%・PDF） ↗</a>
 
   <h3 style="margin-top:18px">国が出している金額の例</h3>
   <p class="small">2013年8月から2026年3月まで、ずっと受けていた場合です（加算なし・自宅で生活）。</p>
@@ -331,7 +390,7 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
       <div class="bar-row"><div class="lab">2015.4〜2018.9<small>42か月・+2.4%</small></div><div class="bar-track"><div class="bar"></div><span class="bar-val out"></span></div></div>
       <div class="bar-row"><div class="lab">2018.10〜2026.3<small>12月の分だけ</small></div><div class="bar-track"><div class="bar"></div><span class="bar-val out"></span></div></div>
     </div>
-    <p class="small">2018年10月からは基準が見直されたため、ふだんの月は対象外です。<b>毎年12月に出る「期末一時扶助」</b>や、障害者加算・入院などが算定されていた分だけが対象です。</p>
+    <p class="small">2018年10月からは保護費の決め方が新しくなったので、ふだんの月は対象外です。<b>毎年12月だけ少し多く出るお金（期末一時扶助）</b>と、障害がある人・入院していた人などへの上乗せの分だけが対象です。</p>
   </div>
   <a class="src" href="https://www.mhlw.go.jp/content/12000000/001662197.pdf" target="_blank" rel="noopener">厚労省「追加給付額の例・対象期間」（PDF）↗</a>
 </section>
@@ -381,18 +440,14 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
     <span class="lbl">厚労省「追加給付の対象となる方へのご案内」より原文</span>
     現在はＡ市で生活保護を受けていますが、平成25年８月時点ではＢ市で、その後Ｃ市で生活保護を受けていました。（中略）<b>それぞれの自治体から追加給付されます。Ａ市からは手続きをすることなく支払われますが、Ｂ市・Ｃ市に対しては申出を行ってください。</b>
   </div>
+  <div class="easy reveal"><span class="lbl">やさしく言うと</span>引っ越しながら生活保護を受けていた人は、<b>今の役所の分は自動</b>。でも<b>前に住んでいた役所の分は、自分で連絡しないともらえません。</b></div>
+  <a class="src" href="https://www.mhlw.go.jp/content/12000000/001708553.pdf" target="_blank" rel="noopener">厚労省「追加給付の対象となる方へのご案内」（PDF） ↗</a>
   <a class="tool-link" href="tsuika.html">自分の場合を調べる（ツール）<span>選ぶだけで、対象かどうか・申し出が必要か・どこに出すかが分かります</span></a>
 </section>
 
 <section id="how">
   <h2><span class="n">6</span>申し出のしかた（やめた人）</h2>
-  <p>やり方は自治体ごとに少し違います。ここでは長崎市の案内を例にします。</p>
-  <ol class="steps reveal">
-    <li><b>当時受けていた自治体のページで「追加給付」を探す</b><span>申出書をダウンロードするか、窓口でもらう</span></li>
-    <li><b>必要な書類をそろえる</b><span>下のチェックリスト。戸籍謄本の手数料は自分で負担</span></li>
-    <li><b>郵送するか、窓口に持っていく</b><span>長崎市は郵送と市役所4階の窓口の2通り。自治体によっては電子申請もある</span></li>
-    <li><b>決定通知書が届き、口座に振り込まれる</b><span>板橋区の案内では、書類に問題がなければ1か月半〜2か月程度</span></li>
-  </ol>
+  <p>昔住んでいた市役所などに、書類を<b>郵送するか窓口に持っていきます</b>。書類は役所ごとに少し違います。ここでは長崎市を例にします。</p>
   <div class="card reveal">
     <h3>必要な書類（長崎市の例）</h3>
     <div class="prog" aria-hidden="true"><i id="progBar"></i></div>
@@ -405,35 +460,32 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
       <li><label><input type="checkbox"><span>本人名義の通帳かキャッシュカードの写し<small>振込先の確認用</small></span></label></li>
     </ul>
   </div>
-  <p class="small">当時の世帯主が亡くなっている場合は、当時の世帯員から申し出られます（長崎県の案内）。受けていた期間がはっきり分からなくても、自治体の記録で確認してもらえます（板橋区の案内）。</p>
   <a class="src" href="https://www.city.nagasaki.lg.jp/page/77525.html" target="_blank" rel="noopener">長崎市「保護費等の追加給付について」↗</a>
-  <a class="src" href="https://www.city.itabashi.tokyo.jp/kenko/fukushi/soudan/1062672.html" target="_blank" rel="noopener">板橋区の案内（よくある質問つき）↗</a>
   <div class="card ok reveal" style="margin-top:12px">
     <h3>分からないときの電話（無料）</h3>
     <p style="font-size:22px; font-weight:800; color:var(--ok); margin:0">0120-179-445</p>
     <p class="small">厚労省の「追加給付相談センター」。平日9時〜17時（8〜10月は土日祝も）</p>
+    <a class="src" href="https://tsuikakyufu-sodancenter.mhlw.go.jp/" target="_blank" rel="noopener">追加給付相談センター（厚労省委託） ↗</a>
   </div>
 </section>
 
 <section id="me">
   <h2><span class="n">7</span>生活保護3年目の僕の場合</h2>
-  <p>僕が生活保護を受け始めたのは<b>2024年</b>です。2018年10月より後なので、ふだんの月の保護費は対象外。対象になるのは<b>12月の期末一時扶助</b>の分だけです。</p>
+  <p>僕が生活保護を受け始めたのは<b>2024年</b>です。2018年10月より後なので、ふだんの月の保護費は対象外。対象になるのは<b>毎年12月だけ少し多く出るお金（期末一時扶助）</b>の分だけです。</p>
   <div class="calc-me reveal">
-    <div class="box"><div class="v">約1.1〜1.5万円</div><div class="k">ひとり暮らしの<br>期末一時扶助（地域による）</div></div>
+    <div class="box"><div class="v">13,190円</div><div class="k">長崎市・ひとり暮らしの<br>期末一時扶助</div></div>
     <div class="op">× 2.4%</div>
-    <div class="box"><div class="v">約270〜350円</div><div class="k">1回あたり</div></div>
+    <div class="box"><div class="v">約317円</div><div class="k">1回あたり</div></div>
     <div class="op">× 2回</div>
-    <div class="box res"><div class="v">約540〜700円</div><div class="k">2024年12月・<br>2025年12月の分</div></div>
+    <div class="box res"><div class="v">約630円</div><div class="k">2024年12月・<br>2025年12月の分</div></div>
   </div>
-  <p class="small">↑ これは僕が計算した<b>試算</b>です。正確な額は、自治体から届く決定通知書で分かります。</p>
+  <p class="small">↑ これは僕が計算した<b>試算</b>です。13,190円は国の告示に載っている今の金額（長崎市は2級地-1）。ひとり暮らしの期末一時扶助は、地域によって11,240〜14,500円です。正確な額は、役所から届く決定通知書で分かります。</p>
+  <a class="src" href="https://www.mhlw.go.jp/web/t_doc?dataId=82051000&amp;dataType=0&amp;pageNo=4" target="_blank" rel="noopener">厚労省「生活保護法による保護の基準」（告示・期末一時扶助費の表）↗</a>
   <div class="quote reveal">
     <span class="lbl">長崎市の案内より原文</span>
-    現在長崎市で生活保護受給中の世帯（保護停止世帯含む）は、<b>申出は不要です。令和8年度中に追加給付を行う予定です。</b>給付日と給付額が確定次第、対象者に決定通知書を送付いたします。
-  </div>
-  <div class="quote reveal">
-    <span class="lbl">同じページより原文</span>
     追加給付額は、当時の年齢、世帯人数、保護受給期間、加算の有無等によって異なります。（<b>保護受給期間が短い場合などは、数百円程度となることもあります</b>）
   </div>
+  <a class="src" href="https://www.city.nagasaki.lg.jp/page/77525.html" target="_blank" rel="noopener">長崎市「保護費等の追加給付について」（令和8年度中に支給予定） ↗</a>
   <p>2026年9月25日の時点で、<b>僕のところには、まだ決定通知書も入金もありません</b>。長崎市は「令和8年度中」（2027年3月まで）に支払う予定なので、待っている段階です。</p>
   <p>つまり、<b>僕は数百円</b>。でも2013〜2018年に受けていた人は、<b>10万円前後になることもあります</b>。昔受けていて、今はやめている人ほど、知らないと損をする仕組みです。</p>
 </section>
@@ -443,39 +495,24 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
   <div class="card ng reveal">
     <h3>電話で口座番号を聞かれたら詐欺</h3>
     <div class="quote" style="margin:6px 0 0; border-left-color:var(--ng)"><span class="lbl">厚労省のご案内より原文</span>保護費の追加給付について、<b>厚生労働省や自治体から口座番号等をお電話でお聞きすることはありません。詐欺にご注意ください！</b></div>
+    <a class="src" href="https://www.mhlw.go.jp/content/12000000/001708553.pdf" target="_blank" rel="noopener">厚労省「追加給付の対象となる方へのご案内」（PDF） ↗</a>
   </div>
   <div class="card ok reveal">
-    <h3>今受けている人：収入として差し引かれない</h3>
+    <h3>今受けている人：もらっても保護費は減らない</h3>
     <div class="quote" style="margin:6px 0 0; border-left-color:var(--ok)"><span class="lbl">同じご案内より原文</span>今回の保護費の追加給付は収入認定の対象になりますか。→ <b>収入認定の対象になりません。</b>なお、保有が認められない物品の購入などは認められません。</div>
-  </div>
-  <div class="card reveal">
-    <h3>亡くなった家族の分は出ない</h3>
-    <div class="quote" style="margin:6px 0 0"><span class="lbl">同じご案内より原文</span><b>亡くなられた方は保護費の追加給付の対象となりません</b>ので、この場合、お二人分の追加給付をいたします。</div>
-  </div>
-  <div class="card reveal">
-    <h3>これから生活保護を考えている人へ</h3>
-    <p>2026年4月以降に受け始める人は、今回の追加給付の対象外です。ただ、<b>保護費の決め方が裁判で違法とされ、あとから差額が支払われることもある</b>と知っておくと、国の金額をうのみにしなくてよい、という心の支えになります。</p>
+    <p style="margin:8px 0 0">やさしく言うと、<b>もらっても、次の月の保護費は減りません。</b>ただし、生活保護では持ってはいけないと決められている物を買うのはだめです。</p>
+    <a class="src" href="https://www.mhlw.go.jp/content/12000000/001708553.pdf" target="_blank" rel="noopener">厚労省「追加給付の対象となる方へのご案内」（PDF） ↗</a>
   </div>
 </section>
 
 <section id="sum">
   <h2><span class="n">9</span>まとめ</h2>
   <div class="take-h ok">分かっていること</div>
-  <div class="take ok reveal"><div class="mk">✓</div><div><b>2013年からの引き下げを、最高裁が違法と判断した</b><span>2025年6月27日。物価の数字だけで4.78%下げた点が違法とされた</span></div></div>
+  <div class="take ok reveal"><div class="mk">✓</div><div><b>2013年に下げた生活保護費は、下げ方がまちがっていた</b><span>2025年6月27日、最高裁判所が「違法」と決めた</span></div></div>
   <div class="take ok reveal"><div class="mk">✓</div><div><b>今受けている人は、手続きなしで支払われる</b><span>2026年3月から順次。時期は自治体ごと</span></div></div>
-  <div class="take ok reveal"><div class="mk">✓</div><div><b>やめた人は、2027年7月31日までに申し出る</b><span>当時の自治体へ、当時の世帯主が</span></div></div>
-  <div class="take ok reveal"><div class="mk">✓</div><div><b>金額は受けていた時期しだい。2013〜2018年が中心</b><span>1世帯あたり約10万円が国の目安。2018年10月以降だけなら数百円のことも</span></div></div>
+  <div class="take ok reveal"><div class="mk">✓</div><div><b>やめた人は、2027年7月31日までに自分で申し出る</b><span>昔住んでいた役所へ。当時の家の代表（世帯主）が出す</span></div></div>
   <div class="take-h warn">まだ分からないこと</div>
   <div class="take q reveal"><div class="mk">？</div><div><b>自分の自治体でいつ支払われるか</b><span>自治体の準備しだい。決定通知書を待つか、自治体に確認</span></div></div>
-  <div class="take q reveal"><div class="mk">？</div><div><b>期限を過ぎたらどうなるか</b><span>国の案内には書かれていない。過ぎる前に出すのが確実</span></div></div>
-  <div class="take q reveal"><div class="mk">？</div><div><b>全額の補償に変わることはあるか</b><span>弁護士会などは「引き下げ前の水準で全員に」と求めている</span></div></div>
-  <details class="more">
-    <summary>反対の意見を見る（日本弁護士連合会）</summary>
-    <div>
-      <p>日弁連は2026年1月23日の会長声明で、国のやり方を批判しています。国は下げ幅を2.49%に決め直しましたが、これは裁判の中で国が主張し、最高裁が採用しなかった考え方だという指摘です。また、<b>原告だけは引き下げなし（0%）の水準まで特別給付金で上乗せされ、原告以外は2.49%の引き下げが残る</b>ため、同じ被害を受けた人の間で差があるのは平等に反する、としています。</p>
-      <a class="src" href="https://www.nichibenren.or.jp/document/statement/year/2026/260123.html" target="_blank" rel="noopener">日弁連 会長声明（2026年1月23日）↗</a>
-    </div>
-  </details>
 </section>
 
 <section id="src">
@@ -489,10 +526,7 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
     <li><a href="https://www.mhlw.go.jp/content/12000000/001650369.pdf" target="_blank" rel="noopener">厚労省「最高裁判決を踏まえた保護費等の追加給付について」（補正予算・PDF）</a></li>
     <li><a href="https://tsuikakyufu-sodancenter.mhlw.go.jp/" target="_blank" rel="noopener">最高裁判決を踏まえた保護費の追加給付相談センター（厚労省委託）</a></li>
     <li><a href="https://www.city.nagasaki.lg.jp/page/77525.html" target="_blank" rel="noopener">長崎市「保護費等の追加給付について」</a></li>
-    <li><a href="https://www.pref.nagasaki.jp/bunrui/hukushi-hoken/fukushi/seikatsuhogo/tsuikakyuuhu/" target="_blank" rel="noopener">長崎県「最高裁判決を踏まえた保護費の追加給付について」</a></li>
-    <li><a href="https://www.city.itabashi.tokyo.jp/kenko/fukushi/soudan/1062672.html" target="_blank" rel="noopener">板橋区「生活保護費等の追加給付について」</a></li>
-    <li><a href="https://www.nichibenren.or.jp/document/statement/year/2026/260123.html" target="_blank" rel="noopener">日本弁護士連合会 会長声明（2026年1月23日）</a></li>
-    <li><a href="https://limo.media/articles/-/137815" target="_blank" rel="noopener">LIMO「生活保護の期末一時扶助」（僕の試算で、期末一時扶助の金額の幅に使用）</a></li>
+    <li><a href="https://www.mhlw.go.jp/web/t_doc?dataId=82051000&amp;dataType=0&amp;pageNo=4" target="_blank" rel="noopener">厚労省「生活保護法による保護の基準」（昭和38年厚生省告示第158号・期末一時扶助費の表）</a></li>
   </ol>
   <div class="caution" style="margin-top:16px">
     <b>読むときの注意</b>

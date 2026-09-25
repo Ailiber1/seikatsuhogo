@@ -38,6 +38,14 @@ b.em{color:var(--ng)}
 .toc ul::-webkit-scrollbar{display:none}
 .toc a{display:block; white-space:nowrap; font-size:13px; font-weight:700; color:var(--navy); text-decoration:none; padding:5px 11px; border-radius:999px; background:var(--navy-soft)}
 .toc a.on{background:var(--navy); color:var(--on-navy)}
+/* スマホ：横スクロール。右端をぼかして続きがあると分かるように */
+.toc{--fade:linear-gradient(to right, #000 85%, transparent)}
+.toc ul{-webkit-mask-image:var(--fade); mask-image:var(--fade)}
+.toc ul.end{-webkit-mask-image:none; mask-image:none}
+/* PC：折り返して全部見せる */
+@media (min-width:700px){
+  .toc ul{max-width:1120px; flex-wrap:wrap; justify-content:center; overflow:visible; -webkit-mask-image:none; mask-image:none}
+}
 
 .for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:14px 18px; margin-bottom:16px}
 .for-who b{display:block; font-size:13px; letter-spacing:.06em; color:var(--navy); margin-bottom:5px}
@@ -656,6 +664,10 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
     if (x < ul.scrollLeft || x + a.offsetWidth > ul.scrollLeft + ul.clientWidth) ul.scrollLeft = Math.max(0, x - 16);
   };
   addEventListener('scroll', markToc, {passive:true}); markToc();
+  // 横スクロールが右端まで来たら、ぼかしを消す
+  const tocUl = document.querySelector('.toc ul');
+  const tocEnd = () => tocUl.classList.toggle('end', tocUl.scrollLeft + tocUl.clientWidth >= tocUl.scrollWidth - 4);
+  tocUl.addEventListener('scroll', tocEnd, {passive:true}); addEventListener('resize', tocEnd); tocEnd();
 })();
 </script>
 </body>

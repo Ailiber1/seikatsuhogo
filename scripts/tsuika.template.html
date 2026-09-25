@@ -186,9 +186,16 @@ function refresh() {
   render();
 }
 
+// 見た日の端末の日付から数える（開くたびに変わる）
 function daysLeft() {
   const t = new Date(); t.setHours(0,0,0,0);
-  return Math.max(0, Math.round((DEADLINE - t) / 86400000));
+  return Math.round((DEADLINE - t) / 86400000);
+}
+function daysText() {
+  const n = daysLeft();
+  if (n > 0) return `<span>2027年7月31日まで　あと</span><span class="d">${n}</span><span>日</span>`;
+  if (n === 0) return `<span>2027年7月31日まで</span><span class="d">今日まで</span>`;
+  return `<span class="d" style="font-size:22px">受付は終わりました</span><span>（2027年7月31日まで）</span>`;
 }
 
 function render() {
@@ -249,7 +256,7 @@ function render() {
       「${esc(name)} 追加給付」でその自治体のページを探すと、申出書と送り先が載っています。</p>
       <p class="small">この地域の区分：<b>${LV[+lv]}</b>（下の金額の例のどちらに近いかの目安）</p></div>`;
   } else if (PROC.need) {
-    where = `<div class="guide" style="margin-bottom:10px">下の <b>当時住んでいた場所</b> を選ぶと、ここに申し出先が出ます。</div>`;
+    where = `<div class="guide" style="margin-bottom:10px">上の <b>当時住んでいた場所</b> を選ぶと、ここに申し出先が出ます。</div>`;
   }
 
   // 金額の目安
@@ -270,7 +277,7 @@ function render() {
   // 期限と書類（申し出が必要なときだけ）
   const proc = PROC.need ? `
     <div class="box dead"><h3>申し出の期限</h3>
-      <div class="days"><span>2027年7月31日まで　あと</span><span class="d">${daysLeft()}</span><span>日</span></div>
+      <div class="days">${daysText()}</div>
       <p class="small">受付は2026年8月1日から。多くの自治体は平日の受付です。</p></div>
     <div class="box"><h3>必要な書類（長崎市の例）</h3>
       <ul><li>申出書・同意書</li><li>当時の世帯主と全員の戸籍謄本の写し（3か月以内）</li><li>本人確認書類の写し</li><li>本人名義の通帳かキャッシュカードの写し</li></ul>

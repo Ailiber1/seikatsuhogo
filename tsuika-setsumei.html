@@ -552,9 +552,11 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
   // 期限までの日数（見ている日から数える）
   const deadline = new Date(2027, 6, 31);
   const today = new Date(); today.setHours(0,0,0,0);
-  const left = Math.max(0, Math.round((deadline - today) / 86400000));
+  // 見た日の端末の日付から数える（開くたびに変わる）
+  const left = Math.round((deadline - today) / 86400000);
   const dl = document.getElementById('daysLeft');
-  dl.dataset.count = left; dl.dataset.plain = '1';
+  const leftText = left > 0 ? null : left === 0 ? '今日まで' : '受付は終わりました';
+  if (leftText) { dl.parentNode.textContent = leftText; } else { dl.dataset.count = left; dl.dataset.plain = '1'; }
 
   const countUp = (el) => {
     const to = parseFloat(el.dataset.count), dec = +(el.dataset.dec || 0);
@@ -630,7 +632,7 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
   // あなたはどの人？
   const WHO = {
     now: ['ok', '今も受けている人：手続きなしで、もらえます', '<p>今の役所から、<b>いつもの保護費の口座に自動で振り込まれます</b>。いつ振り込まれるかは役所しだいで、金額が決まると「決定通知書」という手紙が届きます。</p><p>ただし、<b>引っ越す前の役所で受けていた期間</b>や、<b>一度やめる前の期間</b>がある人は、その昔の期間の分だけ申し出が必要です（期限 2027年7月31日）。</p>'],
-    quit: ['ng', 'やめた人：もらえます。でも自分で申し出ないと0円', '<p>当時受けていた役所に、<b>当時の家の代表（世帯主）が</b>「払ってください」と書類を出します。待っていても振り込まれません。</p><p class="dl"><span style="white-space:nowrap">期限 2027年7月31日</span>　<span style="white-space:nowrap">あと <b>DAYS</b> 日</span></p>'],
+    quit: ['ng', 'やめた人：もらえます。でも自分で申し出ないと0円', '<p>当時受けていた役所に、<b>当時の家の代表（世帯主）が</b>「払ってください」と書類を出します。待っていても振り込まれません。</p><p class="dl"><span style="white-space:nowrap">期限 2027年7月31日</span>　<span style="white-space:nowrap">DAYS</span></p>'],
     none: ['gy', 'その期間に受けていない人：もらえません', '<p>今回のお金は、<b>2013年8月〜2026年3月に生活保護を受けていた人</b>への支払いです。2026年4月以降に受け始めた人も対象外です。</p>']
   };
   const whoBtns = [...document.querySelectorAll('.pc')], whoBox = document.getElementById('whoDetail');
@@ -638,7 +640,7 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
     const [cls, h, body] = WHO[b.dataset.k];
     whoBtns.forEach(x => x.setAttribute('aria-expanded', x === b ? 'true' : 'false'));
     whoBox.className = 'who-detail on ' + cls;
-    whoBox.innerHTML = '<h3>' + h + '</h3>' + body.replace('DAYS', left);
+    whoBox.innerHTML = '<h3>' + h + '</h3>' + body.replace('DAYS', leftText || ('あと <b>' + left + '</b> 日'));
     void whoBox.offsetWidth;
   }));
 

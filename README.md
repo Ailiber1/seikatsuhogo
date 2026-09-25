@@ -18,6 +18,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `tokurei.html` | ツール | 特例加算しらべ（自分がいくら増えるか） | [/tokurei.html](https://ailiber1.github.io/seikatsuhogo/tokurei.html) |
 | `fuyo.html` | 解説 | 生活保護を申請すると家族に通知は行くのか（扶養照会） | [/fuyo.html](https://ailiber1.github.io/seikatsuhogo/fuyo.html) |
 | `basic-income.html` | 解説 | ベーシックインカムは、世界でどうなっているのか（世界の実験・制度化・日本・AIとの関係） | [/basic-income.html](https://ailiber1.github.io/seikatsuhogo/basic-income.html) |
+| `tsuika.html` | ツール | 追加給付しらべ（最高裁判決の追加給付で、対象か・申し出が必要か・申し出先） | [/tsuika.html](https://ailiber1.github.io/seikatsuhogo/tsuika.html) |
+| `tsuika-setsumei.html` | 解説 | 保護費の追加給付、期限までに申し出ないと0円（最高裁判決・金額の例・申し出のしかた） | [/tsuika-setsumei.html](https://ailiber1.github.io/seikatsuhogo/tsuika-setsumei.html) |
 | `tokurei-setsumei.html` | 解説 | 生活保護費が10月から上がる。上がらない人もいる理由 | [/tokurei-setsumei.html](https://ailiber1.github.io/seikatsuhogo/tokurei-setsumei.html) |
 | `data/` | データ | ページに埋め込む元データ（JSON） | — |
 | `scripts/` | スクリプト | 公的資料からデータを作り、ページを生成する | — |
@@ -37,6 +39,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 |---|---|
 | `fetch_madoguchi.py` | 相談窓口の一覧を取得して `data/madoguchi.json` を作る |
 | `gen_madoguchi_tool.py` | `data/madoguchi.json` から `sodan.html` を生成する |
+| `gen_tsuika_tool.py` | `data/kyuchi_by_city.json` を `tsuika.template.html` に埋め込んで `tsuika.html` を生成する |
 
 ---
 

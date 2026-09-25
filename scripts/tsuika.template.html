@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>追加給付しらべ</title>
+<meta name="description" content="生活保護費の追加給付（最高裁判決）で、自分が対象か・申し出が必要か・どこに出すかを選ぶだけで調べられます">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:16px; line-height:1.75; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.wrap{max-width:720px; margin:0 auto; padding:24px 16px 44px}
+h1{font-size:clamp(24px,5.2vw,32px); line-height:1.4; margin:0 0 8px; color:var(--navy); text-wrap:balance}
+.lead{color:var(--sub); font-size:15px; margin:0 0 16px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:18px; font-size:15px}
+.for-who b{color:var(--navy)}
+
+.step{background:var(--panel); border:2px solid var(--line); border-radius:13px; padding:14px 16px; margin-bottom:12px; transition:border-color .3s, opacity .3s}
+.step.off{opacity:.5}
+.step.done{border-color:var(--navy)}
+.step h2{font-size:16.5px; margin:0 0 8px; display:flex; gap:9px; align-items:center}
+.step h2 .n{flex:none; width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; display:grid; place-items:center; font-size:13px}
+.step .hint{font-size:13px; color:var(--sub); margin:6px 0 0}
+select{font:inherit; font-size:16px; width:100%; min-height:44px; padding:8px 10px; border:2px solid var(--line); border-radius:9px; background:#fff; color:var(--ink)}
+select:focus{outline:3px solid var(--navy-soft); border-color:var(--navy)}
+select:disabled{background:var(--line-soft); color:var(--sub)}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.opt{font-size:12px; font-weight:700; color:var(--sub); background:var(--line-soft); border-radius:4px; padding:1px 7px; margin-left:4px}
+
+/* 結果 */
+#result{margin-top:18px}
+.guide{border:2px dashed var(--line); border-radius:13px; padding:18px; text-align:center; color:var(--sub)}
+.guide b{color:var(--navy)}
+.res{animation:pop .45s ease}
+@keyframes pop{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+.verdict{border-left:6px solid; border-radius:0 13px 13px 0; padding:14px 16px; margin-bottom:12px}
+.verdict.ok{background:var(--ok-bg); border-color:var(--ok)}
+.verdict.ng{background:var(--ng-bg); border-color:var(--ng)}
+.verdict.warn{background:var(--warn-bg); border-color:var(--warn)}
+.verdict .k{font-size:13px; font-weight:700; color:var(--sub)}
+.verdict .v{font-size:clamp(21px,4.4vw,27px); font-weight:800; line-height:1.4}
+.verdict.ok .v{color:var(--ok)} .verdict.ng .v{color:var(--ng)} .verdict.warn .v{color:var(--warn)}
+.verdict p{margin:6px 0 0; font-size:15px}
+.box{background:var(--panel); border:2px solid var(--line); border-radius:12px; padding:12px 15px; margin-bottom:10px}
+.box h3{font-size:15px; margin:0 0 4px; color:var(--navy)}
+.box p{margin:0 0 6px; font-size:15px} .box p:last-child{margin:0}
+.box ul{margin:0; padding-left:1.2em; font-size:14.5px}
+.box.dead{background:var(--warn-bg); border-color:var(--warn)}
+.days{display:flex; align-items:baseline; gap:6px; flex-wrap:wrap}
+.days .d{font-size:clamp(30px,7vw,42px); font-weight:800; color:var(--warn); font-variant-numeric:tabular-nums; line-height:1.1}
+.tel{font-size:22px; font-weight:800; color:var(--ok)}
+.small{font-size:13px; color:var(--sub)}
+.back{display:inline-block; margin-top:6px; font-size:14px; font-weight:700; color:var(--navy)}
+.reset{font:inherit; font-size:14px; font-weight:700; color:var(--navy); background:var(--navy-soft); border:none; border-radius:8px; padding:8px 14px; min-height:40px; cursor:pointer; margin-top:4px}
+.foot{margin-top:24px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot a{color:var(--navy); word-break:break-all}
+@media (max-width:480px){ .row2{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){ .res{animation:none} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho">追加給付しらべ</h1>
+  <p class="lead">最高裁判決を受けた生活保護費の追加給付について、<b>自分が対象か・申し出が必要か・どこに出すか</b>を、選ぶだけで調べられます。</p>
+  <div class="for-who"><b>このツールは、こういう方へ</b><br>2013年8月〜2026年3月に生活保護を受けていたことがある方、今受けている方</div>
+
+  <div class="step" id="s1">
+    <h2><span class="n">1</span>生活保護を受けていた時期は？</h2>
+    <select id="period" aria-label="受けていた時期">
+      <option value="">選んでください</option>
+      <option value="old">2018年9月までに受けていた</option>
+      <option value="new">2018年10月〜2026年3月だけ</option>
+      <option value="none">2026年3月までは受けていない</option>
+    </select>
+    <p class="hint">対象は2013年8月からです。2013年8月〜2018年9月に少しでも受けていれば、いちばん上を選んでください。</p>
+  </div>
+
+  <div class="step off" id="s2">
+    <h2><span class="n">2</span>今も生活保護を受けていますか？</h2>
+    <select id="now" disabled aria-label="今の状況">
+      <option value="">選んでください</option>
+      <option value="yes">受けている（停止中も含む）</option>
+      <option value="no">受けていない（やめた）</option>
+    </select>
+  </div>
+
+  <div class="step off" id="s3">
+    <h2><span class="n">3</span>あてはまるものは？</h2>
+    <select id="situ" disabled aria-label="状況"><option value="">選んでください</option></select>
+  </div>
+
+  <div class="step off" id="s4" hidden>
+    <h2><span class="n">4</span>受けていた間に、次のことはありましたか？</h2>
+    <select id="extra" disabled aria-label="12月や加算">
+      <option value="">選んでください</option>
+      <option value="dec">受けている間に12月を迎えた</option>
+      <option value="kasan">障害者加算・入院などがあった</option>
+      <option value="no">12月前にやめ、加算もない</option>
+      <option value="unknown">分からない</option>
+    </select>
+    <p class="hint">2018年10月以降は、毎年12月の「期末一時扶助」と一部の加算（障害者加算・入院・施設入所・20歳未満の家族・妊娠など）だけが対象です。</p>
+  </div>
+
+  <div class="step off" id="s5">
+    <h2><span class="n" id="s5n">4</span>当時住んでいた場所</h2>
+    <div class="row2">
+      <select id="pref" disabled aria-label="都道府県"><option value="">都道府県を選んでください</option></select>
+      <select id="city" disabled aria-label="市区町村"><option value="">市区町村を選んでください</option></select>
+    </div>
+    <p class="hint">選ぶと、申し出先が出ます（選ばなくても結果は出ます）。</p>
+  </div>
+
+  <div id="result" aria-live="polite"></div>
+
+  <div class="foot">
+    <p>この結果は、厚生労働省と自治体の公開資料をもとにした目安です。最終的な対象・金額・手続きは、自治体が決めます。入力した内容はこの画面の中だけで処理していて、どこにも送信していません。</p>
+    <p>根拠: <a href="https://www.mhlw.go.jp/stf/newpage_68902.html" target="_blank" rel="noopener">厚労省「最高裁判決への対応について」</a> ／ <a href="https://www.mhlw.go.jp/content/12000000/001708553.pdf" target="_blank" rel="noopener">追加給付の対象となる方へのご案内（PDF）</a> ／ <a href="https://www.mhlw.go.jp/content/12000000/001662197.pdf" target="_blank" rel="noopener">追加給付額の例（PDF）</a> ／ <a href="https://www.city.nagasaki.lg.jp/page/77525.html" target="_blank" rel="noopener">長崎市の案内（必要書類の例）</a> ／ 級地: <a href="https://www.mhlw.go.jp/content/kyuchi.3010.pdf" target="_blank" rel="noopener">厚労省「お住まいの地域の級地」（平成30年10月）</a></p>
+    <p>確認日: 2026年9月25日 ／ 個人が作ったもので、行政の公式ツールではありません。</p>
+    <p><a href="tsuika-setsumei.html">くわしい解説ページへ</a></p>
+  </div>
+</main>
+
+<script>
+const KYUCHI = /*KYUCHI*/;
+const LV = ["1級地-1","1級地-2","2級地-1","2級地-2","3級地-1","3級地-2"];
+const DEADLINE = new Date(2027, 6, 31);
+
+const $ = id => document.getElementById(id);
+const period = $('period'), now = $('now'), situ = $('situ'), extra = $('extra'), pref = $('pref'), city = $('city');
+
+const SITU = {
+  yes: [
+    ['same', 'ずっと同じ自治体で続けて受けている'],
+    ['moved', '別の自治体で受けていた時期がある'],
+    ['gap', '一度やめて、また受け始めた'],
+    ['member', '当時は世帯主、今は別の世帯']
+  ],
+  no: [
+    ['head', '自分が当時の世帯主だった'],
+    ['family', '当時の世帯主は家族（健在）'],
+    ['dead', '当時の世帯主は亡くなっている']
+  ]
+};
+
+Object.keys(KYUCHI).forEach(p => pref.add(new Option(p, p)));
+
+const setStep = (el, on, done) => { el.classList.toggle('off', !on); el.classList.toggle('done', !!done); };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function refresh() {
+  const p = period.value;
+  const needExtra = p === 'new';
+  $('s4').hidden = !needExtra;
+  $('s5n').textContent = needExtra ? '5' : '4';
+
+  // 2段目以降は、前が選ばれるまで押せない
+  now.disabled = !p || p === 'none';
+  if (now.disabled) now.value = '';
+  const n = now.value;
+  if (situ.dataset.for !== n) {
+    situ.innerHTML = '<option value="">選んでください</option>';
+    (SITU[n] || []).forEach(([v, t]) => situ.add(new Option(t, v)));
+    situ.dataset.for = n;
+  }
+  situ.disabled = !n;
+  extra.disabled = !(needExtra && situ.value);
+  if (extra.disabled) extra.value = '';
+  const coreDone = p && p !== 'none' && n && situ.value && (!needExtra || extra.value);
+  pref.disabled = !coreDone;
+  city.disabled = !coreDone || !pref.value;
+
+  setStep($('s1'), true, p);
+  setStep($('s2'), !now.disabled, n);
+  setStep($('s3'), !situ.disabled, situ.value);
+  setStep($('s4'), !extra.disabled, extra.value);
+  setStep($('s5'), !pref.disabled, city.value);
+  render();
+}
+
+function daysLeft() {
+  const t = new Date(); t.setHours(0,0,0,0);
+  return Math.max(0, Math.round((DEADLINE - t) / 86400000));
+}
+
+function render() {
+  const out = $('result');
+  const p = period.value, n = now.value, s = situ.value, x = extra.value;
+
+  if (!p) {
+    out.innerHTML = `<div class="guide">上の <b>1</b> から順に選ぶと、ここに<br><b>対象かどうか・申し出が必要か・申し出先と期限</b>が出ます。</div>`;
+    return;
+  }
+  if (p === 'none') {
+    out.innerHTML = `<div class="res"><div class="verdict ng"><div class="k">結果</div><div class="v">今回の追加給付の対象外です</div>
+      <p>対象は、2013年8月〜2026年3月に生活保護を受けていた世帯です。2026年4月以降に受け始めた方は対象になりません。</p></div>
+      <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button></div>`;
+    return;
+  }
+  const needExtra = p === 'new';
+  if (!n || !s || (needExtra && !x)) {
+    out.innerHTML = `<div class="guide">あと少しです。<b>${!n ? '2' : !s ? '3' : '4'}</b> を選ぶと結果が出ます。</div>`;
+    return;
+  }
+
+  // 対象かどうか
+  let verdict;
+  if (needExtra && x === 'no') {
+    verdict = ['ng', '対象外の可能性が高いです', '2018年10月以降は、12月の期末一時扶助か一部の加算が算定された分だけが対象です。どちらもなければ、追加給付はありません。'];
+  } else if (needExtra && x === 'unknown') {
+    verdict = ['warn', '12月を受給中に迎えていれば対象です', '期末一時扶助は、12月に生活保護を受けている世帯に出ます。受けていた期間に12月が入っていれば、少額ですが対象になります。'];
+  } else {
+    verdict = ['ok', '追加給付の対象になります', p === 'old' ? '2013年8月〜2018年9月に受けていた分は、ふだんの月の保護費が対象です。' : '対象は、12月の期末一時扶助や加算などが算定された分です。'];
+  }
+  if (verdict[0] === 'ng') {
+    out.innerHTML = `<div class="res"><div class="verdict ng"><div class="k">結果</div><div class="v">${verdict[1]}</div><p>${verdict[2]}</p></div>
+      <div class="box"><h3>念のため確認したいとき</h3><p>追加給付相談センター（無料）</p><p class="tel">0120-179-445</p><p class="small">平日9時〜17時（8〜10月は土日祝も）</p></div>
+      <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button></div>`;
+    return;
+  }
+
+  // 手続き
+  const PROC = {
+    same:   {need:false, h:'手続きは不要です', b:'今の自治体から、今の保護費の口座に自動で支払われます。時期は自治体の準備しだいで、金額が決まると「決定通知書」が届きます。'},
+    moved:  {need:true,  h:'昔の自治体には申し出が必要です', b:'今の自治体で受けている分は自動で支払われます。でも、<b>別の自治体で受けていた期間の分は、その自治体に申し出ないと支払われません</b>。'},
+    gap:    {need:true,  h:'前の期間の分は申し出が必要なことがあります', b:'今続けて受けている期間の分は自動です。<b>一度やめる前の期間の分</b>は、自治体によっては申し出が必要です。決定通知書に前の期間が入っていなければ、自治体に申し出てください（京都市の案内の例）。'},
+    member: {need:true,  h:'世帯主だったころの分は申し出が必要です', b:'追加給付は当時の<b>世帯主</b>に支払われます。今は別の世帯の一員として受けている場合、世帯主だったころの分は申し出が必要です（京都市の案内の例）。'},
+    head:   {need:true,  h:'申し出が必要です', b:'<b>申し出ないと支払われません。</b>当時受けていた自治体に、あなた（当時の世帯主）が申し出ます。'},
+    family: {need:true,  h:'当時の世帯主の方が申し出る必要があります', b:'申し出るのは<b>当時の世帯主</b>です。あなたが代わりに手続きするなら、委任状などが必要です。'},
+    dead:   {need:true,  h:'当時の世帯員から申し出られます', b:'当時の世帯主が亡くなっている場合、<b>当時一緒に受けていた家族（世帯員）が申し出られます</b>（長崎県の案内）。ただし、<b>亡くなった方の分は支払われません</b>。'}
+  }[s];
+
+  // 申し出先
+  let where = '';
+  if (city.value) {
+    const [name, lv] = city.value.split('|');
+    const isTown = /[町村]$/.test(name);
+    where = `<div class="box"><h3>申し出先</h3>
+      <p><b>${esc(pref.value)} ${esc(name)}</b> で生活保護を担当している福祉事務所</p>
+      <p class="small">${isTown ? '町や村は、都道府県の福祉事務所が担当していることがあります（例：長崎県の長与町は「西彼福祉事務所」）。' : '市役所・区役所の生活保護の担当課（生活福祉課・保護課など）です。'}
+      「${esc(name)} 追加給付」でその自治体のページを探すと、申出書と送り先が載っています。</p>
+      <p class="small">この地域の区分：<b>${LV[+lv]}</b>（下の金額の例のどちらに近いかの目安）</p></div>`;
+  } else if (PROC.need) {
+    where = `<div class="guide" style="margin-bottom:10px">下の <b>当時住んでいた場所</b> を選ぶと、ここに申し出先が出ます。</div>`;
+  }
+
+  // 金額の目安
+  let money;
+  if (p === 'old') {
+    money = `<div class="box"><h3>金額の目安</h3>
+      <p>国の見込みでは <b>1世帯あたり約10万円</b>。受けていた期間・人数・地域・加算で変わります。</p>
+      <ul><li>都市部・60歳代ひとり（2013年8月〜2026年3月ずっと）… <b>10.5万円</b></li>
+      <li>地方・60歳代ひとり（同じ）… <b>8.5万円</b></li>
+      <li>都市部・30歳代夫婦＋4歳の子（同じ）… <b>20.4万円</b></li></ul>
+      <p class="small">厚労省「追加給付額の例」。受けていた期間が一部なら、その月数分だけです。</p></div>`;
+  } else {
+    money = `<div class="box"><h3>金額の目安</h3>
+      <p>12月の期末一時扶助の <b>2.4%分</b> が中心です。ひとり暮らしなら <b>12月1回につき約270〜350円</b>（試算）。</p>
+      <p class="small">長崎市の案内にも「保護受給期間が短い場合などは、数百円程度となることもあります」とあります。加算や入院があった場合は増えます。</p></div>`;
+  }
+
+  // 期限と書類（申し出が必要なときだけ）
+  const proc = PROC.need ? `
+    <div class="box dead"><h3>申し出の期限</h3>
+      <div class="days"><span>2027年7月31日まで　あと</span><span class="d">${daysLeft()}</span><span>日</span></div>
+      <p class="small">受付は2026年8月1日から。多くの自治体は平日の受付です。</p></div>
+    <div class="box"><h3>必要な書類（長崎市の例）</h3>
+      <ul><li>申出書・同意書</li><li>当時の世帯主と全員の戸籍謄本の写し（3か月以内）</li><li>本人確認書類の写し</li><li>本人名義の通帳かキャッシュカードの写し</li></ul>
+      <p class="small">自治体によって違います。当時の自治体のページで確認してください。</p></div>` : '';
+
+  out.innerHTML = `<div class="res">
+    <div class="verdict ${verdict[0]}"><div class="k">結果</div><div class="v">${verdict[1]}</div><p>${verdict[2]}</p></div>
+    <div class="verdict ${PROC.need ? 'ng' : 'ok'}"><div class="k">手続き</div><div class="v">${PROC.h}</div><p>${PROC.b}</p></div>
+    ${where}${proc}${money}
+    <div class="box"><h3>分からないとき（無料）</h3><p class="tel">0120-179-445</p><p class="small">追加給付相談センター（厚労省委託）。平日9時〜17時（8〜10月は土日祝も）</p></div>
+    <div class="box dead"><h3>詐欺に注意</h3><p>国や自治体が、電話で口座番号を聞くことはありません。</p></div>
+    <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button>
+  </div>`;
+}
+
+function resetAll() {
+  [period, now, situ, extra, pref].forEach(e => e.value = '');
+  city.innerHTML = '<option value="">市区町村を選んでください</option>';
+  refresh();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+pref.addEventListener('change', () => {
+  city.innerHTML = '<option value="">市区町村を選んでください</option>';
+  (KYUCHI[pref.value] || []).slice().sort((a, b) => a[0].localeCompare(b[0], 'ja'))
+    .forEach(([name, lv]) => city.add(new Option(name, name + '|' + lv)));
+  refresh();
+});
+[period, now, situ, extra, city].forEach(e => e.addEventListener('change', refresh));
+refresh();
+</script>
+</body>
+</html>

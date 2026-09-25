@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>保護費の追加給付</title>
+<meta name="description" content="最高裁判決を受けた生活保護費の追加給付。もらえる人、申し出が必要な人、期限（2027年7月31日）を厚労省の原文で解説">
+<style>
+:root{
+  /* 常に白基調。配信の画面共有と視聴者の画面で見え方を揃えるため、ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4;
+  --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea;
+  --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:16px; line-height:1.75; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.wrap{max-width:780px; margin:0 auto; padding:26px 16px 44px}
+section{padding-block:30px; border-top:1px solid var(--line); scroll-margin-top:56px}
+section:first-of-type{border-top:none; padding-top:0}
+h1{font-size:clamp(25px,5.4vw,36px); line-height:1.4; margin:0 0 12px; font-weight:700; text-wrap:balance; color:var(--navy)}
+h2{font-size:clamp(20px,3.6vw,26px); line-height:1.4; margin:0 0 12px; font-weight:700; text-wrap:balance; display:flex; gap:11px; align-items:flex-start}
+h2 .n{flex:none; font-size:.66em; font-weight:700; color:var(--on-navy); background:var(--navy); min-width:1.9em; height:1.9em; border-radius:50%; display:grid; place-items:center; margin-top:.22em}
+h3{font-size:17px; margin:0 0 5px; font-weight:700}
+p{margin:0 0 12px} p:last-child{margin-bottom:0}
+.small{font-size:13.5px; color:var(--sub)}
+b.em{color:var(--ng)}
+
+/* 目次（配信中に飛べるよう上に固定） */
+.toc{position:sticky; top:0; z-index:5; background:rgba(255,255,255,.96); border-bottom:1px solid var(--line); backdrop-filter:blur(4px)}
+.toc ul{list-style:none; margin:0 auto; padding:8px 16px; max-width:780px; display:flex; gap:6px; overflow-x:auto; scrollbar-width:none}
+.toc ul::-webkit-scrollbar{display:none}
+.toc a{display:block; white-space:nowrap; font-size:13px; font-weight:700; color:var(--navy); text-decoration:none; padding:5px 11px; border-radius:999px; background:var(--navy-soft)}
+.toc a.on{background:var(--navy); color:var(--on-navy)}
+
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:14px 18px; margin-bottom:16px}
+.for-who b{display:block; font-size:13px; letter-spacing:.06em; color:var(--navy); margin-bottom:5px}
+.for-who ul{margin:0; padding-left:1.15em; font-size:16.5px; font-weight:700; line-height:1.65}
+
+/* 結論：2つの人に分けて見せる */
+.answer{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.ans{border-radius:0 12px 12px 0; padding:14px 15px; border-left:5px solid}
+.ans.ok{background:var(--ok-bg); border-color:var(--ok)}
+.ans.ng{background:var(--ng-bg); border-color:var(--ng)}
+.ans .who{font-size:13px; font-weight:700; color:var(--sub)}
+.ans .what{font-size:clamp(18px,3.4vw,23px); font-weight:800; line-height:1.4; margin:2px 0 6px}
+.ans.ok .what{color:var(--ok)} .ans.ng .what{color:var(--ng)}
+.ans p{font-size:14.5px}
+
+/* 期限までの日数 */
+.deadline{margin-top:12px; background:var(--warn-bg); border:2px solid var(--warn); border-radius:12px; padding:12px 16px; display:flex; flex-wrap:wrap; align-items:center; gap:6px 16px}
+.deadline .lbl{font-weight:700; color:var(--warn); font-size:14px}
+.deadline .date{font-size:clamp(19px,3.6vw,24px); font-weight:800; color:var(--ink)}
+.deadline .left{margin-left:auto; font-size:14px; font-weight:700; color:var(--warn)}
+.deadline .left .v{font-size:clamp(26px,5.4vw,34px); font-weight:800; font-variant-numeric:tabular-nums; margin:0 2px}
+
+.stats{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:14px 0 0}
+.stat{background:var(--panel); border:2px solid var(--line); border-radius:12px; padding:12px 8px; text-align:center}
+.stat .v{font-size:clamp(24px,5.4vw,36px); font-weight:800; color:var(--navy); line-height:1.15; font-variant-numeric:tabular-nums}
+.stat .v small{font-size:.45em; font-weight:700; margin-left:2px}
+.stat .k{font-size:12.5px; color:var(--sub); margin-top:4px; line-height:1.45}
+
+.src{display:inline-flex; align-items:center; gap:7px; margin-top:8px; font-size:12.5px; color:var(--navy); background:var(--navy-soft); border-radius:5px; padding:6px 11px; text-decoration:none; font-weight:700; line-height:1.5}
+.src:hover{text-decoration:underline}
+.quote{background:var(--panel); border-left:5px solid var(--navy); border-radius:0 8px 8px 0; padding:12px 15px; margin:0 0 12px; font-size:15px; line-height:1.75}
+.quote .lbl{display:block; font-size:11.5px; font-weight:700; letter-spacing:.05em; color:var(--sub); margin-bottom:5px}
+.quote b{color:var(--navy)}
+.quote.chat{border-left-color:var(--ok)}
+.quote.chat .msg{font-weight:700}
+
+.card{background:var(--panel); border:2px solid var(--line); border-radius:13px; padding:14px 16px; margin-bottom:12px}
+.card.ok{border-color:var(--ok); background:var(--ok-bg)}
+.card.ng{border-color:var(--ng); background:var(--ng-bg)}
+.card.warn{border-color:var(--warn); background:var(--warn-bg)}
+.card p{font-size:15px}
+
+/* 年表（縦・スクロールで線が伸びる） */
+.mt{position:relative; padding-left:28px}
+.mt::before{content:""; position:absolute; left:9px; top:6px; bottom:6px; width:3px; background:var(--line); border-radius:2px}
+.mt .fill{position:absolute; left:9px; top:6px; width:3px; height:0; background:var(--navy); border-radius:2px; transition:height 2.2s ease}
+.in .mt .fill{height:calc(100% - 12px)}
+.mt-item{position:relative; margin-bottom:15px; opacity:0; transform:translateX(12px); transition:opacity .6s, transform .6s}
+.in .mt-item{opacity:1; transform:none}
+.mt-item::before{content:""; position:absolute; left:-25px; top:7px; width:13px; height:13px; border-radius:50%; background:var(--ground); border:3px solid var(--navy)}
+.mt-item.hot::before{border-color:var(--ng); background:var(--ng-bg)}
+.mt-item.now::before{border-color:var(--warn); background:var(--warn)}
+.mt-item .d{font-size:13px; font-weight:800; color:var(--navy)}
+.mt-item.hot .d{color:var(--ng)} .mt-item.now .d{color:var(--warn)}
+.mt-item .t{font-weight:700}
+.mt-item .w{font-size:13.5px; color:var(--sub)}
+
+/* 横棒 */
+.bars{margin:8px 0 6px}
+.bar-row{display:grid; grid-template-columns:9.5em 1fr; gap:10px; align-items:center; margin-bottom:10px}
+.bar-row .lab{font-size:13px; font-weight:700; line-height:1.35; text-align:right}
+.bar-track{position:relative; height:32px; background:var(--line-soft); border-radius:4px}
+.bar{position:absolute; left:0; top:0; bottom:0; width:0; border-radius:4px; transition:width 1.3s cubic-bezier(.2,.8,.2,1)}
+.bar.ng{background:var(--ng)} .bar.nv{background:var(--navy)} .bar.ok{background:var(--ok)}
+.bar-val{position:absolute; top:50%; transform:translateY(-50%); left:8px; font-size:14px; font-weight:800; white-space:nowrap; font-variant-numeric:tabular-nums; color:#fff}
+.bar-val.out{color:var(--ink)}
+.gap-note{background:var(--navy-soft); border-radius:10px; padding:10px 14px; font-size:14.5px; margin-top:4px}
+
+/* 金額の例（切り替え） */
+.switch{display:flex; flex-wrap:wrap; gap:6px; margin:4px 0 10px}
+.switch button{font:inherit; font-size:14px; font-weight:700; min-height:40px; padding:6px 14px; border-radius:999px; border:2px solid var(--navy); background:var(--ground); color:var(--navy); cursor:pointer}
+.switch button[aria-pressed="true"]{background:var(--navy); color:var(--on-navy)}
+.ex-total{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; background:var(--panel); border:2px solid var(--navy); border-radius:12px; padding:10px 16px; margin-bottom:10px}
+.ex-total .k{font-size:14px; font-weight:700; color:var(--sub)}
+.ex-total .v{font-size:clamp(30px,7vw,44px); font-weight:800; color:var(--navy); font-variant-numeric:tabular-nums; line-height:1.1}
+.ex-total .u{font-weight:700; color:var(--navy)}
+.pbar .bar{background:var(--navy)}
+.pbar .bar-row:last-child .bar{background:var(--ok)}
+.pbar .bar-row .lab small{display:block; font-weight:400; color:var(--sub); font-size:11.5px}
+
+/* フロー図 */
+figure{margin:0 0 12px}
+figure svg{width:100%; max-width:560px; height:auto; display:block; margin:0 auto}
+figcaption{font-size:13px; color:var(--sub); margin-top:7px; line-height:1.6}
+.flow text{font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN",sans-serif}
+.flow .ln{stroke:var(--sub); stroke-width:2; fill:none; stroke-dasharray:120; stroke-dashoffset:120; transition:stroke-dashoffset 1s ease}
+.in .flow .ln{stroke-dashoffset:0}
+.flow .bx{opacity:0; transition:opacity .6s}
+.in .flow .bx{opacity:1}
+.in .flow .d1{transition-delay:.2s} .in .flow .d2{transition-delay:.6s} .in .flow .d3{transition-delay:1s} .in .flow .d4{transition-delay:1.4s}
+
+/* 手順とチェックリスト */
+.steps{counter-reset:s; list-style:none; margin:0 0 12px; padding:0}
+.steps li{counter-increment:s; position:relative; padding:10px 0 10px 46px; border-bottom:1px dashed var(--line)}
+.steps li::before{content:counter(s); position:absolute; left:0; top:10px; width:32px; height:32px; border-radius:50%; background:var(--navy-soft); color:var(--navy); font-weight:800; display:grid; place-items:center}
+.steps li b{display:block}
+.steps li span{font-size:14px; color:var(--sub)}
+.check{list-style:none; margin:0; padding:0}
+.check li{margin-bottom:6px}
+.check label{display:flex; gap:10px; align-items:flex-start; min-height:40px; padding:8px 12px; border:2px solid var(--line); border-radius:10px; background:var(--ground); cursor:pointer; font-size:15px; line-height:1.55}
+.check input{width:20px; height:20px; margin-top:2px; accent-color:var(--ok); flex:none}
+.check input:checked + span{color:var(--ok); text-decoration:line-through; text-decoration-thickness:1.5px}
+.check small{display:block; color:var(--sub); font-size:12.5px}
+.prog{height:8px; background:var(--line-soft); border-radius:4px; overflow:hidden; margin:8px 0 4px}
+.prog i{display:block; height:100%; width:0; background:var(--ok); transition:width .4s}
+
+/* 自分の場合の計算 */
+.calc-me{display:grid; grid-template-columns:1fr auto 1fr auto 1fr; align-items:center; gap:6px; text-align:center; margin:10px 0}
+.calc-me .box{background:var(--ground); border:2px solid var(--line); border-radius:10px; padding:8px 4px}
+.calc-me .box .v{font-size:clamp(17px,3.8vw,22px); font-weight:800; color:var(--navy); font-variant-numeric:tabular-nums}
+.calc-me .box .k{font-size:11.5px; color:var(--sub); line-height:1.4}
+.calc-me .op{font-weight:800; color:var(--sub); font-size:18px}
+.calc-me .box.res{border-color:var(--ok)} .calc-me .box.res .v{color:var(--ok)}
+
+/* まとめ（縦に分ける） */
+.take-h{display:flex; align-items:center; gap:8px; font-size:17px; margin:18px 0 10px}
+.take-h::before{content:""; width:5px; height:1.2em; border-radius:3px}
+.take-h.ok{color:var(--ok)} .take-h.ok::before{background:var(--ok)}
+.take-h.warn{color:var(--warn)} .take-h.warn::before{background:var(--warn)}
+.take{display:flex; gap:12px; align-items:flex-start; background:var(--panel); border:2px solid var(--line); border-radius:11px; padding:11px 14px; margin-bottom:8px}
+.take .mk{flex:none; width:28px; height:28px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:15px}
+.take.ok .mk{background:var(--ok-bg); color:var(--ok); border:2px solid var(--ok)}
+.take.q .mk{background:var(--warn-bg); color:var(--warn); border:2px solid var(--warn)}
+.take b{display:block; line-height:1.5}
+.take span{font-size:13.5px; color:var(--sub); line-height:1.55; display:block}
+
+details.more{margin-top:8px; border:2px solid var(--warn); border-radius:10px; background:var(--warn-bg)}
+details.more summary{cursor:pointer; list-style:none; font-size:14px; font-weight:700; color:var(--warn); padding:8px 12px; min-height:40px; display:flex; align-items:center; gap:6px}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::before{content:"＋"; font-weight:800}
+details.more[open] summary::before{content:"−"}
+details.more > div{padding:0 14px 12px; font-size:14.5px}
+
+.refs{font-size:14px; padding-left:1.2em; margin:0}
+.refs li{margin-bottom:8px}
+.refs a{color:var(--navy); word-break:break-all}
+.caution{background:var(--warn-bg); border:2px solid var(--warn); border-radius:12px; padding:13px 16px; font-size:14.5px}
+.caution ul{margin:0; padding-left:1.2em}
+.tool-link{display:block; text-align:center; text-decoration:none; background:var(--navy-soft); border:2px solid var(--navy); border-radius:12px; padding:14px; color:var(--navy); font-weight:800; font-size:17px; margin:14px 0}
+.tool-link span{display:block; font-size:13px; font-weight:700; color:var(--sub)}
+footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
+
+.reveal{opacity:0; transform:translateY(16px); transition:opacity .7s, transform .7s}
+.reveal.in{opacity:1; transform:none}
+@media (max-width:560px){
+  .answer{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr 1fr; gap:6px}
+  .bar-row{grid-template-columns:7.2em 1fr; gap:8px}
+  .bar-row .lab{font-size:12px}
+  .calc-me{grid-template-columns:1fr; gap:4px}
+  .calc-me .op{font-size:15px}
+  .deadline .left{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .reveal,.mt-item,.flow .bx{opacity:1!important; transform:none!important}
+  .flow .ln{stroke-dashoffset:0!important}
+  .bar,.mt .fill{transition:none!important}
+}
+</style>
+</head>
+<body>
+<nav class="toc" aria-label="目次"><ul>
+  <li><a href="#top">結論</a></li>
+  <li><a href="#listener">きっかけ</a></li>
+  <li><a href="#what">何があった</a></li>
+  <li><a href="#court">最高裁の判断</a></li>
+  <li><a href="#money">いくら？</a></li>
+  <li><a href="#who">自分は？</a></li>
+  <li><a href="#how">申し出かた</a></li>
+  <li><a href="#me">3年目の僕</a></li>
+  <li><a href="#care">注意</a></li>
+  <li><a href="#sum">まとめ</a></li>
+  <li><a href="#src">根拠</a></li>
+</ul></nav>
+
+<main class="wrap">
+
+<section id="top">
+  <div class="for-who">
+    <b>このページは、こういう方へ</b>
+    <ul>
+      <li>2013年8月〜2026年3月に、生活保護を受けていたことがある</li>
+      <li>今、生活保護を受けていて「差額が入金された」と聞いた</li>
+      <li>自分がもらえるのか、手続きがいるのかを知りたい</li>
+    </ul>
+  </div>
+
+  <h1 class="mincho">保護費の追加給付、<br>期限までに申し出ないと0円</h1>
+  <p>最高裁判所が「2013年からの生活保護費の引き下げは違法」と判断しました。それを受けて国が、<b>当時の保護費の差額を追加で支払っています</b>。手続きがいるかどうかは、<b>今も生活保護を受けているかどうか</b>で分かれます。</p>
+
+  <div class="answer reveal">
+    <div class="ans ok">
+      <div class="who">今も生活保護を受けている人</div>
+      <div class="what">手続きは不要</div>
+      <p>今の自治体から自動で支払われます。時期は自治体によって違います。</p>
+    </div>
+    <div class="ans ng">
+      <div class="who">生活保護をやめた人</div>
+      <div class="what">申し出ないと0円</div>
+      <p>当時受けていた自治体に、<b>当時の世帯主が申し出る</b>必要があります。</p>
+    </div>
+  </div>
+
+  <div class="deadline reveal">
+    <span class="lbl">申し出の期限</span>
+    <span class="date">2027年7月31日</span>
+    <span class="left">あと<span class="v" id="daysLeft">—</span>日</span>
+  </div>
+
+  <div class="stats reveal">
+    <div class="stat"><div class="v">約<span data-count="10">0</span><small>万円</small></div><div class="k">1世帯あたりの目安<br>（国の見込み）</div></div>
+    <div class="stat"><div class="v"><span data-count="1055">0</span><small>億円</small></div><div class="k">追加給付に<br>国が用意したお金</div></div>
+    <div class="stat"><div class="v"><span data-count="12.5" data-dec="1">0</span><small>年</small></div><div class="k">対象の期間<br>2013年8月〜2026年3月</div></div>
+  </div>
+  <a class="src" href="https://www.mhlw.go.jp/content/12000000/001650369.pdf" target="_blank" rel="noopener">厚労省「最高裁判決を踏まえた保護費等の追加給付について」（PDF）↗</a>
+</section>
+
+<section id="listener">
+  <h2><span class="n">1</span>きっかけは、リスナーさんのコメント</h2>
+  <p>この話は、配信のチャットで教えてもらいました。</p>
+  <div class="quote chat reveal">
+    <span class="lbl">リスナーさん（2026年9月4日の配信チャット）</span>
+    <span class="msg">「今日、例の差額分のお金、生活保護費とプラスで、入金されましたよ。」</span><br>
+    <span class="msg">「前の最高裁の結果で、生活保護費が少なかったから、その上乗せ分らしいです。」</span>
+  </div>
+  <p>調べてみると、これは本当の話でした。今受けている人には自動で入金されます。ただ、<b class="em">すでに生活保護をやめた人には、黙っていても入金されません</b>。自分で申し出る必要があり、期限もあります。</p>
+</section>
+
+<section id="what">
+  <h2><span class="n">2</span>何があったのか</h2>
+  <p>13年前の引き下げが、去年「違法」と判断され、今年になって支払いが始まっています。</p>
+  <div class="reveal">
+    <div class="mt"><div class="fill"></div>
+      <div class="mt-item hot"><div class="d">2013年8月〜（3回に分けて）</div><div class="t">国が生活保護費を引き下げ</div><div class="w">物価が下がったことを理由に、基準生活費を一律4.78%下げる「デフレ調整」などを行った</div></div>
+      <div class="mt-item"><div class="d">その後</div><div class="t">全国で約660人が裁判を起こす</div><div class="w">最高裁の前までは、勝った裁判も負けた裁判もあった</div></div>
+      <div class="mt-item hot"><div class="d">2025年6月27日</div><div class="t">最高裁が「違法」と判断</div><div class="w">生活保護費の引き下げを最高裁が違法としたのは初めて</div></div>
+      <div class="mt-item"><div class="d">2025年11月</div><div class="t">国の専門委員会が対応をまとめる</div></div>
+      <div class="mt-item"><div class="d">2025年12月16日</div><div class="t">追加給付のお金（補正予算）が成立</div></div>
+      <div class="mt-item"><div class="d">2026年3月〜</div><div class="t">今受けている人へ、順次支払い開始</div><div class="w">手続きは不要。自治体の準備ができたところから</div></div>
+      <div class="mt-item"><div class="d">2026年8月1日〜</div><div class="t">やめた人の申し出の受付が始まる</div></div>
+      <div class="mt-item now"><div class="d">2027年7月31日</div><div class="t">申し出の期限</div></div>
+    </div>
+  </div>
+  <a class="src" href="https://www.mhlw.go.jp/stf/newpage_68902.html" target="_blank" rel="noopener">厚労省「平成25年生活扶助基準改定に関する最高裁判決への対応について」↗</a>
+</section>
+
+<section id="court">
+  <h2><span class="n">3</span>最高裁は何と言ったのか</h2>
+  <p>判決の要点を、厚労省がまとめた資料から原文のまま引用します。</p>
+  <div class="quote reveal">
+    <span class="lbl">最高裁判決の概要（厚労省作成）より原文</span>
+    物価変動率のみを直接の指標として用いたことに、専門的知見との整合性を欠くところがあり、この点において、<b>デフレ調整に係る厚生労働大臣の判断の過程及び手続には過誤、欠落があったものというべき</b>。
+  </div>
+  <div class="quote reveal">
+    <span class="lbl">同じ資料より原文</span>
+    デフレ調整が<b>一律に4.78％も減ずるもの</b>であり、生活扶助を受給していた者の生活に大きな影響を及ぼすものであることも考慮すると（中略）本件改定は、（中略）<b>生活保護法３条、８条２項に違反して違法</b>。
+  </div>
+  <p>かみくだくと、<b>「物価の数字だけを使って、専門家の検討もせずに4.78%も下げたのは違法」</b>という判断です。一方で、年齢や世帯人数ごとの差をならす「ゆがみ調整」は違法とされていません。</p>
+  <a class="src" href="https://www.mhlw.go.jp/content/12000000/001648870.pdf" target="_blank" rel="noopener">厚労省「最高裁判決の概要」（PDF）↗</a>
+  <p class="small" style="margin-top:10px">厚労省は「深く反省し、原告の皆様を含め、広く国民の皆様にお詫び申し上げます」とホームページに書いています。</p>
+</section>
+
+<section id="money">
+  <h2><span class="n">4</span>いくら戻ってくるのか</h2>
+  <p>国は引き下げをなくしたのではなく、<b>下げ幅を4.78%から2.49%に決め直し</b>、その差を支払う形にしました。</p>
+  <div class="card reveal">
+    <h3>引き下げの幅（デフレ調整にあたる部分）</h3>
+    <div class="bars" data-max="4.78">
+      <div class="bar-row"><div class="lab">2013年の引き下げ</div><div class="bar-track"><div class="bar ng" data-v="4.78"></div><span class="bar-val">−4.78%</span></div></div>
+      <div class="bar-row"><div class="lab">国が決め直した幅</div><div class="bar-track"><div class="bar nv" data-v="2.49"></div><span class="bar-val">−2.49%</span></div></div>
+      <div class="bar-row"><div class="lab">裁判の原告</div><div class="bar-track"><div class="bar ok" data-v="0"></div><span class="bar-val out">0%（特別給付金で上乗せ）</span></div></div>
+    </div>
+    <div class="gap-note">赤と紺の<b>差の分</b>が、原告以外の人への追加給付です。当時の保護費に対して、<b>最大で2.4%分</b>が上乗せされます（時期によって0.8%・1.6%・2.4%）。</div>
+  </div>
+
+  <h3 style="margin-top:18px">国が出している金額の例</h3>
+  <p class="small">2013年8月から2026年3月まで、ずっと受けていた場合です（加算なし・自宅で生活）。</p>
+  <div class="reveal" id="ex">
+    <div class="switch" role="group" aria-label="地域">
+      <button type="button" data-area="city" aria-pressed="true">都市部（1級地-1）</button>
+      <button type="button" data-area="rural" aria-pressed="false">地方（3級地-2）</button>
+    </div>
+    <div class="switch" role="group" aria-label="世帯">
+      <button type="button" data-hh="single" aria-pressed="true">60歳代・ひとり</button>
+      <button type="button" data-hh="family" aria-pressed="false">30歳代夫婦＋4歳の子</button>
+    </div>
+    <div class="ex-total"><span class="k">合計</span><span class="v" id="exTotal">0</span><span class="u">万円</span></div>
+    <div class="bars pbar" id="exBars" data-max="15.8">
+      <div class="bar-row"><div class="lab">2013.8〜2014.3<small>8か月・+0.8%</small></div><div class="bar-track"><div class="bar"></div><span class="bar-val out"></span></div></div>
+      <div class="bar-row"><div class="lab">2014.4〜2015.3<small>12か月・+1.6%</small></div><div class="bar-track"><div class="bar"></div><span class="bar-val out"></span></div></div>
+      <div class="bar-row"><div class="lab">2015.4〜2018.9<small>42か月・+2.4%</small></div><div class="bar-track"><div class="bar"></div><span class="bar-val out"></span></div></div>
+      <div class="bar-row"><div class="lab">2018.10〜2026.3<small>12月の分だけ</small></div><div class="bar-track"><div class="bar"></div><span class="bar-val out"></span></div></div>
+    </div>
+    <p class="small">2018年10月からは基準が見直されたため、ふだんの月は対象外です。<b>毎年12月に出る「期末一時扶助」</b>や、障害者加算・入院などが算定されていた分だけが対象です。</p>
+  </div>
+  <a class="src" href="https://www.mhlw.go.jp/content/12000000/001662197.pdf" target="_blank" rel="noopener">厚労省「追加給付額の例・対象期間」（PDF）↗</a>
+</section>
+
+<section id="who">
+  <h2><span class="n">5</span>自分はもらえる？手続きはいる？</h2>
+  <figure class="reveal">
+    <svg class="flow" viewBox="0 0 365 382" role="img" aria-label="追加給付の対象と手続きの分かれ道">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5f6a77"/></marker></defs>
+      <g class="bx d1"><rect x="8" y="12" width="197" height="64" rx="10" fill="#eef3f8" stroke="#2b5d8f" stroke-width="2"/>
+        <text x="106" y="39" text-anchor="middle" font-size="13" font-weight="700" fill="#242c36">2013年8月〜2026年3月に</text>
+        <text x="106" y="60" text-anchor="middle" font-size="13" font-weight="700" fill="#242c36">生活保護を受けていた？</text></g>
+      <g class="bx d2"><rect x="250" y="12" width="107" height="64" rx="10" fill="#f0f3f6" stroke="#e2e7ec" stroke-width="2"/>
+        <text x="303" y="49" text-anchor="middle" font-size="14" font-weight="700" fill="#5f6a77">対象外</text></g>
+      <path class="ln" d="M205,44 H246" marker-end="url(#ah)"/><text x="227" y="36" text-anchor="middle" font-size="11" fill="#5f6a77">いいえ</text>
+
+      <path class="ln" d="M106,76 V114" marker-end="url(#ah)"/><text x="118" y="100" font-size="11" fill="#5f6a77">はい</text>
+      <g class="bx d2"><rect x="8" y="118" width="197" height="56" rx="10" fill="#eef3f8" stroke="#2b5d8f" stroke-width="2"/>
+        <text x="106" y="141" text-anchor="middle" font-size="13" font-weight="700" fill="#242c36">今も生活保護を</text>
+        <text x="106" y="161" text-anchor="middle" font-size="13" font-weight="700" fill="#242c36">受けている？</text></g>
+      <path class="ln" d="M205,146 H246" marker-end="url(#ah)"/><text x="227" y="138" text-anchor="middle" font-size="11" fill="#5f6a77">いいえ</text>
+      <g class="bx d3"><rect x="250" y="118" width="107" height="56" rx="10" fill="#fdf3f1" stroke="#a4483c" stroke-width="2"/>
+        <text x="303" y="141" text-anchor="middle" font-size="12.5" font-weight="700" fill="#a4483c">当時の自治体に</text>
+        <text x="303" y="161" text-anchor="middle" font-size="12.5" font-weight="700" fill="#a4483c">申し出が必要</text></g>
+
+      <path class="ln" d="M106,174 V210" marker-end="url(#ah)"/><text x="118" y="196" font-size="11" fill="#5f6a77">はい</text>
+      <g class="bx d3"><rect x="8" y="214" width="197" height="56" rx="10" fill="#eef3f8" stroke="#2b5d8f" stroke-width="2"/>
+        <text x="106" y="237" text-anchor="middle" font-size="13" font-weight="700" fill="#242c36">ずっと同じ自治体で</text>
+        <text x="106" y="257" text-anchor="middle" font-size="13" font-weight="700" fill="#242c36">続けて受けている？</text></g>
+      <path class="ln" d="M205,242 H246" marker-end="url(#ah)"/><text x="227" y="234" text-anchor="middle" font-size="11" fill="#5f6a77">いいえ</text>
+      <g class="bx d4"><rect x="250" y="214" width="107" height="56" rx="10" fill="#fdf3f1" stroke="#a4483c" stroke-width="2"/>
+        <text x="303" y="237" text-anchor="middle" font-size="12.5" font-weight="700" fill="#a4483c">昔の期間の分は</text>
+        <text x="303" y="257" text-anchor="middle" font-size="12.5" font-weight="700" fill="#a4483c">申し出が必要</text></g>
+
+      <path class="ln" d="M106,270 V306" marker-end="url(#ah)"/><text x="118" y="292" font-size="11" fill="#5f6a77">はい</text>
+      <g class="bx d4"><rect x="8" y="310" width="197" height="60" rx="10" fill="#f1f7f4" stroke="#2a7355" stroke-width="2"/>
+        <text x="106" y="335" text-anchor="middle" font-size="13.5" font-weight="700" fill="#2a7355">手続きは不要</text>
+        <text x="106" y="357" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2a7355">自動で支払われる</text></g>
+      <path class="ln" d="M303,270 V306" marker-end="url(#ah)" stroke-dasharray="4 4"/>
+      <g class="bx d4"><rect x="250" y="310" width="107" height="60" rx="10" fill="#fdf7ea" stroke="#8a6420" stroke-width="2"/>
+        <text x="303" y="335" text-anchor="middle" font-size="12" font-weight="700" fill="#8a6420">申し出の期限</text>
+        <text x="303" y="357" text-anchor="middle" font-size="12.5" font-weight="800" fill="#8a6420">2027年7月31日</text></g>
+    </svg>
+    <figcaption>「昔の期間の分」は、別の自治体で受けていた・一度やめてまた受け始めた・当時は世帯主で今は別の世帯、などの場合です。</figcaption>
+  </figure>
+  <div class="quote reveal">
+    <span class="lbl">厚労省「追加給付の対象となる方へのご案内」より原文</span>
+    現在はＡ市で生活保護を受けていますが、平成25年８月時点ではＢ市で、その後Ｃ市で生活保護を受けていました。（中略）<b>それぞれの自治体から追加給付されます。Ａ市からは手続きをすることなく支払われますが、Ｂ市・Ｃ市に対しては申出を行ってください。</b>
+  </div>
+  <a class="tool-link" href="tsuika.html">自分の場合を調べる（ツール）<span>選ぶだけで、対象かどうか・申し出が必要か・どこに出すかが分かります</span></a>
+</section>
+
+<section id="how">
+  <h2><span class="n">6</span>申し出のしかた（やめた人）</h2>
+  <p>やり方は自治体ごとに少し違います。ここでは長崎市の案内を例にします。</p>
+  <ol class="steps reveal">
+    <li><b>当時受けていた自治体のページで「追加給付」を探す</b><span>申出書をダウンロードするか、窓口でもらう</span></li>
+    <li><b>必要な書類をそろえる</b><span>下のチェックリスト。戸籍謄本の手数料は自分で負担</span></li>
+    <li><b>郵送するか、窓口に持っていく</b><span>長崎市は郵送と市役所4階の窓口の2通り。自治体によっては電子申請もある</span></li>
+    <li><b>決定通知書が届き、口座に振り込まれる</b><span>板橋区の案内では、書類に問題がなければ1か月半〜2か月程度</span></li>
+  </ol>
+  <div class="card reveal">
+    <h3>必要な書類（長崎市の例）</h3>
+    <div class="prog" aria-hidden="true"><i id="progBar"></i></div>
+    <p class="small" id="progText">押すとチェックが付きます（配信用。記録はされません）</p>
+    <ul class="check" id="checklist">
+      <li><label><input type="checkbox"><span>申出書<small>自治体のページか窓口で</small></span></label></li>
+      <li><label><input type="checkbox"><span>同意書<small>追加給付に必要な調査への同意</small></span></label></li>
+      <li><label><input type="checkbox"><span>当時の世帯主と全員の戸籍謄本の写し<small>発行から3か月以内。受給中なら保護受給証明書でも可</small></span></label></li>
+      <li><label><input type="checkbox"><span>本人確認書類の写し<small>マイナンバーカード・運転免許証・障害者手帳など1つ</small></span></label></li>
+      <li><label><input type="checkbox"><span>本人名義の通帳かキャッシュカードの写し<small>振込先の確認用</small></span></label></li>
+    </ul>
+  </div>
+  <p class="small">当時の世帯主が亡くなっている場合は、当時の世帯員から申し出られます（長崎県の案内）。受けていた期間がはっきり分からなくても、自治体の記録で確認してもらえます（板橋区の案内）。</p>
+  <a class="src" href="https://www.city.nagasaki.lg.jp/page/77525.html" target="_blank" rel="noopener">長崎市「保護費等の追加給付について」↗</a>
+  <a class="src" href="https://www.city.itabashi.tokyo.jp/kenko/fukushi/soudan/1062672.html" target="_blank" rel="noopener">板橋区の案内（よくある質問つき）↗</a>
+  <div class="card ok reveal" style="margin-top:12px">
+    <h3>分からないときの電話（無料）</h3>
+    <p style="font-size:22px; font-weight:800; color:var(--ok); margin:0">0120-179-445</p>
+    <p class="small">厚労省の「追加給付相談センター」。平日9時〜17時（8〜10月は土日祝も）</p>
+  </div>
+</section>
+
+<section id="me">
+  <h2><span class="n">7</span>生活保護3年目の僕の場合</h2>
+  <p>僕が生活保護を受け始めたのは<b>2024年</b>です。2018年10月より後なので、ふだんの月の保護費は対象外。対象になるのは<b>12月の期末一時扶助</b>の分だけです。</p>
+  <div class="calc-me reveal">
+    <div class="box"><div class="v">約1.1〜1.5万円</div><div class="k">ひとり暮らしの<br>期末一時扶助（地域による）</div></div>
+    <div class="op">× 2.4%</div>
+    <div class="box"><div class="v">約270〜350円</div><div class="k">1回あたり</div></div>
+    <div class="op">× 2回</div>
+    <div class="box res"><div class="v">約540〜700円</div><div class="k">2024年12月・<br>2025年12月の分</div></div>
+  </div>
+  <p class="small">↑ これは僕が計算した<b>試算</b>です。正確な額は、自治体から届く決定通知書で分かります。</p>
+  <div class="quote reveal">
+    <span class="lbl">長崎市の案内より原文</span>
+    現在長崎市で生活保護受給中の世帯（保護停止世帯含む）は、<b>申出は不要です。令和8年度中に追加給付を行う予定です。</b>給付日と給付額が確定次第、対象者に決定通知書を送付いたします。
+  </div>
+  <div class="quote reveal">
+    <span class="lbl">同じページより原文</span>
+    追加給付額は、当時の年齢、世帯人数、保護受給期間、加算の有無等によって異なります。（<b>保護受給期間が短い場合などは、数百円程度となることもあります</b>）
+  </div>
+  <p>つまり、<b>僕は数百円</b>。でも2013〜2018年に受けていた人は、<b>10万円前後になることもあります</b>。昔受けていて、今はやめている人ほど、知らないと損をする仕組みです。</p>
+</section>
+
+<section id="care">
+  <h2><span class="n">8</span>気をつけること</h2>
+  <div class="card ng reveal">
+    <h3>電話で口座番号を聞かれたら詐欺</h3>
+    <div class="quote" style="margin:6px 0 0; border-left-color:var(--ng)"><span class="lbl">厚労省のご案内より原文</span>保護費の追加給付について、<b>厚生労働省や自治体から口座番号等をお電話でお聞きすることはありません。詐欺にご注意ください！</b></div>
+  </div>
+  <div class="card ok reveal">
+    <h3>今受けている人：収入として差し引かれない</h3>
+    <div class="quote" style="margin:6px 0 0; border-left-color:var(--ok)"><span class="lbl">同じご案内より原文</span>今回の保護費の追加給付は収入認定の対象になりますか。→ <b>収入認定の対象になりません。</b>なお、保有が認められない物品の購入などは認められません。</div>
+  </div>
+  <div class="card reveal">
+    <h3>亡くなった家族の分は出ない</h3>
+    <div class="quote" style="margin:6px 0 0"><span class="lbl">同じご案内より原文</span><b>亡くなられた方は保護費の追加給付の対象となりません</b>ので、この場合、お二人分の追加給付をいたします。</div>
+  </div>
+  <div class="card reveal">
+    <h3>これから生活保護を考えている人へ</h3>
+    <p>2026年4月以降に受け始める人は、今回の追加給付の対象外です。ただ、<b>保護費の決め方が裁判で違法とされ、あとから差額が支払われることもある</b>と知っておくと、国の金額をうのみにしなくてよい、という心の支えになります。</p>
+  </div>
+</section>
+
+<section id="sum">
+  <h2><span class="n">9</span>まとめ</h2>
+  <div class="take-h ok">分かっていること</div>
+  <div class="take ok reveal"><div class="mk">✓</div><div><b>2013年からの引き下げを、最高裁が違法と判断した</b><span>2025年6月27日。物価の数字だけで4.78%下げた点が違法とされた</span></div></div>
+  <div class="take ok reveal"><div class="mk">✓</div><div><b>今受けている人は、手続きなしで支払われる</b><span>2026年3月から順次。時期は自治体ごと</span></div></div>
+  <div class="take ok reveal"><div class="mk">✓</div><div><b>やめた人は、2027年7月31日までに申し出る</b><span>当時の自治体へ、当時の世帯主が</span></div></div>
+  <div class="take ok reveal"><div class="mk">✓</div><div><b>金額は受けていた時期しだい。2013〜2018年が中心</b><span>1世帯あたり約10万円が国の目安。2018年10月以降だけなら数百円のことも</span></div></div>
+  <div class="take-h warn">まだ分からないこと</div>
+  <div class="take q reveal"><div class="mk">？</div><div><b>自分の自治体でいつ支払われるか</b><span>自治体の準備しだい。決定通知書を待つか、自治体に確認</span></div></div>
+  <div class="take q reveal"><div class="mk">？</div><div><b>期限を過ぎたらどうなるか</b><span>国の案内には書かれていない。過ぎる前に出すのが確実</span></div></div>
+  <div class="take q reveal"><div class="mk">？</div><div><b>全額の補償に変わることはあるか</b><span>弁護士会などは「引き下げ前の水準で全員に」と求めている</span></div></div>
+  <details class="more">
+    <summary>反対の意見を見る（日本弁護士連合会）</summary>
+    <div>
+      <p>日弁連は2026年1月23日の会長声明で、国のやり方を批判しています。国は下げ幅を2.49%に決め直しましたが、これは裁判の中で国が主張し、最高裁が採用しなかった考え方だという指摘です。また、<b>原告だけは引き下げなし（0%）の水準まで特別給付金で上乗せされ、原告以外は2.49%の引き下げが残る</b>ため、同じ被害を受けた人の間で差があるのは平等に反する、としています。</p>
+      <a class="src" href="https://www.nichibenren.or.jp/document/statement/year/2026/260123.html" target="_blank" rel="noopener">日弁連 会長声明（2026年1月23日）↗</a>
+    </div>
+  </details>
+</section>
+
+<section id="src">
+  <h2><span class="n">10</span>根拠にした資料</h2>
+  <ol class="refs">
+    <li><a href="https://www.mhlw.go.jp/stf/newpage_68902.html" target="_blank" rel="noopener">厚労省「平成25年生活扶助基準改定に関する最高裁判決への対応について」</a></li>
+    <li><a href="https://www.mhlw.go.jp/stf/newpage_74654.html" target="_blank" rel="noopener">厚労省 報道発表「最高裁判決を踏まえた保護費の追加給付に関するお知らせ」（2026年7月17日）</a></li>
+    <li><a href="https://www.mhlw.go.jp/content/12000000/001708553.pdf" target="_blank" rel="noopener">厚労省「追加給付の対象となる方へのご案内」（PDF）</a></li>
+    <li><a href="https://www.mhlw.go.jp/content/12000000/001662197.pdf" target="_blank" rel="noopener">厚労省「追加給付額の例・対象期間」（PDF）</a></li>
+    <li><a href="https://www.mhlw.go.jp/content/12000000/001648870.pdf" target="_blank" rel="noopener">厚労省「最高裁判決の概要」（PDF）</a></li>
+    <li><a href="https://www.mhlw.go.jp/content/12000000/001650369.pdf" target="_blank" rel="noopener">厚労省「最高裁判決を踏まえた保護費等の追加給付について」（補正予算・PDF）</a></li>
+    <li><a href="https://tsuikakyufu-sodancenter.mhlw.go.jp/" target="_blank" rel="noopener">最高裁判決を踏まえた保護費の追加給付相談センター（厚労省委託）</a></li>
+    <li><a href="https://www.city.nagasaki.lg.jp/page/77525.html" target="_blank" rel="noopener">長崎市「保護費等の追加給付について」</a></li>
+    <li><a href="https://www.pref.nagasaki.jp/bunrui/hukushi-hoken/fukushi/seikatsuhogo/tsuikakyuuhu/" target="_blank" rel="noopener">長崎県「最高裁判決を踏まえた保護費の追加給付について」</a></li>
+    <li><a href="https://www.city.itabashi.tokyo.jp/kenko/fukushi/soudan/1062672.html" target="_blank" rel="noopener">板橋区「生活保護費等の追加給付について」</a></li>
+    <li><a href="https://www.nichibenren.or.jp/document/statement/year/2026/260123.html" target="_blank" rel="noopener">日本弁護士連合会 会長声明（2026年1月23日）</a></li>
+    <li><a href="https://limo.media/articles/-/137815" target="_blank" rel="noopener">LIMO「生活保護の期末一時扶助」（僕の試算で、期末一時扶助の金額の幅に使用）</a></li>
+  </ol>
+  <div class="caution" style="margin-top:16px">
+    <b>読むときの注意</b>
+    <ul>
+      <li>確認日：<b>2026年9月25日</b>。その後に変わっている可能性があります</li>
+      <li>「僕の場合」の金額は、原文にある数字ではなく<b>僕の試算</b>です</li>
+      <li>申し出の方法・必要書類は自治体ごとに違います。必ず当時の自治体のページで確認してください</li>
+      <li>個人が作ったページで、行政の公式ページではありません。法律上の助言でもありません</li>
+    </ul>
+  </div>
+  <footer>リベル_Liber ／ 生活保護のしらべもの</footer>
+</section>
+
+</main>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 期限までの日数（見ている日から数える）
+  const deadline = new Date(2027, 6, 31);
+  const today = new Date(); today.setHours(0,0,0,0);
+  const left = Math.max(0, Math.round((deadline - today) / 86400000));
+  const dl = document.getElementById('daysLeft');
+  dl.dataset.count = left; dl.dataset.plain = '1';
+
+  const countUp = (el) => {
+    const to = parseFloat(el.dataset.count), dec = +(el.dataset.dec || 0);
+    const fmt = v => el.dataset.plain ? String(Math.round(v)) : v.toLocaleString('ja-JP', {minimumFractionDigits:dec, maximumFractionDigits:dec});
+    if (reduce || to === 0) { el.textContent = fmt(to); return; }
+    const t0 = performance.now(), dur = 1400;
+    const step = (t) => {
+      const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(to * e);
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  const growBars = (root) => {
+    root.querySelectorAll('.bars:not(.pbar)').forEach(b => {
+      const max = parseFloat(b.dataset.max);
+      b.querySelectorAll('.bar').forEach(bar => { bar.style.width = (parseFloat(bar.dataset.v) / max * 100) + '%'; });
+    });
+  };
+
+  // 金額の例（厚労省「追加給付額の例」の表の値）
+  const EX = {
+    city:  {single:[0.5,1.6,8.1,0.2,10.5], family:[1.0,3.0,15.8,0.4,20.4]},
+    rural: {single:[0.4,1.2,6.5,0.2,8.5],  family:[0.8,2.4,12.5,0.3,16.1]}
+  };
+  let area = 'city', hh = 'single', exShown = false;
+  const exTotal = document.getElementById('exTotal');
+  const exRows = [...document.querySelectorAll('#exBars .bar-row')];
+  const drawEx = () => {
+    const d = EX[area][hh], max = 15.8;
+    exRows.forEach((r, i) => {
+      const w = d[i] / max * 100;
+      r.querySelector('.bar').style.width = w + '%';
+      const v = r.querySelector('.bar-val');
+      v.textContent = d[i].toFixed(1) + '万円';
+      v.style.left = 'calc(' + w + '% + 8px)';
+    });
+    exTotal.dataset.count = d[4]; exTotal.dataset.dec = 1;
+    countUp(exTotal);
+  };
+  document.querySelectorAll('#ex button').forEach(b => b.addEventListener('click', () => {
+    if (b.dataset.area) area = b.dataset.area; else hh = b.dataset.hh;
+    b.parentNode.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+    drawEx();
+  }));
+
+  const onIn = (el) => {
+    el.classList.add('in');
+    growBars(el);
+    el.querySelectorAll('[data-count]').forEach(countUp);
+    if (el.id === 'ex' && !exShown) { exShown = true; drawEx(); }
+  };
+  const targets = document.querySelectorAll('.reveal, .card, section');
+  if ('IntersectionObserver' in window && !reduce) {
+    const io = new IntersectionObserver((es) => es.forEach(e => {
+      if (e.isIntersecting) { onIn(e.target); io.unobserve(e.target); }
+    }), {threshold: 0, rootMargin: '0px 0px -12% 0px'});
+    targets.forEach(t => io.observe(t));
+  } else {
+    targets.forEach(onIn);
+  }
+
+  // チェックリスト（配信での実演用。保存はしない）
+  const boxes = [...document.querySelectorAll('#checklist input')];
+  const bar = document.getElementById('progBar'), txt = document.getElementById('progText');
+  boxes.forEach(b => b.addEventListener('change', () => {
+    const n = boxes.filter(x => x.checked).length;
+    bar.style.width = (n / boxes.length * 100) + '%';
+    txt.textContent = n === boxes.length ? 'そろいました。あとは郵送か窓口へ' : `${n} / ${boxes.length} そろった`;
+  }));
+
+  // 目次の現在地
+  const links = [...document.querySelectorAll('.toc a')];
+  const secs = links.map(a => document.querySelector(a.getAttribute('href')));
+  const markToc = () => {
+    let cur = 0;
+    secs.forEach((s, i) => { if (s && s.getBoundingClientRect().top < 120) cur = i; });
+    links.forEach((a, i) => a.classList.toggle('on', i === cur));
+    // 目次の横スクロールだけ動かす（ページ本体は動かさない）
+    const ul = links[cur].parentNode.parentNode, a = links[cur];
+    if (a.offsetLeft < ul.scrollLeft || a.offsetLeft + a.offsetWidth > ul.scrollLeft + ul.clientWidth) ul.scrollLeft = a.offsetLeft - 16;
+  };
+  addEventListener('scroll', markToc, {passive:true}); markToc();
+})();
+</script>
+</body>
+</html>

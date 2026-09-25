@@ -54,6 +54,10 @@ select:disabled{background:var(--line-soft); color:var(--sub)}
 .box h3{font-size:15px; margin:0 0 4px; color:var(--navy)}
 .box p{margin:0 0 6px; font-size:15px} .box p:last-child{margin:0}
 .box ul{margin:0; padding-left:1.2em; font-size:14.5px}
+.box.est{background:var(--ok-bg); border-color:var(--ok)}
+.box.est h3{color:var(--ok)}
+.estv{font-size:18px; font-weight:700}
+.estv b{font-size:clamp(34px,8vw,46px); color:var(--ok); font-variant-numeric:tabular-nums}
 .box.dead{background:var(--warn-bg); border-color:var(--warn)}
 .days{display:flex; align-items:baseline; gap:6px; flex-wrap:wrap}
 .days .d{font-size:clamp(30px,7vw,42px); font-weight:800; color:var(--warn); font-variant-numeric:tabular-nums; line-height:1.1}
@@ -120,12 +124,16 @@ select:disabled{background:var(--line-soft); color:var(--sub)}
   </div>
 
   <div class="step off" id="s5">
-    <h2><span class="n" id="s5n">4</span>当時住んでいた場所</h2>
+    <h2><span class="n" id="s5n">4</span><span id="s5t">当時住んでいた場所</span></h2>
     <div class="row2">
       <select id="pref" disabled aria-label="都道府県"><option value="">都道府県を選んでください</option></select>
       <select id="city" disabled aria-label="市区町村"><option value="">市区町村を選んでください</option></select>
     </div>
-    <p class="hint">選ぶと、申し出先が出ます（選ばなくても結果は出ます）。</p>
+    <p class="hint" id="s5h">選ぶと、申し出先が出ます（選ばなくても結果は出ます）。</p>
+    <div id="hhWrap" hidden style="margin-top:10px">
+      <select id="hh" disabled aria-label="世帯の人数"><option value="">一緒に受けている人数（選んでください）</option></select>
+      <p class="hint">選ぶと、<b>あなたの金額の試算</b>が出ます。</p>
+    </div>
   </div>
 
   <div id="result" aria-live="polite"></div>
@@ -142,9 +150,20 @@ select:disabled{background:var(--line-soft); color:var(--sub)}
 const KYUCHI = /*KYUCHI*/;
 const LV = ["1級地-1","1級地-2","2級地-1","2級地-2","3級地-1","3級地-2"];
 const DEADLINE = new Date(2027, 6, 31);
+// 期末一時扶助費（12月だけ出る分）の表。級地×世帯人数（1〜9人）と、10人以上は1人ごとの加算
+// 出典: 厚労省「生活保護法による保護の基準」（昭和38年厚生省告示第158号）の期末一時扶助費の表（今の金額）
+const KIMATSU = [
+  [14500,23640,24360,27410,28560,32490,34500,36540,38270,1750],
+  [13850,22560,23270,26170,27270,31010,32950,34880,36550,1660],
+  [13190,21510,22160,24930,25980,29550,31400,33240,34820,1580],
+  [12550,20450,21080,23720,24710,28100,29860,31600,33120,1520],
+  [11890,19380,19980,22470,23420,26640,28300,29970,31390,1420],
+  [11240,18310,18880,21230,22140,25160,26730,28310,29650,1350]
+];
+const kimatsu = (lv, n) => n <= 9 ? KIMATSU[lv][n - 1] : KIMATSU[lv][8] + KIMATSU[lv][9] * (n - 9);
 
 const $ = id => document.getElementById(id);
-const year = $('year'), month = $('month'), now = $('now'), ended = $('ended'), situ = $('situ'), extra = $('extra'), pref = $('pref'), city = $('city');
+const hh = $('hh'), year = $('year'), month = $('month'), now = $('now'), ended = $('ended'), situ = $('situ'), extra = $('extra'), pref = $('pref'), city = $('city');
 
 // 受け始めた年（と月）から、一次情報の区切り（2018年9月／10月、2026年3月／4月）で区分を決める
 const period = {value: ''};
@@ -168,6 +187,16 @@ for (let y = 2013; y <= 2026; y++) year.add(new Option(y + '年', String(y)));
 year.add(new Option('2027年以降', '2027'));
 year.add(new Option('受けたことはない', 'never'));
 for (let m = 1; m <= 12; m++) month.add(new Option(m + '月', String(m)));
+for (let i = 1; i <= 10; i++) hh.add(new Option(i === 10 ? '10人以上' : i + '人', String(i)));
+
+// 2025年までに受け始めて今も受けている人は、必ず2025年12月を受給中に迎えている（期末一時扶助が出ている）ので、12月の質問は不要
+function autoDec() {
+  const y = year.value;
+  return period.value === 'new' && now.value === 'yes' && (y === '2018' || (+y >= 2019 && +y <= 2025));
+}
+// 12月の質問が必要なのは、2018年10月〜2026年3月に受け始めた人のうち、上に当てはまらない人
+function needExtraQ() { return period.value === 'new' && !autoDec(); }
+function extraVal() { return autoDec() ? 'dec' : extra.value; }
 
 // 受け始めた時期・今の状況・やめた時期から、対象の区分を決める
 function effPeriod() {
@@ -199,7 +228,7 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':
 function refresh() {
   updPeriod();
   const v = period.value;
-  const needExtra = v === 'new';
+  const needExtra = needExtraQ();
   const needEnd = v === 'old' && now.value === 'no';
   $('s4').hidden = !needExtra;
   $('sE').hidden = !needEnd;
@@ -222,6 +251,11 @@ function refresh() {
   const coreDone = p && p !== 'none' && n && situ.value && (!needExtra || extra.value);
   pref.disabled = !coreDone;
   city.disabled = !coreDone || !pref.value;
+  $('hhWrap').hidden = !autoDec();
+  const proc = now.value === 'yes' && situ.value === 'same';
+  $('s5t').textContent = proc ? '住んでいる場所' : '当時住んでいた場所';
+  $('s5h').textContent = proc ? (autoDec() ? '人数とあわせて選ぶと、金額の試算が出ます。' : '手続きは不要です。選ばなくても大丈夫です。') : '選ぶと、申し出先が出ます（選ばなくても結果は出ます）。';
+  hh.disabled = !autoDec() || !city.value;
 
   setStep($('s1'), true, period.value);
   setStep($('s2'), !now.disabled, now.value);
@@ -249,7 +283,7 @@ function daysText() {
 
 function render() {
   const out = $('result');
-  const p = effPeriod(), n = now.value, s = situ.value, x = extra.value;
+  const p = effPeriod(), n = now.value, s = situ.value, x = extraVal();
 
   if (!period.value && year.value) {
     out.innerHTML = `<div class="guide">上で <b>何月か</b> を選んでください。</div>`;
@@ -266,7 +300,7 @@ function render() {
     return;
   }
   const needExtra = p === 'new';
-  if (!n || !s || (needExtra && !x)) {
+  if (!n || !s || !x && needExtra) {
     out.innerHTML = `<div class="guide">あと少しです。<b>次の質問</b>を選ぶと結果が出ます。</div>`;
     return;
   }
@@ -300,7 +334,7 @@ function render() {
 
   // 申し出先
   let where = '';
-  if (city.value) {
+  if (city.value && PROC.need) {
     const [name, lv] = city.value.split('|');
     const isTown = /[町村]$/.test(name);
     where = `<div class="box"><h3>申し出先</h3>
@@ -321,9 +355,19 @@ function render() {
       <li>地方・60歳代ひとり（同じ）… <b>8.5万円</b></li>
       <li>都市部・30歳代夫婦＋4歳の子（同じ）… <b>20.4万円</b></li></ul>
       <p class="small">厚労省「追加給付額の例」。受けていた期間が一部なら、その月数分だけです。</p></div>`;
+  } else if (autoDec() && city.value && hh.value) {
+    // あなたの試算: 期末一時扶助 × 2.4% × 12月を迎えた回数（受け始めた年〜2025年）
+    const lv = +city.value.split('|')[1], n = +hh.value;
+    const base = kimatsu(lv, n), times = 2025 - +year.value + 1;
+    const one = Math.round(base * 0.024), total = Math.round(base * 0.024 * times);
+    money = `<div class="box est"><h3>あなたの金額の試算</h3>
+      <p class="estv">約 <b>${total.toLocaleString('ja-JP')}</b> 円</p>
+      <p>期末一時扶助 ${base.toLocaleString('ja-JP')}円（${LV[lv]}・${n === 10 ? '10人以上の例として10人' : n + '人'}）× 2.4% ＝ 約${one.toLocaleString('ja-JP')}円<br>× 12月を迎えた回数 ${times}回（${year.value}年〜2025年）</p>
+      <p class="small">試算です。国の告示の今の金額で計算しています（当時の金額や、加算・入院などがあれば変わります）。正確な額は役所から届く決定通知書で分かります。</p></div>`;
   } else {
     money = `<div class="box"><h3>金額の目安</h3>
       <p>12月の期末一時扶助の <b>2.4%分</b> が中心です。ひとり暮らしなら <b>12月1回につき約270〜350円</b>（試算。期末一時扶助は地域により11,240〜14,500円：国の告示より）。</p>
+      ${autoDec() ? '<p><b>上で市区町村と人数を選ぶと、あなたの金額の試算が出ます。</b></p>' : ''}
       <p class="small">長崎市の案内にも「保護受給期間が短い場合などは、数百円程度となることもあります」とあります。加算や入院があった場合は増えます。</p></div>`;
   }
 
@@ -347,7 +391,7 @@ function render() {
 }
 
 function resetAll() {
-  [year, month, now, ended, situ, extra, pref].forEach(e => e.value = '');
+  [year, month, now, ended, situ, extra, pref, hh].forEach(e => e.value = '');
   city.innerHTML = '<option value="">市区町村を選んでください</option>';
   refresh();
   window.scrollTo({top:0, behavior:'smooth'});
@@ -359,7 +403,7 @@ pref.addEventListener('change', () => {
     .forEach(([name, lv]) => city.add(new Option(name, name + '|' + lv)));
   refresh();
 });
-[year, month, now, ended, situ, extra, city].forEach(e => e.addEventListener('change', refresh));
+[year, month, now, ended, situ, extra, city, hh].forEach(e => e.addEventListener('change', refresh));
 refresh();
 </script>
 </body>

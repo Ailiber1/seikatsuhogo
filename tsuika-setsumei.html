@@ -251,6 +251,13 @@ details.more > div{padding:0 14px 12px; font-size:14.5px}
 .caution ul{margin:0; padding-left:1.2em}
 .tool-link{display:block; text-align:center; text-decoration:none; background:var(--navy-soft); border:2px solid var(--navy); border-radius:12px; padding:14px; color:var(--navy); font-weight:800; font-size:17px; margin:14px 0}
 .tool-link span{display:block; font-size:13px; font-weight:700; color:var(--sub)}
+.only-tool{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 12px 12px 0; padding:14px 16px; margin-bottom:14px}
+.only-tool h3{color:var(--navy)}
+.only-tool ul{margin:6px 0 8px; padding-left:1.2em; font-size:15px}
+.only-tool .tool-link{background:#fff}
+.tool-link{transition:transform .15s, box-shadow .15s}
+.tool-link:hover{transform:translateY(-2px); box-shadow:0 5px 14px rgba(43,93,143,.18)}
+.wrapcta{max-width:780px; margin:0 auto}
 footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
 
 .reveal{opacity:0; transform:translateY(16px); transition:opacity .7s, transform .7s}
@@ -343,6 +350,7 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
     <span class="left">あと<span class="v" id="daysLeft">—</span>日</span>
   </div>
 
+  <a class="tool-link" href="tsuika.html">自分の場合を調べる（ツール） →<span>もらえるか・手続きがいるか・申し出先を、選ぶだけで調べられます</span></a>
   <div class="stats reveal" style="grid-template-columns:1fr">
     <div class="stat"><div class="v">約<span data-count="10">0</span><small>万円</small></div><div class="k">1世帯あたりの目安（国の見込み）。受けていた時期で大きく変わります</div></div>
   </div>
@@ -445,25 +453,23 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
   </div>
   <div class="easy reveal"><span class="lbl">やさしく言うと</span>引っ越しながら生活保護を受けていた人は、<b>今の役所の分は自動</b>。でも<b>前に住んでいた役所の分は、自分で連絡しないともらえません。</b></div>
   <a class="src" href="https://www.mhlw.go.jp/content/12000000/001708553.pdf" target="_blank" rel="noopener">厚労省「追加給付の対象となる方へのご案内」（PDF） ↗</a>
-  <a class="tool-link" href="tsuika.html">自分の場合を調べる（ツール）<span>選ぶだけで、対象かどうか・申し出が必要か・どこに出すかが分かります</span></a>
+  <a class="tool-link" href="tsuika.html">自分の場合を調べる（ツール） →<span>引っ越しや世帯主の変更など、カードでは分からない細かい事情も分かります</span></a>
 </section>
 
 <section id="how">
   <h2><span class="n">6</span>申し出のしかた（やめた人）</h2>
-  <p>昔住んでいた市役所などに、書類を<b>郵送するか窓口に持っていきます</b>。書類は役所ごとに少し違います。ここでは長崎市を例にします。</p>
-  <div class="card reveal">
-    <h3>必要な書類（長崎市の例）</h3>
-    <div class="prog" aria-hidden="true"><i id="progBar"></i></div>
-    <p class="small" id="progText">押すとチェックが付きます（配信用。記録はされません）</p>
-    <ul class="check" id="checklist">
-      <li><label><input type="checkbox"><span>申出書<small>自治体のページか窓口で</small></span></label></li>
-      <li><label><input type="checkbox"><span>同意書<small>追加給付に必要な調査への同意</small></span></label></li>
-      <li><label><input type="checkbox"><span>当時の世帯主と全員の戸籍謄本の写し<small>発行から3か月以内。受給中なら保護受給証明書でも可</small></span></label></li>
-      <li><label><input type="checkbox"><span>本人確認書類の写し<small>マイナンバーカード・運転免許証・障害者手帳など1つ</small></span></label></li>
-      <li><label><input type="checkbox"><span>本人名義の通帳かキャッシュカードの写し<small>振込先の確認用</small></span></label></li>
+  <p>昔住んでいた市役所などに、書類を<b>郵送するか窓口に持っていきます</b>。でも、<b>どこに出すか・どんな書類がいるかは、人によって違います</b>。</p>
+  <div class="only-tool reveal">
+    <h3>ここから先は、人によって答えが違います</h3>
+    <ul>
+      <li>あなたが申し出る<b>役所はどこか</b></li>
+      <li>あなたに<b>必要な書類</b>は何か</li>
+      <li>あなたの<b>金額の目安</b>はどのくらいか</li>
+      <li>引っ越した・世帯主が亡くなった、などの<b>あなたの事情</b>ではどうなるか</li>
     </ul>
+    <p>このページには書いていません。<b>ツールで、自分の場合を選ぶと出てきます。</b></p>
+    <a class="tool-link" href="tsuika.html">自分の場合を調べる（ツール） →<span>受け始めた年と今の状況を選ぶだけ。1分で分かります</span></a>
   </div>
-  <a class="src" href="https://www.city.nagasaki.lg.jp/page/77525.html" target="_blank" rel="noopener">長崎市「保護費等の追加給付について」↗</a>
   <div class="card ok reveal" style="margin-top:12px">
     <h3>分からないときの電話（無料）</h3>
     <p style="font-size:22px; font-weight:800; color:var(--ok); margin:0">0120-179-445</p>
@@ -517,6 +523,8 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
   <div class="take-h warn">まだ分からないこと</div>
   <div class="take q reveal"><div class="mk">？</div><div><b>自分の自治体でいつ支払われるか</b><span>自治体の準備しだい。決定通知書を待つか、自治体に確認</span></div></div>
 </section>
+
+<div class="wrapcta"><a class="tool-link" href="tsuika.html">自分の場合を調べる（ツール） →<span>このページはここまで。あなたの答えは、ツールで</span></a></div>
 
 <section id="src">
   <h2><span class="n">10</span>根拠にした資料</h2>
@@ -620,15 +628,6 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
     targets.forEach(onIn);
   }
 
-  // チェックリスト（配信での実演用。保存はしない）
-  const boxes = [...document.querySelectorAll('#checklist input')];
-  const bar = document.getElementById('progBar'), txt = document.getElementById('progText');
-  boxes.forEach(b => b.addEventListener('change', () => {
-    const n = boxes.filter(x => x.checked).length;
-    bar.style.width = (n / boxes.length * 100) + '%';
-    txt.textContent = n === boxes.length ? 'そろいました。あとは郵送か窓口へ' : `${n} / ${boxes.length} そろった`;
-  }));
-
   // あなたはどの人？
   const WHO = {
     now: ['ok', '今も受けている人：手続きなしで、もらえます', '<p>今の役所から、<b>いつもの保護費の口座に自動で振り込まれます</b>。いつ振り込まれるかは役所しだいで、金額が決まると「決定通知書」という手紙が届きます。</p><p>ただし、<b>引っ越す前の役所で受けていた期間</b>や、<b>一度やめる前の期間</b>がある人は、その昔の期間の分だけ申し出が必要です（期限 2027年7月31日）。</p>'],
@@ -640,7 +639,7 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
     const [cls, h, body] = WHO[b.dataset.k];
     whoBtns.forEach(x => x.setAttribute('aria-expanded', x === b ? 'true' : 'false'));
     whoBox.className = 'who-detail on ' + cls;
-    whoBox.innerHTML = '<h3>' + h + '</h3>' + body.replace('DAYS', leftText || ('あと <b>' + left + '</b> 日'));
+    whoBox.innerHTML = '<h3>' + h + '</h3>' + body.replace('DAYS', leftText || ('あと <b>' + left + '</b> 日')) + (cls === 'gy' ? '' : '<a class="tool-link" href="tsuika.html" style="margin:10px 0 0">自分の場合をくわしく調べる（ツール） →<span>申し出先・必要な書類・金額の目安が分かります</span></a>');
     void whoBox.offsetWidth;
   }));
 

@@ -74,15 +74,13 @@ select:disabled{background:var(--line-soft); color:var(--sub)}
   <div class="for-who"><b>このツールは、こういう方へ</b><br>2013年8月〜2026年3月に生活保護を受けていたことがある方、今受けている方</div>
 
   <div class="step" id="s1">
-    <h2><span class="n">1</span>生活保護を受け始めたのは、いつですか？</h2>
-    <select id="period" aria-label="受け始めた時期">
-      <option value="">選んでください</option>
-      <option value="old">2018年9月より前</option>
-      <option value="new">2018年10月〜2026年3月</option>
-      <option value="late">2026年4月以降</option>
-      <option value="never">受けたことはない</option>
-    </select>
-    <p class="hint">例：2024年5月から受けている → 「2018年10月〜2026年3月」<br>例：2015年から受けている → 「2018年9月より前」<br>何度か受けている人は、いちばん最初に受け始めた時期を選んでください。</p>
+    <h2><span class="n">1</span>生活保護を受け始めたのは、何年ですか？</h2>
+    <select id="year" aria-label="受け始めた年"><option value="">選んでください</option></select>
+    <div id="monthWrap" hidden style="margin-top:8px">
+      <select id="month" aria-label="受け始めた月"><option value="">何月ですか？（選んでください）</option></select>
+      <p class="hint" id="monthHint"></p>
+    </div>
+    <p class="hint">何度か受けている人は、いちばん最初に受け始めた年を選んでください。</p>
   </div>
 
   <div class="step off" id="s2">
@@ -146,7 +144,30 @@ const LV = ["1級地-1","1級地-2","2級地-1","2級地-2","3級地-1","3級地
 const DEADLINE = new Date(2027, 6, 31);
 
 const $ = id => document.getElementById(id);
-const period = $('period'), now = $('now'), ended = $('ended'), situ = $('situ'), extra = $('extra'), pref = $('pref'), city = $('city');
+const year = $('year'), month = $('month'), now = $('now'), ended = $('ended'), situ = $('situ'), extra = $('extra'), pref = $('pref'), city = $('city');
+
+// 受け始めた年（と月）から、一次情報の区切り（2018年9月／10月、2026年3月／4月）で区分を決める
+const period = {value: ''};
+function updPeriod() {
+  const y = year.value, m = +month.value;
+  const needMonth = y === '2018' || y === '2026';
+  $('monthWrap').hidden = !needMonth;
+  if (!needMonth) month.value = '';
+  $('monthHint').textContent = y === '2018' ? '2018年は、9月までと10月からで分かれます。' : y === '2026' ? '2026年は、3月までと4月からで分かれます。' : '';
+  let v = '';
+  if (y === 'never') v = 'never';
+  else if (y === 'early' || (y && +y <= 2017)) v = 'old';
+  else if (y === '2018') v = m ? (m <= 9 ? 'old' : 'new') : '';
+  else if (y === '2026') v = m ? (m <= 3 ? 'new' : 'late') : '';
+  else if (y === '2027') v = 'late';
+  else if (y) v = 'new';
+  period.value = v;
+}
+year.add(new Option('2012年以前', 'early'));
+for (let y = 2013; y <= 2026; y++) year.add(new Option(y + '年', String(y)));
+year.add(new Option('2027年以降', '2027'));
+year.add(new Option('受けたことはない', 'never'));
+for (let m = 1; m <= 12; m++) month.add(new Option(m + '月', String(m)));
 
 // 受け始めた時期・今の状況・やめた時期から、対象の区分を決める
 function effPeriod() {
@@ -176,6 +197,7 @@ const setStep = (el, on, done) => { el.classList.toggle('off', !on); el.classLis
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 function refresh() {
+  updPeriod();
   const v = period.value;
   const needExtra = v === 'new';
   const needEnd = v === 'old' && now.value === 'no';
@@ -201,7 +223,7 @@ function refresh() {
   pref.disabled = !coreDone;
   city.disabled = !coreDone || !pref.value;
 
-  setStep($('s1'), true, p);
+  setStep($('s1'), true, period.value);
   setStep($('s2'), !now.disabled, now.value);
   setStep($('sE'), !ended.disabled, ended.value);
   setStep($('s3'), !situ.disabled, situ.value);
@@ -229,6 +251,10 @@ function render() {
   const out = $('result');
   const p = effPeriod(), n = now.value, s = situ.value, x = extra.value;
 
+  if (!period.value && year.value) {
+    out.innerHTML = `<div class="guide">上で <b>何月か</b> を選んでください。</div>`;
+    return;
+  }
   if (!period.value) {
     out.innerHTML = `<div class="guide">上の <b>1</b> から順に選ぶと、ここに<br><b>対象かどうか・申し出が必要か・申し出先と期限</b>が出ます。</div>`;
     return;
@@ -321,7 +347,7 @@ function render() {
 }
 
 function resetAll() {
-  [period, now, ended, situ, extra, pref].forEach(e => e.value = '');
+  [year, month, now, ended, situ, extra, pref].forEach(e => e.value = '');
   city.innerHTML = '<option value="">市区町村を選んでください</option>';
   refresh();
   window.scrollTo({top:0, behavior:'smooth'});
@@ -333,7 +359,7 @@ pref.addEventListener('change', () => {
     .forEach(([name, lv]) => city.add(new Option(name, name + '|' + lv)));
   refresh();
 });
-[period, now, ended, situ, extra, city].forEach(e => e.addEventListener('change', refresh));
+[year, month, now, ended, situ, extra, city].forEach(e => e.addEventListener('change', refresh));
 refresh();
 </script>
 </body>

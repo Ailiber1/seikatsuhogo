@@ -83,6 +83,39 @@ details.words dd{margin:0; color:var(--ink)}
 .kid ol{margin:6px 0 10px; padding-left:1.3em; font-size:15px}
 .kid ol li{margin-bottom:4px}
 
+/* あなたはどの人？（3枚のカード） */
+.who3{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:6px 0 10px}
+.pc{font:inherit; color:var(--ink); text-align:center; cursor:pointer; border-radius:14px; border:2.5px solid var(--line); background:var(--ground);
+  padding:14px 10px 12px; display:flex; flex-direction:column; align-items:center; gap:4px; transition:transform .15s, box-shadow .15s, background .2s}
+.pc:hover{transform:translateY(-2px); box-shadow:0 5px 14px rgba(36,44,54,.12)}
+.pc .ico{width:52px; height:52px}
+.pc .q{font-size:14px; font-weight:700; line-height:1.45; min-height:2.9em; display:flex; align-items:center}
+.pc .a{font-size:clamp(22px,4.4vw,28px); font-weight:800; line-height:1.2}
+.pc .h{font-size:13px; font-weight:800; border-radius:999px; padding:2px 12px}
+.pc.ok{border-color:var(--ok)} .pc.ok .a{color:var(--ok)} .pc.ok .h{background:var(--ok-bg); color:var(--ok)}
+.pc.ng{border-color:var(--ng)} .pc.ng .a{color:var(--ok)} .pc.ng .h{background:var(--ng-bg); color:var(--ng)}
+.pc.gy .a{color:var(--sub)} .pc.gy .h{background:var(--line-soft); color:var(--sub)}
+.pc[aria-expanded="true"]{box-shadow:0 0 0 4px var(--navy-soft); transform:translateY(-2px)}
+.pc.ok[aria-expanded="true"]{background:var(--ok-bg)} .pc.ng[aria-expanded="true"]{background:var(--ng-bg)} .pc.gy[aria-expanded="true"]{background:var(--line-soft)}
+.who-detail{border:2px dashed var(--line); border-radius:13px; padding:14px 16px; margin-bottom:10px; min-height:70px}
+.who-detail .guide-t{color:var(--sub); font-weight:700}
+.who-detail.on{border-style:solid; animation:pop .4s ease}
+.who-detail.ok{border-color:var(--ok); background:var(--ok-bg)} .who-detail.ng{border-color:var(--ng); background:var(--ng-bg)} .who-detail.gy{border-color:var(--line); background:var(--panel)}
+.who-detail h3{font-size:18px; margin-bottom:6px}
+.who-detail p{font-size:15px; margin-bottom:8px}
+.who-detail .dl{font-weight:800; color:var(--warn); font-size:17px}
+.who-detail .dl b{font-size:26px; font-variant-numeric:tabular-nums}
+@keyframes pop{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+@media (max-width:560px){
+  .who3{grid-template-columns:1fr; gap:8px}
+  .pc{display:grid; grid-template-columns:52px 1fr auto; grid-template-rows:auto auto; text-align:left; column-gap:10px; row-gap:2px; padding:10px 12px}
+  .pc .ico{grid-row:1/3}
+  .pc .q{min-height:0; font-size:13.5px}
+  .pc .a{grid-column:3; grid-row:1; font-size:22px; text-align:right}
+  .pc .h{grid-column:3; grid-row:2; justify-self:end}
+  .pc .q br{display:none}
+}
+
 /* 結論：2つの人に分けて見せる */
 .answer{display:grid; grid-template-columns:1fr 1fr; gap:10px}
 .ans{border-radius:0 12px 12px 0; padding:14px 15px; border-left:5px solid}
@@ -234,6 +267,7 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
 @media (prefers-reduced-motion:reduce){
   .reveal,.easy,.mt-item,.flow .bx,.st{opacity:1!important; transform:none!important}
   .flow .ln{stroke-dashoffset:0!important}
+  .who-detail.on{animation:none}
   .bar,.mt .fill{transition:none!important}
 }
 </style>
@@ -373,7 +407,7 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
   <a class="src" href="https://www.mhlw.go.jp/content/12000000/001650369.pdf" target="_blank" rel="noopener">厚労省「最高裁判決を踏まえた保護費等の追加給付について」（▲4.78%→▲2.49%・PDF） ↗</a>
 
   <h3 style="margin-top:18px">国が出している金額の例</h3>
-  <p class="small">2013年8月から2026年3月まで、ずっと受けていた場合です（加算なし・自宅で生活）。</p>
+  <p class="small">2013年8月から2026年3月まで、ずっと受けていた場合です（加算なし・自宅で生活）。<b>国が公表している例は、この4通りだけです。</b>実際の金額は、年齢・人数・地域・受けていた期間で変わり、役所から届く決定通知書で分かります。</p>
   <div class="reveal" id="ex">
     <div class="switch" role="group" aria-label="地域">
       <button type="button" data-area="city" aria-pressed="true">都市部（1級地-1）</button>
@@ -397,45 +431,14 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
 
 <section id="who">
   <h2><span class="n">5</span>自分はもらえる？手続きはいる？</h2>
-  <figure class="reveal">
-    <svg class="flow" viewBox="0 0 365 382" role="img" aria-label="追加給付の対象と手続きの分かれ道">
-      <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5f6a77"/></marker></defs>
-      <g class="bx d1"><rect x="8" y="12" width="197" height="64" rx="10" fill="#eef3f8" stroke="#2b5d8f" stroke-width="2"/>
-        <text x="106" y="39" text-anchor="middle" font-size="13" font-weight="700" fill="#242c36">2013年8月〜2026年3月に</text>
-        <text x="106" y="60" text-anchor="middle" font-size="13" font-weight="700" fill="#242c36">生活保護を受けていた？</text></g>
-      <g class="bx d2"><rect x="250" y="12" width="107" height="64" rx="10" fill="#f0f3f6" stroke="#e2e7ec" stroke-width="2"/>
-        <text x="303" y="49" text-anchor="middle" font-size="14" font-weight="700" fill="#5f6a77">対象外</text></g>
-      <path class="ln" d="M205,44 H246" marker-end="url(#ah)"/><text x="227" y="36" text-anchor="middle" font-size="11" fill="#5f6a77">いいえ</text>
-
-      <path class="ln" d="M106,76 V114" marker-end="url(#ah)"/><text x="118" y="100" font-size="11" fill="#5f6a77">はい</text>
-      <g class="bx d2"><rect x="8" y="118" width="197" height="56" rx="10" fill="#eef3f8" stroke="#2b5d8f" stroke-width="2"/>
-        <text x="106" y="141" text-anchor="middle" font-size="13" font-weight="700" fill="#242c36">今も生活保護を</text>
-        <text x="106" y="161" text-anchor="middle" font-size="13" font-weight="700" fill="#242c36">受けている？</text></g>
-      <path class="ln" d="M205,146 H246" marker-end="url(#ah)"/><text x="227" y="138" text-anchor="middle" font-size="11" fill="#5f6a77">いいえ</text>
-      <g class="bx d3"><rect x="250" y="118" width="107" height="56" rx="10" fill="#fdf3f1" stroke="#a4483c" stroke-width="2"/>
-        <text x="303" y="141" text-anchor="middle" font-size="12.5" font-weight="700" fill="#a4483c">当時の自治体に</text>
-        <text x="303" y="161" text-anchor="middle" font-size="12.5" font-weight="700" fill="#a4483c">申し出が必要</text></g>
-
-      <path class="ln" d="M106,174 V210" marker-end="url(#ah)"/><text x="118" y="196" font-size="11" fill="#5f6a77">はい</text>
-      <g class="bx d3"><rect x="8" y="214" width="197" height="56" rx="10" fill="#eef3f8" stroke="#2b5d8f" stroke-width="2"/>
-        <text x="106" y="237" text-anchor="middle" font-size="13" font-weight="700" fill="#242c36">ずっと同じ自治体で</text>
-        <text x="106" y="257" text-anchor="middle" font-size="13" font-weight="700" fill="#242c36">続けて受けている？</text></g>
-      <path class="ln" d="M205,242 H246" marker-end="url(#ah)"/><text x="227" y="234" text-anchor="middle" font-size="11" fill="#5f6a77">いいえ</text>
-      <g class="bx d4"><rect x="250" y="214" width="107" height="56" rx="10" fill="#fdf3f1" stroke="#a4483c" stroke-width="2"/>
-        <text x="303" y="237" text-anchor="middle" font-size="12.5" font-weight="700" fill="#a4483c">昔の期間の分は</text>
-        <text x="303" y="257" text-anchor="middle" font-size="12.5" font-weight="700" fill="#a4483c">申し出が必要</text></g>
-
-      <path class="ln" d="M106,270 V306" marker-end="url(#ah)"/><text x="118" y="292" font-size="11" fill="#5f6a77">はい</text>
-      <g class="bx d4"><rect x="8" y="310" width="197" height="60" rx="10" fill="#f1f7f4" stroke="#2a7355" stroke-width="2"/>
-        <text x="106" y="335" text-anchor="middle" font-size="13.5" font-weight="700" fill="#2a7355">手続きは不要</text>
-        <text x="106" y="357" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2a7355">自動で支払われる</text></g>
-      <path class="ln" d="M303,270 V306" marker-end="url(#ah)" stroke-dasharray="4 4"/>
-      <g class="bx d4"><rect x="250" y="310" width="107" height="60" rx="10" fill="#fdf7ea" stroke="#8a6420" stroke-width="2"/>
-        <text x="303" y="335" text-anchor="middle" font-size="12" font-weight="700" fill="#8a6420">申し出の期限</text>
-        <text x="303" y="357" text-anchor="middle" font-size="12.5" font-weight="800" fill="#8a6420">2027年7月31日</text></g>
-    </svg>
-    <figcaption>「昔の期間の分」は、別の自治体で受けていた・一度やめてまた受け始めた・当時は世帯主で今は別の世帯、などの場合です。</figcaption>
-  </figure>
+  <p>まず、自分がどれにあてはまるかを選んでください。<b>押すと説明が出ます。</b></p>
+  <div class="who3 reveal" role="group" aria-label="あてはまる人を選ぶ">
+    <button type="button" class="pc ok" data-k="now" aria-expanded="false"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><circle cx="20" cy="15" r="8" fill="#2a7355" opacity=".85"/><path d="M5 42c0-9 7-15 15-15s15 6 15 15z" fill="#2a7355" opacity=".85"/><circle cx="37" cy="33" r="10" fill="#fff" stroke="#2a7355" stroke-width="2.5"/><text x="37" y="38" text-anchor="middle" font-size="13" font-weight="800" fill="#2a7355">✓</text></svg><span class="q">今も生活保護を<br>受けている人</span><span class="a">もらえる</span><span class="h">手続きなし</span></button>
+    <button type="button" class="pc ng" data-k="quit" aria-expanded="false"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><circle cx="20" cy="15" r="8" fill="#a4483c" opacity=".85"/><path d="M5 42c0-9 7-15 15-15s15 6 15 15z" fill="#a4483c" opacity=".85"/><circle cx="37" cy="33" r="10" fill="#fff" stroke="#a4483c" stroke-width="2.5"/><text x="37" y="38" text-anchor="middle" font-size="13" font-weight="800" fill="#a4483c">!</text></svg><span class="q">もう生活保護を<br>やめた人</span><span class="a">もらえる</span><span class="h">申し出が必要</span></button>
+    <button type="button" class="pc gy" data-k="none" aria-expanded="false"><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><circle cx="20" cy="15" r="8" fill="#8792a0" opacity=".85"/><path d="M5 42c0-9 7-15 15-15s15 6 15 15z" fill="#8792a0" opacity=".85"/><circle cx="37" cy="33" r="10" fill="#fff" stroke="#8792a0" stroke-width="2.5"/><text x="37" y="38" text-anchor="middle" font-size="13" font-weight="800" fill="#8792a0">×</text></svg><span class="q">2013年8月〜2026年3月に<br>受けていない人</span><span class="a">もらえない</span><span class="h">対象外</span></button>
+  </div>
+  <div class="who-detail" id="whoDetail" aria-live="polite"><span class="guide-t">↑ 3つのうち、自分にあてはまるものを押してください</span></div>
+  <p class="small">「もらえる」のは、2013年8月〜2026年3月に生活保護を受けていた人です。ただし2018年10月より後だけ受けていた人は、12月の分などだけなので<b>数百円ほど</b>のこともあります。</p>
   <div class="quote reveal">
     <span class="lbl">厚労省「追加給付の対象となる方へのご案内」より原文</span>
     現在はＡ市で生活保護を受けていますが、平成25年８月時点ではＢ市で、その後Ｃ市で生活保護を受けていました。（中略）<b>それぞれの自治体から追加給付されます。Ａ市からは手続きをすることなく支払われますが、Ｂ市・Ｃ市に対しては申出を行ってください。</b>
@@ -622,6 +625,21 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
     const n = boxes.filter(x => x.checked).length;
     bar.style.width = (n / boxes.length * 100) + '%';
     txt.textContent = n === boxes.length ? 'そろいました。あとは郵送か窓口へ' : `${n} / ${boxes.length} そろった`;
+  }));
+
+  // あなたはどの人？
+  const WHO = {
+    now: ['ok', '今も受けている人：手続きなしで、もらえます', '<p>今の役所から、<b>いつもの保護費の口座に自動で振り込まれます</b>。いつ振り込まれるかは役所しだいで、金額が決まると「決定通知書」という手紙が届きます。</p><p>ただし、<b>引っ越す前の役所で受けていた期間</b>や、<b>一度やめる前の期間</b>がある人は、その昔の期間の分だけ申し出が必要です（期限 2027年7月31日）。</p>'],
+    quit: ['ng', 'やめた人：もらえます。でも自分で申し出ないと0円', '<p>当時受けていた役所に、<b>当時の家の代表（世帯主）が</b>「払ってください」と書類を出します。待っていても振り込まれません。</p><p class="dl"><span style="white-space:nowrap">期限 2027年7月31日</span>　<span style="white-space:nowrap">あと <b>DAYS</b> 日</span></p>'],
+    none: ['gy', 'その期間に受けていない人：もらえません', '<p>今回のお金は、<b>2013年8月〜2026年3月に生活保護を受けていた人</b>への支払いです。2026年4月以降に受け始めた人も対象外です。</p>']
+  };
+  const whoBtns = [...document.querySelectorAll('.pc')], whoBox = document.getElementById('whoDetail');
+  whoBtns.forEach(b => b.addEventListener('click', () => {
+    const [cls, h, body] = WHO[b.dataset.k];
+    whoBtns.forEach(x => x.setAttribute('aria-expanded', x === b ? 'true' : 'false'));
+    whoBox.className = 'who-detail on ' + cls;
+    whoBox.innerHTML = '<h3>' + h + '</h3>' + body.replace('DAYS', left);
+    void whoBox.offsetWidth;
   }));
 
   // 目次の現在地

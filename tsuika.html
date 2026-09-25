@@ -74,14 +74,15 @@ select:disabled{background:var(--line-soft); color:var(--sub)}
   <div class="for-who"><b>このツールは、こういう方へ</b><br>2013年8月〜2026年3月に生活保護を受けていたことがある方、今受けている方</div>
 
   <div class="step" id="s1">
-    <h2><span class="n">1</span>生活保護を受けていた時期は？</h2>
-    <select id="period" aria-label="受けていた時期">
+    <h2><span class="n">1</span>生活保護を受け始めたのは、いつですか？</h2>
+    <select id="period" aria-label="受け始めた時期">
       <option value="">選んでください</option>
-      <option value="old">2018年9月までに受けていた</option>
-      <option value="new">2018年10月〜2026年3月だけ</option>
-      <option value="none">2026年3月までは受けていない</option>
+      <option value="old">2018年9月より前</option>
+      <option value="new">2018年10月〜2026年3月</option>
+      <option value="late">2026年4月以降</option>
+      <option value="never">受けたことはない</option>
     </select>
-    <p class="hint">対象は2013年8月からです。2013年8月〜2018年9月に少しでも受けていれば、いちばん上を選んでください。</p>
+    <p class="hint">例：2024年5月から受けている → 「2018年10月〜2026年3月」<br>例：2015年から受けている → 「2018年9月より前」<br>何度か受けている人は、いちばん最初に受け始めた時期を選んでください。</p>
   </div>
 
   <div class="step off" id="s2">
@@ -91,6 +92,16 @@ select:disabled{background:var(--line-soft); color:var(--sub)}
       <option value="yes">受けている（停止中も含む）</option>
       <option value="no">受けていない（やめた）</option>
     </select>
+  </div>
+
+  <div class="step off" id="sE" hidden>
+    <h2><span class="n">3</span>やめたのは、いつですか？</h2>
+    <select id="ended" disabled aria-label="やめた時期">
+      <option value="">選んでください</option>
+      <option value="after">2013年8月以降にやめた</option>
+      <option value="before">2013年7月までにやめた</option>
+    </select>
+    <p class="hint">対象は、2013年8月以降に生活保護を受けていた人です。</p>
   </div>
 
   <div class="step off" id="s3">
@@ -135,7 +146,15 @@ const LV = ["1級地-1","1級地-2","2級地-1","2級地-2","3級地-1","3級地
 const DEADLINE = new Date(2027, 6, 31);
 
 const $ = id => document.getElementById(id);
-const period = $('period'), now = $('now'), situ = $('situ'), extra = $('extra'), pref = $('pref'), city = $('city');
+const period = $('period'), now = $('now'), ended = $('ended'), situ = $('situ'), extra = $('extra'), pref = $('pref'), city = $('city');
+
+// 受け始めた時期・今の状況・やめた時期から、対象の区分を決める
+function effPeriod() {
+  const v = period.value;
+  if (v === 'late' || v === 'never') return 'none';
+  if (v === 'old' && now.value === 'no' && ended.value === 'before') return 'none';
+  return v;
+}
 
 const SITU = {
   yes: [
@@ -157,15 +176,19 @@ const setStep = (el, on, done) => { el.classList.toggle('off', !on); el.classLis
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 function refresh() {
-  const p = period.value;
-  const needExtra = p === 'new';
+  const v = period.value;
+  const needExtra = v === 'new';
+  const needEnd = v === 'old' && now.value === 'no';
   $('s4').hidden = !needExtra;
-  $('s5n').textContent = needExtra ? '5' : '4';
+  $('sE').hidden = !needEnd;
+  if (!needEnd) ended.value = '';
 
   // 2段目以降は、前が選ばれるまで押せない
-  now.disabled = !p || p === 'none';
+  now.disabled = !v || v === 'late' || v === 'never';
   if (now.disabled) now.value = '';
-  const n = now.value;
+  ended.disabled = !needEnd;
+  const p = effPeriod();
+  const n = (p === 'none' || (needEnd && !ended.value)) ? '' : now.value;
   if (situ.dataset.for !== n) {
     situ.innerHTML = '<option value="">選んでください</option>';
     (SITU[n] || []).forEach(([v, t]) => situ.add(new Option(t, v)));
@@ -179,10 +202,14 @@ function refresh() {
   city.disabled = !coreDone || !pref.value;
 
   setStep($('s1'), true, p);
-  setStep($('s2'), !now.disabled, n);
+  setStep($('s2'), !now.disabled, now.value);
+  setStep($('sE'), !ended.disabled, ended.value);
   setStep($('s3'), !situ.disabled, situ.value);
   setStep($('s4'), !extra.disabled, extra.value);
   setStep($('s5'), !pref.disabled, city.value);
+  // 見えている質問に、上から順に番号をふる
+  let k = 0;
+  document.querySelectorAll('.step').forEach(st => { if (!st.hidden) st.querySelector('.n').textContent = ++k; });
   render();
 }
 
@@ -200,32 +227,32 @@ function daysText() {
 
 function render() {
   const out = $('result');
-  const p = period.value, n = now.value, s = situ.value, x = extra.value;
+  const p = effPeriod(), n = now.value, s = situ.value, x = extra.value;
 
-  if (!p) {
+  if (!period.value) {
     out.innerHTML = `<div class="guide">上の <b>1</b> から順に選ぶと、ここに<br><b>対象かどうか・申し出が必要か・申し出先と期限</b>が出ます。</div>`;
     return;
   }
   if (p === 'none') {
     out.innerHTML = `<div class="res"><div class="verdict ng"><div class="k">結果</div><div class="v">今回の追加給付の対象外です</div>
-      <p>対象は、2013年8月〜2026年3月に生活保護を受けていた世帯です。2026年4月以降に受け始めた方は対象になりません。</p></div>
+      <p>対象は、2013年8月〜2026年3月に生活保護を受けていた世帯です。2026年4月以降に受け始めた方や、2013年7月までにやめた方は対象になりません。</p></div>
       <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button></div>`;
     return;
   }
   const needExtra = p === 'new';
   if (!n || !s || (needExtra && !x)) {
-    out.innerHTML = `<div class="guide">あと少しです。<b>${!n ? '2' : !s ? '3' : '4'}</b> を選ぶと結果が出ます。</div>`;
+    out.innerHTML = `<div class="guide">あと少しです。<b>次の質問</b>を選ぶと結果が出ます。</div>`;
     return;
   }
 
   // 対象かどうか
   let verdict;
   if (needExtra && x === 'no') {
-    verdict = ['ng', '対象外の可能性が高いです', '2018年10月以降は、12月の期末一時扶助か一部の加算が算定された分だけが対象です。どちらもなければ、追加給付はありません。'];
+    verdict = ['ng', '対象外の可能性が高いです', '2018年10月より後は、毎年12月だけ少し多く出るお金（期末一時扶助）や、障害がある人などへの上乗せの分だけが対象です。どちらもなければ、もらえるお金はありません。'];
   } else if (needExtra && x === 'unknown') {
     verdict = ['warn', '12月を受給中に迎えていれば対象です', '期末一時扶助は、12月に生活保護を受けている世帯に出ます。受けていた期間に12月が入っていれば、少額ですが対象になります。'];
   } else {
-    verdict = ['ok', '追加給付の対象になります', p === 'old' ? '2013年8月〜2018年9月に受けていた分は、ふだんの月の保護費が対象です。' : '対象は、12月の期末一時扶助や加算などが算定された分です。'];
+    verdict = ['ok', '追加給付の対象になります', p === 'old' ? '2013年8月〜2018年9月に受けていた分は、ふだんの月の保護費が対象です。' : '毎年12月だけ少し多く出るお金（期末一時扶助）などの分が対象です。金額は数百円ほどのことが多いです。'];
   }
   if (verdict[0] === 'ng') {
     out.innerHTML = `<div class="res"><div class="verdict ng"><div class="k">結果</div><div class="v">${verdict[1]}</div><p>${verdict[2]}</p></div>
@@ -294,7 +321,7 @@ function render() {
 }
 
 function resetAll() {
-  [period, now, situ, extra, pref].forEach(e => e.value = '');
+  [period, now, ended, situ, extra, pref].forEach(e => e.value = '');
   city.innerHTML = '<option value="">市区町村を選んでください</option>';
   refresh();
   window.scrollTo({top:0, behavior:'smooth'});
@@ -306,7 +333,7 @@ pref.addEventListener('change', () => {
     .forEach(([name, lv]) => city.add(new Option(name, name + '|' + lv)));
   refresh();
 });
-[period, now, situ, extra, city].forEach(e => e.addEventListener('change', refresh));
+[period, now, ended, situ, extra, city].forEach(e => e.addEventListener('change', refresh));
 refresh();
 </script>
 </body>

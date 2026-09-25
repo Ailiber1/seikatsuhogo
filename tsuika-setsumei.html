@@ -256,6 +256,7 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
 <main class="wrap">
 
 <section id="top">
+  <h1 class="mincho">保護費の追加給付、<br>期限までに申し出ないと0円</h1>
   <div class="for-who">
     <b>このページは、こういう方へ</b>
     <ul>
@@ -265,7 +266,6 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
     </ul>
   </div>
 
-  <h1 class="mincho">保護費の追加給付、<br>期限までに申し出ないと0円</h1>
   <div class="story reveal" aria-label="そもそも何の話か">
     <div class="story-h">そもそも、何の話？</div>
     <div class="st"><span class="no">1</span><div><b>2013年、国が生活保護費を下げた</b><span>食費や光熱費にあたる「生活扶助」を、3年かけて引き下げました。</span></div></div>
@@ -633,7 +633,8 @@ footer{font-size:12.5px; color:var(--sub); text-align:center; margin-top:26px}
     links.forEach((a, i) => a.classList.toggle('on', i === cur));
     // 目次の横スクロールだけ動かす（ページ本体は動かさない）
     const ul = links[cur].parentNode.parentNode, a = links[cur];
-    if (a.offsetLeft < ul.scrollLeft || a.offsetLeft + a.offsetWidth > ul.scrollLeft + ul.clientWidth) ul.scrollLeft = a.offsetLeft - 16;
+    const x = a.getBoundingClientRect().left - ul.getBoundingClientRect().left + ul.scrollLeft;
+    if (x < ul.scrollLeft || x + a.offsetWidth > ul.scrollLeft + ul.clientWidth) ul.scrollLeft = Math.max(0, x - 16);
   };
   addEventListener('scroll', markToc, {passive:true}); markToc();
 })();

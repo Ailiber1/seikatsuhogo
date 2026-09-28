@@ -59,6 +59,14 @@ table.two tr:last-child th,table.two tr:last-child td{border-bottom:none}
 table.two th{font-size:15px}
 table.two th span{display:block; font-size:12px; font-weight:400; color:var(--sub)}
 table.two td{text-align:right; font-size:18px; font-weight:800; white-space:nowrap; font-variant-numeric:tabular-nums}
+details.rentopt{margin:4px 0 2px}
+details.rentopt summary{cursor:pointer; font-size:14px; font-weight:700; color:var(--navy); min-height:40px; display:flex; align-items:center}
+details.rentopt summary{list-style:none; gap:6px}
+details.rentopt summary::-webkit-details-marker{display:none}
+details.rentopt summary::before{content:"＋"; font-weight:800}
+details.rentopt[open] summary::before{content:"−"}
+details.rentopt[open] summary{margin-bottom:6px}
+details.rentopt .hint{font-size:13px; color:var(--sub); margin:6px 0 0}
 details.more summary{cursor:pointer; font-weight:700; color:var(--navy); min-height:40px; display:flex; align-items:center}
 details.more[open] summary{margin-bottom:6px}
 .perday{display:inline-block; margin-top:8px; font-size:14px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:4px 10px}
@@ -113,12 +121,6 @@ table.brk{width:100%; border-collapse:collapse; font-size:14.5px}
     <div class="ages" id="ages"><p class="hint" style="margin:0">上で人数を選ぶと、ここに年齢の欄が出ます。</p></div>
   </div>
 
-  <div class="step off" id="s4">
-    <h2><span class="n">4</span>家賃が上限より安い人は<span class="opt">入れなくてもOK</span></h2>
-    <div class="yen-in"><input type="number" id="rent" inputmode="numeric" min="0" step="1000" placeholder="例 40000" disabled aria-label="毎月の家賃"><span>円</span></div>
-    <p class="hint">何も入れないと、家賃は<b>その地域の上限額</b>で計算します。実際の家賃を入れると、その額で計算し直します（共益費・管理費は除く）。</p>
-  </div>
-
   <div id="result" aria-live="polite"></div>
 
   <div class="foot">
@@ -156,7 +158,9 @@ function calcKijun(ages, lv, oct, K, KE) {
 // CALC-END
 
 const $ = id => document.getElementById(id);
-const pref = $('pref'), city = $('city'), size = $('size'), rent = $('rent');
+const pref = $('pref'), city = $('city'), size = $('size');
+// 実際の家賃（任意）。結果の中の欄で入れる。選び直しても入れた値と開閉は残す
+let rentVal = '', rentOpen = false, ctx = null;
 const yen = n => n.toLocaleString('ja-JP');
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -183,11 +187,9 @@ function refresh() {
   city.disabled = !pref.value;
   size.disabled = !city.value;
   document.querySelectorAll('.age').forEach(s => s.disabled = !size.value);
-  rent.disabled = !agesDone;
   setStep($('s1'), true, city.value);
   setStep($('s2'), !size.disabled, size.value);
   setStep($('s3'), !!size.value && +size.value < 6, agesDone);
-  setStep($('s4'), !rent.disabled, rent.value);
   render(ages, agesDone);
 }
 
@@ -211,13 +213,6 @@ function render(ages, agesDone) {
   const old = calcKijun(ages, lv, false, KIJUN, KEIKA);
   const n = ages.length;
   const lim = jutakuLimit(pref.value, name, lv, n);
-  const r = Math.max(0, Math.floor(+rent.value || 0));
-  // 家賃を入れた人は「実際の家賃（上限まで）」、入れていない人は上限額を出す
-  const house = r > 0 ? Math.min(r, lim) : lim;
-  const houseNote = r > 0
-    ? (r > lim ? `家賃 ${yen(r)}円のうち、上限の ${yen(lim)}円まで` : `実際の家賃 ${yen(r)}円（上限 ${yen(lim)}円の中）`)
-    : `この地域・${n}人世帯の家賃の上限`;
-  const total = now.total + house, totalOld = old.total + house;
   const later = JUTAKU.later_core_cities.includes(name);
 
   const rows = [
@@ -231,14 +226,17 @@ function render(ages, agesDone) {
     <div class="verdict">
       <p class="place"><b>${esc(pref.value)} ${esc(name)}</b>（${LV[lv]}）／ ${n}人世帯</p>
       <div class="k">毎月の保護費の目安（2026年10月から）</div>
-      <p class="amount">月 <b>${yen(total)}</b> 円</p>
+      <p class="amount">月 <b id="amt"></b> 円</p>
       <table class="two"><tbody>
         <tr><th>生活扶助<span>食費・光熱費など</span></th><td>${yen(now.total)}円</td></tr>
-        <tr><th>住宅扶助<span>${houseNote}</span></th><td>${yen(house)}円</td></tr>
+        <tr><th>住宅扶助<span id="houseNote"></span></th><td id="houseVal"></td></tr>
       </tbody></table>
-      <p class="before">2026年9月までは 月 <b>${yen(totalOld)}</b> 円</p>
+      <details class="rentopt" id="rentBox"${rentOpen ? ' open' : ''}><summary>家賃が ${yen(lim)}円より安い方は、実際の家賃で計算できます</summary>
+        <div class="yen-in"><input type="number" id="rent" inputmode="numeric" min="0" step="1000" placeholder="例 30000" value="${esc(rentVal)}" aria-label="実際の家賃"><span>円</span></div>
+        <p class="hint">共益費・管理費は除いてください。</p></details>
+      <p class="before">2026年9月までは 月 <b id="beforeVal"></b> 円</p>
     </div>
-    ${r > lim ? `<div class="box warn"><h3>家賃が上限を超えています</h3><p>上限（${yen(lim)}円）を超える分は出ません。原則として、上限の中の家への引っ越しを求められます。</p></div>` : ''}
+    <div class="box warn" id="overWarn" hidden><h3>家賃が上限を超えています</h3><p>上限（${yen(lim)}円）を超える分は出ません。原則として、上限の中の家への引っ越しを求められます。</p></div>
     ${later ? `<div class="box warn"><h3>${esc(name)}の家賃の上限について</h3><p>${esc(name)}は2015年より後に中核市になったため、市ごとの上限が別に決められています。ここでは<b>${esc(pref.value)}の上限</b>を出しています。正確な額は市の窓口で確かめてください。</p></div>` : ''}
     <details class="box more"><summary>生活扶助 ${yen(now.total)}円 の内訳を見る</summary>
       <div class="tbl-scroll"><table class="brk">
@@ -252,6 +250,24 @@ function render(ages, agesDone) {
       <li>部屋が15㎡以下だと家賃の上限は下がります。事情によっては上限が上がることもあります</li></ul></div>
     <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button>
   </div>`;
+  ctx = {now, old, lim, n};
+  $('rent').addEventListener('input', e => { rentVal = e.target.value; paint(); });
+  $('rentBox').addEventListener('toggle', e => { rentOpen = e.target.open; });
+  paint();
+}
+
+// 家賃を入れた人は「実際の家賃（上限まで）」、入れていない人は上限額で合計を出す
+function paint() {
+  const {now, old, lim, n} = ctx;
+  const r = Math.max(0, Math.floor(+rentVal || 0));
+  const house = r > 0 ? Math.min(r, lim) : lim;
+  $('houseNote').textContent = r > 0
+    ? (r > lim ? `家賃 ${yen(r)}円のうち、上限の ${yen(lim)}円まで` : `実際の家賃（上限 ${yen(lim)}円）`)
+    : `この地域・${n}人世帯の家賃の上限`;
+  $('houseVal').textContent = yen(house) + '円';
+  $('amt').textContent = yen(now.total + house);
+  $('beforeVal').textContent = yen(old.total + house);
+  $('overWarn').hidden = !(r > lim);
 }
 
 // 家賃（住宅扶助）の上限。政令市・中核市は市の額、それ以外は都道府県×級地（1・2・3級地）の額
@@ -261,7 +277,7 @@ function jutakuLimit(prefName, cityName, lv, n) {
 }
 
 function resetAll() {
-  pref.value = ''; size.value = ''; rent.value = '';
+  pref.value = ''; size.value = ''; rentVal = ''; rentOpen = false;
   city.innerHTML = '<option value="">市区町村を選んでください</option>';
   buildAges(); refresh();
   window.scrollTo({top: 0, behavior: 'smooth'});
@@ -275,7 +291,6 @@ pref.addEventListener('change', () => {
 });
 city.addEventListener('change', refresh);
 size.addEventListener('change', () => { buildAges(); refresh(); });
-rent.addEventListener('input', refresh);
 refresh();
 </script>
 </body>

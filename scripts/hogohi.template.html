@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>保護費しらべ</title>
+<meta name="description" content="住んでいる市区町村と世帯の人数・年代を選ぶだけで、生活保護の生活費の部分（生活扶助）が毎月いくらかを、国の表で計算します">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:16px; line-height:1.75; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.wrap{max-width:720px; margin:0 auto; padding:24px 16px 44px}
+h1{font-size:clamp(24px,5.2vw,32px); line-height:1.4; margin:0 0 8px; color:var(--navy); text-wrap:balance}
+.lead{color:var(--sub); font-size:15px; margin:0 0 16px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:18px; font-size:15px}
+.for-who b{color:var(--navy)}
+.for-who ul{margin:4px 0 0; padding-left:1.2em}
+
+.step{background:var(--panel); border:2px solid var(--line); border-radius:13px; padding:14px 16px; margin-bottom:12px; transition:border-color .3s, opacity .3s}
+.step.off{opacity:.5}
+.step.done{border-color:var(--navy)}
+.step h2{font-size:16.5px; margin:0 0 8px; display:flex; gap:9px; align-items:center}
+.step h2 .n{flex:none; width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; display:grid; place-items:center; font-size:13px}
+.step .hint{font-size:13px; color:var(--sub); margin:6px 0 0}
+select,input[type=number]{font:inherit; font-size:16px; width:100%; min-height:44px; padding:8px 10px; border:2px solid var(--line); border-radius:9px; background:#fff; color:var(--ink)}
+select:focus,input:focus{outline:3px solid var(--navy-soft); border-color:var(--navy)}
+select:disabled,input:disabled{background:var(--line-soft); color:var(--sub)}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.ages{display:grid; gap:8px}
+.ages label{font-size:13px; font-weight:700; color:var(--sub); display:block; margin-bottom:2px}
+.opt{font-size:12px; font-weight:700; color:var(--sub); background:var(--line-soft); border-radius:4px; padding:1px 7px; margin-left:4px}
+.yen-in{display:flex; align-items:center; gap:8px}
+.yen-in span{flex:none; font-weight:700}
+
+#result{margin-top:18px}
+.guide{border:2px dashed var(--line); border-radius:13px; padding:18px; text-align:center; color:var(--sub)}
+.guide b{color:var(--navy)}
+.res{animation:pop .45s ease}
+@keyframes pop{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+.verdict{border-left:6px solid var(--ok); background:var(--ok-bg); border-radius:0 13px 13px 0; padding:14px 16px; margin-bottom:12px}
+.verdict .k{font-size:13px; font-weight:700; color:var(--sub)}
+.verdict .place{font-size:14px; color:var(--sub); margin:0 0 2px}
+.amount{font-size:18px; font-weight:700; margin:2px 0}
+.amount b{font-size:clamp(38px,9vw,52px); color:var(--ok); font-variant-numeric:tabular-nums; letter-spacing:.01em}
+.before{font-size:15px; margin:4px 0 0}
+.before b{font-variant-numeric:tabular-nums}
+.perday{display:inline-block; margin-top:8px; font-size:14px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:4px 10px}
+.box{background:var(--panel); border:2px solid var(--line); border-radius:12px; padding:12px 15px; margin-bottom:10px}
+.box h3{font-size:15px; margin:0 0 6px; color:var(--navy)}
+.box p{margin:0 0 6px; font-size:15px} .box p:last-child{margin:0}
+.box ul{margin:0; padding-left:1.2em; font-size:14.5px}
+.box.rent{background:var(--navy-soft); border-color:var(--navy)}
+.box.warn{background:var(--warn-bg); border-color:var(--warn)}
+.box.warn h3{color:var(--warn)}
+.tbl-scroll{overflow-x:auto}
+table.brk{width:100%; border-collapse:collapse; font-size:14.5px}
+.brk th,.brk td{padding:7px 6px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top}
+.brk td.num,.brk th.num{text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums}
+.brk tfoot td{font-weight:800; border-bottom:none; border-top:2px solid var(--ink)}
+.brk .what{display:block; font-size:12.5px; color:var(--sub); font-weight:400}
+.total{font-size:17px; font-weight:700}
+.total b{font-size:clamp(26px,6vw,34px); color:var(--navy); font-variant-numeric:tabular-nums}
+.small{font-size:13px; color:var(--sub)}
+.reset{font:inherit; font-size:14px; font-weight:700; color:var(--navy); background:var(--navy-soft); border:none; border-radius:8px; padding:8px 14px; min-height:40px; cursor:pointer; margin-top:4px}
+.foot{margin-top:24px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot a{color:var(--navy); word-break:break-all}
+@media (max-width:480px){ .row2{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){ .res{animation:none} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho">保護費しらべ</h1>
+  <p class="lead">住んでいる市区町村と、一緒に暮らす人の人数・年代を選ぶと、生活保護の<b>生活費の部分（生活扶助）が毎月いくらか</b>を、国の表で計算します。</p>
+  <div class="for-who"><b>このツールは、こういう方へ</b>
+    <ul><li>生活保護を考えていて、自分ならいくらになるか知りたい方</li>
+    <li>受けていて、今の額がどう決まっているか確かめたい方</li>
+    <li>「生活保護はもらいすぎ」と聞いて、本当の額を知りたい方</li></ul></div>
+
+  <div class="step" id="s1">
+    <h2><span class="n">1</span>住んでいる場所</h2>
+    <div class="row2">
+      <select id="pref" aria-label="都道府県"><option value="">都道府県を選んでください</option></select>
+      <select id="city" disabled aria-label="市区町村"><option value="">市区町村を選んでください</option></select>
+    </div>
+    <p class="hint">これから引っ越す予定の方は、引っ越し先を選んでください。</p>
+  </div>
+
+  <div class="step off" id="s2">
+    <h2><span class="n">2</span>一緒に暮らす人数（あなたも含む）</h2>
+    <select id="size" disabled aria-label="世帯の人数"><option value="">選んでください</option></select>
+  </div>
+
+  <div class="step off" id="s3">
+    <h2><span class="n">3</span>それぞれの年齢</h2>
+    <div class="ages" id="ages"><p class="hint" style="margin:0">上で人数を選ぶと、ここに年齢の欄が出ます。</p></div>
+  </div>
+
+  <div class="step off" id="s4">
+    <h2><span class="n">4</span>毎月の家賃<span class="opt">入れなくてもOK</span></h2>
+    <div class="yen-in"><input type="number" id="rent" inputmode="numeric" min="0" step="1000" placeholder="例 40000" disabled aria-label="毎月の家賃"><span>円</span></div>
+    <p class="hint">入れると、家賃の分（住宅扶助）を足した合計の目安も出ます。共益費・管理費は除いてください。</p>
+  </div>
+
+  <div id="result" aria-live="polite"></div>
+
+  <div class="foot">
+    <p>この結果は、厚生労働省の公開資料から計算した目安です。最終的な額は福祉事務所が決めます。入力した内容はこの画面の中だけで計算していて、どこにも送信していません。</p>
+    <p>計算の確かめ：厚労省の資料に載っている9つのモデル世帯（3つの地域区分・9月までと10月からの両方で54通り）と、1円単位ですべて一致することを確かめています。</p>
+    <p>根拠: <a href="https://www.mhlw.go.jp/content/001152601.pdf" target="_blank" rel="noopener">厚労省「生活扶助基準額の算出方法（令和8年4月）」</a> ／ <a href="https://www.mhlw.go.jp/content/12002000/001662704.pdf" target="_blank" rel="noopener">厚労省 第55回生活保護基準部会 資料4（10月からの特例加算）</a> ／ 地域の区分（級地）: <a href="https://www.mhlw.go.jp/content/kyuchi.3010.pdf" target="_blank" rel="noopener">厚労省「お住まいの地域の級地」</a></p>
+    <p>確認日: 2026年9月28日 ／ 個人が作ったもので、行政の公式ツールではありません。</p>
+  </div>
+</main>
+
+<script>
+const KYUCHI = /*KYUCHI*/;
+const KEIKA = /*KEIKA*/;
+const KIJUN = /*KIJUN*/;
+const AGES = ["0～2","3～5","6～11","12～17","18～19","20～40","41～59","60～64","65～69","70～74","75～"];
+const AGE_LABEL = {"0～2":"0〜2歳","3～5":"3〜5歳","6～11":"6〜11歳","12～17":"12〜17歳","18～19":"18〜19歳","20～40":"20〜40歳","41～59":"41〜59歳","60～64":"60〜64歳","65～69":"65〜69歳","70～74":"70〜74歳","75～":"75歳以上"};
+const LV = ["1級地-1","1級地-2","2級地-1","2級地-2","3級地-1","3級地-2"];
+const LV_DESC = ["大都市","大都市の周辺など","県庁所在地などの市","中規模の市","小規模の市町村","その他の町村"];
+
+// CALC-START
+// 生活扶助 = 第1類の合計×逓減率（1円未満切り捨て→10円未満切り上げ）＋第2類＋特例加算＋経過的加算
+function calcKijun(ages, lv, oct, K, KE) {
+  const n = ages.length;
+  const raw = ages.reduce((s, a) => s + K.dai1[a][lv], 0);
+  const d1 = Math.ceil(Math.floor(Math.round(raw * K.teigen[n] * 1e6) / 1e6) / 10) * 10;
+  const d2 = K.dai2[n];
+  const per = oct ? K.tokurei.from_2026_10 : K.tokurei.until_2026_09;
+  const tok = per * n;
+  // 10月からは特例加算が1人1,000円増える分、経過的加算が1人最大1,000円減る（従前額保障）
+  const kei = ages.reduce((s, a) => { const k = KE[n][a][lv]; return s + (oct ? k - Math.min(1000, k) : k); }, 0);
+  return {raw, d1, d2, tok, kei, total: d1 + d2 + tok + kei};
+}
+// CALC-END
+
+const $ = id => document.getElementById(id);
+const pref = $('pref'), city = $('city'), size = $('size'), rent = $('rent');
+const yen = n => n.toLocaleString('ja-JP');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+Object.keys(KYUCHI).forEach(p => pref.add(new Option(p, p)));
+for (let i = 1; i <= 5; i++) size.add(new Option(i + '人', String(i)));
+size.add(new Option('6人以上', '6'));
+
+function buildAges() {
+  const n = +size.value;
+  const prev = [...document.querySelectorAll('.age')].map(s => s.value);
+  if (!n) { $('ages').innerHTML = '<p class="hint" style="margin:0">上で人数を選ぶと、ここに年齢の欄が出ます。</p>'; return; }
+  if (n >= 6) { $('ages').innerHTML = '<p class="hint" style="margin:0">6人以上の世帯は、公表されている表に一部の金額が無いため計算できません。</p>'; return; }
+  $('ages').innerHTML = Array.from({length: n}, (_, i) => `
+    <div><label for="age${i}">${i === 0 ? 'あなた' : (i + 1) + '人目'}</label>
+    <select class="age" id="age${i}"><option value="">選んでください</option>${AGES.map(a => `<option value="${a}">${AGE_LABEL[a]}</option>`).join('')}</select></div>`).join('');
+  document.querySelectorAll('.age').forEach((s, i) => { if (prev[i]) s.value = prev[i]; s.addEventListener('change', refresh); });
+}
+
+const setStep = (el, on, done) => { el.classList.toggle('off', !on); el.classList.toggle('done', !!done); };
+
+function refresh() {
+  const ages = [...document.querySelectorAll('.age')].map(s => s.value);
+  const agesDone = ages.length > 0 && ages.every(Boolean);
+  city.disabled = !pref.value;
+  size.disabled = !city.value;
+  document.querySelectorAll('.age').forEach(s => s.disabled = !size.value);
+  rent.disabled = !agesDone;
+  setStep($('s1'), true, city.value);
+  setStep($('s2'), !size.disabled, size.value);
+  setStep($('s3'), !!size.value && +size.value < 6, agesDone);
+  setStep($('s4'), !rent.disabled, rent.value);
+  render(ages, agesDone);
+}
+
+function render(ages, agesDone) {
+  const out = $('result');
+  if (!city.value) {
+    out.innerHTML = `<div class="guide">上の <b>1〜3</b> を選ぶと、ここに<br><b>毎月の生活扶助の額と、その内訳</b>が出ます。</div>`;
+    return;
+  }
+  if (+size.value >= 6) {
+    out.innerHTML = `<div class="guide">6人以上の世帯は計算できません。<br>福祉事務所（役所の生活保護の窓口）で確かめてください。</div>`;
+    return;
+  }
+  if (!agesDone) {
+    out.innerHTML = `<div class="guide">あと少しです。<b>${size.value ? '全員の年齢' : '人数'}</b>を選ぶと結果が出ます。</div>`;
+    return;
+  }
+  const [name, lvs] = city.value.split('|');
+  const lv = +lvs;
+  const now = calcKijun(ages, lv, true, KIJUN, KEIKA);
+  const old = calcKijun(ages, lv, false, KIJUN, KEIKA);
+  const n = ages.length;
+  const r = Math.max(0, Math.floor(+rent.value || 0));
+  const diff = now.total - old.total;
+
+  const rows = [
+    ['第1類', '食費・服など、一人ひとりにかかる分', `${n > 1 ? `${ages.map(a => AGE_LABEL[a]).join('・')}の分を合わせて、人数による調整（×${KIJUN.teigen[n]}）` : AGE_LABEL[ages[0]] + 'の額'}`, now.d1],
+    ['第2類', '電気・ガス・水道など、世帯でまとめてかかる分', `${n}人世帯の額`, now.d2],
+    ['特例加算', '物価高に合わせた上乗せ', `1人${yen(KIJUN.tokurei.from_2026_10)}円 × ${n}人`, now.tok],
+    ['経過的加算', '計算方法が変わっても前より下がらないようにする分', '年齢・人数・地域で決まる', now.kei],
+  ];
+
+  const rentBox = r > 0 ? `
+    <div class="box rent"><h3>家賃の分（住宅扶助）を足すと</h3>
+      <p class="total">毎月 約 <b>${yen(now.total + r)}</b> 円</p>
+      <p>生活扶助 ${yen(now.total)}円 ＋ 家賃 ${yen(r)}円</p>
+      <p class="small">家賃は、実際に払っている額がそのまま出ます。ただし地域と人数ごとに<b>上限</b>があり、上限を超える分は出ません（超える家賃の家には、原則として引っ越しを求められます）。上限は福祉事務所で確かめてください。</p></div>`
+    : `<div class="box"><h3>家賃の分（住宅扶助）</h3><p>家賃は、生活扶助とは<b>別に</b>、実際の家賃の額が出ます（地域と人数ごとに上限あり）。上の <b>4</b> に家賃を入れると、合計の目安が出ます。</p></div>`;
+
+  out.innerHTML = `<div class="res">
+    <div class="verdict">
+      <p class="place"><b>${esc(pref.value)} ${esc(name)}</b>（${LV[lv]}・${LV_DESC[lv]}）／ ${n}人世帯</p>
+      <div class="k">生活扶助（生活費の部分）・2026年10月から</div>
+      <p class="amount">月 <b>${yen(now.total)}</b> 円</p>
+      <p class="before">2026年9月までは <b>${yen(old.total)}</b> 円${diff > 0 ? `（10月から <b>+${yen(diff)}</b> 円）` : '（10月からも同じ額）'}</p>
+      <span class="perday">1日あたり 約 <b>${yen(Math.floor(now.total / 30))}</b> 円（30日で割った目安）</span>
+    </div>
+    <div class="box"><h3>内訳（10月から）</h3>
+      <div class="tbl-scroll"><table class="brk">
+        <thead><tr><th>項目</th><th class="num">金額</th></tr></thead>
+        <tbody>${rows.map(([t, what, how, v]) => `<tr><td><b>${t}</b><span class="what">${what}<br>${how}</span></td><td class="num">${yen(v)}円</td></tr>`).join('')}</tbody>
+        <tfoot><tr><td>合計</td><td class="num">${yen(now.total)}円</td></tr></tfoot>
+      </table></div></div>
+    ${rentBox}
+    <div class="box warn"><h3>この額に入っていないもの・変わること</h3><ul>
+      <li><b>寒い時期の上乗せ</b>（冬季加算）は、地域ごとに冬の月だけ足されます</li>
+      <li><b>障害のある方・ひとり親・子育て中</b>の世帯は、加算が足されます</li>
+      <li><b>病院代・介護</b>は、別の扶助で本人の負担なしになります</li>
+      <li><b>給料・年金などの収入</b>がある人は、その分が差し引かれます（働いた分は一部が手元に残る仕組みがあります）</li>
+      <li>入院中・施設に入っている方は、額が違います</li></ul></div>
+    <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button>
+  </div>`;
+}
+
+function resetAll() {
+  pref.value = ''; size.value = ''; rent.value = '';
+  city.innerHTML = '<option value="">市区町村を選んでください</option>';
+  buildAges(); refresh();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+pref.addEventListener('change', () => {
+  city.innerHTML = '<option value="">市区町村を選んでください</option>';
+  (KYUCHI[pref.value] || []).slice().sort((a, b) => a[0].localeCompare(b[0], 'ja'))
+    .forEach(([nm, lv]) => city.add(new Option(nm, nm + '|' + lv)));
+  size.value = ''; buildAges(); refresh();
+});
+city.addEventListener('change', refresh);
+size.addEventListener('change', () => { buildAges(); refresh(); });
+rent.addEventListener('input', refresh);
+refresh();
+</script>
+</body>
+</html>

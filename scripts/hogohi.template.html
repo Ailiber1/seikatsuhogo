@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>保護費しらべ</title>
-<meta name="description" content="住んでいる市区町村と世帯の人数・年代を選ぶだけで、生活保護の生活費の部分（生活扶助）が毎月いくらかを、国の表で計算します">
+<meta name="description" content="住んでいる市区町村と世帯の人数・年齢を選ぶだけで、生活保護費が毎月いくらか（生活扶助＋住宅扶助）を、国の表で計算します">
 <style>
 :root{
   /* 常に白基調。ダークモードには切り替えない */
@@ -53,6 +53,14 @@ select:disabled,input:disabled{background:var(--line-soft); color:var(--sub)}
 .amount b{font-size:clamp(38px,9vw,52px); color:var(--ok); font-variant-numeric:tabular-nums; letter-spacing:.01em}
 .before{font-size:15px; margin:4px 0 0}
 .before b{font-variant-numeric:tabular-nums}
+table.two{width:100%; border-collapse:collapse; margin:8px 0 4px; background:#fff; border:1px solid var(--line); border-radius:9px}
+table.two th,table.two td{padding:8px 10px; border-bottom:1px solid var(--line); text-align:left}
+table.two tr:last-child th,table.two tr:last-child td{border-bottom:none}
+table.two th{font-size:15px}
+table.two th span{display:block; font-size:12px; font-weight:400; color:var(--sub)}
+table.two td{text-align:right; font-size:18px; font-weight:800; white-space:nowrap; font-variant-numeric:tabular-nums}
+details.more summary{cursor:pointer; font-weight:700; color:var(--navy); min-height:40px; display:flex; align-items:center}
+details.more[open] summary{margin-bottom:6px}
 .perday{display:inline-block; margin-top:8px; font-size:14px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:4px 10px}
 .box{background:var(--panel); border:2px solid var(--line); border-radius:12px; padding:12px 15px; margin-bottom:10px}
 .box h3{font-size:15px; margin:0 0 6px; color:var(--navy)}
@@ -80,7 +88,7 @@ table.brk{width:100%; border-collapse:collapse; font-size:14.5px}
 <body>
 <main class="wrap">
   <h1 class="mincho">保護費しらべ</h1>
-  <p class="lead">住んでいる市区町村と、一緒に暮らす人の人数・年代を選ぶと、生活保護の<b>生活費の部分（生活扶助）が毎月いくらか</b>を、国の表で計算します。</p>
+  <p class="lead">住んでいる市区町村と、一緒に暮らす人の人数・年代を選ぶと、生活保護費が<b>毎月いくらか（生活費＋家賃）</b>を、国の表で計算します。</p>
   <div class="for-who"><b>このツールは、こういう方へ</b>
     <ul><li>生活保護を考えていて、自分ならいくらになるか知りたい方</li>
     <li>受けていて、今の額がどう決まっているか確かめたい方</li>
@@ -106,17 +114,18 @@ table.brk{width:100%; border-collapse:collapse; font-size:14.5px}
   </div>
 
   <div class="step off" id="s4">
-    <h2><span class="n">4</span>毎月の家賃<span class="opt">入れなくてもOK</span></h2>
+    <h2><span class="n">4</span>家賃が上限より安い人は<span class="opt">入れなくてもOK</span></h2>
     <div class="yen-in"><input type="number" id="rent" inputmode="numeric" min="0" step="1000" placeholder="例 40000" disabled aria-label="毎月の家賃"><span>円</span></div>
-    <p class="hint">入れると、家賃の分（住宅扶助）を足した合計の目安も出ます。共益費・管理費は除いてください。</p>
+    <p class="hint">何も入れないと、家賃は<b>その地域の上限額</b>で計算します。実際の家賃を入れると、その額で計算し直します（共益費・管理費は除く）。</p>
   </div>
 
   <div id="result" aria-live="polite"></div>
 
   <div class="foot">
     <p>この結果は、厚生労働省の公開資料から計算した目安です。最終的な額は福祉事務所が決めます。入力した内容はこの画面の中だけで計算していて、どこにも送信していません。</p>
+    <p>家賃の上限：2015年7月から適用の国の限度額（平成27年4月14日 社援発0414第9号）。厚労省・埼玉県・札幌市の公式資料の数字と照らし合わせ、すべて一致することを確かめています。2015年より後に中核市になった市は、県の上限を出しています。</p>
     <p>計算の確かめ：厚労省の資料に載っている9つのモデル世帯（3つの地域区分・9月までと10月からの両方で54通り）と、1円単位ですべて一致することを確かめています。</p>
-    <p>根拠: <a href="https://www.mhlw.go.jp/content/001152601.pdf" target="_blank" rel="noopener">厚労省「生活扶助基準額の算出方法（令和8年4月）」</a> ／ <a href="https://www.mhlw.go.jp/content/12002000/001662704.pdf" target="_blank" rel="noopener">厚労省 第55回生活保護基準部会 資料4（10月からの特例加算）</a> ／ 地域の区分（級地）: <a href="https://www.mhlw.go.jp/content/kyuchi.3010.pdf" target="_blank" rel="noopener">厚労省「お住まいの地域の級地」</a></p>
+    <p>根拠: <a href="https://www.mhlw.go.jp/content/001152601.pdf" target="_blank" rel="noopener">厚労省「生活扶助基準額の算出方法（令和8年4月）」</a> ／ <a href="https://www.mhlw.go.jp/content/12002000/001662704.pdf" target="_blank" rel="noopener">厚労省 第55回生活保護基準部会 資料4（10月からの特例加算）</a> ／ 地域の区分（級地）: <a href="https://www.mhlw.go.jp/content/kyuchi.3010.pdf" target="_blank" rel="noopener">厚労省「お住まいの地域の級地」</a> ／ 家賃の上限の照合: <a href="https://www.pref.saitama.lg.jp/a0602/seihozenpan/910-20091209-89.html" target="_blank" rel="noopener">埼玉県「住宅扶助基準額」</a>・<a href="https://www.city.sapporo.jp/fukushi-guide/documents/seikatsuhogo-r7-10model.pdf" target="_blank" rel="noopener">札幌市「生活保護基準額表」</a></p>
     <p>確認日: 2026年9月28日 ／ 個人が作ったもので、行政の公式ツールではありません。</p>
   </div>
 </main>
@@ -125,6 +134,7 @@ table.brk{width:100%; border-collapse:collapse; font-size:14.5px}
 const KYUCHI = /*KYUCHI*/;
 const KEIKA = /*KEIKA*/;
 const KIJUN = /*KIJUN*/;
+const JUTAKU = /*JUTAKU*/;
 const AGES = ["0～2","3～5","6～11","12～17","18～19","20～40","41～59","60～64","65～69","70～74","75～"];
 const AGE_LABEL = {"0～2":"0〜2歳","3～5":"3〜5歳","6～11":"6〜11歳","12～17":"12〜17歳","18～19":"18〜19歳","20～40":"20〜40歳","41～59":"41〜59歳","60～64":"60〜64歳","65～69":"65〜69歳","70～74":"70〜74歳","75～":"75歳以上"};
 const LV = ["1級地-1","1級地-2","2級地-1","2級地-2","3級地-1","3級地-2"];
@@ -184,7 +194,7 @@ function refresh() {
 function render(ages, agesDone) {
   const out = $('result');
   if (!city.value) {
-    out.innerHTML = `<div class="guide">上の <b>1〜3</b> を選ぶと、ここに<br><b>毎月の生活扶助の額と、その内訳</b>が出ます。</div>`;
+    out.innerHTML = `<div class="guide">上の <b>1〜3</b> を選ぶと、ここに<br><b>毎月の保護費（生活費＋家賃）と、その内訳</b>が出ます。</div>`;
     return;
   }
   if (+size.value >= 6) {
@@ -200,46 +210,54 @@ function render(ages, agesDone) {
   const now = calcKijun(ages, lv, true, KIJUN, KEIKA);
   const old = calcKijun(ages, lv, false, KIJUN, KEIKA);
   const n = ages.length;
+  const lim = jutakuLimit(pref.value, name, lv, n);
   const r = Math.max(0, Math.floor(+rent.value || 0));
-  const diff = now.total - old.total;
+  // 家賃を入れた人は「実際の家賃（上限まで）」、入れていない人は上限額を出す
+  const house = r > 0 ? Math.min(r, lim) : lim;
+  const houseNote = r > 0
+    ? (r > lim ? `家賃 ${yen(r)}円のうち、上限の ${yen(lim)}円まで` : `実際の家賃 ${yen(r)}円（上限 ${yen(lim)}円の中）`)
+    : `この地域・${n}人世帯の家賃の上限`;
+  const total = now.total + house, totalOld = old.total + house;
+  const later = JUTAKU.later_core_cities.includes(name);
 
   const rows = [
-    ['第1類', '食費・服など、一人ひとりにかかる分', `${n > 1 ? `${ages.map(a => AGE_LABEL[a]).join('・')}の分を合わせて、人数による調整（×${KIJUN.teigen[n]}）` : AGE_LABEL[ages[0]] + 'の額'}`, now.d1],
-    ['第2類', '電気・ガス・水道など、世帯でまとめてかかる分', `${n}人世帯の額`, now.d2],
-    ['特例加算', '物価高に合わせた上乗せ', `1人${yen(KIJUN.tokurei.from_2026_10)}円 × ${n}人`, now.tok],
-    ['経過的加算', '計算方法が変わっても前より下がらないようにする分', '年齢・人数・地域で決まる', now.kei],
+    ['第1類', '食費・服など、一人ひとりにかかる分', now.d1],
+    ['第2類', '電気・ガス・水道など、世帯でまとめてかかる分', now.d2],
+    ['特例加算', '物価高に合わせた上乗せ', now.tok],
+    ['経過的加算', '計算方法が変わっても前より下がらないようにする分', now.kei],
   ];
-
-  const rentBox = r > 0 ? `
-    <div class="box rent"><h3>家賃の分（住宅扶助）を足すと</h3>
-      <p class="total">毎月 約 <b>${yen(now.total + r)}</b> 円</p>
-      <p>生活扶助 ${yen(now.total)}円 ＋ 家賃 ${yen(r)}円</p>
-      <p class="small">家賃は、実際に払っている額がそのまま出ます。ただし地域と人数ごとに<b>上限</b>があり、上限を超える分は出ません（超える家賃の家には、原則として引っ越しを求められます）。上限は福祉事務所で確かめてください。</p></div>`
-    : `<div class="box"><h3>家賃の分（住宅扶助）</h3><p>家賃は、生活扶助とは<b>別に</b>、実際の家賃の額が出ます（地域と人数ごとに上限あり）。上の <b>4</b> に家賃を入れると、合計の目安が出ます。</p></div>`;
 
   out.innerHTML = `<div class="res">
     <div class="verdict">
-      <p class="place"><b>${esc(pref.value)} ${esc(name)}</b>（${LV[lv]}・${LV_DESC[lv]}）／ ${n}人世帯</p>
-      <div class="k">生活扶助（生活費の部分）・2026年10月から</div>
-      <p class="amount">月 <b>${yen(now.total)}</b> 円</p>
-      <p class="before">2026年9月までは <b>${yen(old.total)}</b> 円${diff > 0 ? `（10月から <b>+${yen(diff)}</b> 円）` : '（10月からも同じ額）'}</p>
-      <span class="perday">1日あたり 約 <b>${yen(Math.floor(now.total / 30))}</b> 円（30日で割った目安）</span>
+      <p class="place"><b>${esc(pref.value)} ${esc(name)}</b>（${LV[lv]}）／ ${n}人世帯</p>
+      <div class="k">毎月の保護費の目安（2026年10月から）</div>
+      <p class="amount">月 <b>${yen(total)}</b> 円</p>
+      <table class="two"><tbody>
+        <tr><th>生活扶助<span>食費・光熱費など</span></th><td>${yen(now.total)}円</td></tr>
+        <tr><th>住宅扶助<span>${houseNote}</span></th><td>${yen(house)}円</td></tr>
+      </tbody></table>
+      <p class="before">2026年9月までは 月 <b>${yen(totalOld)}</b> 円</p>
     </div>
-    <div class="box"><h3>内訳（10月から）</h3>
+    ${r > lim ? `<div class="box warn"><h3>家賃が上限を超えています</h3><p>上限（${yen(lim)}円）を超える分は出ません。原則として、上限の中の家への引っ越しを求められます。</p></div>` : ''}
+    ${later ? `<div class="box warn"><h3>${esc(name)}の家賃の上限について</h3><p>${esc(name)}は2015年より後に中核市になったため、市ごとの上限が別に決められています。ここでは<b>${esc(pref.value)}の上限</b>を出しています。正確な額は市の窓口で確かめてください。</p></div>` : ''}
+    <details class="box more"><summary>生活扶助 ${yen(now.total)}円 の内訳を見る</summary>
       <div class="tbl-scroll"><table class="brk">
-        <thead><tr><th>項目</th><th class="num">金額</th></tr></thead>
-        <tbody>${rows.map(([t, what, how, v]) => `<tr><td><b>${t}</b><span class="what">${what}<br>${how}</span></td><td class="num">${yen(v)}円</td></tr>`).join('')}</tbody>
-        <tfoot><tr><td>合計</td><td class="num">${yen(now.total)}円</td></tr></tfoot>
-      </table></div></div>
-    ${rentBox}
+        <tbody>${rows.map(([t, what, v]) => `<tr><td><b>${t}</b><span class="what">${what}</span></td><td class="num">${yen(v)}円</td></tr>`).join('')}</tbody>
+        <tfoot><tr><td>生活扶助の合計</td><td class="num">${yen(now.total)}円</td></tr></tfoot>
+      </table></div></details>
     <div class="box warn"><h3>この額に入っていないもの・変わること</h3><ul>
-      <li><b>寒い時期の上乗せ</b>（冬季加算）は、地域ごとに冬の月だけ足されます</li>
-      <li><b>障害のある方・ひとり親・子育て中</b>の世帯は、加算が足されます</li>
-      <li><b>病院代・介護</b>は、別の扶助で本人の負担なしになります</li>
-      <li><b>給料・年金などの収入</b>がある人は、その分が差し引かれます（働いた分は一部が手元に残る仕組みがあります）</li>
-      <li>入院中・施設に入っている方は、額が違います</li></ul></div>
+      <li><b>給料・年金などの収入</b>がある人は、その分が差し引かれます</li>
+      <li><b>冬の上乗せ</b>（冬季加算）、<b>障害のある方・ひとり親・子育て中</b>の加算は入っていません</li>
+      <li><b>病院代</b>は別の扶助で、窓口での支払いはありません</li>
+      <li>部屋が15㎡以下だと家賃の上限は下がります。事情によっては上限が上がることもあります</li></ul></div>
     <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button>
   </div>`;
+}
+
+// 家賃（住宅扶助）の上限。政令市・中核市は市の額、それ以外は都道府県×級地（1・2・3級地）の額
+function jutakuLimit(prefName, cityName, lv, n) {
+  const row = JUTAKU.city[cityName] || JUTAKU.pref[prefName][String(Math.floor(lv / 2) + 1)];
+  return row[n === 1 ? 0 : n === 2 ? 1 : n <= 5 ? 2 : n === 6 ? 3 : 4];
 }
 
 function resetAll() {

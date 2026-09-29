@@ -93,6 +93,23 @@ table.brk{width:100%; border-collapse:collapse; font-size:14.5px}
 @media (max-width:480px){ .row2{grid-template-columns:1fr} }
 @media (prefers-reduced-motion:reduce){ .res{animation:none} }
 </style>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
 </head>
 <body>
 <main class="wrap">
@@ -125,7 +142,7 @@ table.brk{width:100%; border-collapse:collapse; font-size:14.5px}
   <div id="result" aria-live="polite"></div>
 
   <div class="foot">
-    <p>この結果は、厚生労働省の公開資料から計算した目安です。最終的な額は福祉事務所が決めます。入力した内容はこの画面の中だけで計算していて、どこにも送信していません。</p>
+    <p>この結果は、厚生労働省の公開資料から計算した目安です。最終的な額は福祉事務所が決めます。入力した内容はこの画面の中だけで計算していて、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</p>
     <p>家賃の上限：2015年7月から適用の国の限度額（平成27年4月14日 社援発0414第9号）。厚労省・埼玉県・札幌市の公式資料の数字と照らし合わせ、すべて一致することを確かめています。2015年より後に中核市になった市は、県の上限を出しています。</p>
     <p>計算の確かめ：厚労省の資料に載っている9つのモデル世帯（3つの地域区分・9月までと10月からの両方で54通り）と、1円単位ですべて一致することを確かめています。</p>
     <p>根拠: <a href="https://www.mhlw.go.jp/content/001152601.pdf" target="_blank" rel="noopener">厚労省「生活扶助基準額の算出方法（令和8年4月）」</a> ／ <a href="https://www.mhlw.go.jp/content/12002000/001662704.pdf" target="_blank" rel="noopener">厚労省 第55回生活保護基準部会 資料4（10月からの特例加算）</a> ／ 地域の区分（級地）: <a href="https://www.mhlw.go.jp/content/kyuchi.3010.pdf" target="_blank" rel="noopener">厚労省「お住まいの地域の級地」</a> ／ 家賃の上限の照合: <a href="https://www.pref.saitama.lg.jp/a0602/seihozenpan/910-20091209-89.html" target="_blank" rel="noopener">埼玉県「住宅扶助基準額」</a>・<a href="https://www.city.sapporo.jp/fukushi-guide/documents/seikatsuhogo-r7-10model.pdf" target="_blank" rel="noopener">札幌市「生活保護基準額表」</a></p>
@@ -224,6 +241,7 @@ function render(ages, agesDone) {
     ['経過的加算', '計算方法が変わっても前より下がらないようにする分', now.kei],
   ];
 
+  if (window.gcUse) gcUse('保護費しらべ');
   out.innerHTML = `<div class="res">
     <div class="verdict">
       <p class="place"><b>${esc(pref.value)} ${esc(name)}</b>（${LV[lv]}）／ ${n}人世帯</p>

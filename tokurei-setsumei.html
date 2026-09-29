@@ -83,6 +83,23 @@ details a{color:var(--navy);word-break:break-all}
 .foot{font-size:.62em;color:var(--muted);line-height:1.6}
 @media (max-width:640px){ .band .amt{font-size:1.25em} }
 </style>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
 </head>
 <body>
 

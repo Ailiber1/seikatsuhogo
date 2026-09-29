@@ -5,6 +5,9 @@
 """
 import json
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from count_snippet import add_snippet  # 利用回数の計測（GoatCounter）
 
 ROOT = Path(__file__).resolve().parent.parent
 load = lambda name: json.loads((ROOT / "data" / name).read_text(encoding="utf-8"))
@@ -17,5 +20,5 @@ kijun = {k: v for k, v in load("kijun_r8.json").items() if k in ("dai1", "dai2",
 
 html = (ROOT / "scripts" / "hogohi.template.html").read_text(encoding="utf-8")
 html = html.replace("/*KYUCHI*/", dump(kyuchi)).replace("/*KEIKA*/", dump(keika)).replace("/*KIJUN*/", dump(kijun)).replace("/*JUTAKU*/", dump(jutaku))
-(ROOT / "hogohi.html").write_text(html, encoding="utf-8")
+(ROOT / "hogohi.html").write_text(add_snippet(html), encoding="utf-8")
 print("hogohi.html を生成しました（市区町村", sum(len(v) for v in kyuchi.values()), "件）")

@@ -87,6 +87,23 @@ footer ul{margin:0 0 12px; padding-left:1.2em}
 footer a{color:var(--navy); word-break:break-all}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -120,7 +137,7 @@ footer a{color:var(--navy); word-break:break-all}
   <h2>読むときの注意</h2>
   <p>窓口の名前・住所・電話番号は移転や統合で変わることがあります。<b>行く前に電話で確かめてください。</b></p>
   <p><b>市区町村の欄にご自分の市名が見当たらないとき。</b>札幌市・大阪市・横浜市など大きな市は、<b>市名ではなく区名</b>（北区、中央区など）で並んでいます。ご自分の区名を探してください。近隣の町村がまとめて1つの窓口になっていることもあります。それでも見つからない場合は、市区町村の役所にお問い合わせください。</p>
-  <p>選んだ内容はこの画面の中だけで処理していて、どこにも送信していません。確認日：2026年9月23日</p>
+  <p>選んだ内容はこの画面の中だけで処理していて、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。確認日：2026年9月23日</p>
 </footer>
 
 </div>
@@ -177,6 +194,7 @@ function show(isExample){
     return;
   }
   const [city, offices] = entry;
+  if (!isExample && window.gcUse) gcUse('相談窓口さがし');
   const bar = isExample
     ? '<div class="eg-bar"><b>これは例です。</b>配信者が実際に相談した窓口を出しています。上で選び直すと、あなたの地域に変わります。</div>'
     : "";

@@ -45,6 +45,23 @@ footer{margin-top:30px; padding-top:18px; border-top:1px solid var(--line);
   font-size:12.5px; color:var(--sub); line-height:1.8}
 footer a{color:var(--navy); word-break:break-all}
 </style>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -55,7 +72,7 @@ footer a{color:var(--navy); word-break:break-all}
 </header>
 
 <div class="about">
-  <p><b>どれも無料で、登録もいりません。</b>入力した内容はブラウザの中だけで処理していて、どこにも送信していません。</p>
+  <p><b>どれも無料で、登録もいりません。</b>入力した内容はブラウザの中だけで処理していて、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</p>
   <p>数字や条件は、厚生労働省などが公表している資料をもとにしています。各ページに元の資料へのリンクを置いてあります。</p>
 </div>
 

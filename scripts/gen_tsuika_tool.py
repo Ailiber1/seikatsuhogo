@@ -4,6 +4,9 @@
 """
 import json
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from count_snippet import add_snippet  # 利用回数の計測（GoatCounter）
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -11,5 +14,5 @@ kyuchi = json.loads((ROOT / "data" / "kyuchi_by_city.json").read_text(encoding="
 template = (ROOT / "scripts" / "tsuika.template.html").read_text(encoding="utf-8")
 
 html = template.replace("/*KYUCHI*/", json.dumps(kyuchi, ensure_ascii=False, separators=(",", ":")))
-(ROOT / "tsuika.html").write_text(html, encoding="utf-8")
+(ROOT / "tsuika.html").write_text(add_snippet(html), encoding="utf-8")
 print("tsuika.html を生成しました（市区町村", sum(len(v) for v in kyuchi.values()), "件）")

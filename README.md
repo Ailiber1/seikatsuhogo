@@ -45,6 +45,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `fetch_madoguchi.py` | 相談窓口の一覧を取得して `data/madoguchi.json` を作る |
 | `gen_madoguchi_tool.py` | `data/madoguchi.json` から `sodan.html` を生成する |
 | `gen_tsuika_tool.py` | `data/kyuchi_by_city.json` を `tsuika.template.html` に埋め込んで `tsuika.html` を生成する |
+| `count_snippet.py` | 利用回数の計測（GoatCounter・SRI付き）を全ページに入れる。生成スクリプトからも使う |
 | `gen_kyuryo_tool.py` | `data/kiso_kojo.json` を `kyuryo.template.html` に埋め込んで `kyuryo.html` を生成する |
 | `verify_kyuryo.py` | `kyuryo.html` の計算式を node で動かし、基礎控除額表の全区分・表の外の決まり・計算例と一致するか確かめる |
 | `extract_jutaku_limit.py` | 住宅扶助の上限の表をPDFから読み取り、公式の数字と照合して `data/jutaku_limit.json` を作る |
@@ -112,6 +113,14 @@ https://ailiber1.github.io/seikatsuhogo/◯◯.html
 - ただし空の画面にはせず、「上で◯◯を選ぶと、ここに△△が出ます」という案内を出す
 - プルダウンの先頭は「選んでください」。2段目は1段目が未選択のあいだ押せないようにする
 - 入力内容は**ブラウザの中だけで処理し、外部に送信しない**
+
+### 利用回数の計測（全ページ必須）
+- GoatCounter（アカウント `liber-seiho`、無料・Cookieなし）で、**ページが開かれた回数**と、ツールで**結果が出た回数**だけを数える。入力した内容は送らない
+- 新しいページを作ったら `python3 scripts/count_snippet.py` を実行する（全 .html に計測を入れる。入っていれば何もしない）。生成スクリプト（`gen_*.py`）は自動で入れる
+- ツールは、結果を最初に出すところで `if (window.gcUse) gcUse('ツール名');` を呼ぶ（同じ画面では1回だけ数える）。GoatCounter では「利用/ツール名」として出る
+- 注意書きの「どこにも送信していません」の後に「ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。」を入れる
+- 自分の利用を数えないようにするには、使うブラウザごとに一度だけ https://ailiber1.github.io/seikatsuhogo/#toggle-goatcounter を開く
+- 読み取り用の鍵はリポジトリに入れない（Mac のキーチェーン `goatcounter-liber` にだけ保存）
 
 ### 事実の扱い
 - 数字と条件は**公的な一次資料**（厚労省・総務省・法令）にあたる

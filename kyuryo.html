@@ -80,6 +80,23 @@ details.opt[open] summary{margin-bottom:6px}
 .foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
 @media (prefers-reduced-motion:reduce){ .res{animation:none} }
 </style>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
 </head>
 <body>
 <main class="wrap">
@@ -109,7 +126,7 @@ details.opt[open] summary{margin-bottom:6px}
   <div id="result" aria-live="polite"></div>
 
   <div class="foot">
-    <p>この結果は、厚生労働省の公開資料から計算した目安です。最終的な額は福祉事務所が決めます。入力した内容はこの画面の中だけで計算していて、どこにも送信していません。</p>
+    <p>この結果は、厚生労働省の公開資料から計算した目安です。最終的な額は福祉事務所が決めます。入力した内容はこの画面の中だけで計算していて、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</p>
     <p>いつの時点の額か：基礎控除額表は2013年8月の見直しから変わっていません。新規就労控除（月12,900円）・20歳未満控除（月11,900円）は2026年4月時点の額で、毎年4月ごろ改定されます。国は2026年に生活保護の基準の見直し（5年に1度）を進めていて、2027年度から額が変わる可能性があります。</p>
     <p>計算の確かめ：国の基礎控除額表の全56区分と、表の外（23万1千円以上）の決まりのとおりに計算されることを、自動で確かめています。</p>
     <p>根拠: <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8431&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">厚労省「生活保護法による保護の実施要領について」（次官通知）第8・別表「基礎控除額表」</a> ／ <a href="https://laws.e-gov.go.jp/law/325AC0000000144" target="_blank" rel="noopener">生活保護法（e-Gov法令検索）</a> ／ <a href="https://www.cao.go.jp/bunken-suishin/teianbosyu/doc/tb_h29fu_11mhlw_298.pdf" target="_blank" rel="noopener">厚労省通知「生活保護費の費用返還及び費用徴収決定の取扱いについて」の一部改正（平成30年）</a></p>
@@ -175,6 +192,7 @@ function render() {
     return;
   }
   const work = kind.value === 'work';
+  if (window.gcUse) gcUse('給料いくら残るしらべ');
   out.innerHTML = `<div class="res">
     <div class="verdict">
       <div class="k">${work ? '働いたことで、手元に増えるお金（1か月）' : 'このお金のうち、手元に残る額'}</div>

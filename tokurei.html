@@ -112,6 +112,23 @@ footer h2{font-size:13.5px; color:var(--ink); margin:0 0 6px; font-weight:700}
 footer ul{margin:0 0 12px; padding-left:1.2em}
 @media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
 </style>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
 
 <div class="wrap">
 <header>
@@ -160,7 +177,7 @@ footer ul{margin:0 0 12px; padding-left:1.2em}
     <li>市区町村の一覧 … 総務省「全国地方公共団体コード」（令和6年1月1日現在）</li>
   </ul>
   <h2>読むときの注意</h2>
-  <p>この結果は、上の資料から計算した目安です。資料4に金額が載っている9つのモデル世帯（3つの級地ぶん、27通り）と照らし合わせて、すべて一致することを確かめています。ただし、資料4の表は「令和8年度<b>基準案</b>」と書かれたもので、最終の告示そのものは確認していません。障害者加算・母子加算などがある世帯や、6人以上の世帯では、実際の額がこれと違うことがあります。入力した内容はこの画面の中だけで計算していて、どこにも送信していません。</p>
+  <p>この結果は、上の資料から計算した目安です。資料4に金額が載っている9つのモデル世帯（3つの級地ぶん、27通り）と照らし合わせて、すべて一致することを確かめています。ただし、資料4の表は「令和8年度<b>基準案</b>」と書かれたもので、最終の告示そのものは確認していません。障害者加算・母子加算などがある世帯や、6人以上の世帯では、実際の額がこれと違うことがあります。入力した内容はこの画面の中だけで計算していて、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</p>
   <p>この引き上げは2026年10月から2027年9月までの1年間の措置で、その先は決まっていません。</p>
 </footer>
 </div>
@@ -208,6 +225,7 @@ function calc(isExample){
   const rows = CITIES[pref] || [];
   const city = rows[+$("city").value] || rows[0];
   if(!city) return;
+  if (!isExample && window.gcUse) gcUse('特例加算しらべ');
   const lvIdx = city[1];
   const size = +$("size").value;
   const place = `${pref}${city[0]}`;

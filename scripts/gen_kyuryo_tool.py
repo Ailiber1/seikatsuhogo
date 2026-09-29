@@ -5,11 +5,14 @@
 """
 import json
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from count_snippet import add_snippet  # 利用回数の計測（GoatCounter）
 
 ROOT = Path(__file__).resolve().parent.parent
 kiso = json.loads((ROOT / "data" / "kiso_kojo.json").read_text(encoding="utf-8"))
 kiso = {k: kiso[k] for k in ("rows", "over", "other")}
 html = (ROOT / "scripts" / "kyuryo.template.html").read_text(encoding="utf-8")
 html = html.replace("/*KISO*/", json.dumps(kiso, ensure_ascii=False, separators=(",", ":")))
-(ROOT / "kyuryo.html").write_text(html, encoding="utf-8")
+(ROOT / "kyuryo.html").write_text(add_snippet(html), encoding="utf-8")
 print("kyuryo.html を生成しました（基礎控除額表", len(kiso["rows"]), "区分）")

@@ -14,7 +14,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | ファイル | 種類 | 内容 | 公開URL |
 |---|---|---|---|
 | `index.html` | 一覧 | 視聴者に伝える1つのリンク。カードの格子・種類タブ・検索つき | [/](https://ailiber1.github.io/seikatsuhogo/) |
-| `hub-items.js` | 一覧 | 一覧に並ぶカードのデータ。足すときはここに1行 | — |
+| `hub-items.js` | 一覧 | 一覧に並ぶカードと、「最新の動画」のデータ。足すときはここに1行 | — |
+| `video-embed.js` | 部品 | YouTube動画を「押したら読み込む」形で置く。全ページ共通 | — |
 | `sodan.html` | ツール | 生活の相談窓口をさがす（全国1,370か所） | [/sodan.html](https://ailiber1.github.io/seikatsuhogo/sodan.html) |
 | `tokurei.html` | ツール | 特例加算しらべ（自分がいくら増えるか） | [/tokurei.html](https://ailiber1.github.io/seikatsuhogo/tokurei.html) |
 | `fuyo.html` | 解説 | 生活保護を申請すると家族に通知は行くのか（扶養照会） | [/fuyo.html](https://ailiber1.github.io/seikatsuhogo/fuyo.html) |
@@ -90,6 +91,16 @@ https://ailiber1.github.io/seikatsuhogo/◯◯.html
 `hub-items.js` の `ITEMS` に**1行**足す（`index.html` は触らない）。これで過去のものも辿れる。
 - `kind` は `"tool"`（ツール）か `"doc"`（解説）、`kw` は検索用の言葉（「家賃」「バレる」など、視聴者が打ちそうなことば）
 - 新しく足したものだけ `isNew:true` にし、古くなったら外す
+- ページに動画を置いたら、そのカードに `video:true` を付ける（「▶動画あり」が出る）
+- 「最新の動画」の欄は、同じファイルの `VIDEOS`。新しい動画が出たら先頭に1行足し、古いものを消す（YouTube APIは使わない）
+
+### 動画をページに置く
+ページの「こういう方へ」の枠の下に、次の1行を置く。ファイルの末尾に `<script src="video-embed.js" defer></script>` も1回置く。
+```html
+<div data-yt data-id="動画ID" data-title="動画の題名" data-label="動画でも解説しています"></div>
+```
+- 最初は絵（サムネイル）だけ出て、押すと `youtube-nocookie.com` で読み込む。ページを開いただけでは動画側に読み込みに行かないので、「Cookieを使わない」の説明と両立する（サムネイル画像だけは開いた時点でYouTubeの画像サーバーから取得する）
+- 動画IDは、公開状態と埋め込み許可を確認してから入れる（`curl "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=ID&format=json"` が200なら可）
 
 ## 作るときのきまり
 

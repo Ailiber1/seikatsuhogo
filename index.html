@@ -59,13 +59,6 @@ a.card:hover,a.card:focus-visible{border-color:var(--navy); transform:translateY
   background:#fdecea; border-radius:999px; padding:0 8px}
 .empty{grid-column:1/-1; text-align:center; color:var(--sub); padding:30px 0}
 
-/* 最新の動画：スマホは横にスライド、広い画面は3列 */
-.videos{margin-top:34px}
-.videos h2{font-size:15px; margin:0 0 10px; color:var(--ink)}
-.vrow{display:flex; gap:12px; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:6px}
-.vrow .yt{flex:0 0 80%; margin:0; scroll-snap-align:start}
-@media (min-width:640px){ .vrow{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; overflow:visible} }
-
 footer{margin-top:30px; padding-top:18px; border-top:1px solid var(--line); text-align:center}
 .credit{margin:0; font-size:14px; font-weight:700; color:var(--ink)}
 .credit a{color:var(--navy)}
@@ -93,11 +86,6 @@ window.goatcounter = {path: function () { return location.pathname; }};
 <p class="count" id="count"></p>
 <div class="grid" id="grid"></div>
 
-<section class="videos" id="videos" aria-label="最新の動画">
-  <h2>最新の動画</h2>
-  <div class="vrow" id="vrow"></div>
-</section>
-
 <footer>
   <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
   <p class="note">個人が作ったページで、行政の公式ページではありません。最終確認はお住まいの地域の窓口で。</p>
@@ -106,15 +94,11 @@ window.goatcounter = {path: function () { return location.pathname; }};
 
 <!-- カードの一覧は hub-items.js にある。足すときはそちらに1行足す -->
 <script src="hub-items.js"></script>
-<script src="video-embed.js"></script>
 <script>
 const KIND = {tool:"ツール", doc:"解説"};
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const grid = document.getElementById("grid"), q = document.getElementById("q"), count = document.getElementById("count");
 let kind = "all";
-const vsec = document.getElementById("videos");
-document.getElementById("vrow").innerHTML = VIDEOS.map(v =>
-  `<div data-yt data-id="${esc(v.id)}" data-title="${esc(v.title)}"></div>`).join("");
 
 function render(){
   const w = q.value.trim().toLowerCase();
@@ -128,7 +112,6 @@ function render(){
       <h3>${esc(i.title)}</h3><p>${esc(i.desc)}</p>
     </a>`).join("") || '<div class="empty">見つかりませんでした。別のことばで試してください。</div>';
   count.textContent = list.length + " 件";
-  vsec.hidden = !!w || kind !== "all";
 }
 document.getElementById("tabs").addEventListener("click", e => {
   const b = e.target.closest(".tab"); if (!b) return;

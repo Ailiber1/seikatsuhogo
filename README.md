@@ -14,7 +14,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | ファイル | 種類 | 内容 | 公開URL |
 |---|---|---|---|
 | `index.html` | 一覧 | 視聴者に伝える1つのリンク。カードの格子・種類タブ・検索つき | [/](https://ailiber1.github.io/seikatsuhogo/) |
-| `hub-items.js` | 一覧 | 一覧に並ぶカードと、「最新の動画」のデータ。足すときはここに1行 | — |
+| `hub-items.js` | 一覧 | 一覧に並ぶカードのデータ。足すときはここに1行 | — |
 | `video-embed.js` | 部品 | YouTube動画を「押したら読み込む」形で置く。全ページ共通 | — |
 | `sodan.html` | ツール | 生活の相談窓口をさがす（全国1,370か所） | [/sodan.html](https://ailiber1.github.io/seikatsuhogo/sodan.html) |
 | `tokurei.html` | ツール | 特例加算しらべ（自分がいくら増えるか） | [/tokurei.html](https://ailiber1.github.io/seikatsuhogo/tokurei.html) |
@@ -91,8 +91,8 @@ https://ailiber1.github.io/seikatsuhogo/◯◯.html
 `hub-items.js` の `ITEMS` に**1行**足す（`index.html` は触らない）。これで過去のものも辿れる。
 - `kind` は `"tool"`（ツール）か `"doc"`（解説）、`kw` は検索用の言葉（「家賃」「バレる」など、視聴者が打ちそうなことば）
 - 新しく足したものだけ `isNew:true` にし、古くなったら外す
-- ページに動画を置いたら、そのカードに `video:true` を付ける（「▶動画あり」が出る）
-- 「最新の動画」の欄は、同じファイルの `VIDEOS`。新しい動画が出たら先頭に1行足し、古いものを消す（YouTube APIは使わない）
+- そのツール・解説を説明する動画をページに置いたら、そのカードに `video:true` を付ける（「▶動画あり」が出る）。まとめページに動画そのものは置かない（YouTube APIは使わない）
+- 関係のない近況の動画などは入れない。**そのツール・解説を説明している動画だけ**
 
 ### 動画をページに置く
 ページの「こういう方へ」の枠の下に、次の1行を置く。ファイルの末尾に `<script src="video-embed.js" defer></script>` も1回置く。

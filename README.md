@@ -22,6 +22,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `tsuika-setsumei.html` | 解説 | 保護費の追加給付、期限までに申し出ないと0円（最高裁判決・金額の例・申し出のしかた） | [/tsuika-setsumei.html](https://ailiber1.github.io/seikatsuhogo/tsuika-setsumei.html) |
 | `tokurei-setsumei.html` | 解説 | 生活保護費が10月から上がる。上がらない人もいる理由 | [/tokurei-setsumei.html](https://ailiber1.github.io/seikatsuhogo/tokurei-setsumei.html) |
 | `hogohi.html` | ツール | 保護費しらべ（市区町村・人数・年齢から、保護費が毎月いくらか。生活扶助＋住宅扶助の上限） | [/hogohi.html](https://ailiber1.github.io/seikatsuhogo/hogohi.html) |
+| `kyuryo.html` | ツール | 給料いくら残るしらべ（働いた給料・臨時収入のうち、手元に残る額と保護費から差し引かれる額） | [/kyuryo.html](https://ailiber1.github.io/seikatsuhogo/kyuryo.html) |
 | `data/` | データ | ページに埋め込む元データ（JSON） | — |
 | `scripts/` | スクリプト | 公的資料からデータを作り、ページを生成する | — |
 
@@ -34,6 +35,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `keika.json` | 生活扶助本体に係る経過的加算（世帯人数×年齢×級地） | 厚労省「生活扶助基準額の算出方法（令和8年4月）」別表(1) |
 | `ages.json` | 経過的加算の年齢区分 | 同上 |
 | `jutaku_limit.json` | 住宅扶助（家賃）の上限。都道府県×1〜3級地と指定都市・中核市、1人〜7人以上。公式資料との照合結果も入れてある | 平成27年4月14日 社援発0414第9号の別表（写し `jutaku_limit_2015_source.pdf`）。厚労省・埼玉県・札幌市の公式の数字と照合 |
+| `kiso_kojo.json` | 勤労収入の基礎控除額表（1人目・2人目以降）、新規就労控除・20歳未満控除・臨時収入の扱い | 厚労省「生活保護法による保護の実施要領について」（次官通知）別表（法令等データベースの画像から書き写し） |
 | `kijun_r8.json` | 生活扶助の第1類・第2類・逓減率・特例加算と、照合用のモデル世帯9類型 | 厚労省「生活扶助基準額の算出方法（令和8年4月）」＋第55回生活保護基準部会 資料4 |
 
 ## scripts/ の中身
@@ -43,6 +45,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `fetch_madoguchi.py` | 相談窓口の一覧を取得して `data/madoguchi.json` を作る |
 | `gen_madoguchi_tool.py` | `data/madoguchi.json` から `sodan.html` を生成する |
 | `gen_tsuika_tool.py` | `data/kyuchi_by_city.json` を `tsuika.template.html` に埋め込んで `tsuika.html` を生成する |
+| `gen_kyuryo_tool.py` | `data/kiso_kojo.json` を `kyuryo.template.html` に埋め込んで `kyuryo.html` を生成する |
+| `verify_kyuryo.py` | `kyuryo.html` の計算式を node で動かし、基礎控除額表の全区分・表の外の決まり・計算例と一致するか確かめる |
 | `extract_jutaku_limit.py` | 住宅扶助の上限の表をPDFから読み取り、公式の数字と照合して `data/jutaku_limit.json` を作る |
 | `gen_hogohi_tool.py` | 級地・経過的加算・基準額・住宅扶助の上限を `hogohi.template.html` に埋め込んで `hogohi.html` を生成する |
 | `verify_hogohi.py` | `hogohi.html` の計算式を node で動かし、資料4のモデル世帯54通りと1円単位で一致するか確かめる |

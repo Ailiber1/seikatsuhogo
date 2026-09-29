@@ -110,6 +110,7 @@ details.opt[open] summary{margin-bottom:6px}
 
   <div class="foot">
     <p>この結果は、厚生労働省の公開資料から計算した目安です。最終的な額は福祉事務所が決めます。入力した内容はこの画面の中だけで計算していて、どこにも送信していません。</p>
+    <p>いつの時点の額か：基礎控除額表は2013年8月の見直しから変わっていません。新規就労控除（月12,900円）・20歳未満控除（月11,900円）は2026年4月時点の額で、毎年4月ごろ改定されます。国は2026年に生活保護の基準の見直し（5年に1度）を進めていて、2027年度から額が変わる可能性があります。</p>
     <p>計算の確かめ：国の基礎控除額表の全56区分と、表の外（23万1千円以上）の決まりのとおりに計算されることを、自動で確かめています。</p>
     <p>根拠: <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8431&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">厚労省「生活保護法による保護の実施要領について」（次官通知）第8・別表「基礎控除額表」</a> ／ <a href="https://laws.e-gov.go.jp/law/325AC0000000144" target="_blank" rel="noopener">生活保護法（e-Gov法令検索）</a> ／ <a href="https://www.cao.go.jp/bunken-suishin/teianbosyu/doc/tb_h29fu_11mhlw_298.pdf" target="_blank" rel="noopener">厚労省通知「生活保護費の費用返還及び費用徴収決定の取扱いについて」の一部改正（平成30年）</a></p>
     <p>確認日: 2026年9月29日 ／ 個人が作ったもので、行政の公式ツールではありません。法律上の助言でもありません。</p>
@@ -189,7 +190,8 @@ function render() {
         <p class="hint">天引きされた分は、差し引かれる額から別に除かれます（実際にかかった額）。</p></details>
       <details class="opt" data-k="extra"><summary>当てはまる方だけ（もっと手元に残る場合）</summary>
         <label class="chk"><input type="checkbox" id="shinki"><span>新しく仕事に就いてから6か月以内<small>学校を卒業して就職した、または入院などでおおむね3年以上働けなかった後に就職した場合。月12,900円が追加で残ります</small></span></label>
-        <label class="chk"><input type="checkbox" id="miseinen"><span>20歳未満で、家族と一緒に受けている<small>ひとり暮らしの方などは対象外。月11,900円が追加で残ります</small></span></label></details>` : ''}
+        <label class="chk"><input type="checkbox" id="miseinen"><span>20歳未満で、家族と一緒に受けている<small>ひとり暮らしの方などは対象外。月11,900円が追加で残ります</small></span></label>
+        <p class="hint">この2つの額は2026年4月時点のもので、毎年4月ごろ改定されます。</p></details>` : ''}
       <details class="opt" data-k="hogo"><summary>今の保護費を入れて、${work ? '働いた後' : 'このお金が入った後'}の保護費を見る</summary>
         <div class="yen-in"><input type="number" id="hogo" inputmode="numeric" min="0" step="1000" placeholder="例 109930" aria-label="収入がないときの保護費"><span>円</span></div>
         <p class="hint">収入がないときの保護費（生活扶助＋住宅扶助）を入れてください。分からない方は <a href="hogohi.html">保護費しらべ</a> で調べられます。</p>

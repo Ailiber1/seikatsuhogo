@@ -16,7 +16,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 MARK = "data-goatcounter"
-SNIPPET = """<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+SNIPPET = """<script>
+/* URLの後ろの ?… は付けず、ページの場所だけで数える（同じページが別々に数えられないように） */
+window.goatcounter = {path: function () { return location.pathname; }};
+</script>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
 <script>
 /* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
 window.gcUse = function (name) {

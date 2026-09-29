@@ -13,7 +13,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 
 | ファイル | 種類 | 内容 | 公開URL |
 |---|---|---|---|
-| `index.html` | 一覧 | 作ったものの入口 | [/](https://ailiber1.github.io/seikatsuhogo/) |
+| `index.html` | 一覧 | 視聴者に伝える1つのリンク。カードの格子・種類タブ・検索つき | [/](https://ailiber1.github.io/seikatsuhogo/) |
+| `hub-items.js` | 一覧 | 一覧に並ぶカードのデータ。足すときはここに1行 | — |
 | `sodan.html` | ツール | 生活の相談窓口をさがす（全国1,370か所） | [/sodan.html](https://ailiber1.github.io/seikatsuhogo/sodan.html) |
 | `tokurei.html` | ツール | 特例加算しらべ（自分がいくら増えるか） | [/tokurei.html](https://ailiber1.github.io/seikatsuhogo/tokurei.html) |
 | `fuyo.html` | 解説 | 生活保護を申請すると家族に通知は行くのか（扶養照会） | [/fuyo.html](https://ailiber1.github.io/seikatsuhogo/fuyo.html) |
@@ -86,7 +87,9 @@ https://ailiber1.github.io/seikatsuhogo/◯◯.html
 ```
 
 ### 5. 一覧に追加する
-`index.html` にカードを1枚足す。これで過去のものも辿れる。
+`hub-items.js` の `ITEMS` に**1行**足す（`index.html` は触らない）。これで過去のものも辿れる。
+- `kind` は `"tool"`（ツール）か `"doc"`（解説）、`kw` は検索用の言葉（「家賃」「バレる」など、視聴者が打ちそうなことば）
+- 新しく足したものだけ `isNew:true` にし、古くなったら外す
 
 ## 作るときのきまり
 
@@ -108,6 +111,7 @@ https://ailiber1.github.io/seikatsuhogo/◯◯.html
 - 公的資料は**原文をそのまま引用**し、**元の資料へのリンク**を添える
 - 仕組みの説明にはインラインSVGの図を使う（画像にしない）
 - 末尾に**根拠資料の一覧**と**読むときの注意**（限界・確認日）
+- いちばん最後に、**全ページ共通で**「作成：リベル_Liber（YouTubeチャンネル）」の1行を置く（リンク先はチャンネルのURL、中央寄せ・14px・太字、上に細い線）。既存ページの末尾（`hogohi.html` など）と同じ書き方にそろえる。生成スクリプトで作るページは、ひな形にも入れる
 
 ### ツール
 - **開いた直後は結果を出さない。** 配信で使い方を実演するため

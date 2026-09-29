@@ -9,150 +9,116 @@
   /* 常に白基調。配信の画面共有と視聴者の画面で見え方を揃えるため、ダークモードには切り替えない */
   --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
   --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
-  --ok:#2a7355; --ok-bg:#f1f7f4;
-  --line:#e2e7ec; --line-soft:#f0f3f6;
+  --ok:#2a7355; --ok-soft:#eaf5ef;
+  --line:#e2e7ec; --radius:20px;
 }
 *{box-sizing:border-box}
 body{background:var(--ground); color:var(--ink); margin:0;
   font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
-  font-size:16px; line-height:1.75; -webkit-text-size-adjust:100%}
+  font-size:16px; line-height:1.7; -webkit-text-size-adjust:100%}
 .mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
-.wrap{max-width:680px; margin:0 auto; padding:0 18px; padding-block:30px 44px}
+.wrap{max-width:920px; margin:0 auto; padding:28px 16px 44px}
 
-header{border-bottom:2px solid var(--navy); padding-bottom:17px; margin-bottom:24px}
-h1{font-size:clamp(26px,5.6vw,36px); line-height:1.35; margin:0 0 9px; font-weight:700; color:var(--navy)}
-.lede{font-size:15.5px; color:var(--sub); margin:0}
+header{margin-bottom:20px}
+h1{font-size:clamp(26px,5.6vw,36px); line-height:1.35; margin:0; color:var(--navy)}
 
-h2{font-size:18px; margin:26px 0 12px; font-weight:700; display:flex; align-items:center; gap:9px}
-h2::before{content:""; width:5px; height:1.1em; background:var(--navy); border-radius:2px}
+/* 検索 */
+.search{position:relative; margin-bottom:14px}
+.search input{width:100%; font:inherit; font-size:16px; padding:13px 18px 13px 46px;
+  border:2px solid var(--line); border-radius:999px; background:var(--panel); color:var(--ink)}
+.search input:focus{outline:none; border-color:var(--navy); background:#fff}
+.search span{position:absolute; left:17px; top:50%; transform:translateY(-50%); font-size:18px; opacity:.6}
 
-a.item{display:block; text-decoration:none; color:inherit; background:var(--panel);
-  border:2px solid var(--line); border-radius:13px; padding:15px 17px; margin-bottom:12px}
-a.item:hover{border-color:var(--navy); background:var(--navy-soft)}
-a.item .kind{display:inline-block; font-size:11.5px; font-weight:700; letter-spacing:.05em;
-  color:var(--on-navy); background:var(--navy); border-radius:4px; padding:2px 9px; margin-bottom:7px}
-a.item .kind.tool{background:var(--ok)}
-a.item h3{margin:0 0 5px; font-size:19px; font-weight:700; color:var(--navy); line-height:1.4}
-a.item p{margin:0; font-size:14.5px; color:var(--sub); line-height:1.65}
-a.item .date{display:block; margin-top:7px; font-size:12.5px; color:var(--sub)}
+/* 種類タブ */
+.tabs{display:flex; gap:8px; margin-bottom:18px; overflow-x:auto; padding-bottom:2px}
+.tab{font:inherit; font-size:14.5px; font-weight:700; white-space:nowrap; cursor:pointer;
+  border:2px solid var(--line); background:#fff; color:var(--sub); border-radius:999px; padding:7px 18px}
+.tab[aria-pressed="true"]{background:var(--navy); border-color:var(--navy); color:var(--on-navy)}
+.count{font-size:13px; color:var(--sub); margin:0 0 12px}
 
-.about{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 12px 12px 0;
-  padding:15px 18px; margin-bottom:8px}
-.about p{margin:0 0 9px; font-size:15px}
-.about p:last-child{margin-bottom:0}
+/* 格子カード：スマホ2列 → 幅が広いと3列 */
+.grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px}
+@media (min-width:640px){ .grid{grid-template-columns:repeat(3,1fr); gap:16px} }
 
-footer{margin-top:30px; padding-top:18px; border-top:1px solid var(--line);
-  font-size:12.5px; color:var(--sub); line-height:1.8}
-footer a{color:var(--navy); word-break:break-all}
+a.card{display:flex; flex-direction:column; text-decoration:none; color:inherit; position:relative;
+  background:#fff; border:2px solid var(--line); border-radius:var(--radius); padding:16px 14px 14px;
+  transition:transform .15s, border-color .15s, box-shadow .15s}
+a.card:hover,a.card:focus-visible{border-color:var(--navy); transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(43,93,143,.12); outline:none}
+.icon{width:48px; height:48px; border-radius:16px; display:grid; place-items:center; font-size:25px;
+  background:var(--navy-soft); margin-bottom:10px}
+.card.tool .icon{background:var(--ok-soft)}
+.kind{align-self:flex-start; font-size:11px; font-weight:700; letter-spacing:.05em; color:var(--on-navy);
+  background:var(--navy); border-radius:999px; padding:1px 10px; margin-bottom:6px}
+.card.tool .kind{background:var(--ok)}
+.card h3{margin:0 0 4px; font-size:16px; line-height:1.45; color:var(--navy)}
+.card p{margin:0; font-size:13px; line-height:1.55; color:var(--sub)}
+.new{position:absolute; top:10px; right:10px; font-size:10.5px; font-weight:700; color:#b3261e;
+  background:#fdecea; border-radius:999px; padding:0 8px}
+.empty{grid-column:1/-1; text-align:center; color:var(--sub); padding:30px 0}
+
+footer{margin-top:30px; padding-top:18px; border-top:1px solid var(--line); text-align:center}
+.credit{margin:0; font-size:14px; font-weight:700; color:var(--ink)}
+.credit a{color:var(--navy)}
+.note{margin:10px 0 0; font-size:11.5px; color:var(--sub)}
 </style>
 <script>
 /* URLの後ろの ?… は付けず、ページの場所だけで数える（同じページが別々に数えられないように） */
 window.goatcounter = {path: function () { return location.pathname; }};
 </script>
 <script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
-<script>
-/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
-window.gcUse = function (name) {
-  window.gcUse.done = window.gcUse.done || {};
-  if (window.gcUse.done[name]) return;
-  window.gcUse.done[name] = true;
-  var tries = 0;
-  (function send() {
-    if (window.goatcounter && window.goatcounter.count) {
-      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
-    } else if (tries++ < 20) {
-      setTimeout(send, 500);
-    }
-  })();
-};
-</script>
 </head>
 <body>
 <div class="wrap">
 
 <header>
   <h1 class="mincho">生活保護のしらべもの</h1>
-  <p class="lede">生活保護について調べたことを、公式の資料にあたって確認しながらまとめています。YouTubeチャンネル「リベル_Liber」の配信で使っているものです。</p>
 </header>
 
-<div class="about">
-  <p><b>どれも無料で、登録もいりません。</b>入力した内容はブラウザの中だけで処理していて、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</p>
-  <p>数字や条件は、厚生労働省などが公表している資料をもとにしています。各ページに元の資料へのリンクを置いてあります。</p>
+<div class="search"><span>🔍</span><input id="q" type="search" placeholder="さがす（例：家賃、給料、窓口）" aria-label="さがす"></div>
+<div class="tabs" id="tabs">
+  <button class="tab" data-kind="all" aria-pressed="true">すべて</button>
+  <button class="tab" data-kind="tool" aria-pressed="false">🛠 ツール</button>
+  <button class="tab" data-kind="doc" aria-pressed="false">📖 解説</button>
 </div>
-
-<h2>調べるツール</h2>
-
-<a class="item" href="kyuryo.html">
-  <span class="kind tool">ツール</span>
-  <h3>給料いくら残るしらべ</h3>
-  <p>生活保護を受けながら働いたとき、給料のうちいくら手元に残り、いくら保護費から差し引かれるかを、国の基礎控除額表で計算します。臨時収入にも対応。</p>
-  <span class="date">2026年9月</span>
-</a>
-
-<a class="item" href="hogohi.html">
-  <span class="kind tool">ツール</span>
-  <h3>保護費しらべ</h3>
-  <p>住んでいる市区町村と、一緒に暮らす人の人数・年齢を選ぶと、生活保護費が毎月いくらか（生活費＋家賃の上限）を国の表で計算します。実際の家賃を入れて計算し直すこともできます。</p>
-  <span class="date">2026年9月</span>
-</a>
-
-<a class="item" href="tsuika.html">
-  <span class="kind tool">ツール</span>
-  <h3>追加給付しらべ</h3>
-  <p>最高裁判決を受けた保護費の追加給付で、自分が対象か・申し出が必要か・どこに出すかを調べます。受けていた時期と今の状況を選ぶだけ。</p>
-  <span class="date">2026年9月</span>
-</a>
-
-<a class="item" href="sodan.html">
-  <span class="kind tool">ツール</span>
-  <h3>生活の相談窓口をさがす</h3>
-  <p>お住まいの都道府県と市区町村を選ぶと、生活の困りごとを相談できる窓口（名前・電話・住所）が出ます。全国1,370か所。相談は無料です。</p>
-  <span class="date">2026年9月</span>
-</a>
-
-<a class="item" href="tokurei.html">
-  <span class="kind tool">ツール</span>
-  <h3>特例加算しらべ</h3>
-  <p>2026年10月からの特例加算の引き上げで、自分の世帯がいくら増えるかを調べます。住んでいる市区町村と、世帯の人数・年齢を選ぶだけ。</p>
-  <span class="date">2026年9月</span>
-</a>
-
-<h2>読んで分かる解説</h2>
-
-<a class="item" href="tsuika-setsumei.html">
-  <span class="kind">解説</span>
-  <h3>保護費の追加給付、期限までに申し出ないと0円</h3>
-  <p>2013年からの引き下げを最高裁が違法と判断。今受けている人は手続き不要、やめた人は2027年7月31日までに申し出が必要です。金額の例と申し出のしかたを、厚生労働省の資料で説明しています。</p>
-  <span class="date">2026年9月</span>
-</a>
-
-<a class="item" href="basic-income.html">
-  <span class="kind">解説</span>
-  <h3>ベーシックインカムは、世界でどうなっているのか</h3>
-  <p>世界の実験の結果、制度になった国、日本の「給付付き税額控除」、イーロン・マスク氏の「2036年にはお金は意味を持たなくなる」発言まで。動くグラフと年表つき。</p>
-  <span class="date">2026年9月</span>
-</a>
-
-<a class="item" href="fuyo.html">
-  <span class="kind">解説</span>
-  <h3>生活保護を申請すると、家族に通知は行くのか</h3>
-  <p>家族への通知（扶養照会）が行かない3つの条件を、厚生労働省の事務連絡をもとに説明しています。申請の流れの図つき。</p>
-  <span class="date">2026年9月</span>
-</a>
-
-<a class="item" href="tokurei-setsumei.html">
-  <span class="kind">解説</span>
-  <h3>生活保護費が10月から上がる。上がらない人もいる理由</h3>
-  <p>特例加算が月1,500円から2,500円になります。全員が同じだけ増えるわけではない理由を、厚生労働省の資料で説明しています。</p>
-  <span class="date">2026年9月</span>
-</a>
+<p class="count" id="count"></p>
+<div class="grid" id="grid"></div>
 
 <footer>
-  <p>このページは個人が作っているもので、行政の公式ページではありません。法律上の助言でもありません。実際の取り扱いは自治体や担当者によって違うことがあります。<b>最終的なことは、お住まいの地域の窓口で確認してください。</b></p>
-  <p>もとにした資料へのリンクは各ページの末尾にあります。<br>
-  ソース: <a href="https://github.com/Ailiber1/seikatsuhogo" target="_blank" rel="noopener noreferrer">github.com/Ailiber1/seikatsuhogo</a></p>
+  <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  <p class="note">個人が作ったページで、行政の公式ページではありません。最終確認はお住まいの地域の窓口で。</p>
 </footer>
-
 </div>
+
+<!-- カードの一覧は hub-items.js にある。足すときはそちらに1行足す -->
+<script src="hub-items.js"></script>
+<script>
+const KIND = {tool:"ツール", doc:"解説"};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const grid = document.getElementById("grid"), q = document.getElementById("q"), count = document.getElementById("count");
+let kind = "all";
+
+function render(){
+  const w = q.value.trim().toLowerCase();
+  const list = ITEMS.filter(i => (kind === "all" || i.kind === kind) &&
+    (!w || (i.title + i.desc + (i.kw || "")).toLowerCase().includes(w)));
+  grid.innerHTML = list.map(i => `
+    <a class="card ${esc(i.kind)}" href="${esc(i.href)}">
+      ${i.isNew ? '<span class="new">NEW</span>' : ''}
+      <div class="icon">${i.icon}</div>
+      <span class="kind">${KIND[i.kind] || ""}</span>
+      <h3>${esc(i.title)}</h3><p>${esc(i.desc)}</p>
+    </a>`).join("") || '<div class="empty">見つかりませんでした。別のことばで試してください。</div>';
+  count.textContent = list.length + " 件";
+}
+document.getElementById("tabs").addEventListener("click", e => {
+  const b = e.target.closest(".tab"); if (!b) return;
+  kind = b.dataset.kind;
+  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-pressed", t === b));
+  render();
+});
+q.addEventListener("input", render);
+render();
+</script>
 </body>
 </html>

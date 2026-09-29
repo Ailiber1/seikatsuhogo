@@ -169,6 +169,7 @@ footer a{color:var(--navy); word-break:break-all}
   <p>窓口の名前・住所・電話番号は移転や統合で変わることがあります。<b>行く前に電話で確かめてください。</b></p>
   <p><b>市区町村の欄にご自分の市名が見当たらないとき。</b>札幌市・大阪市・横浜市など大きな市は、<b>市名ではなく区名</b>（北区、中央区など）で並んでいます。ご自分の区名を探してください。近隣の町村がまとめて1つの窓口になっていることもあります。それでも見つからない場合は、市区町村の役所にお問い合わせください。</p>
   <p>選んだ内容はこの画面の中だけで処理していて、どこにも送信していません。確認日：2026年9月23日</p>
+<p class="credit" style="margin:18px 0 0;padding-top:12px;border-top:1px solid #e2e7ec;text-align:center;font-size:14px;font-weight:700;color:#242c36">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener" style="color:#2b5d8f">リベル_Liber</a>（YouTubeチャンネル）</p>
 </footer>
 
 </div>

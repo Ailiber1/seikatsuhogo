@@ -45,6 +45,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `fetch_madoguchi.py` | 相談窓口の一覧を取得して `data/madoguchi.json` を作る |
 | `gen_madoguchi_tool.py` | `data/madoguchi.json` から `sodan.html` を生成する |
 | `gen_tsuika_tool.py` | `data/kyuchi_by_city.json` を `tsuika.template.html` に埋め込んで `tsuika.html` を生成する |
+| `report_counts.py` | GoatCounter から、ページごとの開かれた回数とツールごとの結果が出た回数を取り出す（鍵はキーチェーンから読む） |
 | `count_snippet.py` | 利用回数の計測（GoatCounter・SRI付き）を全ページに入れる。生成スクリプトからも使う |
 | `gen_kyuryo_tool.py` | `data/kiso_kojo.json` を `kyuryo.template.html` に埋め込んで `kyuryo.html` を生成する |
 | `verify_kyuryo.py` | `kyuryo.html` の計算式を node で動かし、基礎控除額表の全区分・表の外の決まり・計算例と一致するか確かめる |

@@ -100,7 +100,8 @@ https://ailiber1.github.io/seikatsuhogo/◯◯.html
 <div data-yt data-id="動画ID" data-title="動画の題名" data-label="動画でも解説しています"></div>
 ```
 - 最初は絵（サムネイル）だけ出て、押すと `youtube-nocookie.com` で読み込む。ページを開いただけでは動画側に読み込みに行かないので、「Cookieを使わない」の説明と両立する（サムネイル画像だけは開いた時点でYouTubeの画像サーバーから取得する）
-- 動画IDは、公開状態と埋め込み許可を確認してから入れる（`curl "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=ID&format=json"` が200なら可）
+- **予約投稿中・限定公開・非公開の動画は入れない。公開されてから足す**（公開前のIDを入れると、リスナーには再生できない動画が出てしまう）
+- 動画IDは、公開状態と埋め込み許可を確認してから入れる（`yt-dlp --skip-download --print "%(availability)s %(playable_in_embed)s" URL` で `public True` なら可。あるいは `curl "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=ID&format=json"` が200なら可）
 
 ## 作るときのきまり
 

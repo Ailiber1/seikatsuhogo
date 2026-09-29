@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>生活保護 特例加算しらべ</title>
 <style>
 :root{
@@ -39,7 +44,7 @@ h1{font-size:clamp(25px,6vw,34px); line-height:1.35; margin:0 0 8px; font-weight
 .field{flex:1 1 180px; min-width:0}
 label.cap{display:block; font-size:12.5px; color:var(--sub); margin-bottom:3px; letter-spacing:.02em}
 select{
-  width:100%; font:inherit; font-size:15.5px; color:var(--ink); background:var(--panel);
+  width:100%; font:inherit; font-size:16px; color:var(--ink); background:var(--panel);
   border:1.5px solid var(--line); border-radius:7px; padding:9px 32px 9px 11px;
   appearance:none; cursor:pointer;
   background-image:linear-gradient(45deg,transparent 50%,var(--sub) 50%),linear-gradient(135deg,var(--sub) 50%,transparent 50%);
@@ -89,7 +94,7 @@ button.go:focus-visible{outline:2.5px solid var(--ink); outline-offset:2px}
 .r-body{padding:16px 18px 18px}
 .r-why{font-size:14.5px; margin:0 0 14px; padding-left:12px; border-left:3px solid var(--indigo)}
 .brk-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
-table.brk{width:100%; min-width:310px; border-collapse:collapse; font-size:13.5px;
+table.brk{width:100%; min-width:0; border-collapse:collapse; font-size:13.5px;
   font-variant-numeric:tabular-nums}
 table.brk th,table.brk td{padding:7px 6px; border-bottom:1px solid var(--line-soft);
   text-align:right; white-space:nowrap}
@@ -97,6 +102,8 @@ table.brk th{color:var(--sub); font-weight:600; font-size:12px; letter-spacing:.
   border-bottom:1.5px solid var(--line)}
 table.brk th:first-child,table.brk td:first-child{text-align:left}
 table.brk tfoot td{font-weight:700; border-bottom:none; border-top:1.5px solid var(--line)}
+@media (max-width:420px){table.brk{font-size:13px} table.brk th,table.brk td{padding:7px 3px} table.brk th{font-size:11.5px; letter-spacing:0}}
+@media (max-width:340px){table.brk{font-size:12px} table.brk th{font-size:10.5px} .r-top{padding-left:12px; padding-right:12px}}
 .caveat{margin-top:14px; font-size:13px; line-height:1.65; background:var(--indigo-soft);
   border-radius:7px; padding:11px 13px}
 .caveat b{color:var(--indigo)}

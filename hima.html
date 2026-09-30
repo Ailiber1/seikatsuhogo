@@ -66,22 +66,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none; width:24px; hei
 input[type=range]::-moz-range-thumb{width:18px; height:18px; border-radius:50%; background:#fff; border:3px solid var(--c)}
 .rest{font-size:14px; margin-top:4px; padding:8px 12px; border-radius:10px; background:var(--panel); border:1px solid var(--line)}
 .rest.over{background:var(--ng-bg); border-color:var(--ng); color:var(--ng); font-weight:700}
-.grid2 .full{grid-column:1 / -1}
-.tot{list-style:none; margin:0; padding:0; font-size:14px}
-.tot li{display:flex; justify-content:space-between; padding:3px 0; border-bottom:1px solid var(--line-soft)}
-.tot li span::before{content:""; display:inline-block; width:10px; height:10px; border-radius:3px; background:var(--c); margin-right:6px; vertical-align:-1px}
-.tot li b{color:var(--navy)}
-.brushes{display:flex; flex-wrap:wrap; gap:6px; margin:10px 0; position:sticky; top:0; z-index:2; background:#fff; padding:8px 0; border-bottom:1px solid var(--line-soft)}
-.brushes button{font:inherit; font-size:13.5px; font-weight:700; min-height:40px; padding:4px 11px; border-radius:99px; border:1.5px solid var(--line); background:#fff; color:var(--ink); cursor:pointer; display:flex; align-items:center; gap:6px}
-.brushes button::before{content:""; width:11px; height:11px; border-radius:50%; background:var(--c)}
-.brushes button[aria-checked=true]{border-color:var(--cyan); background:var(--cyan-soft); box-shadow:0 0 0 3px var(--cyan-soft); color:var(--navy)}
-.tl{display:grid; gap:4px}
-.tl .row{display:grid; grid-template-columns:3.4em 1fr 1fr; gap:4px}
-.tl .hr{font:inherit; font-size:13px; font-weight:700; color:var(--sub); background:none; border:1px dashed var(--line); border-radius:8px; cursor:pointer; min-height:40px; padding:0}
-.tl .cell{font:inherit; font-size:12px; font-weight:700; min-height:40px; border-radius:8px; cursor:pointer; text-align:left; padding:0 8px;
-  border:1px solid color-mix(in srgb, var(--c) 45%, white); border-left:5px solid var(--c); background:color-mix(in srgb, var(--c) 16%, white); color:var(--ink); transition:background .2s, transform .15s}
-.tl .cell small{font-weight:400; color:var(--sub); margin-right:4px}
-.tl .cell.pop{transform:scale(.96)}
 .go{display:block; width:100%; margin:6px 0 4px; min-height:58px; font:inherit; font-size:18px; font-weight:800; letter-spacing:.08em; color:#fff; border:none; border-radius:14px; cursor:pointer;
   background:linear-gradient(100deg,var(--navy),var(--cyan)); box-shadow:0 10px 26px -12px var(--glow); position:relative; overflow:hidden}
 .go::after{content:""; position:absolute; top:0; left:-60%; width:40%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent); transform:skewX(-20deg); animation:shine 2.6s infinite}
@@ -204,22 +188,13 @@ window.gcUse = function (name) {
 
   <section class="card off" id="c2">
     <h2><span class="n">02</span>ふだんの平日の1日</h2>
-    <div class="grid2">
-      <div><label class="f" for="wake">起きる時刻</label><select id="wake" disabled><option value="">選んでください</option></select></div>
-      <div><label class="f" for="bed">寝る時刻</label><select id="bed" disabled><option value="">選んでください</option></select></div>
-      <div class="full"><label class="f" for="base">起きている間、いちばん多いのは</label>
-        <select id="base" disabled><option value="">選んでください</option><option value="work">仕事・学校</option><option value="house">家事</option><option value="free">自由な時間（テレビ・スマホ・休むなど）</option></select></div>
+    <div class="dial">
+      <div class="ringbox"><svg id="liveRing" viewBox="0 0 132 132" aria-hidden="true"></svg>
+        <div class="mid"><div><b class="num" id="sumV">0:00</b><small>/ 24:00</small></div></div></div>
+      <div id="sliders"></div>
     </div>
-    <div id="paint" hidden>
-      <div class="dial">
-        <div class="ringbox"><svg id="liveRing" viewBox="0 0 132 132" aria-hidden="true"></svg>
-          <div class="mid"><div><b class="num" id="awakeV">0:00</b><small>起きている時間</small></div></div></div>
-        <ul class="tot" id="tot"></ul>
-      </div>
-      <p class="hint" style="margin-top:4px"><b>このままでもスキャンできます。</b>違う時間があれば、下で種類を選んでから、その時間をタップして塗り直してください（時刻を押すと1時間まとめて塗れます）。</p>
-      <div class="brushes" id="brushes" role="radiogroup" aria-label="塗る種類"></div>
-      <div class="tl" id="tl"></div>
-    </div>
+    <div class="rest" id="rest" aria-live="polite"></div>
+    <p class="hint">30分きざみです。だいたいで大丈夫です。残りは自動で「その他（移動・通院など）」になります。</p>
   </section>
 
   <button class="go" id="go" type="button" disabled>スキャンする</button>
@@ -270,54 +245,19 @@ function scan(me) {
 const $ = id => document.getElementById(id);
 const hm = m => { const s = m < 0 ? '−' : ''; m = Math.abs(Math.round(m)); return s + Math.floor(m / 60) + ':' + String(m % 60).padStart(2, '0'); };
 const hmJ = m => { const a = Math.abs(Math.round(m)), h = Math.floor(a / 60), mm = a % 60; return (h ? h + '時間' : '') + (mm ? mm + '分' : (h ? '' : '0分')); };
-const SHORT = {sleep:'睡眠', work:'仕事', house:'家事', meal:'食事・風呂', free:'自由', other:'その他'};
-const HINT = {sleep:'昼寝', work:'通勤・在宅・作業所', house:'料理・掃除・買い物', meal:'食事・お風呂', free:'テレビ・スマホ・散歩', other:'移動・通院'};
+const SL = [
+  {k:'sleep', hint:'昼寝も入れる'},
+  {k:'work', hint:'通勤・在宅ワーク・作業所・学校'},
+  {k:'house', hint:'料理・掃除・洗濯・買い物・育児・介護'},
+  {k:'meal', hint:'食べる時間・お風呂・着替え・トイレ'},
+  {k:'free', hint:'テレビ・スマホ・ゲーム・休む・趣味・運動・人と会う'}
+];
+const val = {sleep:0, work:0, house:0, meal:0, free:0};
 const sel = {s: $('sex'), a: $('age'), w: $('work'), st: $('st')};
 Object.entries(JIKAN.ages).forEach(([k, v]) => { if (k !== '00') sel.a.insertAdjacentHTML('beforeend', `<option value="${k}">${v}</option>`); });
-// 時刻は「0時からの30分マスの番号」(0〜47) で持つ
-const tlabel = i => { const m = (i % 48) * 30; return Math.floor(m / 60) + ':' + (m % 60 ? '30' : '00'); };
-for (let i = 6; i <= 26; i++) $('wake').insertAdjacentHTML('beforeend', `<option value="${i}">${tlabel(i)}</option>`);      // 3:00〜13:00
-for (let i = 40; i <= 60; i++) $('bed').insertAdjacentHTML('beforeend', `<option value="${i % 48}">${i >= 48 ? '夜中 ' : ''}${tlabel(i)}</option>`); // 20:00〜翌6:00
-let cells = null;          // 48マスそれぞれの種類
-let brush = 'free';
-function setup() {         // 起きる・寝る・いちばん多いものが決まったら、全マスを埋め直す
-  const w = +$('wake').value, b = +$('bed').value, base = $('base').value;
-  cells = Array(48).fill(base);
-  for (let i = b; i !== w; i = (i + 1) % 48) cells[i] = 'sleep';
-  brush = base === 'free' ? 'work' : 'free';
-  drawTL();
-}
-function drawTL() {
-  $('brushes').innerHTML = KEYS.map(k => `<button type="button" role="radio" aria-checked="${k === brush}" data-k="${k}" title="${HINT[k]}" style="--c:var(--c-${k})">${NAMES[k]}</button>`).join('');
-  // 起きる時刻から、次に寝るまでのマスを並べる（途中の昼寝も表示する）
-  const w = +$('wake').value, b = +$('bed').value, list = [];
-  for (let i = w; i !== b; i = (i + 1) % 48) list.push(i);
-  let html = '';
-  for (let n = 0; n < list.length; n += 2) {
-    const i = list[n], j = list[n + 1];
-    const cell = x => x === undefined ? '<span></span>' : `<button type="button" class="cell" data-i="${x}" style="--c:var(--c-${cells[x]})"><small class="num">${tlabel(x)}</small>${SHORT[cells[x]]}</button>`;
-    html += `<div class="row"><button type="button" class="hr num" data-a="${i}" data-b="${j === undefined ? '' : j}">${tlabel(i).replace(':30', '時半').replace(':00', '時')}</button>${cell(i)}${cell(j)}</div>`;
-  }
-  $('tl').innerHTML = html;
-  paintLive();
-}
-function paintCell(i) {
-  cells[i] = brush;
-  const el = document.querySelector(`.cell[data-i="${i}"]`);
-  if (el) { el.style.setProperty('--c', `var(--c-${brush})`); el.innerHTML = `<small class="num">${tlabel(i)}</small>${SHORT[brush]}`; el.classList.add('pop'); setTimeout(() => el.classList.remove('pop'), 150); }
-}
-$('tl').addEventListener('click', e => {
-  const c = e.target.closest('.cell'), h = e.target.closest('.hr');
-  if (c) paintCell(+c.dataset.i);
-  if (h) { paintCell(+h.dataset.a); if (h.dataset.b !== '') paintCell(+h.dataset.b); }
-  if (c || h) paintLive();
-});
-$('brushes').addEventListener('click', e => {
-  const bt = e.target.closest('button'); if (!bt) return;
-  brush = bt.dataset.k;
-  $('brushes').querySelectorAll('button').forEach(x => x.setAttribute('aria-checked', x.dataset.k === brush));
-});
-function totals() { const t = {}; KEYS.forEach(k => t[k] = 0); if (cells) cells.forEach(k => t[k] += 30); return t; }
+
+$('sliders').innerHTML = SL.map(o => `<div class="sl"><div class="top"><span><span class="dot" style="background:var(--c-${o.k})"></span>${NAMES[o.k]}</span><span class="v num" id="v-${o.k}">0:00</span></div>
+  <small>${o.hint}</small><input type="range" id="r-${o.k}" min="0" max="24" step="0.5" value="0" disabled aria-label="${NAMES[o.k]}（時間）" style="--c:var(--c-${o.k})"></div>`).join('');
 
 function ringSVG(parts, size, stroke, animate) {
   const c = size / 2, r = c - stroke / 2 - 2, L = 2 * Math.PI * r;
@@ -331,18 +271,18 @@ function ringSVG(parts, size, stroke, animate) {
 }
 function grow(svg) { requestAnimationFrame(() => requestAnimationFrame(() => svg.querySelectorAll('circle[data-len]').forEach(ci => ci.setAttribute('stroke-dasharray', ci.dataset.len + ' ' + (ci.dataset.l - ci.dataset.len))))); }
 
+function sum() { return SL.reduce((t, o) => t + val[o.k], 0); }
 function paintLive() {
-  if (!cells) return;
-  // 0時を真上にした時計の形。同じ種類が続くところはまとめて描く
-  const parts = [];
-  cells.forEach(k => { const p = parts[parts.length - 1]; if (p && p.k === k) p.v += 30; else parts.push({k, v:30}); });
-  $('liveRing').innerHTML = ringSVG(parts, 132, 14, false);
-  const t = totals();
-  $('awakeV').textContent = hm(1440 - t.sleep);
-  $('tot').innerHTML = KEYS.filter(k => t[k] > 0).map(k => `<li style="--c:var(--c-${k})"><span>${NAMES[k]}</span><b class="num">${hm(t[k])}</b></li>`).join('');
+  const s = sum(), other = 1440 - s;
+  $('sumV').textContent = hm(s);
+  $('liveRing').innerHTML = ringSVG(SL.map(o => ({k:o.k, v:val[o.k]})), 132, 14, false);
+  const r = $('rest');
+  r.classList.toggle('over', other < 0);
+  r.innerHTML = other < 0 ? `24時間を <b>${hmJ(-other)}</b> こえています。どこかを減らしてください。`
+    : `その他（移動・通院など）：<b class="num">${hm(other)}</b>`;
+  SL.forEach(o => { const el = $('r-' + o.k); el.style.setProperty('--p', (val[o.k] / 1440 * 100) + '%'); $('v-' + o.k).textContent = hm(val[o.k]); });
 }
-function ready2() { return !!($('wake').value && $('bed').value && $('base').value) && $('wake').value !== $('bed').value; }
-function refresh(e) {
+function refresh() {
   sel.a.disabled = !sel.s.value;
   sel.w.disabled = !sel.a.value;
   sel.st.disabled = !sel.w.value;
@@ -350,15 +290,13 @@ function refresh(e) {
   $('c1').classList.toggle('on', !ready1);
   $('c2').classList.toggle('off', !ready1);
   $('c2').classList.toggle('on', ready1);
-  $('wake').disabled = !ready1;
-  $('bed').disabled = !ready1 || !$('wake').value;
-  $('base').disabled = !ready1 || !$('bed').value;
-  const t = e && e.target;
-  if (ready2() && (!cells || t === $('wake') || t === $('bed') || t === $('base'))) setup();
-  $('paint').hidden = !ready2();
-  $('go').disabled = !(ready1 && ready2());
+  SL.forEach(o => $('r-' + o.k).disabled = !ready1);
+  const s = sum();
+  $('go').disabled = !(ready1 && s > 0 && s <= 1440);
+  paintLive();
 }
-[...Object.values(sel), $('wake'), $('bed'), $('base')].forEach(el => el.addEventListener('change', refresh));
+SL.forEach(o => $('r-' + o.k).addEventListener('input', e => { val[o.k] = Math.round(+e.target.value * 60); refresh(); }));
+Object.values(sel).forEach(el => el.addEventListener('change', refresh));
 
 function guide() {
   $('result').innerHTML = `<div class="guide">上の <b>01 と 02</b> を入れて「スキャンする」を押すと、ここに<br><b>あなたが暇人かどうかの判定</b>と、<b>国の平均・リスナーの平均とのくらべ</b>が出ます。</div>`;
@@ -366,7 +304,7 @@ function guide() {
 
 function me() {
   const m = {s: sel.s.value, a: sel.a.value, w: sel.w.value, st: sel.st.value};
-  Object.assign(m, totals()); return m;
+  SL.forEach(o => m[o.k] = val[o.k]); m.other = 1440 - sum(); return m;
 }
 
 // ── リスナーのデータ ──

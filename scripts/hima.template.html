@@ -70,6 +70,8 @@ input[type=range]::-moz-range-thumb{width:18px; height:18px; border-radius:50%; 
   background:linear-gradient(100deg,var(--navy),var(--cyan)); box-shadow:0 10px 26px -12px var(--glow); position:relative; overflow:hidden}
 .go::after{content:""; position:absolute; top:0; left:-60%; width:40%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent); transform:skewX(-20deg); animation:shine 2.6s infinite}
 @keyframes shine{to{left:130%}}
+.go.msg{font-size:15px; letter-spacing:0; line-height:1.5; padding:8px 14px}
+.rest.gap{background:var(--warn-bg); border-color:var(--warn); color:var(--warn)}
 .go:disabled{background:var(--line); color:var(--sub); box-shadow:none; cursor:default}
 .go:disabled::after{display:none}
 .live{display:flex; align-items:center; justify-content:center; gap:7px; font-size:14px; font-weight:700; color:var(--navy); margin:8px 0 0}
@@ -173,7 +175,7 @@ table.cmp tr.free td{background:var(--cyan-soft)}
       <div id="sliders"></div>
     </div>
     <div class="rest" id="rest" aria-live="polite"></div>
-    <p class="hint"><b>最初は、あなたと同じ年代・働き方の人の平均が入っています。</b>違うところだけ動かしてください。だいたいで大丈夫です（30分きざみ。残りは自動で「その他」）。</p>
+    <p class="hint"><b>最初は、あなたと同じ年代・働き方の人の平均が入っています。</b>違うところだけ動かしてください。だいたいで大丈夫です（30分きざみ。1時間までの残りは自動で「その他」）。</p>
   </section>
 
   <button class="go" id="go" type="button" disabled>スキャンする</button>
@@ -254,10 +256,12 @@ function sum() { return SL.reduce((t, o) => t + val[o.k], 0); }
 function paintLive() {
   const s = sum(), other = 1440 - s;
   $('sumV').textContent = hm(s);
-  $('liveRing').innerHTML = ringSVG(SL.map(o => ({k:o.k, v:val[o.k]})), 132, 14, false);
+  $('liveRing').innerHTML = ringSVG(SL.map(o => ({k:o.k, v:val[o.k]})).concat(other > 0 ? [{k:'other', v:other}] : []), 132, 14, false);
   const r = $('rest');
   r.classList.toggle('over', other < 0);
-  r.innerHTML = other < 0 ? `24時間を <b>${hmJ(-other)}</b> こえています。どこかを減らしてください。`
+  r.classList.toggle('gap', other > GAP);
+  r.innerHTML = other < 0 ? `24時間を <b>${hmJ(-other)}</b> こえています。どれかを<b>左</b>に動かして減らしてください。`
+    : other > GAP ? `<b>${hmJ(other)}</b> 空いています。どれかを<b>右</b>に動かして埋めてください。休んでいた時間なら「自由な時間」を右へ。`
     : `その他（移動・通院など）：<b class="num">${hm(other)}</b>`;
   SL.forEach(o => { const el = $('r-' + o.k); el.style.setProperty('--p', (val[o.k] / 1440 * 100) + '%'); $('v-' + o.k).textContent = hm(val[o.k]); });
 }
@@ -271,18 +275,27 @@ function refresh() {
   $('c2').classList.toggle('on', ready1);
   SL.forEach(o => $('r-' + o.k).disabled = !ready1);
   if (ready1 && !touched) preset();
-  const s = sum();
-  $('go').disabled = !(ready1 && touched && s > 0 && s <= 1440);
-  $('go').textContent = ready1 && !touched ? '違うところを動かしてください' : 'スキャンする';
+  const s = sum(), other = 1440 - s;
+  $('go').disabled = !(ready1 && touched && other >= 0 && other <= GAP);
+  const msg = !ready1 ? '' : !touched ? '違うところを動かしてください'
+    : other > GAP ? `あと${hmJ(other)} 空いています。どれかを右に動かして埋めてください`
+    : other < 0 ? `${hmJ(-other)} 多すぎます。どれかを左に動かしてください` : '';
+  $('go').textContent = msg || 'スキャンする';
+  $('go').classList.toggle('msg', !!msg);
   paintLive();
 }
+// 空きは1時間まで「その他（移動・通院など）」として認める。国の平均のその他がそれより長い区分
+// （働いていない人は通院・療養で2時間を超えることがある）は、その平均までを認める
+let GAP = 60;
 // 01を選んだら、同じ性別・年代・働き方の国の平均を最初から入れておく（違うところだけ動かせば済むように）。
 // 平均のまま保存されないよう、どれか1本を動かすまでスキャンできない
 let touched = false;
 function preset() {
   const nat = national(sel.s.value, sel.a.value, sel.w.value);
   SL.forEach(o => val[o.k] = Math.round(nat[o.k] / 30) * 30);
+  GAP = Math.max(60, Math.ceil(nat.other / 30) * 30);
   if (sum() > 1440) val.free -= sum() - 1440;
+  if (1440 - sum() > GAP) val.free += 1440 - sum() - GAP; // 丸めで空きが上限を超えたら自由な時間で埋める
   SL.forEach(o => $('r-' + o.k).value = val[o.k] / 60);
 }
 SL.forEach(o => $('r-' + o.k).addEventListener('input', e => { val[o.k] = Math.round(+e.target.value * 60); touched = true; refresh(); }));

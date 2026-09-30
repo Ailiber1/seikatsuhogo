@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>生活保護は暇じゃない</title>
-<meta name="description" content="生活保護3年目の平日の1日を、総務省の調査の平均とくらべました。国の数え方では「暇人」、ながらAI作業も入れると1日16時間45分の仕事">
+<meta name="description" content="生活保護3年目の平日の1日を、総務省の調査の平均とくらべました。国の数え方では「暇人」、ながらAI作業も足すと仕事の時間は合計16時間45分">
 <style>
 :root{
   /* 常に白基調。ダークモードには切り替えない */
@@ -113,7 +113,7 @@ window.gcUse = function (name) {
     <li>自分の1日は、ほかの人とくらべてどうなのか知りたい方</li></ul></div>
 
   <div class="conclusion"><div class="k">結論</div>
-    <p>生活保護3年目の私の仕事の時間は、1日 <b class="num">9時間45分</b>。同じ年代の会社員の平均とほぼ同じでした。「ながらAI作業」も入れると <b class="num">16時間45分</b>です。</p></div>
+    <p>生活保護3年目の私が、1日のうちで仕事をしている時間を合計すると <b class="num">9時間45分</b>。同じ年代の会社員の平均とほぼ同じでした。「ながらAI作業」の時間も足すと、合計 <b class="num">16時間45分</b>です。</p></div>
   <a class="cta" href="hima.html"><span>あなたの1日も、国の平均とくらべてみる（暇人スキャン）</span><span>→</span></a>
 
   <section class="ch fade">
@@ -170,7 +170,7 @@ window.gcUse = function (name) {
     <h3>分かっていること</h3>
     <div class="card"><span class="m y">✓</span><div><b>仕事の時間は、同じ年代の会社員とほぼ同じ</b><small>国の数え方で9時間45分（平均9時間52分）</small></div></div>
     <div class="card"><span class="m y">✓</span><div><b>「暇人」に見えるのは、睡眠を削っているから</b><small>睡眠4時間半（平均7時間32分）</small></div></div>
-    <div class="card"><span class="m y">✓</span><div><b>ながらAI作業まで入れると、1日16時間45分</b><small>国の調査では数えられない時間</small></div></div>
+    <div class="card"><span class="m y">✓</span><div><b>ながらAI作業まで足すと、仕事の時間は合計16時間45分</b><small>国の調査では数えられない時間</small></div></div>
     <h3>まだ分からないこと</h3>
     <div class="card"><span class="m q">？</span><div><b>生活保護を受けている人は、平均すると暇なのか</b><small>国の調査には「生活保護を受けているか」の区分がありません。暇人スキャンのリスナーのデータで分かっていきます</small></div></div>
   </section>
@@ -265,7 +265,7 @@ document.getElementById('aiBtn').addEventListener('click', e => {
   const f = t => { const p = Math.min(1, (t - t0) / 1200); v.textContent = hm(Math.round(1005 * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(f); };
   requestAnimationFrame(f);
   drawClock(true);
-  e.target.textContent = '1日16時間45分（会社員の平均の約1.7倍）'; e.target.disabled = true;
+  e.target.textContent = '仕事の時間は合計16時間45分（会社員の平均の約1.7倍）'; e.target.disabled = true;
 });
 </script>
 </body>

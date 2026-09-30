@@ -12,6 +12,7 @@
     video: true にすると「▶動画あり」が付く（そのツール・解説を説明する動画を、そのページに置いたとき）
 */
 const ITEMS = [
+  {kind:"tool", icon:"🛰️", title:"暇人スキャン", desc:"ふだんの1日を国の平均・リスナーとくらべて暇人か判定", href:"hima.html", kw:"暇 ひま 1日 生活時間 過ごし方 睡眠 自由時間 平均 比較 暇人", isNew:true},
   {kind:"tool", icon:"💴", title:"給料いくら残るしらべ", desc:"働いた給料のうち、手元に残る額と差し引かれる額", href:"kyuryo.html", kw:"給料 収入 働く バイト パート 基礎控除 臨時収入 控除", isNew:true},
   {kind:"tool", icon:"🧮", title:"保護費しらべ", desc:"市区町村・人数・年齢から毎月の保護費を計算", href:"hogohi.html", kw:"保護費 家賃 住宅扶助 生活扶助 いくら 級地 もらえる金額", isNew:true},
   {kind:"tool", icon:"📮", title:"追加給付しらべ", desc:"最高裁判決の追加給付、対象か・申し出先は？", href:"tsuika.html", kw:"追加給付 最高裁 判決 申し出 差額 引き下げ", video:true},

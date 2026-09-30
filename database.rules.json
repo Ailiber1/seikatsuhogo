@@ -1,0 +1,31 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "jikan": {
+      "r": {
+        ".read": true,
+        "$id": {
+          ".write": "!data.exists() && newData.exists()",
+          ".validate": "$id.matches(/^[a-z0-9]{16}$/) && newData.hasChildren(['s','a','w','st','sleep','work','house','meal','free','other','t']) && newData.child('sleep').val() + newData.child('work').val() + newData.child('house').val() + newData.child('meal').val() + newData.child('free').val() + newData.child('other').val() === 1440 && newData.parent().parent().child('last').val() === now",
+          "s": { ".validate": "newData.isString() && newData.val().matches(/^(m|f|x)$/)" },
+          "a": { ".validate": "newData.isString() && newData.val().matches(/^(0[1-9]|1[0-5])$/)" },
+          "w": { ".validate": "newData.isString() && newData.val().matches(/^(yes|no)$/)" },
+          "st": { ".validate": "newData.isString() && newData.val().matches(/^(j|k|n|x)$/)" },
+          "sleep": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1440 && newData.val() % 30 === 0" },
+          "work": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1440 && newData.val() % 30 === 0" },
+          "house": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1440 && newData.val() % 30 === 0" },
+          "meal": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1440 && newData.val() % 30 === 0" },
+          "free": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1440 && newData.val() % 30 === 0" },
+          "other": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1440 && newData.val() % 30 === 0" },
+          "t": { ".validate": "newData.val() === now" },
+          "$other": { ".validate": false }
+        }
+      },
+      "last": {
+        ".write": "newData.val() === now && (!data.exists() || data.val() <= now - 1000)",
+        ".validate": "newData.isNumber()"
+      }
+    }
+  }
+}

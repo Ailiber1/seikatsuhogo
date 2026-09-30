@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>暇人スキャン</title>
+<meta name="description" content="ふだんの1日の時間を入れると、国の平均（総務省の調査）と、これまで試したリスナーの平均とくらべて、あなたが暇人かどうかを判定します">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない（このページだけ近未来風の演出を足している） */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+  --cyan:#1590b3; --cyan-soft:#e8f6fa; --glow:rgba(21,144,179,.28);
+  --c-sleep:#6b7fd7; --c-work:#2b5d8f; --c-house:#2a9d8f; --c-meal:#e0a13a; --c-free:#1ab0d8; --c-other:#b7c0ca;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:16px; line-height:1.75; -webkit-text-size-adjust:100%;
+  background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
+  background-size:32px 32px; background-position:-1px -1px}
+.num{font-variant-numeric:tabular-nums; font-feature-settings:"tnum"}
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px; position:relative}
+.tag{display:inline-flex; align-items:center; gap:7px; font-size:11.5px; letter-spacing:.18em; font-weight:700; color:var(--cyan); margin-bottom:6px}
+.tag i{width:8px; height:8px; border-radius:50%; background:var(--cyan); box-shadow:0 0 0 0 var(--glow); animation:ping 1.8s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 var(--glow)} 70%{box-shadow:0 0 0 9px rgba(21,144,179,0)} 100%{box-shadow:0 0 0 0 rgba(21,144,179,0)}}
+h1{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif; font-size:clamp(28px,6.4vw,40px); line-height:1.3; margin:0 0 8px; color:var(--navy); text-wrap:balance}
+h1 .hl{background:linear-gradient(90deg,var(--navy),var(--cyan)); -webkit-background-clip:text; background-clip:text; color:transparent}
+.lead{color:var(--sub); font-size:15px; margin:0 0 16px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:18px; font-size:15px}
+.for-who b{color:var(--navy)} .for-who ul{margin:4px 0 0; padding-left:1.2em}
+.card{position:relative; background:rgba(255,255,255,.86); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  border:1.5px solid var(--line); border-radius:16px; padding:16px; margin-bottom:14px; transition:border-color .3s, box-shadow .3s, opacity .3s}
+.card.on{border-color:var(--cyan); box-shadow:0 0 0 4px var(--cyan-soft), 0 8px 24px -14px var(--glow)}
+.card.off{opacity:.5}
+.card h2{font-size:16.5px; margin:0 0 10px; display:flex; gap:9px; align-items:center}
+.card h2 .n{flex:none; width:28px; height:28px; border-radius:8px; border:1.5px solid var(--cyan); color:var(--cyan); display:grid; place-items:center; font-size:13px; font-weight:800}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+@media (max-width:480px){ .grid2{grid-template-columns:1fr} }
+label.f{display:block; font-size:13px; font-weight:700; color:var(--sub); margin-bottom:3px}
+select{font:inherit; font-size:16px; width:100%; min-height:46px; padding:8px 10px; border:1.5px solid var(--line); border-radius:10px; background:#fff; color:var(--ink)}
+select:focus{outline:3px solid var(--cyan-soft); border-color:var(--cyan)}
+select:disabled{background:var(--line-soft); color:var(--sub)}
+.hint{font-size:13px; color:var(--sub); margin:8px 0 0}
+/* 時間のスライダー */
+.dial{display:grid; grid-template-columns:132px 1fr; gap:16px; align-items:center}
+@media (max-width:480px){ .dial{grid-template-columns:1fr} .dial .ringbox{margin:0 auto} }
+.ringbox{position:relative; width:132px; height:132px}
+.ringbox .mid{position:absolute; inset:0; display:grid; place-items:center; text-align:center; line-height:1.2}
+.ringbox .mid b{display:block; font-size:24px; color:var(--navy)}
+.ringbox .mid small{font-size:11.5px; color:var(--sub)}
+.sl{margin:0 0 8px}
+.sl .top{display:flex; justify-content:space-between; align-items:baseline; font-size:14.5px; font-weight:700}
+.sl .top .dot{display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:6px; vertical-align:0}
+.sl .top .v{font-size:17px; color:var(--navy)}
+.sl small{display:block; font-size:12px; color:var(--sub); font-weight:400; margin-top:-2px}
+input[type=range]{width:100%; height:34px; margin:0; background:transparent; -webkit-appearance:none; appearance:none; cursor:pointer}
+input[type=range]:disabled{cursor:default; opacity:.5}
+input[type=range]::-webkit-slider-runnable-track{height:6px; border-radius:6px; background:linear-gradient(90deg,var(--c) var(--p,0%),var(--line) var(--p,0%))}
+input[type=range]::-moz-range-track{height:6px; border-radius:6px; background:var(--line)}
+input[type=range]::-moz-range-progress{height:6px; border-radius:6px; background:var(--c)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none; width:24px; height:24px; margin-top:-9px; border-radius:50%; background:#fff; border:3px solid var(--c); box-shadow:0 2px 8px -2px var(--glow)}
+input[type=range]::-moz-range-thumb{width:18px; height:18px; border-radius:50%; background:#fff; border:3px solid var(--c)}
+.rest{font-size:14px; margin-top:4px; padding:8px 12px; border-radius:10px; background:var(--panel); border:1px solid var(--line)}
+.rest.over{background:var(--ng-bg); border-color:var(--ng); color:var(--ng); font-weight:700}
+.go{display:block; width:100%; margin:6px 0 4px; min-height:58px; font:inherit; font-size:18px; font-weight:800; letter-spacing:.08em; color:#fff; border:none; border-radius:14px; cursor:pointer;
+  background:linear-gradient(100deg,var(--navy),var(--cyan)); box-shadow:0 10px 26px -12px var(--glow); position:relative; overflow:hidden}
+.go::after{content:""; position:absolute; top:0; left:-60%; width:40%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent); transform:skewX(-20deg); animation:shine 2.6s infinite}
+@keyframes shine{to{left:130%}}
+.go:disabled{background:var(--line); color:var(--sub); box-shadow:none; cursor:default}
+.go:disabled::after{display:none}
+.privacy{font-size:12.5px; color:var(--sub); text-align:center; margin:4px 0 0}
+#result{margin-top:18px}
+.guide{border:2px dashed var(--line); border-radius:16px; padding:20px 16px; text-align:center; color:var(--sub); background:rgba(255,255,255,.8)}
+.guide b{color:var(--navy)}
+/* スキャン演出 */
+.scan{border:1.5px solid var(--cyan); border-radius:16px; padding:26px 16px; text-align:center; position:relative; overflow:hidden; background:#fff}
+.scan::before{content:""; position:absolute; left:0; right:0; height:40%; top:-40%; background:linear-gradient(180deg,transparent,var(--cyan-soft),rgba(21,144,179,.18)); animation:sweep 1.1s linear infinite}
+@keyframes sweep{to{top:100%}}
+.scan b{position:relative; color:var(--cyan); letter-spacing:.2em}
+.scan .bar{position:relative; height:4px; background:var(--line); border-radius:4px; margin:12px auto 0; max-width:260px; overflow:hidden}
+.scan .bar i{position:absolute; inset:0; width:0; background:linear-gradient(90deg,var(--navy),var(--cyan)); animation:fill 1.4s ease forwards}
+@keyframes fill{to{width:100%}}
+.res > *{animation:rise .5s ease both}
+.res > *:nth-child(2){animation-delay:.12s} .res > *:nth-child(3){animation-delay:.24s} .res > *:nth-child(4){animation-delay:.36s} .res > *:nth-child(5){animation-delay:.48s}
+@keyframes rise{from{opacity:0; transform:translateY(12px)} to{opacity:1; transform:none}}
+.judge{text-align:center; border:1.5px solid var(--cyan); border-radius:18px; padding:20px 16px 18px; background:linear-gradient(180deg,#fff,var(--cyan-soft)); position:relative; overflow:hidden; margin-bottom:14px}
+.judge .k{font-size:12px; letter-spacing:.2em; font-weight:700; color:var(--cyan)}
+.judge .who{font-size:16px; font-weight:700; margin-top:6px}
+.judge .label{font-family:"Hiragino Mincho ProN","Yu Mincho",serif; font-size:clamp(34px,10vw,54px); font-weight:800; line-height:1.25; margin:2px 0 6px; color:var(--navy)}
+.judge .label em{font-style:normal; background:linear-gradient(90deg,var(--navy),var(--cyan)); -webkit-background-clip:text; background-clip:text; color:transparent}
+.judge .one{font-size:15.5px; margin:0 auto; max-width:30em}
+.judge .diff{display:inline-block; margin-top:10px; font-size:14px; font-weight:700; padding:5px 12px; border-radius:99px; background:#fff; border:1px solid var(--line)}
+.judge .diff b{font-size:18px; color:var(--cyan)}
+.box{background:rgba(255,255,255,.9); border:1.5px solid var(--line); border-radius:16px; padding:14px 16px; margin-bottom:14px}
+.box h3{font-size:15.5px; margin:0 0 8px; color:var(--navy); display:flex; justify-content:space-between; align-items:baseline; gap:8px; flex-wrap:wrap}
+.box h3 small{font-size:12px; color:var(--sub); font-weight:400}
+.rings{display:grid; grid-template-columns:1fr 1fr; gap:10px; text-align:center}
+.rings figure{margin:0}
+.rings svg{width:100%; max-width:170px; height:auto}
+.rings figcaption{font-size:13.5px; font-weight:700; margin-top:4px}
+.rings figcaption small{display:block; font-weight:400; color:var(--sub); font-size:12px}
+.legend{display:flex; flex-wrap:wrap; gap:6px 12px; justify-content:center; font-size:12.5px; color:var(--sub); margin-top:8px}
+.legend span::before{content:""; display:inline-block; width:10px; height:10px; border-radius:3px; background:var(--c); margin-right:4px; vertical-align:-1px}
+table.cmp{width:100%; border-collapse:collapse; font-size:14.5px}
+table.cmp th,table.cmp td{padding:7px 4px; border-bottom:1px solid var(--line-soft); text-align:right; white-space:nowrap}
+table.cmp th:first-child,table.cmp td:first-child{text-align:left; white-space:normal}
+table.cmp thead th{font-size:12px; color:var(--sub); font-weight:700}
+table.cmp td.me{font-weight:800}
+table.cmp td.up{color:var(--cyan); font-weight:700} table.cmp td.dn{color:var(--ng); font-weight:700}
+table.cmp tr.free td{background:var(--cyan-soft)}
+.bars .row{display:grid; grid-template-columns:7.2em 1fr 3.4em; gap:8px; align-items:center; font-size:13.5px; margin:6px 0}
+.bars .row .t{height:14px; border-radius:7px; background:var(--line-soft); overflow:hidden}
+.bars .row .t i{display:block; height:100%; width:0; border-radius:7px; background:linear-gradient(90deg,var(--navy),var(--cyan)); transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+.bars .row.mine{font-weight:800} .bars .row.mine .t{box-shadow:0 0 0 2px var(--cyan)}
+.bars .row b{text-align:right}
+.lis{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:6px 0 10px}
+@media (max-width:480px){ .lis{grid-template-columns:1fr} }
+.lis div{border:1px solid var(--line); border-radius:12px; padding:10px; text-align:center; background:#fff}
+.lis div small{display:block; font-size:12px; color:var(--sub)}
+.lis div b{font-size:22px; color:var(--navy)}
+.lis div.me b{color:var(--cyan)}
+.note{font-size:12.5px; color:var(--sub); margin:6px 0 0}
+.reset{font:inherit; font-size:14px; font-weight:700; color:var(--navy); background:var(--navy-soft); border:none; border-radius:9px; padding:8px 14px; min-height:42px; cursor:pointer}
+.foot{margin-top:24px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px; background:#fff}
+.foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ *{animation:none!important; transition:none!important} }
+</style>
+<script>
+/* URLの後ろの ?… は付けず、ページの場所だけで数える（同じページが別々に数えられないように） */
+window.goatcounter = {path: function () { return location.pathname; }};
+</script>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
+</head>
+<body>
+<main class="wrap">
+  <div class="tag"><i></i>DAILY LIFE SCAN</div>
+  <h1><span class="hl">暇人スキャン</span><br>あなたの1日は、国の平均より暇？</h1>
+  <p class="lead">ふだんの平日の時間を入れると、<b>国の平均（総務省の調査）</b>と<b>これまで試したリスナー</b>の両方とくらべて、あなたが暇人かどうかを判定します。</p>
+  <div class="for-who"><b>このツールは、こういう方へ</b>
+    <ul><li>「生活保護の人は一日中ヒマ」と思っている方</li>
+    <li>生活保護を受けたら、毎日どう過ごすことになるのか気になる方</li>
+    <li>自分の1日は、ほかの人とくらべてどうなのか知りたい方</li></ul></div>
+
+  <section class="card" id="c1">
+    <h2><span class="n">01</span>あなたについて</h2>
+    <div class="grid2">
+      <div><label class="f" for="sex">性別</label>
+        <select id="sex"><option value="">選んでください</option><option value="m">男性</option><option value="f">女性</option><option value="x">答えない</option></select></div>
+      <div><label class="f" for="age">年代</label>
+        <select id="age" disabled><option value="">選んでください</option></select></div>
+      <div><label class="f" for="work">ふだん、働いていますか</label>
+        <select id="work" disabled><option value="">選んでください</option><option value="yes">働いている（パート・在宅も）</option><option value="no">働いていない</option></select></div>
+      <div><label class="f" for="st">生活保護は</label>
+        <select id="st" disabled><option value="">選んでください</option><option value="j">受けている</option><option value="k">受けるか検討中</option><option value="n">受けていない</option><option value="x">答えない</option></select></div>
+    </div>
+    <p class="hint">「働いている」は、国の調査と同じく、ふだん収入のある仕事をしていることです（就労支援の作業所なども含みます）。</p>
+  </section>
+
+  <section class="card off" id="c2">
+    <h2><span class="n">02</span>ふだんの平日の1日</h2>
+    <div class="dial">
+      <div class="ringbox"><svg id="liveRing" viewBox="0 0 132 132" aria-hidden="true"></svg>
+        <div class="mid"><div><b class="num" id="sumV">0:00</b><small>/ 24:00</small></div></div></div>
+      <div id="sliders"></div>
+    </div>
+    <div class="rest" id="rest" aria-live="polite"></div>
+    <p class="hint">30分きざみです。だいたいで大丈夫です。残りは自動で「その他（移動・通院など）」になります。</p>
+  </section>
+
+  <button class="go" id="go" type="button" disabled>スキャンする</button>
+  <p class="privacy">名前・住んでいる場所・IPアドレスなど、あなたを特定できる情報は集めていません。</p>
+
+  <div id="result" aria-live="polite"></div>
+
+  <div class="foot">
+    <p><b>国の平均</b>は、総務省「令和3年社会生活基本調査」（2021年10月に全国約19万人を調査、国の最新の結果）の、15歳以上の<b>平日</b>の平均時間です。あなたと同じ性別・年代・働いているかどうかの人の平均とくらべています（性別を答えない場合は男女合わせた平均）。20種類の行動を、このツールの6つの項目にまとめています（自由な時間＝テレビ・ラジオ・新聞・雑誌／休養・くつろぎ／学習・自己啓発／趣味・娯楽／スポーツ／ボランティア／交際・付き合い。その他＝移動／受診・療養／その他）。</p>
+    <p><b>判定</b>は、自由な時間が国の平均より3時間以上多いと「かなりの暇人」、1時間以上多いと「暇人」、前後1時間以内は「ふつう」、1時間以上少ないと「忙しい人」、3時間以上少ないと「働きすぎ」です。</p>
+    <p><b>リスナーの平均</b>は、このツールで「スキャンする」を押した人の結果です。押したときに、選んだ内容（性別・年代・働いているか・生活保護・6項目の時間）だけを名前なしで保存し、集計に使っています。名前・住んでいる場所・IPアドレス・端末の情報は保存していません。同じ端末からは1日1回だけ保存します。誰でも試せるので、参考の値として見てください。ページが開かれた回数と結果が出た回数も、Cookieを使わず、個人を特定しない方法で数えています。</p>
+    <p>根拠: <a href="https://www.stat.go.jp/data/shakai/2021/kekka.html" target="_blank" rel="noopener">総務省統計局「令和3年社会生活基本調査の結果」</a> ／ <a href="https://www.e-stat.go.jp/stat-search/file-download?statInfId=000032223892&amp;fileKind=0" target="_blank" rel="noopener">e-Stat 第7-1表「曜日，男女，配偶関係，ふだんの就業状態，年齢，行動の種類別総平均時間」</a></p>
+    <p>確認日: 2026年9月30日 ／ 次の調査（2026年10月実施）の結果が出たら更新します。個人が作ったもので、行政の公式ツールではありません。</p>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+const JIKAN = {"ages":{"00":"総数","01":"15～19歳","02":"20～24歳","03":"25～29歳","04":"30～34歳","05":"35～39歳","06":"40～44歳","07":"45～49歳","08":"50～54歳","09":"55～59歳","10":"60～64歳","11":"65～69歳","12":"70～74歳","13":"75～79歳","14":"80～84歳","15":"85歳以上"},"data":{"all|yes|01":[462,476,17,172,289,25,1034],"all|yes|02":[480,477,26,165,265,28,3367],"all|yes|03":[464,523,56,156,217,23,3659],"all|yes|04":[463,508,103,151,190,25,4577],"all|yes|05":[453,508,118,157,179,27,6292],"all|yes|06":[440,512,112,163,182,32,7554],"all|yes|07":[430,513,107,164,197,28,9171],"all|yes|08":[424,508,100,172,206,29,8690],"all|yes|09":[422,500,100,174,212,31,7631],"all|yes|10":[430,446,103,185,244,34,7321],"all|yes|11":[442,377,104,189,288,38,5865],"all|yes|12":[459,314,113,200,312,42,5029],"all|yes|13":[482,286,104,205,323,38,2000],"all|yes|14":[508,264,101,213,319,34,889],"all|yes|15":[535,212,64,237,351,41,386],"all|no|01":[450,512,10,157,285,25,4966],"all|no|02":[507,272,51,164,392,55,1166],"all|no|03":[506,99,180,176,408,70,597],"all|no|04":[493,18,361,171,342,55,749],"all|no|05":[474,15,372,175,353,50,882],"all|no|06":[466,13,350,185,347,80,1003],"all|no|07":[451,13,323,188,392,74,1114],"all|no|08":[442,10,318,201,400,70,1189],"all|no|09":[448,6,305,204,414,63,1366],"all|no|10":[448,9,264,200,451,68,2402],"all|no|11":[458,5,238,202,474,65,4974],"all|no|12":[477,6,212,208,480,58,7835],"all|no|13":[492,7,190,215,476,61,6272],"all|no|14":[518,7,164,219,471,62,5330],"all|no|15":[559,4,109,222,474,71,5421],"m|yes|01":[464,468,12,159,313,25,494],"m|yes|02":[481,488,15,150,286,21,1651],"m|yes|03":[455,572,24,139,227,22,1835],"m|yes|04":[460,580,44,138,194,22,2527],"m|yes|05":[452,592,39,146,192,19,3289],"m|yes|06":[443,588,37,151,192,30,4019],"m|yes|07":[440,599,28,152,198,23,4739],"m|yes|08":[435,585,27,161,205,26,4505],"m|yes|09":[431,584,28,167,202,29,3953],"m|yes|10":[437,523,27,180,241,31,4021],"m|yes|11":[451,427,34,186,305,37,3335],"m|yes|12":[470,363,42,196,327,42,2970],"m|yes|13":[489,319,43,203,351,34,1197],"m|yes|14":[513,271,49,210,360,38,585],"m|yes|15":[539,233,36,218,375,38,224],"m|no|01":[450,511,8,147,299,23,2626],"m|no|02":[506,267,23,151,444,48,619],"m|no|03":[500,141,38,167,517,76,211],"m|no|04":[525,44,68,152,558,91,162],"m|no|05":[496,31,50,195,616,51,203],"m|no|06":[489,16,69,196,533,137,227],"m|no|07":[485,28,114,172,543,98,282],"m|no|08":[486,37,87,196,538,95,237],"m|no|09":[509,5,110,205,545,68,256],"m|no|10":[467,19,108,203,564,80,632],"m|no|11":[477,6,99,195,589,73,1813],"m|no|12":[493,7,101,203,566,70,3092],"m|no|13":[507,8,91,202,564,67,2516],"m|no|14":[533,9,87,210,533,68,2171],"m|no|15":[566,5,76,217,516,60,1943],"f|yes|01":[460,481,22,185,268,24,540],"f|yes|02":[479,468,38,179,242,34,1716],"f|yes|03":[475,468,94,174,206,24,1824],"f|yes|04":[468,416,176,167,183,30,2050],"f|yes|05":[453,406,213,171,162,34,3003],"f|yes|06":[436,421,205,176,171,34,3535],"f|yes|07":[419,409,204,179,195,33,4432],"f|yes|08":[410,418,189,185,206,31,4185],"f|yes|09":[412,396,191,183,221,34,3678],"f|yes|10":[421,346,200,189,246,37,3300],"f|yes|11":[429,306,203,194,266,41,2530],"f|yes|12":[444,247,211,207,291,41,2059],"f|yes|13":[472,235,193,209,285,45,803],"f|yes|14":[502,249,184,221,259,27,304],"f|yes|15":[522,175,116,262,313,52,162],"f|no|01":[449,514,13,167,270,25,2340],"f|no|02":[508,278,83,180,325,66,547],"f|no|03":[513,71,282,181,324,69,386],"f|no|04":[484,11,441,177,282,46,587],"f|no|05":[466,9,485,169,261,51,679],"f|no|06":[459,12,429,181,295,65,776],"f|no|07":[440,9,387,193,345,66,832],"f|no|08":[429,3,378,202,365,64,952],"f|no|09":[435,6,351,204,383,60,1110],"f|no|10":[440,4,326,198,410,61,1770],"f|no|11":[447,3,319,206,404,60,3161],"f|no|12":[466,5,286,211,422,50,4743],"f|no|13":[482,5,255,223,419,56,3756],"f|no|14":[509,5,212,224,432,58,3159],"f|no|15":[556,3,127,224,454,77,3478]}};
+const DB = 'https://seikatsuhogo-default-rtdb.asia-southeast1.firebasedatabase.app';
+
+// CALC-START
+const KEYS = ['sleep','work','house','meal','free','other'];
+const NAMES = {sleep:'睡眠', work:'仕事・学校', house:'家事', meal:'食事・身支度', free:'自由な時間', other:'その他'};
+// 同じ性別・年代・働いているかの国の平均（平日）。性別を答えない人は男女合わせた平均
+function national(sex, age, work) {
+  const r = JIKAN.data[[sex === 'x' ? 'all' : sex, work, age].join('|')];
+  const o = {}; KEYS.forEach((k, i) => o[k] = r[i]); o.n = r[6]; return o;
+}
+// 自由な時間の差（分）で判定する
+function judge(diff) {
+  if (diff >= 180) return {id:4, label:'かなりの暇人', one:'国の平均より自由な時間がたっぷり。その時間は、あなただけの財産です。'};
+  if (diff >= 60)  return {id:3, label:'暇人', one:'平均より少しゆとりあり。休めているなら、それで十分です。'};
+  if (diff > -60)  return {id:2, label:'ふつう', one:'国の平均とほぼ同じ。暇でも忙しくもない、ど真ん中です。'};
+  if (diff > -180) return {id:1, label:'忙しい人', one:'平均より自由な時間が少なめ。毎日おつかれさまです。'};
+  return {id:0, label:'働きすぎ', one:'自由な時間が平均よりかなり少ない状態です。少し休んでも大丈夫です。'};
+}
+function scan(me) {
+  const nat = national(me.s, me.a, me.w);
+  const diff = me.free - nat.free;
+  let big = null;
+  KEYS.forEach(k => { const d = me[k] - nat[k]; if (!big || Math.abs(d) > Math.abs(big.d)) big = {k, d}; });
+  return {nat, diff, big, j: judge(diff)};
+}
+// CALC-END
+
+const $ = id => document.getElementById(id);
+const hm = m => { const s = m < 0 ? '−' : ''; m = Math.abs(Math.round(m)); return s + Math.floor(m / 60) + ':' + String(m % 60).padStart(2, '0'); };
+const hmJ = m => { const a = Math.abs(Math.round(m)), h = Math.floor(a / 60), mm = a % 60; return (h ? h + '時間' : '') + (mm ? mm + '分' : (h ? '' : '0分')); };
+const SL = [
+  {k:'sleep', hint:'昼寝も入れる'},
+  {k:'work', hint:'通勤・在宅ワーク・作業所・学校'},
+  {k:'house', hint:'料理・掃除・洗濯・買い物・育児・介護'},
+  {k:'meal', hint:'食べる時間・お風呂・着替え・トイレ'},
+  {k:'free', hint:'テレビ・スマホ・ゲーム・休む・趣味・運動・人と会う'}
+];
+const val = {sleep:0, work:0, house:0, meal:0, free:0};
+const sel = {s: $('sex'), a: $('age'), w: $('work'), st: $('st')};
+Object.entries(JIKAN.ages).forEach(([k, v]) => { if (k !== '00') sel.a.insertAdjacentHTML('beforeend', `<option value="${k}">${v}</option>`); });
+
+$('sliders').innerHTML = SL.map(o => `<div class="sl"><div class="top"><span><span class="dot" style="background:var(--c-${o.k})"></span>${NAMES[o.k]}</span><span class="v num" id="v-${o.k}">0:00</span></div>
+  <small>${o.hint}</small><input type="range" id="r-${o.k}" min="0" max="24" step="0.5" value="0" disabled aria-label="${NAMES[o.k]}（時間）" style="--c:var(--c-${o.k})"></div>`).join('');
+
+function ringSVG(parts, size, stroke, animate) {
+  const c = size / 2, r = c - stroke / 2 - 2, L = 2 * Math.PI * r;
+  let off = 0, s = `<circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="var(--line-soft)" stroke-width="${stroke}"/>`;
+  parts.forEach(p => {
+    const len = L * p.v / 1440; if (len <= 0) return;
+    s += `<circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="var(--c-${p.k})" stroke-width="${stroke}" stroke-dasharray="${animate ? '0 ' + L : len + ' ' + (L - len)}" data-len="${len}" data-l="${L}" stroke-dashoffset="${-off}" transform="rotate(-90 ${c} ${c})" style="transition:stroke-dasharray 1s cubic-bezier(.2,.8,.2,1)"/>`;
+    off += len;
+  });
+  return s;
+}
+function grow(svg) { requestAnimationFrame(() => requestAnimationFrame(() => svg.querySelectorAll('circle[data-len]').forEach(ci => ci.setAttribute('stroke-dasharray', ci.dataset.len + ' ' + (ci.dataset.l - ci.dataset.len))))); }
+
+function sum() { return SL.reduce((t, o) => t + val[o.k], 0); }
+function paintLive() {
+  const s = sum(), other = 1440 - s;
+  $('sumV').textContent = hm(s);
+  $('liveRing').innerHTML = ringSVG(SL.map(o => ({k:o.k, v:val[o.k]})), 132, 14, false);
+  const r = $('rest');
+  r.classList.toggle('over', other < 0);
+  r.innerHTML = other < 0 ? `24時間を <b>${hmJ(-other)}</b> こえています。どこかを減らしてください。`
+    : `その他（移動・通院など）：<b class="num">${hm(other)}</b>`;
+  SL.forEach(o => { const el = $('r-' + o.k); el.style.setProperty('--p', (val[o.k] / 1440 * 100) + '%'); $('v-' + o.k).textContent = hm(val[o.k]); });
+}
+function refresh() {
+  sel.a.disabled = !sel.s.value;
+  sel.w.disabled = !sel.a.value;
+  sel.st.disabled = !sel.w.value;
+  const ready1 = !!(sel.s.value && sel.a.value && sel.w.value && sel.st.value);
+  $('c1').classList.toggle('on', !ready1);
+  $('c2').classList.toggle('off', !ready1);
+  $('c2').classList.toggle('on', ready1);
+  SL.forEach(o => $('r-' + o.k).disabled = !ready1);
+  const s = sum();
+  $('go').disabled = !(ready1 && s > 0 && s <= 1440);
+  paintLive();
+}
+SL.forEach(o => $('r-' + o.k).addEventListener('input', e => { val[o.k] = Math.round(+e.target.value * 60); refresh(); }));
+Object.values(sel).forEach(el => el.addEventListener('change', refresh));
+
+function guide() {
+  $('result').innerHTML = `<div class="guide">上の <b>01 と 02</b> を入れて「スキャンする」を押すと、ここに<br><b>あなたが暇人かどうかの判定</b>と、<b>国の平均・リスナーの平均とのくらべ</b>が出ます。</div>`;
+}
+
+function me() {
+  const m = {s: sel.s.value, a: sel.a.value, w: sel.w.value, st: sel.st.value};
+  SL.forEach(o => m[o.k] = val[o.k]); m.other = 1440 - sum(); return m;
+}
+
+// ── リスナーのデータ ──
+function rid() { const a = new Uint8Array(16); crypto.getRandomValues(a); return Array.from(a, b => 'abcdefghijklmnopqrstuvwxyz0123456789'[b % 36]).join(''); }
+function today() { const d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+async function save(m) {
+  let last = null; try { last = localStorage.getItem('hima-saved'); } catch (e) {}
+  if (last === today()) return 'skip';
+  const rec = {s:m.s, a:m.a, w:m.w, st:m.st, sleep:m.sleep, work:m.work, house:m.house, meal:m.meal, free:m.free, other:m.other, t:{'.sv':'timestamp'}};
+  for (let i = 0; i < 4; i++) {
+    const res = await fetch(DB + '/jikan.json', {method:'PATCH', body: JSON.stringify({['r/' + rid()]: rec, last:{'.sv':'timestamp'}})}).catch(() => null);
+    if (res && res.ok) { try { localStorage.setItem('hima-saved', today()); } catch (e) {} return 'ok'; }
+    await new Promise(r => setTimeout(r, 700 + Math.random() * 900)); // ほかの人と同時に押したときは少し待ってやり直す
+  }
+  return 'fail';
+}
+async function loadAll() {
+  const res = await fetch(DB + '/jikan/r.json').catch(() => null);
+  if (!res || !res.ok) return null;
+  const d = await res.json(); return d ? Object.values(d) : [];
+}
+function avg(list) {
+  const o = {n: list.length}; KEYS.forEach(k => o[k] = list.length ? list.reduce((t, r) => t + r[k], 0) / list.length : 0); return o;
+}
+
+async function run() {
+  const m = me();
+  const r = scan(m);
+  if (window.gcUse) gcUse('暇人スキャン');
+  $('result').innerHTML = `<div class="scan"><b>SCANNING…</b><div class="bar"><i></i></div></div>`;
+  $('result').scrollIntoView({behavior:'smooth', block:'start'});
+  const saving = save(m).then(loadAll);
+  await new Promise(res => setTimeout(res, 1500));
+  const who = `${m.s === 'x' ? '' : (m.s === 'm' ? '男性・' : '女性・')}${JIKAN.ages[m.a]}・${m.w === 'yes' ? '働いている' : '働いていない'}人`;
+  const bigTxt = `特に <b>${NAMES[r.big.k]}</b> が、平均より <b>${hmJ(r.big.d)}${r.big.d >= 0 ? '長い' : '短い'}</b>`;
+  $('result').innerHTML = `<div class="res">
+    <div class="judge"><div class="k">RESULT</div>
+      <div class="who">今のあなたは</div>
+      <div class="label">「<em>${r.j.label}</em>」です</div>
+      <p class="one">${r.j.one}</p>
+      <div class="diff">自由な時間 <b class="num">${hm(m.free)}</b> ／ 国の平均 <b class="num">${hm(r.nat.free)}</b>（${r.diff >= 0 ? '+' : ''}${hm(r.diff)}）</div>
+      <p class="note" style="margin-top:10px">${bigTxt}</p></div>
+    <div class="box"><h3>1日の使い方をくらべる<small>国の平均：${who}</small></h3>
+      <div class="rings">
+        <figure><svg id="rMe" viewBox="0 0 170 170">${ringSVG(KEYS.map(k => ({k, v:m[k]})), 170, 22, true)}</svg><figcaption>あなた</figcaption></figure>
+        <figure><svg id="rNat" viewBox="0 0 170 170">${ringSVG(KEYS.map(k => ({k, v:r.nat[k]})), 170, 22, true)}</svg><figcaption>国の平均<small>${r.nat.n.toLocaleString()}人の調査</small></figcaption></figure>
+      </div>
+      <div class="legend">${KEYS.map(k => `<span style="--c:var(--c-${k})">${NAMES[k]}</span>`).join('')}</div>
+      <table class="cmp"><thead><tr><th></th><th>あなた</th><th>国の平均</th><th>差</th></tr></thead><tbody>
+        ${KEYS.map(k => { const d = m[k] - r.nat[k]; return `<tr class="${k === 'free' ? 'free' : ''}"><td>${NAMES[k]}</td><td class="me num">${hm(m[k])}</td><td class="num">${hm(r.nat[k])}</td><td class="num ${d >= 30 ? 'up' : d <= -30 ? 'dn' : ''}">${d >= 0 ? '+' : ''}${hm(d)}</td></tr>`; }).join('')}
+      </tbody></table></div>
+    <div class="box" id="lisBox"><h3>リスナーとくらべる<small>読み込み中…</small></h3></div>
+    <div style="text-align:center"><button class="reset" type="button" id="again">入れなおす</button></div>
+  </div>`;
+  grow($('rMe')); grow($('rNat'));
+  $('again').addEventListener('click', () => { window.scrollTo({top: $('c2').offsetTop - 10, behavior:'smooth'}); });
+  const all = await saving;
+  paintListeners(m, r, all);
+}
+
+function paintListeners(m, r, all) {
+  const box = $('lisBox');
+  if (!all) { box.innerHTML = `<h3>リスナーとくらべる</h3><p class="note">いまリスナーのデータを読み込めませんでした。少し時間をおいて、もう一度「スキャンする」を押してください。</p>`; return; }
+  const ST = {j:'生活保護を受けている人', k:'検討中の人', n:'受けていない人'};
+  const groups = [{t:'リスナー全体', list:all}];
+  if (m.st !== 'j') groups.push({t:ST.j, list:all.filter(x => x.st === 'j')});
+  if (ST[m.st]) groups.push({t:'あなたと同じ「' + ST[m.st].replace('人', '') + '」', list:all.filter(x => x.st === m.st)});
+  const cells = groups.map(g => { const a = avg(g.list); return `<div><small>${g.t}（${g.list.length}人）</small><b class="num">${g.list.length ? hm(a.free) : '—'}</b></div>`; }).join('');
+  // リスナーひとりひとりを、その人と同じ区分の国の平均とくらべて判定した割合
+  const cnt = [0, 0, 0, 0, 0];
+  all.forEach(x => { try { cnt[scan(x).j.id]++; } catch (e) {} });
+  const tot = cnt.reduce((a, b) => a + b, 0) || 1;
+  const labels = ['働きすぎ', '忙しい人', 'ふつう', '暇人', 'かなりの暇人'];
+  box.innerHTML = `<h3>リスナーとくらべる<small>これまで試した ${all.length.toLocaleString()} 人</small></h3>
+    <p class="note" style="margin:0 0 4px">自由な時間の平均（あなたは <b class="num">${hm(m.free)}</b>）</p>
+    <div class="lis">${cells}</div>
+    <p class="note" style="margin:0 0 2px">リスナーの判定の割合</p>
+    <div class="bars">${[4, 3, 2, 1, 0].map(i => `<div class="row ${i === r.j.id ? 'mine' : ''}"><span>${labels[i]}${i === r.j.id ? '（あなた）' : ''}</span><span class="t"><i data-w="${cnt[i] / tot * 100}"></i></span><b class="num">${Math.round(cnt[i] / tot * 100)}%</b></div>`).join('')}</div>
+    <p class="note">名前なしで集めた、このツールを試した人の結果です。人数が少ないうちは、数字が大きく動きます。</p>`;
+  requestAnimationFrame(() => requestAnimationFrame(() => box.querySelectorAll('.bars i').forEach(i => i.style.width = i.dataset.w + '%')));
+}
+
+$('go').addEventListener('click', run);
+guide();
+refresh();
+</script>
+</body>
+</html>

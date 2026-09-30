@@ -25,6 +25,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `tokurei-setsumei.html` | 解説 | 生活保護費が10月から上がる。上がらない人もいる理由 | [/tokurei-setsumei.html](https://ailiber1.github.io/seikatsuhogo/tokurei-setsumei.html) |
 | `hogohi.html` | ツール | 保護費しらべ（市区町村・人数・年齢から、保護費が毎月いくらか。生活扶助＋住宅扶助の上限） | [/hogohi.html](https://ailiber1.github.io/seikatsuhogo/hogohi.html) |
 | `kyuryo.html` | ツール | 給料いくら残るしらべ（働いた給料・臨時収入のうち、手元に残る額と保護費から差し引かれる額） | [/kyuryo.html](https://ailiber1.github.io/seikatsuhogo/kyuryo.html) |
+| `hima.html` | ツール | 暇人スキャン（ふだんの1日を国の平均・リスナーの平均とくらべて、暇人かどうか判定）。**リスナーの結果を名前なしで保存する唯一のツール**（下の「リスナーの結果の保存」） | [/hima.html](https://ailiber1.github.io/seikatsuhogo/hima.html) |
+| `database.rules.json` / `firebase.json` / `.firebaserc` | 設定 | 暇人スキャンの保存先（Firebase Realtime Database）の書き込みルール | — |
 | `data/` | データ | ページに埋め込む元データ（JSON） | — |
 | `scripts/` | スクリプト | 公的資料からデータを作り、ページを生成する | — |
 
@@ -38,6 +40,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `ages.json` | 経過的加算の年齢区分 | 同上 |
 | `jutaku_limit.json` | 住宅扶助（家賃）の上限。都道府県×1〜3級地と指定都市・中核市、1人〜7人以上。公式資料との照合結果も入れてある | 平成27年4月14日 社援発0414第9号の別表（写し `jutaku_limit_2015_source.pdf`）。厚労省・埼玉県・札幌市の公式の数字と照合 |
 | `kiso_kojo.json` | 勤労収入の基礎控除額表（1人目・2人目以降）、新規就労控除・20歳未満控除・臨時収入の扱い | 厚労省「生活保護法による保護の実施要領について」（次官通知）別表（法令等データベースの画像から書き写し） |
+| `jikan_r3.json` | 1日の生活時間の平均（曜日×男女×働いているか×5歳刻みの年齢）。20種類の行動を6項目にまとめたもの | 総務省「令和3年社会生活基本調査」第7-1表（写し `shakai2021_t7-1_source.xlsx`） |
 | `kijun_r8.json` | 生活扶助の第1類・第2類・逓減率・特例加算と、照合用のモデル世帯9類型 | 厚労省「生活扶助基準額の算出方法（令和8年4月）」＋第55回生活保護基準部会 資料4 |
 
 ## scripts/ の中身
@@ -53,6 +56,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `verify_kyuryo.py` | `kyuryo.html` の計算式を node で動かし、基礎控除額表の全区分・表の外の決まり・計算例と一致するか確かめる |
 | `extract_jutaku_limit.py` | 住宅扶助の上限の表をPDFから読み取り、公式の数字と照合して `data/jutaku_limit.json` を作る |
 | `gen_hogohi_tool.py` | 級地・経過的加算・基準額・住宅扶助の上限を `hogohi.template.html` に埋め込んで `hogohi.html` を生成する |
+| `extract_jikan.py` | 社会生活基本調査の表から `data/jikan_r3.json` を作る（全区分の合計が24時間になるか確かめる） |
+| `gen_hima_tool.py` | `data/jikan_r3.json` を `hima.template.html` に埋め込んで `hima.html` を生成する |
 | `verify_hogohi.py` | `hogohi.html` の計算式を node で動かし、資料4のモデル世帯54通りと1円単位で一致するか確かめる |
 
 ---
@@ -138,6 +143,13 @@ https://ailiber1.github.io/seikatsuhogo/◯◯.html
 - 注意書きの「どこにも送信していません」の後に「ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。」を入れる
 - 自分の利用を数えないようにするには、使うブラウザごとに一度だけ https://ailiber1.github.io/seikatsuhogo/#toggle-goatcounter を開く
 - 読み取り用の鍵はリポジトリに入れない（Mac のキーチェーン `goatcounter-liber` にだけ保存）
+
+### リスナーの結果の保存（暇人スキャンだけ・2026年9月30日にユーザーが決定）
+- 「ほかのリスナーとくらべる」ために、スキャンした内容を**名前なしで**保存する。保存するのは 性別・年代・働いているか・生活保護（受けている/検討中/受けていない/答えない）・6項目の時間 と保存時刻だけ。名前・住所・都道府県・IPアドレス・端末の情報は保存しない
+- 保存先: Firebase Realtime Database（プロジェクト `seikatsuhogo`、無料のSparkプラン・課金なし）`/jikan/r`
+- ルール（`database.rules.json`）: 新しい記録の追加だけ可（書き換え・削除は不可）、項目と値の範囲を検査、6項目の合計がちょうど1440分、全体で1秒に1件まで。記録の一覧は誰でも読める（集計をブラウザで計算するため）
+- ルールを変えたら `firebase deploy --only database`。テストで書いた記録は `firebase database:remove /jikan/r/<id>` で消す
+- ほかのツールは今までどおり「入力は外部に送信しない」
 
 ### 事実の扱い
 - 数字と条件は**公的な一次資料**（厚労省・総務省・法令）にあたる

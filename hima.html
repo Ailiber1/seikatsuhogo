@@ -298,7 +298,7 @@ function refresh() {
   if (ready1 && !touched) preset();
   const s = sum(), other = 1440 - s;
   $('go').disabled = !(ready1 && touched && other >= 0 && other <= GAP);
-  const msg = !ready1 ? '' : !touched ? '違うところを動かしてください'
+  const msg = !ready1 ? '' : !touched ? '上のスライダーを、あなたの1日に合わせてください'
     : other > GAP ? `あと${hmJ(other)} 空いています。どれかを右に動かして埋めてください`
     : other < 0 ? `${hmJ(-other)} 多すぎます。どれかを左に動かしてください` : '';
   $('go').textContent = msg || 'スキャンする';

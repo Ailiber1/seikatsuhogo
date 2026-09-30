@@ -173,7 +173,7 @@ table.cmp tr.free td{background:var(--cyan-soft)}
       <div id="sliders"></div>
     </div>
     <div class="rest" id="rest" aria-live="polite"></div>
-    <p class="hint">30分きざみです。だいたいで大丈夫です。残りは自動で「その他（移動・通院など）」になります。</p>
+    <p class="hint"><b>最初は、あなたと同じ年代・働き方の人の平均が入っています。</b>違うところだけ動かしてください。だいたいで大丈夫です（30分きざみ。残りは自動で「その他」）。</p>
   </section>
 
   <button class="go" id="go" type="button" disabled>スキャンする</button>
@@ -270,11 +270,22 @@ function refresh() {
   $('c2').classList.toggle('off', !ready1);
   $('c2').classList.toggle('on', ready1);
   SL.forEach(o => $('r-' + o.k).disabled = !ready1);
+  if (ready1 && !touched) preset();
   const s = sum();
-  $('go').disabled = !(ready1 && s > 0 && s <= 1440);
+  $('go').disabled = !(ready1 && touched && s > 0 && s <= 1440);
+  $('go').textContent = ready1 && !touched ? '違うところを動かしてください' : 'スキャンする';
   paintLive();
 }
-SL.forEach(o => $('r-' + o.k).addEventListener('input', e => { val[o.k] = Math.round(+e.target.value * 60); refresh(); }));
+// 01を選んだら、同じ性別・年代・働き方の国の平均を最初から入れておく（違うところだけ動かせば済むように）。
+// 平均のまま保存されないよう、どれか1本を動かすまでスキャンできない
+let touched = false;
+function preset() {
+  const nat = national(sel.s.value, sel.a.value, sel.w.value);
+  SL.forEach(o => val[o.k] = Math.round(nat[o.k] / 30) * 30);
+  if (sum() > 1440) val.free -= sum() - 1440;
+  SL.forEach(o => $('r-' + o.k).value = val[o.k] / 60);
+}
+SL.forEach(o => $('r-' + o.k).addEventListener('input', e => { val[o.k] = Math.round(+e.target.value * 60); touched = true; refresh(); }));
 Object.values(sel).forEach(el => el.addEventListener('change', refresh));
 
 function guide() {

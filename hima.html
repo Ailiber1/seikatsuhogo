@@ -233,7 +233,7 @@ function judge(diff) {
   if (diff >= 60)  return {id:3, label:'暇人', one:'はい、ヒマです。でも、ヒマを持て余せるのは、ちゃんと休めている証拠。'};
   if (diff > -60)  return {id:2, label:'ふつう', one:'びっくりするほど平均。個性はゼロ。でも、それが一番長続きする。'};
   if (diff > -180) return {id:1, label:'忙しい人', one:'ちょっと働きすぎ。このままだと、体が先に止まります。今日は30分サボってください。'};
-  return {id:0, label:'働きすぎ', one:'完全にオーバーワーク。今すぐスマホを置いて寝ろ。……と国の平均が言っています。'};
+  return {id:0, label:'働きすぎ', one:'完全にオーバーワーク。休めないのは時間のせいじゃない。働き方を見直せ。……と国の平均が言っています。'};
 }
 function scan(me) {
   const nat = national(me.s, me.a, me.w);

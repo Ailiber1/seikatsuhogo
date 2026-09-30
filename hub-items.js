@@ -19,7 +19,7 @@ const ITEMS = [
   {kind:"tool", icon:"📮", title:"追加給付しらべ", desc:"最高裁判決の追加給付、対象か・申し出先は？", href:"tsuika.html", kw:"追加給付 最高裁 判決 申し出 差額 引き下げ", video:true},
   {kind:"tool", icon:"📞", title:"相談窓口をさがす", desc:"全国1,370か所の相談窓口。名前・電話・住所", href:"sodan.html", kw:"相談 窓口 電話 住所 自立相談支援 困りごと"},
   {kind:"tool", icon:"📈", title:"特例加算しらべ", desc:"10月からの引き上げで自分の世帯はいくら増える？", href:"tokurei.html", kw:"特例加算 10月 増額 引き上げ 1500 2500"},
-  {kind:"doc",  icon:"🕰️", title:"生活保護は暇じゃない", desc:"3年目の1日を国の平均とくらべた。仕事は会社員並み", href:"hima-setsumei.html", kw:"暇 ひま 1日 生活時間 過ごし方 怠け 睡眠 仕事 AI 平均", isNew:true, locked:true},
+  {kind:"doc",  icon:"🕰️", title:"生活保護は暇じゃない", desc:"3年目の1日を国の平均とくらべた。AIの作業時間も数えると？", href:"hima-setsumei.html", kw:"暇 ひま 1日 生活時間 過ごし方 怠け 睡眠 仕事 AI 平均", isNew:true, locked:true},
   {kind:"doc",  icon:"⏰", title:"追加給付、申し出ないと0円", desc:"やめた人は2027年7月31日までに申し出が必要", href:"tsuika-setsumei.html", kw:"追加給付 最高裁 期限 申し出 2027 手続き", video:true},
   {kind:"doc",  icon:"🌍", title:"ベーシックインカムは今", desc:"世界の実験・制度化・日本・AIとの関係", href:"basic-income.html", kw:"ベーシックインカム BI 世界 給付付き税額控除 マスク AI 実験"},
   {kind:"doc",  icon:"👨‍👩‍👧", title:"申請すると家族に通知は？", desc:"扶養照会が行かない3つの条件", href:"fuyo.html", kw:"扶養照会 家族 親族 通知 申請 バレる 連絡"},

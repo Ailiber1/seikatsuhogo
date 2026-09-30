@@ -134,7 +134,7 @@ window.gcUse = function (name) {
       <svg id="clock" viewBox="-26 -12 312 284" role="img" aria-label="1日の24時間の使い方を時計の形で表した図"></svg>
       <ul class="items" id="items"></ul>
     </div>
-    <p class="note">6時に起きて、朝はAIに最新ニュースを調べさせて発信。10〜12時は在宅ワーク。14時ごろから散歩とジョギング。19時から配信。寝るのは1〜2時で、昼寝はしません。</p>
+    <p class="note">6時に起きて、朝はAIに最新ニュースを調べさせて発信。10〜12時は在宅ワーク。14時ごろから散歩とジョギング。19時から配信。寝るのは1〜2時で、昼寝はしません。分け方は国の調査と同じです（料理は家事、食べる時間は食事）。</p>
   </section>
 
   <section class="ch fade">
@@ -205,7 +205,7 @@ const DAY = [
   [1200, 1320, 'work', '配信'], [1320, 1380, 'work', 'AIに動画編集の指示'], [1380, 1530, 'free', 'ネットフリックス']
 ];
 const NAMES = {sleep:'睡眠', work:'仕事', house:'家事', meal:'食事・身支度', free:'自由な時間', other:'その他'};
-const SUB = {sleep:'1:30〜6:00', work:'AI発信・在宅ワーク・配信など', house:'料理3回・買い物', meal:'食事・シャワー', free:'散歩・ジョギング・動画を見る'};
+const SUB = {sleep:'1:30〜6:00', work:'AI発信・在宅ワーク・配信など', house:'炊事（料理3回）・買い物', meal:'食事・入浴（シャワー）', free:'散歩・ジョギング・動画を見る'};
 const hm = m => Math.floor(m / 60) + ':' + String(m % 60).padStart(2, '0');
 
 const tot = {}; DAY.forEach(([a, b, k]) => tot[k] = (tot[k] || 0) + (b - a));

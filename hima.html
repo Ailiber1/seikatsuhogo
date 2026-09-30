@@ -206,7 +206,7 @@ window.gcUse = function (name) {
   <div class="foot">
     <p><b>国の平均</b>は、総務省「令和3年社会生活基本調査」（2021年10月に全国約19万人を調査、国の最新の結果）の、15歳以上の<b>平日</b>の平均時間です。あなたと同じ性別・年代・働いているかどうかの人の平均とくらべています（性別を答えない場合は男女合わせた平均）。20種類の行動を、このツールの6つの項目にまとめています（自由な時間＝テレビ・ラジオ・新聞・雑誌／休養・くつろぎ／学習・自己啓発／趣味・娯楽／スポーツ／ボランティア／交際・付き合い。その他＝移動／受診・療養／その他）。</p>
     <p><b>判定</b>は、自由な時間が国の平均より3時間以上多いと「かなりの暇人」、1時間以上多いと「暇人」、前後1時間以内は「ふつう」、1時間以上少ないと「忙しい人」、3時間以上少ないと「働きすぎ」です。</p>
-    <p><b>リスナーの平均</b>は、このツールで「スキャンする」を押した人の結果です。押したときに、選んだ内容（性別・年代・働いているか・生活保護・6項目の時間）だけを名前なしで保存し、集計に使っています。名前・住んでいる場所・IPアドレス・端末の情報は保存していません。同じ端末からは1日1回だけ保存します。誰でも試せるので、参考の値として見てください。ページが開かれた回数と結果が出た回数も、Cookieを使わず、個人を特定しない方法で数えています。</p>
+    <p><b>リスナーの平均</b>は、このツールで「スキャンする」を押した人の結果です。押したときに、選んだ内容（性別・年代・働いているか・生活保護・6項目の時間）だけを名前なしで保存し、集計に使っています。名前・住んでいる場所・IPアドレス・端末の情報は保存していません。同じブラウザからは最初の1回だけ保存します（2回目からは判定だけ出ます）。誰でも試せるので、参考の値として見てください。ページが開かれた回数と結果が出た回数も、Cookieを使わず、個人を特定しない方法で数えています。</p>
     <p>根拠: <a href="https://www.stat.go.jp/data/shakai/2021/kekka.html" target="_blank" rel="noopener">総務省統計局「令和3年社会生活基本調査の結果」</a> ／ <a href="https://www.e-stat.go.jp/stat-search/file-download?statInfId=000032223892&amp;fileKind=0" target="_blank" rel="noopener">e-Stat 第7-1表「曜日，男女，配偶関係，ふだんの就業状態，年齢，行動の種類別総平均時間」</a></p>
     <p>確認日: 2026年9月30日 ／ 2021年の調査が、公表されている中で最新です。次の調査（2026年10月20日基準）の結果は2027年9月ごろから公表される予定で、出たら更新します。個人が作ったもので、行政の公式ツールではありません。</p>
     <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
@@ -312,7 +312,7 @@ function rid() { const a = new Uint8Array(16); crypto.getRandomValues(a); return
 function today() { const d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
 async function save(m) {
   let last = null; try { last = localStorage.getItem('hima-saved'); } catch (e) {}
-  if (last === today()) return 'skip';
+  if (last) return 'skip'; // 同じブラウザからは最初の1回だけ保存する（1人＝1件に近づけるため）
   const rec = {s:m.s, a:m.a, w:m.w, st:m.st, sleep:m.sleep, work:m.work, house:m.house, meal:m.meal, free:m.free, other:m.other, t:{'.sv':'timestamp'}};
   for (let i = 0; i < 4; i++) {
     const res = await fetch(DB + '/jikan.json', {method:'PATCH', body: JSON.stringify({['r/' + rid()]: rec, last:{'.sv':'timestamp'}})}).catch(() => null);
@@ -416,7 +416,7 @@ function paintListeners(m, r, all, grew) {
     <div class="lis">${cells}</div>
     <p class="note" style="margin:0 0 2px">リスナーの判定の割合</p>
     <div class="bars">${[4, 3, 2, 1, 0].map(i => `<div class="row ${i === r.j.id ? 'mine' : ''}"><span>${labels[i]}${i === r.j.id ? '（あなた）' : ''}</span><span class="t"><i data-w="${cnt[i] / tot * 100}"></i></span><b class="num">${Math.round(cnt[i] / tot * 100)}%</b></div>`).join('')}</div>
-    <p class="note">名前なしで集めた、このツールを試した人の結果です。人数が少ないうちは、数字が大きく動きます。</p>`;
+    <p class="note">名前なしで集めた、このツールを試した人の結果です。同じブラウザからは最初の1回だけ数えています（2回目からは判定だけ出て、人数は増えません）。人数が少ないうちは、数字が大きく動きます。</p>`;
   const bars = [...box.querySelectorAll('.bars i')];
   bars.forEach((i, n) => { if (oldW[n]) i.style.width = oldW[n]; });
   requestAnimationFrame(() => requestAnimationFrame(() => bars.forEach(i => i.style.width = i.dataset.w + '%')));

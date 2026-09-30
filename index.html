@@ -107,15 +107,15 @@ let kind = "all";
 
 function render(){
   const w = q.value.trim().toLowerCase();
+  // locked:true のカードは中身を伏せ、押しても開かず、検索にも出さない（配信で紹介するまで）
   const list = ITEMS.filter(i => (kind === "all" || i.kind === kind) &&
-    (!w || (i.title + i.desc + (i.kw || "")).toLowerCase().includes(w)));
-  // locked:true のカードは押しても開かない（配信で紹介するまで鍵をかけておく）
+    (!w || (!i.locked && (i.title + i.desc + (i.kw || "")).toLowerCase().includes(w))));
   grid.innerHTML = list.map(i => `
     <${i.locked ? 'div' : 'a'} class="card ${esc(i.kind)}${i.locked ? ' locked' : ''}"${i.locked ? ' aria-disabled="true"' : ` href="${esc(i.href)}"`}>
       ${i.locked ? '<span class="lock">🔐 配信で公開</span>' : i.isNew ? '<span class="new">NEW</span>' : ''}
-      <div class="icon">${i.icon}</div>
+      <div class="icon">${i.locked ? '🔐' : i.icon}</div>
       <div class="tags"><span class="kind">${KIND[i.kind] || ""}</span>${i.video ? '<span class="vid">▶ 動画あり</span>' : ''}</div>
-      <h3>${esc(i.title)}</h3><p>${esc(i.desc)}</p>
+      <h3>${i.locked ? '？？？' : esc(i.title)}</h3><p>${i.locked ? '配信で公開します' : esc(i.desc)}</p>
     </${i.locked ? 'div' : 'a'}>`).join("") || '<div class="empty">見つかりませんでした。別のことばで試してください。</div>';
   count.textContent = list.length + " 件";
 }

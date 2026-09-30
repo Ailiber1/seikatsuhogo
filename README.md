@@ -26,6 +26,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `hogohi.html` | ツール | 保護費しらべ（市区町村・人数・年齢から、保護費が毎月いくらか。生活扶助＋住宅扶助の上限） | [/hogohi.html](https://ailiber1.github.io/seikatsuhogo/hogohi.html) |
 | `kyuryo.html` | ツール | 給料いくら残るしらべ（働いた給料・臨時収入のうち、手元に残る額と保護費から差し引かれる額） | [/kyuryo.html](https://ailiber1.github.io/seikatsuhogo/kyuryo.html) |
 | `hima.html` | ツール | 暇人スキャン（ふだんの1日を国の平均・リスナーの平均とくらべて、暇人かどうか判定）。**リスナーの結果を名前なしで保存する唯一のツール**（下の「リスナーの結果の保存」） | [/hima.html](https://ailiber1.github.io/seikatsuhogo/hima.html) |
+| `hima-setsumei.html` | 解説 | 生活保護は暇じゃない。3年目の1日を国の平均とくらべた（国の数え方だと「暇人」、ながらAI作業を入れると1日16時間45分） | [/hima-setsumei.html](https://ailiber1.github.io/seikatsuhogo/hima-setsumei.html) |
 | `database.rules.json` / `firebase.json` / `.firebaserc` | 設定 | 暇人スキャンの保存先（Firebase Realtime Database）の書き込みルール | — |
 | `data/` | データ | ページに埋め込む元データ（JSON） | — |
 | `scripts/` | スクリプト | 公的資料からデータを作り、ページを生成する | — |

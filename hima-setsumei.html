@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>生活保護は暇じゃない</title>
+<meta name="description" content="生活保護3年目の平日の1日を、総務省の調査の平均とくらべました。国の数え方では「暇人」、ながらAI作業も入れると1日16時間45分の仕事">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+  --cyan:#1590b3; --cyan-soft:#e8f6fa;
+  --c-sleep:#6b7fd7; --c-work:#2b5d8f; --c-house:#2a9d8f; --c-meal:#e0a13a; --c-free:#1ab0d8; --c-other:#b7c0ca;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:16px; line-height:1.8; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
+h1{font-size:clamp(26px,6vw,36px); line-height:1.4; margin:0 0 12px; color:var(--navy); text-wrap:balance}
+h1 small{display:block; font-size:.55em; color:var(--sub); font-weight:600}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:16px; font-size:15px}
+.for-who b{color:var(--navy)} .for-who ul{margin:4px 0 0; padding-left:1.2em}
+.conclusion{border:2px solid var(--navy); border-radius:14px; padding:16px; margin-bottom:10px; background:#fff}
+.conclusion .k{font-size:13px; font-weight:700; color:var(--sub)}
+.conclusion p{margin:4px 0 0; font-size:18px; font-weight:700; line-height:1.6}
+.conclusion b{color:var(--navy); font-size:1.25em}
+.cta{display:flex; align-items:center; justify-content:space-between; gap:10px; text-decoration:none; color:var(--navy); background:var(--cyan-soft); border-left:5px solid var(--cyan); border-radius:0 11px 11px 0; padding:11px 14px; margin:12px 0 22px; font-weight:700; font-size:15px; min-height:48px}
+.cta span:last-child{flex:none}
+section.ch{margin:30px 0 8px}
+.ch h2{display:flex; align-items:center; gap:10px; font-size:clamp(19px,4.6vw,23px); line-height:1.45; margin:0 0 12px; color:var(--navy)}
+.ch h2 .b{flex:none; width:34px; height:34px; border-radius:50%; border:2px solid var(--navy); display:grid; place-items:center; font-size:15px; font-family:system-ui,sans-serif}
+.ch p{margin:0 0 12px}
+.big2{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:6px 0 12px}
+.big2 div{border:1px solid var(--line); border-radius:12px; padding:12px; text-align:center; background:var(--panel)}
+.big2 small{display:block; font-size:13px; color:var(--sub); line-height:1.5}
+.big2 b{display:block; font-size:clamp(30px,8vw,42px); color:var(--navy); line-height:1.3}
+.big2 div.hi{background:var(--cyan-soft); border-color:var(--cyan)} .big2 div.hi b{color:var(--cyan)}
+blockquote{margin:10px 0 4px; padding:10px 14px; background:var(--panel); border-left:4px solid var(--line); font-size:14.5px; color:var(--ink); border-radius:0 10px 10px 0}
+.src{font-size:12.5px; color:var(--sub); margin:0 0 8px} .src a{color:var(--navy)}
+.easy{background:var(--ok-bg); border-left:4px solid var(--ok); border-radius:0 10px 10px 0; padding:9px 14px; font-size:15px; margin:6px 0 12px}
+.easy b{color:var(--ok)}
+.clockwrap{display:grid; grid-template-columns:260px 1fr; gap:16px; align-items:center}
+@media (max-width:560px){ .clockwrap{grid-template-columns:1fr} .clockwrap svg{max-width:280px; margin:0 auto; display:block} }
+.clockwrap svg{width:100%; height:auto}
+.items{list-style:none; margin:0; padding:0; font-size:15px}
+.items li{display:flex; justify-content:space-between; gap:8px; padding:5px 0; border-bottom:1px solid var(--line-soft)}
+.items li span:first-child::before{content:""; display:inline-block; width:11px; height:11px; border-radius:3px; background:var(--c); margin-right:7px; vertical-align:-1px}
+.items li b{font-size:16.5px}
+.items small{color:var(--sub); font-size:12.5px; display:block; margin-left:18px; line-height:1.4}
+.btn{font:inherit; font-size:17px; font-weight:800; color:#fff; background:linear-gradient(100deg,var(--navy),var(--cyan)); border:none; border-radius:12px; min-height:52px; padding:10px 18px; width:100%; cursor:pointer; letter-spacing:.05em}
+.btn.ghost{background:#fff; color:var(--navy); border:2px solid var(--navy)}
+.reveal-box{display:none; margin-top:12px; border:1.5px solid var(--cyan); border-radius:14px; padding:16px; text-align:center; background:linear-gradient(180deg,#fff,var(--cyan-soft)); animation:up .5s ease}
+.reveal-box.show{display:block}
+@keyframes up{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+.reveal-box .lbl{font-size:clamp(32px,9vw,46px); font-weight:800; color:var(--navy); line-height:1.3}
+.reveal-box p{margin:6px 0 0; font-size:15px}
+.bars{margin:10px 0 6px}
+.bars .row{display:grid; grid-template-columns:9.5em 1fr 3.6em; gap:8px; align-items:center; font-size:14px; margin:9px 0}
+@media (max-width:420px){ .bars .row{grid-template-columns:7.4em 1fr 3.4em; font-size:13px} }
+.bars .t{height:18px; background:var(--line-soft); border-radius:9px; overflow:hidden}
+.bars .t i{display:block; height:100%; width:0; border-radius:9px; background:var(--c,var(--navy)); transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.bars .row b{text-align:right}
+.bars .row.me{font-weight:800}
+.note{font-size:13px; color:var(--sub); margin:4px 0 12px}
+.sum h3{font-size:15px; margin:14px 0 6px; color:var(--navy)}
+.card{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px; background:#fff}
+.card .m{flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:14px}
+.card .m.y{background:var(--ok-bg); color:var(--ok)} .card .m.q{background:var(--warn-bg); color:var(--warn)}
+.card b{display:block; font-size:15px} .card small{color:var(--sub); font-size:13px; line-height:1.5; display:block}
+.fade{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+.fade.in{opacity:1; transform:none}
+.foot{margin-top:28px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot h3{font-size:14px; color:var(--ink); margin:12px 0 4px}
+.foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .fade{opacity:1; transform:none; transition:none} .bars .t i{transition:none} .reveal-box{animation:none} }
+</style>
+<script>
+/* URLの後ろの ?… は付けず、ページの場所だけで数える（同じページが別々に数えられないように） */
+window.goatcounter = {path: function () { return location.pathname; }};
+</script>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho">生活保護は暇じゃない。<small>「怠けている」と言われる3年目の1日を、国の平均とくらべてみた</small></h1>
+  <div class="for-who"><b>このページは、こういう方へ</b>
+    <ul><li>「生活保護の人は一日中ヒマ」と思っている方</li>
+    <li>生活保護を受けたら、毎日どう過ごすのか気になる方</li>
+    <li>自分の1日は、ほかの人とくらべてどうなのか知りたい方</li></ul></div>
+
+  <div class="conclusion"><div class="k">結論</div>
+    <p>生活保護3年目の私の仕事の時間は、1日 <b class="num">9時間45分</b>。同じ年代の会社員の平均とほぼ同じでした。「ながらAI作業」も入れると <b class="num">16時間45分</b>です。</p></div>
+  <a class="cta" href="hima.html"><span>あなたの1日も、国の平均とくらべてみる（暇人スキャン）</span><span>→</span></a>
+
+  <section class="ch fade">
+    <h2><span class="b">1</span>国の平均では、働いていない人の「自由な時間」は10時間</h2>
+    <p>国（総務省）は5年に1度、約19万人に「15分ごとに何をしていたか」を記録してもらい、1日の時間の使い方を調べています。39歳と同じ年代の男性の、平日の平均はこうです。</p>
+    <div class="big2">
+      <div><small>働いている男性<br>（35〜39歳）の自由な時間</small><b class="num" data-count="192">0:00</b></div>
+      <div class="hi"><small>働いていない男性<br>（35〜39歳）の自由な時間</small><b class="num" data-count="616">0:00</b></div>
+    </div>
+    <blockquote>１日の行動を 20 種類に分類し、時間帯（15 分単位）別の行動状況（同時に２種類以上の行動をした場合は、主なもの一つ）を調査した。（中略）３次活動（１次活動、２次活動以外で各人が自由に使える時間における活動）とした。</blockquote>
+    <p class="src">出典: <a href="https://www.stat.go.jp/data/shakai/2021/pdf/gaiyoua.pdf" target="_blank" rel="noopener">総務省統計局「令和3年社会生活基本調査 生活時間及び生活行動に関する結果 結果の概要」付2 用語と分類</a>／数字は <a href="https://www.e-stat.go.jp/stat-search/file-download?statInfId=000032223892&amp;fileKind=0" target="_blank" rel="noopener">e-Stat 第7-1表</a> から計算</p>
+    <div class="easy"><b>やさしく言うと：</b>テレビ・休む・趣味・運動・人と会う時間が「自由な時間」です。2つのことを同時にしていたら、<b>主なほう1つだけ</b>を数えます。この決まりが、あとで大事になります。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">2</span>生活保護3年目（39歳・男性）の平日</h2>
+    <div class="clockwrap">
+      <svg id="clock" viewBox="-26 -12 312 284" role="img" aria-label="1日の24時間の使い方を時計の形で表した図"></svg>
+      <ul class="items" id="items"></ul>
+    </div>
+    <p class="note">6時に起きて、朝はAIに最新ニュースを調べさせて発信。10〜12時は在宅ワーク。14時ごろから散歩とジョギング。19時から配信。寝るのは1〜2時で、昼寝はしません。</p>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">3</span>国の数え方でスキャンすると…</h2>
+    <p>「暇人スキャン」に、この1日をそのまま入れてみます（働いている・男性・35〜39歳とくらべる）。</p>
+    <button class="btn" type="button" id="scanBtn">スキャンする</button>
+    <div class="reveal-box" id="scanOut">
+      <div class="lbl mincho">「暇人」</div>
+      <p>自由な時間 <b class="num">5:45</b> ／ 平均 <b class="num">3:12</b>（<b>+2:33</b>）</p>
+      <div class="bars" style="text-align:left">
+        <div class="row me"><span>私の睡眠</span><span class="t"><i data-w="18.75" style="--c:var(--c-sleep)"></i></span><b class="num">4:30</b></div>
+        <div class="row"><span>平均の睡眠</span><span class="t"><i data-w="31.4" style="--c:var(--line)"></i></span><b class="num">7:32</b></div>
+      </div>
+      <p>理由は、<b>睡眠を平均より3時間削って</b>、散歩やネットフリックスの時間を作っていたから。</p>
+    </div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">4</span>でも、裏ではAIが働いている</h2>
+    <p>実は、寝ている時間と散歩のとき以外は、料理中もネットフリックスを見ながらも、AIにニュース集め・リサーチ・動画編集・ページ作りをさせています。国の決まりでは「主なもの一つ」しか数えないので、この<b>ながらAI作業</b>は数字に出てきません。</p>
+    <button class="btn ghost" type="button" id="aiBtn">ながらAI作業も数える</button>
+    <div class="bars" id="workBars">
+      <div class="row"><span>会社員の平均<small style="display:block;color:var(--sub);font-weight:400;font-size:11.5px">男性35〜39歳</small></span><span class="t"><i data-w="41.1"></i></span><b class="num">9:52</b></div>
+      <div class="row"><span>私（国の数え方）</span><span class="t"><i data-w="40.6" style="--c:var(--c-free)"></i></span><b class="num">9:45</b></div>
+      <div class="row me" id="aiRow" style="opacity:.35"><span>私（ながらAI作業も）</span><span class="t"><i data-w="0" data-w2="69.8" style="--c:var(--cyan)"></i></span><b class="num" id="aiV">?</b></div>
+    </div>
+    <p class="note">棒の長さは24時間に対する割合です。「ながらAI作業も」は国の調査の数え方とは違う、自分での数え方です（睡眠4時間半と散歩2時間45分以外をすべて仕事として数えた）。</p>
+  </section>
+  <a class="cta" href="hima.html"><span>あなたは暇人？ 1日をスキャンしてみる</span><span>→</span></a>
+
+  <section class="ch sum fade">
+    <h2><span class="b">✓</span>まとめ</h2>
+    <h3>分かっていること</h3>
+    <div class="card"><span class="m y">✓</span><div><b>仕事の時間は、同じ年代の会社員とほぼ同じ</b><small>国の数え方で9時間45分（平均9時間52分）</small></div></div>
+    <div class="card"><span class="m y">✓</span><div><b>「暇人」に見えるのは、睡眠を削っているから</b><small>睡眠4時間半（平均7時間32分）</small></div></div>
+    <div class="card"><span class="m y">✓</span><div><b>ながらAI作業まで入れると、1日16時間45分</b><small>国の調査では数えられない時間</small></div></div>
+    <h3>まだ分からないこと</h3>
+    <div class="card"><span class="m q">？</span><div><b>生活保護を受けている人は、平均すると暇なのか</b><small>国の調査には「生活保護を受けているか」の区分がありません。暇人スキャンのリスナーのデータで分かっていきます</small></div></div>
+  </section>
+  <a class="cta" href="hima.html"><span>暇人スキャンで、あなたの1日も試す</span><span>→</span></a>
+
+  <div class="foot">
+    <h3>根拠資料</h3>
+    <ul>
+      <li><a href="https://www.stat.go.jp/data/shakai/2021/kekka.html" target="_blank" rel="noopener">総務省統計局「令和3年社会生活基本調査の結果」</a></li>
+      <li><a href="https://www.stat.go.jp/data/shakai/2021/pdf/gaiyoua.pdf" target="_blank" rel="noopener">同「生活時間及び生活行動に関する結果 結果の概要」（付2 用語と分類）</a></li>
+      <li><a href="https://www.e-stat.go.jp/stat-search/file-download?statInfId=000032223892&amp;fileKind=0" target="_blank" rel="noopener">e-Stat 第7-1表「曜日，男女，配偶関係，ふだんの就業状態，年齢，行動の種類別総平均時間」（15歳以上・全国）</a></li>
+    </ul>
+    <h3>読むときの注意</h3>
+    <ul>
+      <li>国の数字は2021年10月の調査（最新）の、<b>平日</b>の平均です。20種類の行動を6つにまとめています（自由な時間＝テレビ・休養・学習・趣味・スポーツ・ボランティア・交際）。次の調査は2026年10月に行われます</li>
+      <li>私の1日は、ふだんの平日のおおよその時間です（就寝1時半・配信3時間として計算）。配信・動画編集・AIでの情報発信は、収入につながる活動なので「仕事」に入れました</li>
+      <li>「ながらAI作業も」の数字は、国の調査とは違う数え方です</li>
+      <li>確認日: 2026年9月30日 ／ 個人が作ったもので、行政の公式資料ではありません</li>
+    </ul>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+// 私の平日（30分単位。[開始, 終了(分), 項目, 内容]）。0:00 を時計の真上にする
+const DAY = [
+  [90, 360, 'sleep', '睡眠'], [360, 540, 'work', 'AIニュース・発信・お題決め'],
+  [540, 570, 'house', '料理'], [570, 600, 'meal', '朝ごはん'], [600, 720, 'work', '在宅ワーク'],
+  [720, 750, 'work', 'ネタ決め'], [750, 780, 'free', 'YouTube'], [780, 810, 'house', '料理'], [810, 840, 'meal', '昼ごはん'],
+  [840, 1005, 'free', '散歩・ジョギング'], [1005, 1035, 'meal', 'シャワー'], [1035, 1065, 'house', '買い物'],
+  [1065, 1140, 'work', 'AIリサーチ・投稿'], [1140, 1170, 'house', '料理（配信中）'], [1170, 1200, 'meal', '夜ごはん（配信中）'],
+  [1200, 1320, 'work', '配信'], [1320, 1380, 'work', 'AIに動画編集の指示'], [1380, 1530, 'free', 'ネットフリックス']
+];
+const NAMES = {sleep:'睡眠', work:'仕事', house:'家事', meal:'食事・身支度', free:'自由な時間', other:'その他'};
+const SUB = {sleep:'1:30〜6:00', work:'AI発信・在宅ワーク・配信など', house:'料理3回・買い物', meal:'食事・シャワー', free:'散歩・ジョギング・動画を見る'};
+const hm = m => Math.floor(m / 60) + ':' + String(m % 60).padStart(2, '0');
+
+const tot = {}; DAY.forEach(([a, b, k]) => tot[k] = (tot[k] || 0) + (b - a));
+document.getElementById('items').innerHTML = ['sleep', 'work', 'house', 'meal', 'free'].map(k =>
+  `<li style="--c:var(--c-${k})"><span>${NAMES[k]}<small>${SUB[k]}</small></span><b class="num">${hm(tot[k])}</b></li>`).join('');
+
+function arc(cx, cy, r, a0, a1) {
+  const p = a => [cx + r * Math.sin(a / 1440 * 2 * Math.PI), cy - r * Math.cos(a / 1440 * 2 * Math.PI)];
+  const [x0, y0] = p(a0), [x1, y1] = p(a1);
+  return `M${x0.toFixed(2)} ${y0.toFixed(2)} A${r} ${r} 0 ${a1 - a0 > 720 ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`;
+}
+function drawClock(ai) {
+  const c = 130, r = 96, sw = 34;
+  let s = `<circle cx="${c}" cy="${c}" r="${r}" fill="none" stroke="var(--line-soft)" stroke-width="${sw}"/>`;
+  DAY.forEach(([a, b, k], i) => {
+    s += `<path d="${arc(c, c, r, a, b - 2)}" fill="none" stroke="var(--c-${k})" stroke-width="${sw}" style="opacity:${ai ? 1 : 0}; transition:opacity .35s ${i * 0.06}s" class="seg"/>`;
+  });
+  if (ai) DAY.forEach(([a, b, k]) => { if (k !== 'sleep' && !(k === 'free' && a === 840)) s += `<path d="${arc(c, c, r - 26, a, b - 2)}" fill="none" stroke="var(--cyan)" stroke-width="6" stroke-linecap="round"/>`; });
+  [[0, '0時'], [360, '6時'], [720, '12時'], [1080, '18時']].forEach(([m, t]) => {
+    const x = c + (r + 26) * Math.sin(m / 1440 * 2 * Math.PI), y = c - (r + 26) * Math.cos(m / 1440 * 2 * Math.PI);
+    s += `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" font-size="12" fill="var(--sub)">${t}</text>`;
+  });
+  s += `<text x="${c}" y="${c - 4}" text-anchor="middle" font-size="15" font-weight="700" fill="var(--navy)">${ai ? 'AIも稼働' : '平日の24時間'}</text>`;
+  s += `<text x="${c}" y="${c + 16}" text-anchor="middle" font-size="12" fill="var(--sub)">${ai ? '水色の線＝AI作業中' : '39歳・男性'}</text>`;
+  const svg = document.getElementById('clock'); svg.innerHTML = s;
+  requestAnimationFrame(() => requestAnimationFrame(() => svg.querySelectorAll('.seg').forEach(p => p.style.opacity = 1)));
+}
+
+// スクロールで表示（スマホで縦に長い要素も出るように threshold:0）
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in'); io.unobserve(e.target);
+  if (e.target.querySelector('#clock')) drawClock(false);
+  e.target.querySelectorAll('[data-count]').forEach(countUp);
+}), {threshold: 0, rootMargin: '0px 0px -12% 0px'});
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
+
+function countUp(el) {
+  const to = +el.dataset.count, t0 = performance.now(), d = 1100;
+  const f = t => { const p = Math.min(1, (t - t0) / d), e = 1 - Math.pow(1 - p, 3); el.textContent = hm(Math.round(to * e)); if (p < 1) requestAnimationFrame(f); };
+  requestAnimationFrame(f);
+}
+function growBars(root, attr) { requestAnimationFrame(() => requestAnimationFrame(() => root.querySelectorAll('i[data-w]').forEach(i => i.style.width = (i.dataset[attr] || i.dataset.w) + '%'))); }
+
+document.getElementById('scanBtn').addEventListener('click', e => {
+  const out = document.getElementById('scanOut');
+  e.target.textContent = 'スキャン中…'; e.target.disabled = true;
+  setTimeout(() => { out.classList.add('show'); e.target.textContent = 'スキャン完了'; growBars(out, 'w'); }, 900);
+});
+// 仕事の棒は、章が見えたら上の2本だけ伸ばす
+const wb = document.getElementById('workBars');
+new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { growBars(wb, 'w'); o.disconnect(); } }), {threshold: 0}).observe(wb);
+document.getElementById('aiBtn').addEventListener('click', e => {
+  const row = document.getElementById('aiRow'), i = row.querySelector('i');
+  row.style.opacity = 1; i.style.width = i.dataset.w2 + '%';
+  const v = document.getElementById('aiV'), t0 = performance.now();
+  const f = t => { const p = Math.min(1, (t - t0) / 1200); v.textContent = hm(Math.round(1005 * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(f); };
+  requestAnimationFrame(f);
+  drawClock(true);
+  e.target.textContent = '1日16時間45分（会社員の平均の約1.7倍）'; e.target.disabled = true;
+});
+</script>
+</body>
+</html>

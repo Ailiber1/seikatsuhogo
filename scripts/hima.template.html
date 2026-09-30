@@ -72,6 +72,15 @@ input[type=range]::-moz-range-thumb{width:18px; height:18px; border-radius:50%; 
 @keyframes shine{to{left:130%}}
 .go:disabled{background:var(--line); color:var(--sub); box-shadow:none; cursor:default}
 .go:disabled::after{display:none}
+.live{display:flex; align-items:center; justify-content:center; gap:7px; font-size:14px; font-weight:700; color:var(--navy); margin:8px 0 0}
+.live .dot,.lvtag .dot{width:9px; height:9px; border-radius:50%; background:#e0463c; box-shadow:0 0 0 0 rgba(224,70,60,.4); animation:rec 1.6s infinite}
+@keyframes rec{0%{box-shadow:0 0 0 0 rgba(224,70,60,.45)} 70%{box-shadow:0 0 0 8px rgba(224,70,60,0)} 100%{box-shadow:0 0 0 0 rgba(224,70,60,0)}}
+.live b{font-size:18px; color:var(--cyan)}
+.lvtag{display:inline-flex; align-items:center; gap:5px; font-size:11px; letter-spacing:.12em; color:#c23d33; font-weight:800; margin-right:6px}
+.bump{animation:bump .9s ease}
+@keyframes bump{0%{background:var(--cyan-soft); transform:scale(1)} 30%{transform:scale(1.06)} 100%{background:transparent; transform:scale(1)}}
+.plus{display:inline-block; margin-left:6px; font-size:12px; font-weight:800; color:#fff; background:var(--cyan); border-radius:99px; padding:0 8px; animation:plus 2.2s ease forwards}
+@keyframes plus{0%{opacity:0; transform:translateY(6px)} 15%{opacity:1; transform:none} 80%{opacity:1} 100%{opacity:0}}
 .privacy{font-size:12.5px; color:var(--sub); text-align:center; margin:4px 0 0}
 #result{margin-top:18px}
 .guide{border:2px dashed var(--line); border-radius:16px; padding:20px 16px; text-align:center; color:var(--sub); background:rgba(255,255,255,.8)}
@@ -168,6 +177,7 @@ table.cmp tr.free td{background:var(--cyan-soft)}
   </section>
 
   <button class="go" id="go" type="button" disabled>スキャンする</button>
+  <p class="live" id="liveTop" hidden><span class="dot"></span>LIVE ｜ これまで <b class="num" id="liveN">0</b> 人が試しました</p>
   <p class="privacy">名前・住んでいる場所・IPアドレスなど、あなたを特定できる情報は集めていません。</p>
 
   <div id="result" aria-live="polite"></div>
@@ -177,7 +187,7 @@ table.cmp tr.free td{background:var(--cyan-soft)}
     <p><b>判定</b>は、自由な時間が国の平均より3時間以上多いと「かなりの暇人」、1時間以上多いと「暇人」、前後1時間以内は「ふつう」、1時間以上少ないと「忙しい人」、3時間以上少ないと「働きすぎ」です。</p>
     <p><b>リスナーの平均</b>は、このツールで「スキャンする」を押した人の結果です。押したときに、選んだ内容（性別・年代・働いているか・生活保護・6項目の時間）だけを名前なしで保存し、集計に使っています。名前・住んでいる場所・IPアドレス・端末の情報は保存していません。同じ端末からは1日1回だけ保存します。誰でも試せるので、参考の値として見てください。ページが開かれた回数と結果が出た回数も、Cookieを使わず、個人を特定しない方法で数えています。</p>
     <p>根拠: <a href="https://www.stat.go.jp/data/shakai/2021/kekka.html" target="_blank" rel="noopener">総務省統計局「令和3年社会生活基本調査の結果」</a> ／ <a href="https://www.e-stat.go.jp/stat-search/file-download?statInfId=000032223892&amp;fileKind=0" target="_blank" rel="noopener">e-Stat 第7-1表「曜日，男女，配偶関係，ふだんの就業状態，年齢，行動の種類別総平均時間」</a></p>
-    <p>確認日: 2026年9月30日 ／ 次の調査（2026年10月実施）の結果が出たら更新します。個人が作ったもので、行政の公式ツールではありません。</p>
+    <p>確認日: 2026年9月30日 ／ 2021年の調査が、公表されている中で最新です。次の調査（2026年10月20日基準）の結果は2027年9月ごろから公表される予定で、出たら更新します。個人が作ったもので、行政の公式ツールではありません。</p>
     <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
   </div>
 </main>
@@ -295,6 +305,36 @@ async function loadAll() {
   if (!res || !res.ok) return null;
   const d = await res.json(); return d ? Object.values(d) : [];
 }
+// リアルタイム更新（Firebase の REST ストリーミング）。誰かが試すたびに STORE が増える
+let STORE = null, lastCtx = null, prevN = null;
+function startLive() {
+  if (!window.EventSource) return;
+  const es = new EventSource(DB + '/jikan/r.json');
+  const apply = (ev, merge) => {
+    let msg; try { msg = JSON.parse(ev.data); } catch (e) { return; }
+    if (!msg) return;
+    const {path, data} = msg;
+    if (path === '/') {
+      if (merge) STORE = Object.assign(STORE || {}, data || {}); else STORE = data || {};
+    } else {
+      STORE = STORE || {};
+      const id = path.slice(1).split('/')[0];
+      if (data === null) delete STORE[id]; else STORE[id] = data;
+    }
+    onLive();
+  };
+  es.addEventListener('put', e => apply(e, false));
+  es.addEventListener('patch', e => apply(e, true));
+}
+function onLive() {
+  const all = Object.values(STORE || {});
+  $('liveTop').hidden = false;
+  $('liveN').textContent = all.length.toLocaleString();
+  if (prevN !== null && all.length > prevN) { $('liveTop').classList.remove('bump'); void $('liveTop').offsetWidth; $('liveTop').classList.add('bump'); }
+  const grew = prevN !== null && all.length > prevN ? all.length - prevN : 0;
+  prevN = all.length;
+  if (lastCtx && document.getElementById('lisBox') && lastCtx.ready) paintListeners(lastCtx.m, lastCtx.r, all, grew);
+}
 function avg(list) {
   const o = {n: list.length}; KEYS.forEach(k => o[k] = list.length ? list.reduce((t, r) => t + r[k], 0) / list.length : 0); return o;
 }
@@ -330,11 +370,13 @@ async function run() {
   </div>`;
   grow($('rMe')); grow($('rNat'));
   $('again').addEventListener('click', () => { window.scrollTo({top: $('c2').offsetTop - 10, behavior:'smooth'}); });
-  const all = await saving;
-  paintListeners(m, r, all);
+  let all = await saving;
+  if (STORE) all = Object.values(STORE); // ライブで受け取っていれば、そちらが最新
+  lastCtx = {m, r, ready: true};
+  paintListeners(m, r, all, 0);
 }
 
-function paintListeners(m, r, all) {
+function paintListeners(m, r, all, grew) {
   const box = $('lisBox');
   if (!all) { box.innerHTML = `<h3>リスナーとくらべる</h3><p class="note">いまリスナーのデータを読み込めませんでした。少し時間をおいて、もう一度「スキャンする」を押してください。</p>`; return; }
   const ST = {j:'生活保護を受けている人', k:'検討中の人', n:'受けていない人'};
@@ -347,16 +389,20 @@ function paintListeners(m, r, all) {
   all.forEach(x => { try { cnt[scan(x).j.id]++; } catch (e) {} });
   const tot = cnt.reduce((a, b) => a + b, 0) || 1;
   const labels = ['働きすぎ', '忙しい人', 'ふつう', '暇人', 'かなりの暇人'];
-  box.innerHTML = `<h3>リスナーとくらべる<small>これまで試した ${all.length.toLocaleString()} 人</small></h3>
+  const oldW = [...box.querySelectorAll('.bars i')].map(i => i.style.width); // 前の長さから伸ばす
+  box.innerHTML = `<h3>リスナーとくらべる<small>${STORE ? '<span class="lvtag"><span class="dot"></span>LIVE</span>' : ''}これまで試した <b class="num">${all.length.toLocaleString()}</b> 人${grew ? `<span class="plus">＋${grew}人</span>` : ''}</small></h3>
     <p class="note" style="margin:0 0 4px">自由な時間の平均（あなたは <b class="num">${hm(m.free)}</b>）</p>
     <div class="lis">${cells}</div>
     <p class="note" style="margin:0 0 2px">リスナーの判定の割合</p>
     <div class="bars">${[4, 3, 2, 1, 0].map(i => `<div class="row ${i === r.j.id ? 'mine' : ''}"><span>${labels[i]}${i === r.j.id ? '（あなた）' : ''}</span><span class="t"><i data-w="${cnt[i] / tot * 100}"></i></span><b class="num">${Math.round(cnt[i] / tot * 100)}%</b></div>`).join('')}</div>
     <p class="note">名前なしで集めた、このツールを試した人の結果です。人数が少ないうちは、数字が大きく動きます。</p>`;
-  requestAnimationFrame(() => requestAnimationFrame(() => box.querySelectorAll('.bars i').forEach(i => i.style.width = i.dataset.w + '%')));
+  const bars = [...box.querySelectorAll('.bars i')];
+  bars.forEach((i, n) => { if (oldW[n]) i.style.width = oldW[n]; });
+  requestAnimationFrame(() => requestAnimationFrame(() => bars.forEach(i => i.style.width = i.dataset.w + '%')));
 }
 
 $('go').addEventListener('click', run);
+startLive();
 guide();
 refresh();
 </script>

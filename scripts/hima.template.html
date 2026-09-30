@@ -208,11 +208,11 @@ function national(sex, age, work) {
 }
 // 自由な時間の差（分）で判定する
 function judge(diff) {
-  if (diff >= 180) return {id:4, label:'かなりの暇人', one:'国の平均より自由な時間がたっぷり。その時間は、あなただけの財産です。'};
-  if (diff >= 60)  return {id:3, label:'暇人', one:'平均より少しゆとりあり。休めているなら、それで十分です。'};
-  if (diff > -60)  return {id:2, label:'ふつう', one:'国の平均とほぼ同じ。暇でも忙しくもない、ど真ん中です。'};
-  if (diff > -180) return {id:1, label:'忙しい人', one:'平均より自由な時間が少なめ。毎日おつかれさまです。'};
-  return {id:0, label:'働きすぎ', one:'自由な時間が平均よりかなり少ない状態です。少し休んでも大丈夫です。'};
+  if (diff >= 180) return {id:4, label:'かなりの暇人', one:'国の平均の何倍もヒマ。正直うらやましい。その時間で何か始めたら、たぶんあなたが一番強い。'};
+  if (diff >= 60)  return {id:3, label:'暇人', one:'はい、ヒマです。でも、ヒマを持て余せるのは、ちゃんと休めている証拠。'};
+  if (diff > -60)  return {id:2, label:'ふつう', one:'びっくりするほど平均。個性はゼロ。でも、それが一番長続きする。'};
+  if (diff > -180) return {id:1, label:'忙しい人', one:'ちょっと働きすぎ。このままだと、体が先に止まります。今日は30分サボってください。'};
+  return {id:0, label:'働きすぎ', one:'完全にオーバーワーク。今すぐスマホを置いて寝ろ。……と国の平均が言っています。'};
 }
 function scan(me) {
   const nat = national(me.s, me.a, me.w);

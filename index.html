@@ -57,6 +57,11 @@ a.card:hover,a.card:focus-visible{border-color:var(--navy); transform:translateY
 .card p{margin:0; font-size:13px; line-height:1.55; color:var(--sub)}
 .new{position:absolute; top:10px; right:10px; font-size:10.5px; font-weight:700; color:#b3261e;
   background:#fdecea; border-radius:999px; padding:0 8px}
+.card{display:flex; flex-direction:column; position:relative; background:#fff; border:2px solid var(--line); border-radius:var(--radius); padding:16px 14px 14px}
+.card.locked{cursor:not-allowed; border-style:dashed; background:#fafbfc}
+.card.locked .icon,.card.locked h3,.card.locked p,.card.locked .tags{opacity:.45; filter:grayscale(.6)}
+.lock{position:absolute; top:10px; right:10px; font-size:10.5px; font-weight:700; color:var(--navy);
+  background:var(--navy-soft); border-radius:999px; padding:0 8px}
 .empty{grid-column:1/-1; text-align:center; color:var(--sub); padding:30px 0}
 
 footer{margin-top:30px; padding-top:18px; border-top:1px solid var(--line); text-align:center}
@@ -104,13 +109,14 @@ function render(){
   const w = q.value.trim().toLowerCase();
   const list = ITEMS.filter(i => (kind === "all" || i.kind === kind) &&
     (!w || (i.title + i.desc + (i.kw || "")).toLowerCase().includes(w)));
+  // locked:true のカードは押しても開かない（配信で紹介するまで鍵をかけておく）
   grid.innerHTML = list.map(i => `
-    <a class="card ${esc(i.kind)}" href="${esc(i.href)}">
-      ${i.isNew ? '<span class="new">NEW</span>' : ''}
+    <${i.locked ? 'div' : 'a'} class="card ${esc(i.kind)}${i.locked ? ' locked' : ''}"${i.locked ? ' aria-disabled="true"' : ` href="${esc(i.href)}"`}>
+      ${i.locked ? '<span class="lock">🔐 配信で公開</span>' : i.isNew ? '<span class="new">NEW</span>' : ''}
       <div class="icon">${i.icon}</div>
       <div class="tags"><span class="kind">${KIND[i.kind] || ""}</span>${i.video ? '<span class="vid">▶ 動画あり</span>' : ''}</div>
       <h3>${esc(i.title)}</h3><p>${esc(i.desc)}</p>
-    </a>`).join("") || '<div class="empty">見つかりませんでした。別のことばで試してください。</div>';
+    </${i.locked ? 'div' : 'a'}>`).join("") || '<div class="empty">見つかりませんでした。別のことばで試してください。</div>';
   count.textContent = list.length + " 件";
 }
 document.getElementById("tabs").addEventListener("click", e => {

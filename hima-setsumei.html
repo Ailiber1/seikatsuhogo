@@ -118,7 +118,7 @@ window.gcUse = function (name) {
 
   <section class="ch fade">
     <h2><span class="b">1</span>国の平均では、働いていない人の「自由な時間」は10時間</h2>
-    <p>国（総務省）は5年に1度、約19万人に「15分ごとに何をしていたか」を記録してもらい、1日の時間の使い方を調べています。39歳と同じ年代の男性の、平日の平均はこうです。</p>
+    <p>国（総務省）は5年に1度、約19万人に「15分ごとに何をしていたか」を記録してもらい、1日の時間の使い方を調べています。私と同じ年代の男性の、平日の平均はこうです。</p>
     <div class="big2">
       <div><small>働いている男性<br>（35〜39歳）の自由な時間</small><b class="num" data-count="192">0:00</b></div>
       <div class="hi"><small>働いていない男性<br>（35〜39歳）の自由な時間</small><b class="num" data-count="616">0:00</b></div>
@@ -129,7 +129,7 @@ window.gcUse = function (name) {
   </section>
 
   <section class="ch fade">
-    <h2><span class="b">2</span>生活保護3年目（39歳・男性）の平日</h2>
+    <h2><span class="b">2</span>生活保護3年目の私の平日</h2>
     <div class="clockwrap">
       <svg id="clock" viewBox="-26 -12 312 284" role="img" aria-label="1日の24時間の使い方を時計の形で表した図"></svg>
       <ul class="items" id="items"></ul>
@@ -229,7 +229,7 @@ function drawClock(ai) {
     s += `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" font-size="12" fill="var(--sub)">${t}</text>`;
   });
   s += `<text x="${c}" y="${c - 4}" text-anchor="middle" font-size="15" font-weight="700" fill="var(--navy)">${ai ? 'AIも稼働' : '平日の24時間'}</text>`;
-  s += `<text x="${c}" y="${c + 16}" text-anchor="middle" font-size="12" fill="var(--sub)">${ai ? '水色の線＝AI作業中' : '39歳・男性'}</text>`;
+  s += `<text x="${c}" y="${c + 16}" text-anchor="middle" font-size="12" fill="var(--sub)">${ai ? '水色の線＝AI作業中' : '生活保護3年目'}</text>`;
   const svg = document.getElementById('clock'); svg.innerHTML = s;
   requestAnimationFrame(() => requestAnimationFrame(() => svg.querySelectorAll('.seg').forEach(p => p.style.opacity = 1)));
 }

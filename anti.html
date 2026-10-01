@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>アンチコメ図鑑</title>
+<meta name="description" content="生活保護3年目のYouTuberに実際に届いたアンチコメを、全部読んで種類ごとに数えました。多い順のランキング、原文、事実での答え、ほかの生活保護YouTuberとの比較">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+  --cyan:#1590b3; --cyan-soft:#e8f6fa;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:17px; line-height:1.8; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
+h1{font-size:clamp(26px,6vw,36px); line-height:1.4; margin:0 0 12px; color:var(--navy); text-wrap:balance}
+h1 small{display:block; font-size:.55em; color:var(--sub); font-weight:600}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:16px; font-size:15.5px}
+.for-who b{color:var(--navy)} .for-who ul{margin:4px 0 0; padding-left:1.2em}
+.conclusion{border:2px solid var(--navy); border-radius:14px; padding:16px; margin-bottom:10px; background:#fff}
+.conclusion .k{font-size:13px; font-weight:700; color:var(--sub)}
+.conclusion p{margin:4px 0 0; font-size:18px; font-weight:700; line-height:1.65}
+.conclusion b{color:var(--navy); font-size:1.25em}
+.cta{display:flex; align-items:center; justify-content:space-between; gap:10px; text-decoration:none; color:var(--navy); background:var(--cyan-soft); border-left:5px solid var(--cyan); border-radius:0 11px 11px 0; padding:11px 14px; margin:12px 0 22px; font-weight:700; font-size:15.5px; min-height:48px}
+.cta span:last-child{flex:none}
+section.ch{margin:34px 0 8px}
+.ch h2{display:flex; align-items:center; gap:10px; font-size:clamp(19px,4.6vw,23px); line-height:1.45; margin:0 0 12px; color:var(--navy)}
+.ch h2 .b{flex:none; width:34px; height:34px; border-radius:50%; border:2px solid var(--navy); display:grid; place-items:center; font-size:15px; font-family:system-ui,sans-serif}
+.ch p{margin:0 0 12px}
+.big3{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:6px 0 12px}
+.big3 div{border:1px solid var(--line); border-radius:12px; padding:10px 6px; text-align:center; background:var(--panel)}
+.big3 small{display:block; font-size:12.5px; color:var(--sub); line-height:1.45}
+.big3 b{display:block; font-size:clamp(26px,7.4vw,38px); color:var(--navy); line-height:1.3}
+.big3 div.hi{background:var(--cyan-soft); border-color:var(--cyan)} .big3 div.hi b{color:var(--cyan)}
+blockquote{margin:8px 0 2px; padding:10px 14px; background:var(--panel); border-left:4px solid var(--line); font-size:15px; color:var(--ink); border-radius:0 10px 10px 0}
+.src{font-size:12.5px; color:var(--sub); margin:0 0 8px} .src a{color:var(--navy)}
+.easy{background:var(--ok-bg); border-left:4px solid var(--ok); border-radius:0 10px 10px 0; padding:10px 14px; font-size:16px; margin:8px 0 10px}
+.easy b{color:var(--ok)}
+.note{font-size:13.5px; color:var(--sub); margin:4px 0 12px}
+.btn{font:inherit; font-size:17px; font-weight:800; color:#fff; background:linear-gradient(100deg,var(--navy),var(--cyan)); border:none; border-radius:12px; min-height:52px; padding:10px 18px; width:100%; cursor:pointer; letter-spacing:.04em}
+.btn.ghost{background:#fff; color:var(--navy); border:2px solid var(--navy); font-size:15px; min-height:46px; margin-top:8px}
+.btn:disabled{opacity:.55; cursor:default}
+/* ランキング */
+.rank{list-style:none; margin:12px 0 8px; padding:0}
+.rank li{display:grid; grid-template-columns:3.2em 1fr; gap:10px; align-items:center; border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px; background:#fff; min-height:64px}
+.rank .r{font-weight:800; color:var(--navy); font-size:19px; text-align:center; line-height:1.2}
+.rank .r small{display:block; font-size:11px; color:var(--sub); font-weight:600}
+.rank li.top .r{font-size:24px; color:var(--cyan)}
+.rank .body{min-width:0}
+.rank .nm{font-weight:800; font-size:16.5px; line-height:1.45}
+.rank .nk{font-size:12.5px; color:var(--sub)}
+.rank .t{height:12px; background:var(--line-soft); border-radius:6px; overflow:hidden; margin-top:5px}
+.rank .t i{display:block; height:100%; width:0; border-radius:6px; background:var(--navy); transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.rank li.top .t i{background:var(--cyan)}
+.rank .cnt{font-weight:800; font-size:15px; color:var(--navy)}
+.rank li.hide .body{visibility:hidden}
+.rank li.hide{background:repeating-linear-gradient(135deg,var(--panel),var(--panel) 10px,#fff 10px,#fff 20px)}
+.rank li.pop{animation:up .45s ease}
+@keyframes up{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+/* 種類ごとのカード */
+details.cat{border:1px solid var(--line); border-radius:12px; margin-bottom:10px; background:#fff}
+details.cat summary{cursor:pointer; padding:12px 14px; font-weight:800; font-size:16.5px; list-style:none; display:flex; justify-content:space-between; gap:10px; align-items:center; min-height:52px}
+details.cat summary::-webkit-details-marker{display:none}
+details.cat summary .c{flex:none; font-size:13.5px; color:var(--navy); background:var(--navy-soft); border-radius:99px; padding:2px 10px}
+details.cat[open] summary{border-bottom:1px solid var(--line-soft)}
+details.cat .in{padding:10px 14px 14px}
+.voices{list-style:none; margin:0 0 12px; padding:0}
+.voices li{border-left:4px solid var(--ng); background:var(--ng-bg); border-radius:0 10px 10px 0; padding:8px 12px; margin-bottom:7px; font-size:15.5px; line-height:1.7; overflow-wrap:anywhere}
+.voices li.mod{border-left-color:var(--warn); background:var(--warn-bg)}
+.voices li small{display:block; font-size:11.5px; color:var(--sub)}
+.sub-h{font-size:14px; font-weight:800; color:var(--sub); margin:12px 0 4px}
+/* くらべる */
+.cmp{margin:10px 0}
+.cmp .row{display:grid; grid-template-columns:1fr; gap:3px; margin:12px 0}
+.cmp .lab{font-size:14.5px; font-weight:700; line-height:1.4}
+.cmp .pair{display:grid; grid-template-columns:3.4em 1fr 3em; gap:8px; align-items:center; font-size:13px; color:var(--sub)}
+.cmp .t{height:14px; background:var(--line-soft); border-radius:7px; overflow:hidden}
+.cmp .t i{display:block; height:100%; width:0; border-radius:7px; transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.cmp .me i{background:var(--navy)} .cmp .ot i{background:var(--cyan)}
+.cmp b{text-align:right; color:var(--ink)}
+table{width:100%; border-collapse:collapse; font-size:14.5px; margin:8px 0}
+th,td{border-bottom:1px solid var(--line-soft); padding:7px 4px; text-align:left; vertical-align:top}
+th{font-size:12.5px; color:var(--sub); font-weight:700}
+td.n,th.n{text-align:right; white-space:nowrap}
+td:first-child{white-space:nowrap}
+tr.me td{font-weight:800; background:var(--navy-soft)}
+.flow svg{width:100%; max-width:380px; height:auto; display:block; margin:0 auto}
+.fade{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+.fade.in{opacity:1; transform:none}
+.foot{margin-top:28px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot h3{font-size:14px; color:var(--ink); margin:12px 0 4px}
+.foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .fade{opacity:1; transform:none; transition:none} .t i{transition:none!important} .rank li.pop{animation:none} }
+</style>
+<script>
+/* URLの後ろの ?… は付けず、ページの場所だけで数える（同じページが別々に数えられないように） */
+window.goatcounter = {path: function () { return location.pathname; }};
+</script>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho">アンチコメ図鑑<small>生活保護3年目のYouTuberの私に、実際に届いたものを全部数えた</small></h1>
+  <div class="for-who"><b>このページは、こういう方へ</b>
+    <ul><li>生活保護を受けると、世間から何を言われるのか知りたい方</li>
+    <li>生活保護を受けながら発信してみたい方</li>
+    <li>言われたとき、どう返せばいいのか知りたい方</li></ul></div>
+
+  <div class="conclusion"><div class="k">結論</div>
+    <p>動画 <span class="num" id="cVideos"></span>本のコメント <span class="num" id="cRead"></span>件を全部読むと、アンチコメは <b class="num" id="cAnti"></b> でした。種類は <span class="num" id="cKinds"></span>に分かれ、そのほとんどに、法律や国の資料で答えが出ています。</p></div>
+  <a class="cta" href="anti-kaeshi.html"><span>言われた言葉を選ぶと、事実での答えが出ます（アンチコメ返し）</span><span>→</span></a>
+
+  <section class="ch fade">
+    <h2><span class="b">1</span>どうやって数えたか</h2>
+    <div class="big3">
+      <div><small>調べた動画</small><b class="num" id="bVideos"></b></div>
+      <div><small>読んだコメント</small><b class="num" id="bRead"></b></div>
+      <div class="hi"><small>アンチコメ</small><b class="num" id="bAnti"></b></div>
+    </div>
+    <p>このチャンネルの通常動画・ライブ・ショートのコメント欄を全部取り出し、視聴者のコメントを1件ずつ読みました。そこに、AIモデレーターが配信中に止めていた記録を足しています。</p>
+    <div class="flow">
+      <svg viewBox="0 0 340 372" role="img" aria-label="コメントが届いてから、この図鑑に入るまでの流れ">
+        <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5f6a77"/></marker></defs>
+        <g font-family="Hiragino Sans, Yu Gothic, Meiryo, sans-serif" font-size="16" fill="#242c36">
+          <rect x="70" y="6" width="200" height="50" rx="12" fill="#fafbfc" stroke="#e2e7ec" stroke-width="2"/>
+          <text x="170" y="37" text-anchor="middle" font-weight="700">コメントが届く</text>
+          <line x1="170" y1="58" x2="170" y2="86" stroke="#5f6a77" stroke-width="2" marker-end="url(#ar)"/>
+          <rect x="50" y="90" width="240" height="70" rx="12" fill="#eef3f8" stroke="#2b5d8f" stroke-width="2"/>
+          <text x="170" y="120" text-anchor="middle" font-weight="700" fill="#2b5d8f">AIモデレーター</text><text x="170" y="144" text-anchor="middle" font-size="14">が先に読む</text>
+          <line x1="110" y1="162" x2="84" y2="204" stroke="#5f6a77" stroke-width="2" marker-end="url(#ar)"/>
+          <line x1="230" y1="162" x2="256" y2="204" stroke="#5f6a77" stroke-width="2" marker-end="url(#ar)"/>
+          <rect x="6" y="208" width="158" height="84" rx="12" fill="#f1f7f4" stroke="#2a7355" stroke-width="2"/>
+          <text x="85" y="238" text-anchor="middle" font-weight="700" fill="#2a7355" font-size="15">ふつうのコメント</text><text x="85" y="264" text-anchor="middle" font-size="14">そのまま表示</text>
+          <rect x="176" y="208" width="158" height="84" rx="12" fill="#fdf3f1" stroke="#a4483c" stroke-width="2"/>
+          <text x="255" y="238" text-anchor="middle" font-weight="700" fill="#a4483c" font-size="15">アンチコメ</text><text x="255" y="264" text-anchor="middle" font-size="14">止めて記録に残す</text>
+          <line x1="255" y1="294" x2="255" y2="322" stroke="#5f6a77" stroke-width="2" marker-end="url(#ar)"/>
+          <rect x="130" y="326" width="204" height="40" rx="12" fill="#e8f6fa" stroke="#1590b3" stroke-width="2"/>
+          <text x="232" y="352" text-anchor="middle" font-weight="700" fill="#1590b3" font-size="15">今回、初めて開けた</text>
+        </g>
+      </svg>
+    </div>
+    <div class="easy"><b>アンチコメに入れたもの</b>：私に向けた攻撃・嫌味・決めつけ・頼んでいない指図。<br><b>入れなかったもの</b>：ふつうの質問、「うらやましい」という感想、視聴者どうしの言い合い、常連の冗談。</div>
+    <p class="note">1件につき種類は1つだけ付けています。いくつも当てはまるコメントは、いちばん強い要素で分けました。</p>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">2</span>多い順ランキング</h2>
+    <p>下の順位から1つずつ開けていきます。</p>
+    <ol class="rank" id="rank"></ol>
+    <button class="btn" id="openNext">次の順位を開ける</button>
+    <button class="btn ghost" id="openAll">全部いっぺんに開ける</button>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">3</span>全部晒します。そして、事実で返します</h2>
+    <p>種類を押すと、届いたコメントの原文が全部出ます。投稿者の名前は載せていません。</p>
+    <div id="cats"></div>
+    <p class="note">薄い赤はコメント欄に書かれたもの、薄い黄色は配信中にAIモデレーターが止めた記録にだけ残っていたものです。</p>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">4</span>ほかの生活保護YouTuberにも届いているのか</h2>
+    <p>生活保護を受けながら発信している、ほかの <span class="num" id="oCh"></span>チャンネルのコメント <span class="num" id="oRead"></span>件も、同じ基準で読みました。名前は伏せています。</p>
+    <div class="big3">
+      <div><small>私<br>100件あたり</small><b class="num" id="rMe"></b></div>
+      <div class="hi"><small>ほかの人の合計<br>100件あたり</small><b class="num" id="rOt"></b></div>
+      <div><small>ほかの人の<br>いちばん多い所</small><b class="num" id="rMax"></b></div>
+    </div>
+    <table><thead><tr><th>だれ</th><th>どんな内容の回</th><th class="n">読んだ</th><th class="n">アンチ</th><th class="n">100件あたり</th></tr></thead><tbody id="chTable"></tbody></table>
+    <div class="easy"><b>見えてきたこと</b>：食事・お金・暮らしぶりを見せる回と、制度の使い方を解説する回は叩かれやすい。病気や作業所の話、働き始めた日常の回には、ほとんど来ていません。</div>
+
+    <h3 class="sub-h">種類ごとの割合をくらべる（アンチコメ全体を100%として）</h3>
+    <div class="cmp" id="cmp"></div>
+    <p class="note">紺色が私、水色がほかの人です。</p>
+    <h3 class="sub-h">ほかの人に届いていた言葉（短いものだけ）</h3>
+    <ul class="voices" id="otherVoices"></ul>
+  </section>
+
+  <div class="foot">
+    <h3>根拠にした資料</h3>
+    <ul>
+      <li>生活保護法（厚生労働省 法令等データベース）<br><a href="https://www.mhlw.go.jp/web/t_doc?dataId=82048000&dataType=0&pageNo=1">https://www.mhlw.go.jp/web/t_doc?dataId=82048000&amp;dataType=0&amp;pageNo=1</a></li>
+      <li>厚生労働省 社会保障審議会 生活保護制度の在り方に関する専門委員会 資料「補足性の原理について」<br><a href="https://www.mhlw.go.jp/shingi/2004/01/s0127-7k.html">https://www.mhlw.go.jp/shingi/2004/01/s0127-7k.html</a></li>
+      <li>衆議院 内閣衆質183第1号 答弁書（平成25年2月5日）<br><a href="https://www.shugiin.go.jp/internet/itdb_shitsumon.nsf/html/shitsumon/b183001.htm">https://www.shugiin.go.jp/internet/itdb_shitsumon.nsf/html/shitsumon/b183001.htm</a></li>
+      <li>東京都行政不服審査会 答申（保護課長通知 第3・問18の引用元）<br><a href="https://www.soumu.metro.tokyo.lg.jp/documents/d/soumu/0292_146">https://www.soumu.metro.tokyo.lg.jp/documents/d/soumu/0292_146</a></li>
+    </ul>
+    <h3>読むときの注意</h3>
+    <ul>
+      <li>アンチコメかどうかは、1件ずつ読んで決めています。線引きは人によって変わるので、件数は目安です。</li>
+      <li>私の分には、AIモデレーターが止めた記録も入っています。ほかの人の分は、いまコメント欄に残っているものしか見えません。消されたコメントは数えられていないので、ほかの人の数字は実際より少なく出ます。</li>
+      <li>ほかの人は、再生数の多い動画を1チャンネルにつき6本ずつ調べました。コメントが多い1チャンネルだけは、無作為に選んだ400件を読んでいます。</li>
+      <li>不正受給の割合（約0.39%）は平成22年度の数字です。新しい年度の割合は、今回は原文で確かめられていません。</li>
+      <li>保護課長通知は、東京都の答申書に引用された文をそのまま載せています。</li>
+      <li>制度の扱いは、お住まいの福祉事務所で確認してください。</li>
+      <li>確認日：<span id="checked"></span></li>
+    </ul>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA">リベル_Liber（YouTubeチャンネル）</a></p>
+  </div>
+</main>
+
+<script>
+const D = {"checked": "2026-10-01", "mine": {"videos": 185, "read": 880, "anti": 151, "anti_visible": 135, "anti_moderator_only": 16}, "others": {"read": 1740, "anti": 150, "channels": [{"label": "Aさん", "kind": "食事と暮らしを見せる", "read": 60, "anti": 23}, {"label": "Bさん", "kind": "お金の使い道を公開する", "read": 33, "anti": 8}, {"label": "Cさん", "kind": "休日の過ごし方を見せる", "read": 26, "anti": 5}, {"label": "Dさん", "kind": "制度の使い方を解説する", "read": 400, "anti": 61}, {"label": "Eさん", "kind": "生い立ちを語る", "read": 222, "anti": 19}, {"label": "Fさん", "kind": "保護費の金額を公開する", "read": 97, "anti": 8}, {"label": "Gさん", "kind": "うつと暮らしの日常", "read": 345, "anti": 17}, {"label": "Hさん", "kind": "給付金の速報", "read": 215, "anti": 8}, {"label": "Iさん", "kind": "制度の指南", "read": 28, "anti": 1}, {"label": "Jさん", "kind": "病気と作業所の話", "read": 168, "anti": 0}, {"label": "Kさん", "kind": "働き始めた日常", "read": 146, "anti": 0}]}, "cats": [{"id": "A", "name": "暴言・嫌味・説教", "rank": 1, "n": 39, "others": 49, "texts": ["ウ～ン……良くも悪くもずっと生活保護のお世話になりそうやね😎 こんだけ医療機関通ってると、保護抜けたらとても払えんし、普通に就職も無理やろうし😎", "カッコつけた生活保護者だな面白くないもっとバカになって下さい", "もう仕事出来ないだろ😂", "ゴミがMac使うなよ豚に真珠やぞ😂", "パチやによく居ますか。", "全部調べるぞ。当たり前やろ。貯金あるくせに受けれるわけない。", "毎日毎日、１日中何してるの？", "人生なめんな", "スキル磨いても仕事ないと思う。失敗しまくれよ", "胸糞悪いわ、真面目に仕事してもギリギリの生活してるのに、人生なめつとやがる", "うちの職場で絶対に月10万しか稼がないで週3しか働かないおっさんいるけど、普通に幸せそうだけどね。 貯金はしてないと思うけど、家賃4万で週末は何してるか分らんけどどっかにでかけてるらしい。 貴方が何で保護受けてるか分からないけど、免除も多いのに何もしないでお金貰える立場でなんで文句言えるの？って感じ。 「生活保護じゃ生活できません」みたいな間違った情報流して保護費上げて海外の生活保護受給者の生活を助けたいんですか？反日ですか？ 社会復帰できるなら黙って復帰すれば良いのに、「生活保護少なすぎ！」みたいな動画上げてる意味が分からん。 働きたくないから金くれって言った方が面白いよ。", "このオッサン世の中舐めてんな", "っていうか、何をいいたいのかわからない。", "食うな！", "これなに目当て？同情でもして欲しいの？", "自己責任", "情けネェ奴。😅", "言い訳を並べるだけの人生羨ましいわ", "何だか負け犬の遠吠えにしか聞こえなくて逆に気の毒になってしまった…収入が増えたら打ち切られるので今のうちに楽めばいいかと✨今後は移民が増えて日本人の底辺弱者からどんどん間引かれて行くので🤣", "なんだかぁ〜いいのこんなんで…", "始めまして いいなー 自分は今を将来のために生きてるから先を見据えて生きようね あと少し病んでませんか（笑） 貧しいと心がね", "あぁ、この人社会生活ムリな人なんですね。 その意味病気みたいなもんだから生活保護でいいんじゃないですか。 真面目に働いてる人から見たらムカつくけど、悪びれずにこんな動画上げれるところも病気故に。", "働かないなら乞食になってください、私たち一生懸命働いてる人たちの税金で楽して暮らして、何が無理に働く必要はないだ、ゴミ野郎、働かないのは勝手だけど働かないなら乞食になれ、一日でも早く生活保護が打ち切られますように心から願っています", "決定した時が一番嬉しいかもね😊その後の創意工夫に心がけしないとね。生活保護が権利と思ったら、終わりですからね😅", "Boo.", "3年も生活保護の支給をされ続けているのだから、高い確率で抜けられなくなってきていますね。頑張ってくださいよ。", "最強のナマポや😊", "ナニ考えているんや頭ウジ～わいとる？", "生活保護のくせに、なんでこんな意識高い系なの？😂 偉そうに喋ってないで、さっさと生活保護から卒業してください", "生活保護のままだと、ワーホリ参加出来ないね！ 🐒🍌♪", "車道走れよ", "このまま、死ぬまで生活保護のままですか？仕事したくない人は、生活保護をずっと続ける人も多いみたいです。", "生活保護の人は話は長いけど何言ってるかわからない人多い。結論から話さない人多いꉂ🤣𐤔", "迷走", "何故生きてる？", "偏見になるけどYouTubeやる人は承認欲求の塊な気がします🤔", "本気じゃないなら仕事続かなそうですね 🤔難しい", "もうすぐ終わりだってわかった方がいいですよ。", "ナマポおやじ！"], "mod": ["このまま、死ぬまで生活保護のままですか？仕事したくない人は、生活保護をずっと続ける人も多いみたいです。", "生活保護の人は話は長いけど何言ってるかわからない人多い。結論から話さない人多いꉂ🤣𐤔", "迷走", "何故生きてる？", "偏見になるけどYouTubeやる人は承認欲求の塊な気がします🤔", "本気じゃないなら仕事続かなそうですね 🤔難しい", "もうすぐ終わりだってわかった方がいいですよ。", "ナマポおやじ！"], "examples": ["一生入っとれ", "説明がとろい", "なんかかわいそう", "ただの甘ったれやん"], "nick": "ただ言いたいだけの人たち", "answer": "中身が悪口だけなので、返せる事実がありません。AIが読んで、静かにブロックしています。", "quotes": []}, {"id": "W", "name": "働け", "rank": 2, "n": 22, "others": 20, "texts": ["生活保護受給者、、、働きます。 じゃないんだw", "カメラアングルこだわったり 配信収入はナマポに 影響ないんかー はたらけよ、税金払えよ", "働けよ", "いつ仕事はじめます？ 就活努力の動画も見てみたいです。", "何で一人暮らしでマスクするんですか？ 保湿かなんかなのかな？ あー、仕事の顔出しで？ 収入申告するくらいなら、しっかり働けるよ", "配信する元気があるなら頼むから働いてくれ", "早く仕事行け", "生活保護受けているのにYouTubeやるエネルギーがあるから働ける。若いんだから。", "30分しか寝ないでUberすれば？", "生活保護やめてダブルワークする。 したら30万は収入行くだろ。", "清掃のパートに行ってる50代のおばちゃんです。人手不足で清掃パート求人めちゃクチャ多いですよ🧹🧽体力に自信がなければ、1日3時間週3回、4回などオススメです。", "そんなに働くのが嫌かね？どいつもこいつもナマポ、ナマポって。恥ずかしくないの？", "リベルさんなら、一般就労で在宅で出来る仕事がいくらでもあると思います。福祉の事業所は、辞めておいた方がご自分の為だと思いますが、、💦", "俺もずっと後遺症でしんどいわ。 働けや。ムカつくな。", "こんな優雅な生活保護エエなー笑 早く働いたら！", "お前まだ働いてないんか ハゲまじで通報したろ", "基礎正しい生活するなら､作業所に行けば⁇", "掃除してお金もらえばいいんじゃないですか？", "バカヤローお前働け！ワシ働いたって朝晩2食しか食ってねーぞ", "仕事しますか？", "働ける健常者が働かないのはそもそも違うと思います", "値上げした分だけ稼げば良いだけの話!!"], "mod": ["仕事しますか？", "働ける健常者が働かないのはそもそも違うと思います", "値上げした分だけ稼げば良いだけの話!!"], "examples": ["仕事しようね。", "働かないで、ムカつく", "いつから働くのですか。", "頼む！働いてくれ その金は労働者が納めた税金や。"], "nick": "とにかく働かせたい人たち", "answer": "働けるかどうかを決めるのは、コメント欄ではなく福祉事務所です。国は「能力があるか」「働く意思があるか」「実際に働く場があるか」の3つで判断するとしています。", "quotes": [{"text": "稼働能力を活用しているか否かについては、(1)稼働能力を有するか否か (2)その稼働能力を活用する意思があるか否か (3)実際に稼働能力を活用する就労の場を得ることができるか否か の３つの要素により判断", "src": "厚生労働省 社会保障審議会 生活保護制度の在り方に関する専門委員会 資料「補足性の原理について」", "url": "https://www.mhlw.go.jp/shingi/2004/01/s0127-7k.html"}], "self": "ちなみに私は、YouTubeと在宅ワークで収入のある仕事を1日7時間30分しています。", "selflink": ["hima-setsumei.html", "生活保護は暇じゃない"]}, {"id": "L", "name": "生活保護に見えない・贅沢だ", "rank": 3, "n": 17, "others": 21, "texts": ["本当に生活保護受けてるんですか？めちゃくちゃ部屋がきれい😮", "生活保護とは思えない生活ですね。自分は透析をしながら障害年金とアルバイトで生活してます。 若いんだからなんなと贅沢をいわなきゃ仕事があると思います。自分も障害年金がおりる間だけ生活保護を受給してもらいましたが貰うまでは家の家電全部売ってギリギリまで貰いませんでした。一般家庭より贅沢な家の状態ですね。 恥ずかしくないですか。動画に出すの。仕事を探して下さい。生活保護を勘違いしてませんか?", "生保なのに部屋がいい部屋だな。動画の収支は報告してますか？パソコンは大丈夫ですか？", "生活保護は金持ちだな。", "ＮＨＫで、去年、生活苦で、自殺した生活保護者が131人居たとやってたけど、部屋だけ見ると、生活保護感ないね。", "生活保護の割りにいい部屋住んでるんだね😅😊", "外国人が働いて税金払って、 日本人は生活保護貰えるおめでとう。 いい家電、パソコン持ってるね。", "まずなんでパソコンやカメラを持てるんだ… 私も生活保護受けてましたけど、 高価なものはほぼ現金化して 生活保護費支給から引く感じだったが… 本当に生活保護？", "年金ぐらしの爺さんよりか良い暮らし😂", "爺さんよりいい生活だ。", "なるほど、頑張って働いてある程度理想の部屋に整えてから生保受けたほうが良さそうですね", "なんでこんないいところ住んでんの😂", "お家広いですね。生活保護には思えません。", "生活保護は最低な生活しなあかんみたいですよ。必要最低限の生活ですよ。よく考えて行動しないと後悔するよ。", "生活保護の身でウォーターサーバや自転車パソコン？舐めすぎ普通に働けんだろ", "働いている俺よりも優雅な暮らしに見える… 働くってなんなんだろう…", "生活保護受けてる人に見えない。受けてる人何人もあったことあるけどこの人働くことできないだろうなって人ばかり"], "mod": ["生活保護受けてる人に見えない。受けてる人何人もあったことあるけどこの人働くことできないだろうなって人ばかり"], "examples": ["贅沢してますね。", "２４万円凄い金額", "鮭 2枚！ゆで卵2個！贅沢だ", "東京に住む事自体おかしいだろ。"], "nick": "部屋と持ち物を見張る人たち", "answer": "パソコンやスマホのような生活用品は、その地域で7割を超える世帯が持っているものなら、原則として持っていてよいことになっています。部屋がきれいなのは、掃除をしているからです。", "quotes": [{"text": "それ以外の生活用品については、当該地域の普及率が70％を超えるものについては、地域住民との均衡などを勘案の上、原則として保有を容認", "src": "厚生労働省 社会保障審議会 生活保護制度の在り方に関する専門委員会 資料「補足性の原理について」", "url": "https://www.mhlw.go.jp/shingi/2004/01/s0127-7k.html"}]}, {"id": "D", "name": "本当に病気？本当に生活保護？", "rank": 4, "n": 16, "others": 9, "texts": ["「食事の時が一番苦しさがでる」→お菓子ポリポリしながらリラックス", "管財人つくんじゃ借金金額と流れに問題があったのかな？普通自己破産は管財人よっぽどじゃないと付かないからね。", "これ、事務所でしょ！？生活保護って設定まるだしやで。", "生活保護3年目？まだ若いのに仕事斡旋してこないかい？担当の人が。鬱とか精神的な理由で生活保護貰ってんのかな？", "嘘くさい", "コメント欄荒れてますね。本当の精神疾患者はYoutube動画も撮れないし詐病にしか見えません。グループホームとデイケアorｂ型作業所でいいんじゃないでしょうか？制限ありますが家賃や医療費、食費も無料になります", "顔もイケメンで、体力もありそうでメンタルも問題なさそうなのになんで生活保護受給し続けられるのか謎", "何か観てたら計画破産みたいで正直ズルいと思う 破産費用ぐらい自分で出して当たり前の事だと思う 見た目はどこが悪いのか知らないが簡単に生活保護は受給出来るんやね 自分の親父は年金4万少しでギリギリで生活してるよ もう80歳ぐらいやけどね 母親は早くに亡くなってるので兄妹3人で何とか親父の生活を支えてる感じやけどね 何かパソコンとかも持ってるのに生活保護を受給出来る事が信じられない 周りで金銭的に困窮してる人ら知ってるけど皆んな市役所行って生活保護を申請しても受給出来ないのが現状やから貴方はYouTuberで生活保護受給して楽そうに見えて仕方ない まだ若いんやから必死で働いてみたら", "あの〜60万持ってた時なんで自己破産しなかったんですか？多分保護受ける 2ヶ月前に60万の残高がありましたよね？", "変わっているね!どう見ても五体満足に見えるけど。働くことが嫌なのですか?", "ちょっと話がうさん臭くなってきた気が。", "なんで生活保護受給がとおったん？ 病気？まだ若いのに", "パニック障害は、薬のんでれば発作おきませんよ😊", "生活保護ではなく 己の蓄えを崩す生活でもいいから こういう のんびりした生活がしたいなぁ と思います😊 なぜ こんなにも若い人が保護をもらえるのだろうか:yougotthis:", "まだ若いのにね", "実家で暮らさずに生活保護を貰ってるのは、何か戦略があるのでしょうか?"], "mod": ["実家で暮らさずに生活保護を貰ってるのは、何か戦略があるのでしょうか?"], "examples": ["嘘はいけませんね。", "精神に保護は駄目だろ", "精力的に働いて、うつ病、生保、なんだかな--", "えっ、結婚していて生活保護❓️よく分からない展開。🤔"], "nick": "画面ごしに診断する人たち", "answer": "病気かどうか、働けるかどうかは、動画の見た目では分かりません。判断するのは福祉事務所で、国が示している判断の要素も決まっています。", "quotes": [{"text": "稼働能力を活用しているか否かについては、(1)稼働能力を有するか否か (2)その稼働能力を活用する意思があるか否か (3)実際に稼働能力を活用する就労の場を得ることができるか否か の３つの要素により判断", "src": "厚生労働省 社会保障審議会 生活保護制度の在り方に関する専門委員会 資料「補足性の原理について」", "url": "https://www.mhlw.go.jp/shingi/2004/01/s0127-7k.html"}]}, {"id": "F", "name": "申告してるのか・不正受給だ・通報する", "rank": 5, "n": 13, "others": 14, "texts": ["ふせーじゅきゅうじゃない？", "臨時収入はちゃんと申告してますか?しないと生活保護廃止されますよ❗❗❗", "臨時収入があったら申告してその分保護費減らされるのでは？無申告で贅沢しているって公表しているの？勘違いだったらすみません。", "収入申告しないと不正受給になってしまいますよ。", "プラスになったら返還しなさい", "生保でユ−チュ−ブやって 収入を得てはいけないはず ですけど", "YouTube配信の収入は申告されてますか？広告も付けて… っか、何でマイナス？なんぼでも節約すれば生きていけますよ。貯金なんか出来ないし😤", "動画収入も申告して下さいよ。", "不正受給するなクズ", "ブラインド何とかして‼。もし宝くじを９０００円買い２万円の収入があっても、そこまでケースワーカーはわからない。通帳に記入すれば福祉事務所としては通帳を見る権利があるので、不正がばれる。【コレコレチャンネル、見て見て、違法している生活保護受給者ばですよ‼。】", "えー😱、 おかしくない？？？YouTube収益とかきちんと申請してますか？ 健常者なら大体13万（生活扶助／住宅扶助）障害者で14くらい。 家賃はマックス4〜5.5※都内近郊だとして、残金約／7万くらいしか、生活扶助残らないです。※単身受給時。 YouTube収益が有れば申請して翌月の支給額より調整されますが、旅行に行く予算どうやって作りました？？？ 逆に知りたいです。 食費／20,000- ガス、水、電気／20,000- 携帯／5,000-と、最低額で算出しても残金／25,000- タバコとおっしゃってたから、タバコ代月／10,000- なら、15,000しか残らない… 旅行行けます？？？👀", "抜けで働いてますよ、日雇いなら会社ぐるみで隠蔽、後YouTube収入も含むのさ、動画見ずにコメント欄のみ見て投稿中、", "おまい何やってんの？ユーチューブが収益化されたら、ナマポ取り消されるで？"], "mod": [], "examples": ["この収益はどうしてるんだ", "YouTubeの収益は、 ちゃんと報告してるのですか？", "そもそも生活保護制度を悪用しているとしか思えない内容だ。", "ユーチューブしていたら収入とみなされ減額の対象にはなりませんか。"], "nick": "コメント欄のケースワーカーたち", "answer": "収入があったら届け出る。これが法律の決まりです。届け出たうえで得た収入は、不正受給ではありません。なお、不正受給の金額は、政府の答弁では保護費全体の約0.39%（平成22年度）です。", "quotes": [{"text": "被保護者は、収入、支出その他生計の状況について変動があつたとき、又は居住地若しくは世帯の構成に異動があつたときは、すみやかに、保護の実施機関又は福祉事務所長にその旨を届け出なければならない。", "src": "生活保護法 第61条", "url": "https://www.mhlw.go.jp/web/t_doc?dataId=82048000&dataType=0&pageNo=1"}, {"text": "平成二十二年度における生活保護費の総額に対する不正受給の金額の割合は、約〇・三九パーセントである。", "src": "衆議院 内閣衆質183第1号 答弁書（平成25年2月5日）", "url": "https://www.shugiin.go.jp/internet/itdb_shitsumon.nsf/html/shitsumon/b183001.htm"}]}, {"id": "T", "name": "税金で暮らしてるくせに", "rank": 6, "n": 12, "others": 25, "texts": ["もうYouTube上げれるんやったらエエ加減に生活保護を辞退したら！ 情け無い動画ばかりで観てて俺の子供より下行ってるやん笑 ちなみに俺の息子は21歳で18歳から重度の心臓の慈悲あるけど頑張って仕事してるから 前々から言うてるけど、君は国に甘え過ぎや！ 全部俺らの汗水垂らして働いた血税や！ 意味わかるか⁉️ 君が机の上に置いてる棒状の芳香剤高いよなー 高いからウチは違う安い芳香剤に5年以上前に芳香剤変えたから 何で生活保護者が高い芳香剤使えるの？ 人生舐めてんかてよー", "まだ生活保護受給してるんや 違約金35000円も国民の税金なんやろ 君の生活状況見てたら生活保護を受給してる人間には見えないけどね 1日でも早く人の税金で甘えて暮らさないで普通に仕事する事をお勧めする てかパソコン持ってていけんの？ アンタは人生甘え過ぎてるよな", "俺の血税", "自分の働いたお金で家計簿つけて貯金などの話しして下さい、人様の税金でマイナスだとか意味がわからない？だいたいパソコンまで持ってる質屋に入れるぐらいの気持ち持つように、税金ですよ", "毎日必死に働いてとんでもなく税金払わされてる身からしたら、生保だけで厳しいとか、課金してるとか、だから余裕ないとか、◯意すら湧く。", "タダでお金貰えるだけええやん", "まずは税金収めている国民に感謝の気持ちを表してほしいです・・・", "私は心身に問題がない場合、40歳以下の受給には反対です。 40歳以上だと生活保護費の原資となる税金を長年収めてきたからです。 大した税金も収めてないのに生活保護を受けてる健常者は廃止にすべき。", "嫉妬とか、そんなことじゃなくてｗ 助けた人が踏ん反り返ってたら、腹立ちますよね？ それだけの話ですよ。 別に萎縮する必要はないけど、他人の金、力で暮らしている人間が何言ってるの？ としか。", "はじめまして。私も大病を患った身なので体が動かない時のメンタルや金銭状態、回復しないかもしれないという将来への不安はよくわかりお察しします。 ただ私の周りでは日給7000円で20日炎天下で重量物を運ぶ、また這いつくばって粉末で汚れた工場の清掃をする、電子レンジのように熱くなった海運コンテナの中で段ボールや土嚢袋を運び続ける方々の姿、食生活、所有している物を見ているので正直ここでのコメント（役所が細かいことを聞きすぎる）や投稿者さんのコメント、生活、保護を受ける前に物を買いそろえる態度に同情も共感も出来ません。周りを目をこらして見てください。皆々様の納めた血税に手を付ける事を恥として生活保護より少ない賃金で働き続ける方々は大勢います。投稿者さんを責める気はありません、ただ私は貧しくとも自活しTシャツに潮の模様がまだらが出るほど汗をかきながらそれでも毎日笑顔で過ごす彼らを誉めてあげたい。", "｢普通｣は確かに人によって違うと思いますが、医療費無料・NHK無料、税金納めなくていい、この時点で｢普通｣とは違うと思います。 本来ならその中から医療費でもなんでも負担しないといけないので… 自分でそれができないから生活保護を受ける訳で、それを普通にしてはいけないと思いますね…", "生活保護を受けている人の生活水準を世の中で働いている人の最低生活水準よりは下にしないと働く気力がなくなる…。海外には劣等処遇の原則というものがあるそうです"], "mod": [], "examples": ["税金払えお前ら", "生活保護は廃止", "生活保護 天国", "働いてるのバカくさいわ！"], "nick": "納税者代表の人たち", "answer": "保護費が税金から出ているのは、そのとおりです。ただ、それは法律が決めた税金の使い道です。国が4分の3を負担すること、要件を満たせば誰でも受けられることが、法律に書いてあります。", "quotes": [{"text": "すべて国民は、この法律の定める要件を満たす限り、この法律による保護を、無差別平等に受けることができる。", "src": "生活保護法 第2条", "url": "https://www.mhlw.go.jp/web/t_doc?dataId=82048000&dataType=0&pageNo=1"}, {"text": "国は、政令で定めるところにより、次に掲げる費用を負担しなければならない。一　市町村及び都道府県が支弁した保護費、保護施設事務費及び委託事務費の四分の三", "src": "生活保護法 第75条", "url": "https://www.mhlw.go.jp/web/t_doc?dataId=82048000&dataType=0&pageNo=1"}]}, {"id": "N", "name": "節約しろ（頼んでない指図）", "rank": 6, "n": 12, "others": 5, "texts": ["水道水飲んどけ", "そもそも水なんて、高額なウォーターサーバー設置せずに、スーパーで買った水を冷蔵庫に入れとけば良い話😎", "炊飯器が無いのかな？ ご飯は多めに炊いて冷凍しといたら良いのでそれらのが経済的ですし、過去に私もパックご飯の時期が有りましたが添加物多いし身体にも悪いですよー", "もうちょっと節約できそうですね！ 花粉なら病院無料だから病院のほうがいいと思います😊 アマプラやプレミアやウォーターサーバーは解約！", "食費を削るしかありませんよ。", "生活保護の方達を25年支援していますが、麺はスーパーなら20円、スープも100円未満。 動画に映っている食品はもってのほかありえない商品です。 機器と趣味嗜好品（タバコ・お酒）をもうけてる人程、お金がない状況。 年齢が若い人は、みなさんが限度を超えない範囲の人と接する単発仕事をしています。 動画関連で一部の編集や作成などの仕事があるといいですね。", "え、保護費って物価で変動しないの？てか、さすがに万単位でオーバーするのは単なる使いすぎでは。", "リベルさん 1日１食で、そんな食費かかりますか？自分は16000円ですよ 1日2食で！", "こんにちは。パックご飯は便利だけど身体に良くないプラスチック米や放射線米などが使われている可能性がありますし割高ですからお米は農家さんから直接買われた方が健康には良いかと思います。炊飯器で炊いた方が楽です。", "ご飯は炊いた方がいいよ。パックは流石に割高だ", "本当に健康のことを考えるなら、もっと野菜を取りなさい。メニューに野菜が無さすぎる！", "携帯に10万超えてる事態でおかしいと思うのは私の感覚のズレからか？せめて5万以下であって欲しいw"], "mod": ["携帯に10万超えてる事態でおかしいと思うのは私の感覚のズレからか？せめて5万以下であって欲しいw"], "examples": ["夫婦+子ども1人のうちよりも食費が高い…。"], "nick": "頼んでいない家計アドバイザーたち", "answer": "節約に努めることは、法律で本人の務めとされています。ただ、パックご飯にするか炊くか、水をどう買うかまで決めるのは本人です。決められた保護費の中でやり繰りしています。", "quotes": [{"text": "被保護者は、常に、能力に応じて勤労に励み、自ら、健康の保持及び増進に努め、収入、支出その他生計の状況を適切に把握するとともに支出の節約を図り、その他生活の維持及び向上に努めなければならない。", "src": "生活保護法 第60条", "url": "https://www.mhlw.go.jp/web/t_doc?dataId=82048000&dataType=0&pageNo=1"}]}, {"id": "P", "name": "YouTubeやるな・どうせ伸びない", "rank": 8, "n": 8, "others": 6, "texts": ["生活保護youtuberで自立出来た奴、居るんかな？", "またアンチを呼び込む作戦だね", "損得なく 動画を数本観ていて思ったことですが、このチャンネルが普通に伸びることはないでしょう。 生活保護でAIに特化した仕事が出来ますって言われても 何も世間一般で響かないでしょう。 あなたが 女性を惹きつけるようなイケメンでもなくそもそも同性にも惹かれるようなカリスマ性も皆無ですし。 仕事としてAIを駆使したデジタルクリエイターの方とは、そもそもレベルが違いすぎて話にならないと思いますよ。 稼げて月10万ちょっとじゃないですか？ おそらく同年代だと思うので 言わせてもらいますが ちゃんと現実を直視した方がいいんじゃないですか？ 自分は あなたの給付金のやく10倍以上は 月に働いて稼いでますよ。", "またアンチを集める策略ですか？", "とても大変なのはわかりますし、お大事になさってください。ですが 生活保護を拡散しないでください。 勘違いした若者が多く受給しているのが現状です。タイトルに書いてあるだけで悲しくなる。", "趣味ならすごーい！ってレベル。仕事にするとか稼ぐと言われたら苦笑いしちゃうレベル。", "また視聴者減りますよ😭", "チャット読んでるだけでぜんぜんおもしろくない"], "mod": ["また視聴者減りますよ😭", "チャット読んでるだけでぜんぜんおもしろくない"], "examples": ["助長する動画はやめろ", "こんな動画やめて不正受給勧めてるの、。", "生活保護を正当化しておすすめするのはいかがなものでしょうか？", "あまり。生活保護の話をしないでください、それでいじめ似合いましたら、貴方責任取れますか？"], "nick": "チャンネルの将来を心配する人たち", "answer": "生活保護を受けている人が発信することを禁じる決まりは、今回調べた法律と通知の中には見当たりませんでした。収入が出たら届け出る、という決まりがあるだけです。", "quotes": [{"text": "被保護者は、収入、支出その他生計の状況について変動があつたとき、又は居住地若しくは世帯の構成に異動があつたときは、すみやかに、保護の実施機関又は福祉事務所長にその旨を届け出なければならない。", "src": "生活保護法 第61条", "url": "https://www.mhlw.go.jp/web/t_doc?dataId=82048000&dataType=0&pageNo=1"}]}, {"id": "H", "name": "見た目いじり", "rank": 9, "n": 7, "others": 0, "texts": ["この男性生活保護受給者なのに太ってる。", "前髪もさみしい…", "カッパヘアに金かけるなら、バリカン買って丸刈りしたほうがよくない？", "そんな「え⁉️」を連呼しなくても😅 もう諦めてスキンヘッドになって シ◯ズミ2代目として頑張るしかないべぇ～🧑‍🦲", "２０代ならわかるけど ４０代ならもうまず無理です 遺伝か加齢による衰えです", "男は歳取ると(40近辺)ほぼ白髪か禿げるかの2択です", "ちょっと何ソレ。全然すっきりしてないじゃないの！ そんなんじゃまたすぐに切りに来なきゃダメでしょ。もっと短く刈りこんでもらいな！ 母より🧓"], "mod": [], "examples": [], "nick": "髪型が気になる人たち", "answer": "髪の毛と体型は、生活保護の制度と関係がありません。返せる資料がないので、そのまま受け取ります。", "quotes": []}, {"id": "S", "name": "貯金するな", "rank": 10, "n": 3, "others": 1, "texts": ["なめてんのか なんで生活保護で貯金できんだよ 真面目に働いてる人間が社会貢献として恩恵を受けるべきではないでしょうか？", "あれ？生活保護者は、貯金しちゃ駄目なんですよ! 働いたら⁉️", "生活保護で貯金するの？ 働いても貯金なんて難しいけど。"], "mod": [], "examples": ["働いても働いても、毎月の貯金なんて僅かな金額。 生活保護でタンス預金って、どういう事やねん"], "nick": "貯金を許さない人たち", "answer": "保護費をやり繰りして貯めたお金は、使い道が生活保護の趣旨に反しなければ、持っていてよいことになっています。たとえば家電の買い替えに備える、といった目的です。認められるかどうかは、福祉事務所が使い道を聞いて判断します。", "quotes": [{"text": "当該預貯金等の使用目的を聴取し、その使用目的が生活保護の趣旨目的に反しないと認められる場合については、活用すべき資産には当たらないものとして、保有を容認して差しつかえない。", "src": "厚生省社会局保護課長通知 第3・問18・答（東京都行政不服審査会の答申書に引用されたもの）", "url": "https://www.soumu.metro.tokyo.lg.jp/documents/d/soumu/0292_146"}]}, {"id": "M", "name": "自分のほうが苦しい", "rank": 11, "n": 2, "others": 0, "texts": ["障害で結婚子供4人でも節約すれば生活できますよ！", "オレも生活保護だけどさ。障がい者で手帳は1級、4級、4級と3つとも違う疾患で。けどさ働ける時は働き生活保護費は減額させてる。キミ、毎日楽しそうだね。"], "mod": [], "examples": [], "nick": "苦労くらべをする人たち", "answer": "生活が苦しいなら、あなたも申請できます。要件を満たせば、誰でも同じように受けられる制度です。", "quotes": [{"text": "すべて国民は、この法律の定める要件を満たす限り、この法律による保護を、無差別平等に受けることができる。", "src": "生活保護法 第2条", "url": "https://www.mhlw.go.jp/web/t_doc?dataId=82048000&dataType=0&pageNo=1"}]}]};
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const per100 = (a, n) => n ? Math.round(a / n * 100) : 0;
+const pct = (a, n) => n ? Math.round(a / n * 100) : 0;
+
+// 数字はすべてデータから出す
+$('cVideos').textContent = D.mine.videos; $('bVideos').textContent = D.mine.videos + '本';
+$('cRead').textContent = D.mine.read.toLocaleString(); $('bRead').textContent = D.mine.read.toLocaleString() + '件';
+$('cAnti').textContent = D.mine.anti + '件'; $('bAnti').textContent = D.mine.anti + '件';
+$('cKinds').textContent = D.cats.length;
+$('checked').textContent = D.checked.replace(/^(\d+)-(\d+)-(\d+)$/, (m, y, mo, d) => `${y}年${+mo}月${+d}日`);
+
+// 2. ランキング（下の順位から開ける）
+const max = Math.max(...D.cats.map(c => c.n));
+const rankEl = $('rank');
+D.cats.forEach((c, i) => {
+  const li = document.createElement('li');
+  li.className = 'hide' + (c.rank === 1 ? ' top' : '');
+  li.innerHTML = `<div class="r">${c.rank}<small>位</small></div>
+    <div class="body"><div class="nm">${esc(c.name)} <span class="cnt num">${c.n}件</span></div>
+    <div class="nk">${esc(c.nick)}</div><div class="t"><i data-w="${c.n / max * 100}"></i></div></div>`;
+  rankEl.appendChild(li);
+});
+let opened = 0;
+function openOne() {
+  const lis = [...rankEl.children], li = lis[lis.length - 1 - opened];
+  if (!li) return;
+  li.classList.remove('hide'); li.classList.add('pop');
+  requestAnimationFrame(() => requestAnimationFrame(() => { const i = li.querySelector('i'); i.style.width = i.dataset.w + '%'; }));
+  opened++;
+  if (opened >= lis.length) { $('openNext').disabled = true; $('openNext').textContent = '全部開きました'; $('openAll').style.display = 'none'; }
+  else $('openNext').textContent = `次の順位を開ける（残り${lis.length - opened}つ）`;
+}
+$('openNext').addEventListener('click', openOne);
+$('openAll').addEventListener('click', () => { while (opened < rankEl.children.length) openOne(); });
+
+// 3. 種類ごとの原文と答え
+$('cats').innerHTML = D.cats.map(c => {
+  const voices = c.texts.map(t => `<li${c.mod && c.mod.includes(t) ? ' class="mod"' : ''}>${esc(t)}</li>`).join('');
+  const quotes = c.quotes.map(q => `<blockquote>${esc(q.text)}</blockquote><p class="src">出どころ：<a href="${q.url}">${esc(q.src)}</a></p>`).join('');
+  const self = c.self ? `<p class="note">${esc(c.self)}（<a href="${c.selflink[0]}">${esc(c.selflink[1])}</a>）</p>` : '';
+  return `<details class="cat"><summary><span>${c.rank}位　${esc(c.name)}</span><span class="c num">${c.n}件</span></summary>
+    <div class="in"><ul class="voices">${voices}</ul>
+    <div class="sub-h">事実で返すと</div><div class="easy">${esc(c.answer)}</div>${quotes}${self}</div></details>`;
+}).join('');
+
+// 4. ほかの人とくらべる
+const o = D.others;
+$('oCh').textContent = o.channels.length; $('oRead').textContent = o.read.toLocaleString();
+$('rMe').textContent = per100(D.mine.anti_visible, D.mine.read) + '件';
+$('rOt').textContent = per100(o.anti, o.read) + '件';
+$('rMax').textContent = Math.max(...o.channels.map(c => per100(c.anti, c.read))) + '件';
+$('chTable').innerHTML =
+  `<tr class="me"><td>私</td><td>生活保護3年目の日常</td><td class="n num">${D.mine.read}</td><td class="n num">${D.mine.anti_visible}</td><td class="n num">${per100(D.mine.anti_visible, D.mine.read)}件</td></tr>` +
+  o.channels.map(c => `<tr><td>${c.label}</td><td>${esc(c.kind)}</td><td class="n num">${c.read}</td><td class="n num">${c.anti}</td><td class="n num">${per100(c.anti, c.read)}件</td></tr>`).join('');
+const cmpMax = Math.max(...D.cats.map(c => Math.max(pct(c.n, D.mine.anti), pct(c.others, o.anti))));
+$('cmp').innerHTML = D.cats.map(c => {
+  const a = pct(c.n, D.mine.anti), b = pct(c.others, o.anti);
+  return `<div class="row"><div class="lab">${esc(c.name)}</div>
+    <div class="pair me"><span>私</span><div class="t"><i data-w="${a / cmpMax * 100}"></i></div><b class="num">${a}%</b></div>
+    <div class="pair ot"><span>ほか</span><div class="t"><i data-w="${b / cmpMax * 100}"></i></div><b class="num">${b}%</b></div></div>`;
+}).join('');
+$('otherVoices').innerHTML = D.cats.filter(c => c.examples.length).map(c =>
+  c.examples.slice(0, 2).map(t => `<li>${esc(t)}<small>${esc(c.name)}</small></li>`).join('')).join('');
+
+// スクロールで表示
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in'); io.unobserve(e.target);
+  e.target.querySelectorAll('.cmp i[data-w]').forEach(i => requestAnimationFrame(() => requestAnimationFrame(() => i.style.width = i.dataset.w + '%')));
+}), {threshold: 0, rootMargin: '0px 0px -10% 0px'});
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

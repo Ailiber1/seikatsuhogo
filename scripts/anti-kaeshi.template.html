@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>アンチコメ返し</title>
+<meta name="description" content="生活保護のことで言われた言葉を選ぶと、法律や国の資料にもとづく答えが出ます。生活保護3年目のYouTuberに実際に届いたアンチコメをもとに作りました">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+  --cyan:#1590b3; --cyan-soft:#e8f6fa;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:17px; line-height:1.8; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:640px; margin:0 auto; padding:26px 16px 44px}
+h1{font-size:clamp(26px,6vw,34px); line-height:1.4; margin:0 0 12px; color:var(--navy)}
+h1 small{display:block; font-size:.55em; color:var(--sub); font-weight:600}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:18px; font-size:15.5px}
+.for-who b{color:var(--navy)} .for-who ul{margin:4px 0 0; padding-left:1.2em}
+.form{border:1px solid var(--line); border-radius:14px; padding:16px; background:var(--panel)}
+label{display:block; font-weight:800; font-size:15.5px; margin:0 0 4px}
+label .st{display:inline-grid; place-items:center; width:24px; height:24px; border-radius:50%; background:var(--navy); color:#fff; font-size:13px; margin-right:6px; font-family:system-ui,sans-serif}
+select{font:inherit; font-size:16px; width:100%; min-height:50px; padding:8px 10px; border:2px solid var(--navy); border-radius:10px; background:#fff; color:var(--ink); margin-bottom:14px}
+select:disabled{border-color:var(--line); color:var(--sub); background:var(--line-soft)}
+.guide{border:2px dashed var(--line); border-radius:14px; padding:22px 16px; text-align:center; color:var(--sub); margin-top:16px; font-size:15.5px}
+.out{display:none; margin-top:16px}
+.out.show{display:block; animation:up .45s ease}
+@keyframes up{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+.said{border-left:4px solid var(--ng); background:var(--ng-bg); border-radius:0 10px 10px 0; padding:10px 14px; font-size:16px; overflow-wrap:anywhere}
+.said small{display:block; font-size:12px; color:var(--sub)}
+.stats{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin:12px 0}
+.stats div{border:1px solid var(--line); border-radius:12px; padding:9px 4px; text-align:center; background:#fff}
+.stats small{display:block; font-size:12px; color:var(--sub); line-height:1.4}
+.stats b{display:block; font-size:clamp(22px,6.4vw,30px); color:var(--navy); line-height:1.35}
+.ans{border:2px solid var(--ok); border-radius:14px; padding:14px 16px; background:var(--ok-bg); margin:12px 0}
+.ans .k{font-size:13px; font-weight:800; color:var(--ok)}
+.ans p{margin:4px 0 0; font-size:17.5px; font-weight:700; line-height:1.7}
+.nick{font-size:14px; color:var(--sub); margin:8px 0 0}
+blockquote{margin:8px 0 2px; padding:10px 14px; background:var(--panel); border-left:4px solid var(--line); font-size:15px; border-radius:0 10px 10px 0}
+.src{font-size:12.5px; color:var(--sub); margin:0 0 8px} .src a{color:var(--navy)}
+.sub-h{font-size:14px; font-weight:800; color:var(--sub); margin:14px 0 4px}
+.cta{display:flex; align-items:center; justify-content:space-between; gap:10px; text-decoration:none; color:var(--navy); background:var(--cyan-soft); border-left:5px solid var(--cyan); border-radius:0 11px 11px 0; padding:11px 14px; margin:18px 0 0; font-weight:700; font-size:15.5px; min-height:48px}
+.foot{margin-top:28px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy)}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .out.show{animation:none} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho">アンチコメ返し<small>言われた言葉を選ぶと、事実での答えが出ます</small></h1>
+  <div class="for-who"><b>このページは、こういう方へ</b>
+    <ul><li>生活保護のことで、きつい言葉を言われた方</li>
+    <li>これから申請するので、言われる前に答えを知っておきたい方</li></ul></div>
+
+  <div class="form">
+    <label for="cat"><span class="st">1</span>何について言われましたか</label>
+    <select id="cat"><option value="">選んでください</option></select>
+    <label for="word"><span class="st">2</span>近い言葉はどれですか（私に実際に届いた言葉です）</label>
+    <select id="word" disabled><option value="">先に1を選んでください</option></select>
+  </div>
+
+  <div class="guide" id="guide">上で <b>1</b> と <b>2</b> を選ぶと、ここに<br>「その言葉が何件届いたか」と「事実での答え」が出ます。</div>
+
+  <div class="out" id="out">
+    <div class="said"><small>言われた言葉</small><span id="said"></span></div>
+    <div class="stats">
+      <div><small>私に届いた<br>同じ種類</small><b class="num" id="sN"></b></div>
+      <div><small>全体の中で<br>多い順</small><b class="num" id="sRank"></b></div>
+      <div><small>ほかの人では<br>アンチ全体の</small><b class="num" id="sOther"></b></div>
+    </div>
+    <p class="nick">この種類の呼び名：<b id="nick"></b></p>
+    <div class="ans"><div class="k">事実で返すと</div><p id="answer"></p></div>
+    <div id="quotes"></div>
+    <a class="cta" href="anti.html"><span>届いたアンチコメを全部見る（アンチコメ図鑑）</span><span>→</span></a>
+  </div>
+
+  <div class="foot">
+    <ul>
+      <li>選んだ内容は、このページの中だけで使っています。どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</li>
+      <li>件数は、このチャンネルの動画 <span id="fVideos"></span>本のコメント <span id="fRead"></span>件を1件ずつ読んで数えたものです。数え方と資料の一覧は<a href="anti.html">アンチコメ図鑑</a>にあります。</li>
+      <li>制度の扱いは、お住まいの福祉事務所で確認してください。確認日：<span id="checked"></span></li>
+    </ul>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA">リベル_Liber（YouTubeチャンネル）</a></p>
+  </div>
+</main>
+
+<script>
+const D = __DATA__;
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const cut = s => s.length > 34 ? s.slice(0, 34) + '…' : s;
+const catEl = $('cat'), wordEl = $('word');
+
+$('fVideos').textContent = D.mine.videos; $('fRead').textContent = D.mine.read.toLocaleString();
+$('checked').textContent = D.checked.replace(/^(\d+)-(\d+)-(\d+)$/, (m, y, mo, d) => `${y}年${+mo}月${+d}日`);
+
+D.cats.forEach(c => catEl.add(new Option(c.name, c.id)));
+
+// 2段目に出すのは、短くて読みやすいものから最大8つ
+function pick(c) { return [...c.texts].sort((a, b) => a.length - b.length).slice(0, 8); }
+
+catEl.addEventListener('change', () => {
+  const c = D.cats.find(x => x.id === catEl.value);
+  wordEl.innerHTML = '';
+  if (!c) { wordEl.add(new Option('先に1を選んでください', '')); wordEl.disabled = true; }
+  else { wordEl.add(new Option('選んでください', '')); pick(c).forEach((t, i) => wordEl.add(new Option(cut(t), i))); wordEl.disabled = false; }
+  show();
+});
+wordEl.addEventListener('change', show);
+
+function show() {
+  const c = D.cats.find(x => x.id === catEl.value);
+  const ok = c && wordEl.value !== '';
+  $('guide').style.display = ok ? 'none' : '';
+  $('out').classList.toggle('show', !!ok);
+  if (!ok) return;
+  $('said').textContent = pick(c)[+wordEl.value];
+  $('sN').textContent = c.n + '件';
+  $('sRank').textContent = c.rank + '位';
+  $('sOther').textContent = Math.round(c.others / D.others.anti * 100) + '%';
+  $('nick').textContent = c.nick;
+  $('answer').textContent = c.answer;
+  $('quotes').innerHTML = (c.quotes.length ? '<div class="sub-h">もとの資料（原文）</div>' : '') +
+    c.quotes.map(q => `<blockquote>${esc(q.text)}</blockquote><p class="src">出どころ：<a href="${q.url}">${esc(q.src)}</a></p>`).join('');
+  if (window.gcUse) gcUse('アンチコメ返し');
+}
+</script>
+</body>
+</html>

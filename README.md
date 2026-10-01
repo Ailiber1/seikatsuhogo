@@ -27,6 +27,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `kyuryo.html` | ツール | 給料いくら残るしらべ（働いた給料・臨時収入のうち、手元に残る額と保護費から差し引かれる額） | [/kyuryo.html](https://ailiber1.github.io/seikatsuhogo/kyuryo.html) |
 | `hima.html` | ツール | 暇人スキャン（ふだんの1日を国の平均・リスナーの平均とくらべて、暇人かどうか判定）。**リスナーの結果を名前なしで保存する唯一のツール**（下の「リスナーの結果の保存」） | [/hima.html](https://ailiber1.github.io/seikatsuhogo/hima.html) |
 | `hima-setsumei.html` | 解説 | 生活保護は暇じゃない。3年目の1日を国の平均とくらべた（国の定義だと収入のある仕事は7時間30分で「かなりの暇人」、ながらAI作業まで足すと作業時間は合計16時間45分） | [/hima-setsumei.html](https://ailiber1.github.io/seikatsuhogo/hima-setsumei.html) |
+| `anti.html` | 解説 | アンチコメ図鑑。このチャンネルの動画185本のコメント880件を全部読み、アンチコメ151件を11種類に分けて多い順に並べた。原文（投稿者名なし）、法律と国の資料での答え、ほかの生活保護YouTuber 11チャンネルとの比較（名前は伏せる） | [/anti.html](https://ailiber1.github.io/seikatsuhogo/anti.html) |
+| `anti-kaeshi.html` | ツール | アンチコメ返し（言われた言葉を選ぶと、同じ種類が何件届いたかと、事実での答え・原文の引用が出る） | [/anti-kaeshi.html](https://ailiber1.github.io/seikatsuhogo/anti-kaeshi.html) |
 | `database.rules.json` / `firebase.json` / `.firebaserc` | 設定 | 暇人スキャンの保存先（Firebase Realtime Database）の書き込みルール | — |
 | `data/` | データ | ページに埋め込む元データ（JSON） | — |
 | `scripts/` | スクリプト | 公的資料からデータを作り、ページを生成する | — |
@@ -42,6 +44,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `jutaku_limit.json` | 住宅扶助（家賃）の上限。都道府県×1〜3級地と指定都市・中核市、1人〜7人以上。公式資料との照合結果も入れてある | 平成27年4月14日 社援発0414第9号の別表（写し `jutaku_limit_2015_source.pdf`）。厚労省・埼玉県・札幌市の公式の数字と照合 |
 | `kiso_kojo.json` | 勤労収入の基礎控除額表（1人目・2人目以降）、新規就労控除・20歳未満控除・臨時収入の扱い | 厚労省「生活保護法による保護の実施要領について」（次官通知）別表（法令等データベースの画像から書き写し） |
 | `jikan_r3.json` | 1日の生活時間の平均（曜日×男女×働いているか×5歳刻みの年齢）。20種類の行動を6項目にまとめたもの | 総務省「令和3年社会生活基本調査」第7-1表（写し `shakai2021_t7-1_source.xlsx`） |
+| `anti.json` | アンチコメの本文と種類（投稿者名なし）、ほかのチャンネルの集計（チャンネル名なし・Aさん〜Kさん）。2026年10月1日に、公開コメントとAIモデレーターの記録を1件ずつ読んで分けたもの | このチャンネルと、ほかの生活保護系チャンネルのコメント欄 |
 | `kijun_r8.json` | 生活扶助の第1類・第2類・逓減率・特例加算と、照合用のモデル世帯9類型 | 厚労省「生活扶助基準額の算出方法（令和8年4月）」＋第55回生活保護基準部会 資料4 |
 
 ## scripts/ の中身
@@ -59,6 +62,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `gen_hogohi_tool.py` | 級地・経過的加算・基準額・住宅扶助の上限を `hogohi.template.html` に埋め込んで `hogohi.html` を生成する |
 | `extract_jikan.py` | 社会生活基本調査の表から `data/jikan_r3.json` を作る（全区分の合計が24時間になるか確かめる） |
 | `gen_hima_tool.py` | `data/jikan_r3.json` を `hima.template.html` に埋め込んで `hima.html` を生成する |
+| `gen_anti.py` | `data/anti.json` から `anti.html` と `anti-kaeshi.html` を生成する。件数・順位・割合はここで数え、合計と内訳が合わないときは止まる |
 | `verify_hogohi.py` | `hogohi.html` の計算式を node で動かし、資料4のモデル世帯54通りと1円単位で一致するか確かめる |
 
 ---

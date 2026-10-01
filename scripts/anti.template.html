@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>アンチコメ図鑑</title>
+<meta name="description" content="生活保護3年目のYouTuberに実際に届いたアンチコメを、全部読んで種類ごとに数えました。多い順のランキング、原文、事実での答え、ほかの生活保護YouTuberとの比較">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+  --cyan:#1590b3; --cyan-soft:#e8f6fa;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:17px; line-height:1.8; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
+h1{font-size:clamp(26px,6vw,36px); line-height:1.4; margin:0 0 12px; color:var(--navy); text-wrap:balance}
+h1 small{display:block; font-size:.55em; color:var(--sub); font-weight:600}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:16px; font-size:15.5px}
+.for-who b{color:var(--navy)} .for-who ul{margin:4px 0 0; padding-left:1.2em}
+.conclusion{border:2px solid var(--navy); border-radius:14px; padding:16px; margin-bottom:10px; background:#fff}
+.conclusion .k{font-size:13px; font-weight:700; color:var(--sub)}
+.conclusion p{margin:4px 0 0; font-size:18px; font-weight:700; line-height:1.65}
+.conclusion b{color:var(--navy); font-size:1.25em}
+.cta{display:flex; align-items:center; justify-content:space-between; gap:10px; text-decoration:none; color:var(--navy); background:var(--cyan-soft); border-left:5px solid var(--cyan); border-radius:0 11px 11px 0; padding:11px 14px; margin:12px 0 22px; font-weight:700; font-size:15.5px; min-height:48px}
+.cta span:last-child{flex:none}
+section.ch{margin:34px 0 8px}
+.ch h2{display:flex; align-items:center; gap:10px; font-size:clamp(19px,4.6vw,23px); line-height:1.45; margin:0 0 12px; color:var(--navy)}
+.ch h2 .b{flex:none; width:34px; height:34px; border-radius:50%; border:2px solid var(--navy); display:grid; place-items:center; font-size:15px; font-family:system-ui,sans-serif}
+.ch p{margin:0 0 12px}
+.big3{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:6px 0 12px}
+.big3 div{border:1px solid var(--line); border-radius:12px; padding:10px 6px; text-align:center; background:var(--panel)}
+.big3 small{display:block; font-size:12.5px; color:var(--sub); line-height:1.45}
+.big3 b{display:block; font-size:clamp(26px,7.4vw,38px); color:var(--navy); line-height:1.3}
+.big3 div.hi{background:var(--cyan-soft); border-color:var(--cyan)} .big3 div.hi b{color:var(--cyan)}
+blockquote{margin:8px 0 2px; padding:10px 14px; background:var(--panel); border-left:4px solid var(--line); font-size:15px; color:var(--ink); border-radius:0 10px 10px 0}
+.src{font-size:12.5px; color:var(--sub); margin:0 0 8px} .src a{color:var(--navy)}
+.easy{background:var(--ok-bg); border-left:4px solid var(--ok); border-radius:0 10px 10px 0; padding:10px 14px; font-size:16px; margin:8px 0 10px}
+.easy b{color:var(--ok)}
+.note{font-size:13.5px; color:var(--sub); margin:4px 0 12px}
+.btn{font:inherit; font-size:17px; font-weight:800; color:#fff; background:linear-gradient(100deg,var(--navy),var(--cyan)); border:none; border-radius:12px; min-height:52px; padding:10px 18px; width:100%; cursor:pointer; letter-spacing:.04em}
+.btn.ghost{background:#fff; color:var(--navy); border:2px solid var(--navy); font-size:15px; min-height:46px; margin-top:8px}
+.btn:disabled{opacity:.55; cursor:default}
+/* ランキング */
+.rank{list-style:none; margin:12px 0 8px; padding:0}
+.rank li{display:grid; grid-template-columns:3.2em 1fr; gap:10px; align-items:center; border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px; background:#fff; min-height:64px}
+.rank .r{font-weight:800; color:var(--navy); font-size:19px; text-align:center; line-height:1.2}
+.rank .r small{display:block; font-size:11px; color:var(--sub); font-weight:600}
+.rank li.top .r{font-size:24px; color:var(--cyan)}
+.rank .body{min-width:0}
+.rank .nm{font-weight:800; font-size:16.5px; line-height:1.45}
+.rank .nk{font-size:12.5px; color:var(--sub)}
+.rank .t{height:12px; background:var(--line-soft); border-radius:6px; overflow:hidden; margin-top:5px}
+.rank .t i{display:block; height:100%; width:0; border-radius:6px; background:var(--navy); transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.rank li.top .t i{background:var(--cyan)}
+.rank .cnt{font-weight:800; font-size:15px; color:var(--navy)}
+.rank li.hide .body{visibility:hidden}
+.rank li.hide{background:repeating-linear-gradient(135deg,var(--panel),var(--panel) 10px,#fff 10px,#fff 20px)}
+.rank li.pop{animation:up .45s ease}
+@keyframes up{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+/* 種類ごとのカード */
+details.cat{border:1px solid var(--line); border-radius:12px; margin-bottom:10px; background:#fff}
+details.cat summary{cursor:pointer; padding:12px 14px; font-weight:800; font-size:16.5px; list-style:none; display:flex; justify-content:space-between; gap:10px; align-items:center; min-height:52px}
+details.cat summary::-webkit-details-marker{display:none}
+details.cat summary .c{flex:none; font-size:13.5px; color:var(--navy); background:var(--navy-soft); border-radius:99px; padding:2px 10px}
+details.cat[open] summary{border-bottom:1px solid var(--line-soft)}
+details.cat .in{padding:10px 14px 14px}
+.voices{list-style:none; margin:0 0 12px; padding:0}
+.voices li{border-left:4px solid var(--ng); background:var(--ng-bg); border-radius:0 10px 10px 0; padding:8px 12px; margin-bottom:7px; font-size:15.5px; line-height:1.7; overflow-wrap:anywhere}
+.voices li.mod{border-left-color:var(--warn); background:var(--warn-bg)}
+.voices li small{display:block; font-size:11.5px; color:var(--sub)}
+.sub-h{font-size:14px; font-weight:800; color:var(--sub); margin:12px 0 4px}
+/* くらべる */
+.cmp{margin:10px 0}
+.cmp .row{display:grid; grid-template-columns:1fr; gap:3px; margin:12px 0}
+.cmp .lab{font-size:14.5px; font-weight:700; line-height:1.4}
+.cmp .pair{display:grid; grid-template-columns:3.4em 1fr 3em; gap:8px; align-items:center; font-size:13px; color:var(--sub)}
+.cmp .t{height:14px; background:var(--line-soft); border-radius:7px; overflow:hidden}
+.cmp .t i{display:block; height:100%; width:0; border-radius:7px; transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.cmp .me i{background:var(--navy)} .cmp .ot i{background:var(--cyan)}
+.cmp b{text-align:right; color:var(--ink)}
+table{width:100%; border-collapse:collapse; font-size:14.5px; margin:8px 0}
+th,td{border-bottom:1px solid var(--line-soft); padding:7px 4px; text-align:left; vertical-align:top}
+th{font-size:12.5px; color:var(--sub); font-weight:700}
+td.n,th.n{text-align:right; white-space:nowrap}
+td:first-child{white-space:nowrap}
+tr.me td{font-weight:800; background:var(--navy-soft)}
+.flow svg{width:100%; max-width:380px; height:auto; display:block; margin:0 auto}
+.fade{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+.fade.in{opacity:1; transform:none}
+.foot{margin-top:28px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot h3{font-size:14px; color:var(--ink); margin:12px 0 4px}
+.foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .fade{opacity:1; transform:none; transition:none} .t i{transition:none!important} .rank li.pop{animation:none} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho">アンチコメ図鑑<small>生活保護3年目のYouTuberの私に、実際に届いたものを全部数えた</small></h1>
+  <div class="for-who"><b>このページは、こういう方へ</b>
+    <ul><li>生活保護を受けると、世間から何を言われるのか知りたい方</li>
+    <li>生活保護を受けながら発信してみたい方</li>
+    <li>言われたとき、どう返せばいいのか知りたい方</li></ul></div>
+
+  <div class="conclusion"><div class="k">結論</div>
+    <p>動画 <span class="num" id="cVideos"></span>本のコメント <span class="num" id="cRead"></span>件を全部読むと、アンチコメは <b class="num" id="cAnti"></b> でした。種類は <span class="num" id="cKinds"></span>に分かれ、そのほとんどに、法律や国の資料で答えが出ています。</p></div>
+  <a class="cta" href="anti-kaeshi.html"><span>言われた言葉を選ぶと、事実での答えが出ます（アンチコメ返し）</span><span>→</span></a>
+
+  <section class="ch fade">
+    <h2><span class="b">1</span>どうやって数えたか</h2>
+    <div class="big3">
+      <div><small>調べた動画</small><b class="num" id="bVideos"></b></div>
+      <div><small>読んだコメント</small><b class="num" id="bRead"></b></div>
+      <div class="hi"><small>アンチコメ</small><b class="num" id="bAnti"></b></div>
+    </div>
+    <p>このチャンネルの通常動画・ライブ・ショートのコメント欄を全部取り出し、視聴者のコメントを1件ずつ読みました。そこに、AIモデレーターが配信中に止めていた記録を足しています。</p>
+    <div class="flow">
+      <svg viewBox="0 0 340 372" role="img" aria-label="コメントが届いてから、この図鑑に入るまでの流れ">
+        <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5f6a77"/></marker></defs>
+        <g font-family="Hiragino Sans, Yu Gothic, Meiryo, sans-serif" font-size="16" fill="#242c36">
+          <rect x="70" y="6" width="200" height="50" rx="12" fill="#fafbfc" stroke="#e2e7ec" stroke-width="2"/>
+          <text x="170" y="37" text-anchor="middle" font-weight="700">コメントが届く</text>
+          <line x1="170" y1="58" x2="170" y2="86" stroke="#5f6a77" stroke-width="2" marker-end="url(#ar)"/>
+          <rect x="50" y="90" width="240" height="70" rx="12" fill="#eef3f8" stroke="#2b5d8f" stroke-width="2"/>
+          <text x="170" y="120" text-anchor="middle" font-weight="700" fill="#2b5d8f">AIモデレーター</text><text x="170" y="144" text-anchor="middle" font-size="14">が先に読む</text>
+          <line x1="110" y1="162" x2="84" y2="204" stroke="#5f6a77" stroke-width="2" marker-end="url(#ar)"/>
+          <line x1="230" y1="162" x2="256" y2="204" stroke="#5f6a77" stroke-width="2" marker-end="url(#ar)"/>
+          <rect x="6" y="208" width="158" height="84" rx="12" fill="#f1f7f4" stroke="#2a7355" stroke-width="2"/>
+          <text x="85" y="238" text-anchor="middle" font-weight="700" fill="#2a7355" font-size="15">ふつうのコメント</text><text x="85" y="264" text-anchor="middle" font-size="14">そのまま表示</text>
+          <rect x="176" y="208" width="158" height="84" rx="12" fill="#fdf3f1" stroke="#a4483c" stroke-width="2"/>
+          <text x="255" y="238" text-anchor="middle" font-weight="700" fill="#a4483c" font-size="15">アンチコメ</text><text x="255" y="264" text-anchor="middle" font-size="14">止めて記録に残す</text>
+          <line x1="255" y1="294" x2="255" y2="322" stroke="#5f6a77" stroke-width="2" marker-end="url(#ar)"/>
+          <rect x="130" y="326" width="204" height="40" rx="12" fill="#e8f6fa" stroke="#1590b3" stroke-width="2"/>
+          <text x="232" y="352" text-anchor="middle" font-weight="700" fill="#1590b3" font-size="15">今回、初めて開けた</text>
+        </g>
+      </svg>
+    </div>
+    <div class="easy"><b>アンチコメに入れたもの</b>：私に向けた攻撃・嫌味・決めつけ・頼んでいない指図。<br><b>入れなかったもの</b>：ふつうの質問、「うらやましい」という感想、視聴者どうしの言い合い、常連の冗談。</div>
+    <p class="note">1件につき種類は1つだけ付けています。いくつも当てはまるコメントは、いちばん強い要素で分けました。</p>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">2</span>多い順ランキング</h2>
+    <p>下の順位から1つずつ開けていきます。</p>
+    <ol class="rank" id="rank"></ol>
+    <button class="btn" id="openNext">次の順位を開ける</button>
+    <button class="btn ghost" id="openAll">全部いっぺんに開ける</button>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">3</span>全部晒します。そして、事実で返します</h2>
+    <p>種類を押すと、届いたコメントの原文が全部出ます。投稿者の名前は載せていません。</p>
+    <div id="cats"></div>
+    <p class="note">薄い赤はコメント欄に書かれたもの、薄い黄色は配信中にAIモデレーターが止めた記録にだけ残っていたものです。</p>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">4</span>ほかの生活保護YouTuberにも届いているのか</h2>
+    <p>生活保護を受けながら発信している、ほかの <span class="num" id="oCh"></span>チャンネルのコメント <span class="num" id="oRead"></span>件も、同じ基準で読みました。名前は伏せています。</p>
+    <div class="big3">
+      <div><small>私<br>100件あたり</small><b class="num" id="rMe"></b></div>
+      <div class="hi"><small>ほかの人の合計<br>100件あたり</small><b class="num" id="rOt"></b></div>
+      <div><small>ほかの人の<br>いちばん多い所</small><b class="num" id="rMax"></b></div>
+    </div>
+    <table><thead><tr><th>だれ</th><th>どんな内容の回</th><th class="n">読んだ</th><th class="n">アンチ</th><th class="n">100件あたり</th></tr></thead><tbody id="chTable"></tbody></table>
+    <div class="easy"><b>見えてきたこと</b>：食事・お金・暮らしぶりを見せる回と、制度の使い方を解説する回は叩かれやすい。病気や作業所の話、働き始めた日常の回には、ほとんど来ていません。</div>
+
+    <h3 class="sub-h">種類ごとの割合をくらべる（アンチコメ全体を100%として）</h3>
+    <div class="cmp" id="cmp"></div>
+    <p class="note">紺色が私、水色がほかの人です。</p>
+    <h3 class="sub-h">ほかの人に届いていた言葉（短いものだけ）</h3>
+    <ul class="voices" id="otherVoices"></ul>
+  </section>
+
+  <div class="foot">
+    <h3>根拠にした資料</h3>
+    <ul>
+      <li>生活保護法（厚生労働省 法令等データベース）<br><a href="https://www.mhlw.go.jp/web/t_doc?dataId=82048000&dataType=0&pageNo=1">https://www.mhlw.go.jp/web/t_doc?dataId=82048000&amp;dataType=0&amp;pageNo=1</a></li>
+      <li>厚生労働省 社会保障審議会 生活保護制度の在り方に関する専門委員会 資料「補足性の原理について」<br><a href="https://www.mhlw.go.jp/shingi/2004/01/s0127-7k.html">https://www.mhlw.go.jp/shingi/2004/01/s0127-7k.html</a></li>
+      <li>衆議院 内閣衆質183第1号 答弁書（平成25年2月5日）<br><a href="https://www.shugiin.go.jp/internet/itdb_shitsumon.nsf/html/shitsumon/b183001.htm">https://www.shugiin.go.jp/internet/itdb_shitsumon.nsf/html/shitsumon/b183001.htm</a></li>
+      <li>東京都行政不服審査会 答申（保護課長通知 第3・問18の引用元）<br><a href="https://www.soumu.metro.tokyo.lg.jp/documents/d/soumu/0292_146">https://www.soumu.metro.tokyo.lg.jp/documents/d/soumu/0292_146</a></li>
+    </ul>
+    <h3>読むときの注意</h3>
+    <ul>
+      <li>アンチコメかどうかは、1件ずつ読んで決めています。線引きは人によって変わるので、件数は目安です。</li>
+      <li>私の分には、AIモデレーターが止めた記録も入っています。ほかの人の分は、いまコメント欄に残っているものしか見えません。消されたコメントは数えられていないので、ほかの人の数字は実際より少なく出ます。</li>
+      <li>ほかの人は、再生数の多い動画を1チャンネルにつき6本ずつ調べました。コメントが多い1チャンネルだけは、無作為に選んだ400件を読んでいます。</li>
+      <li>不正受給の割合（約0.39%）は平成22年度の数字です。新しい年度の割合は、今回は原文で確かめられていません。</li>
+      <li>保護課長通知は、東京都の答申書に引用された文をそのまま載せています。</li>
+      <li>制度の扱いは、お住まいの福祉事務所で確認してください。</li>
+      <li>確認日：<span id="checked"></span></li>
+    </ul>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA">リベル_Liber（YouTubeチャンネル）</a></p>
+  </div>
+</main>
+
+<script>
+const D = __DATA__;
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const per100 = (a, n) => n ? Math.round(a / n * 100) : 0;
+const pct = (a, n) => n ? Math.round(a / n * 100) : 0;
+
+// 数字はすべてデータから出す
+$('cVideos').textContent = D.mine.videos; $('bVideos').textContent = D.mine.videos + '本';
+$('cRead').textContent = D.mine.read.toLocaleString(); $('bRead').textContent = D.mine.read.toLocaleString() + '件';
+$('cAnti').textContent = D.mine.anti + '件'; $('bAnti').textContent = D.mine.anti + '件';
+$('cKinds').textContent = D.cats.length;
+$('checked').textContent = D.checked.replace(/^(\d+)-(\d+)-(\d+)$/, (m, y, mo, d) => `${y}年${+mo}月${+d}日`);
+
+// 2. ランキング（下の順位から開ける）
+const max = Math.max(...D.cats.map(c => c.n));
+const rankEl = $('rank');
+D.cats.forEach((c, i) => {
+  const li = document.createElement('li');
+  li.className = 'hide' + (c.rank === 1 ? ' top' : '');
+  li.innerHTML = `<div class="r">${c.rank}<small>位</small></div>
+    <div class="body"><div class="nm">${esc(c.name)} <span class="cnt num">${c.n}件</span></div>
+    <div class="nk">${esc(c.nick)}</div><div class="t"><i data-w="${c.n / max * 100}"></i></div></div>`;
+  rankEl.appendChild(li);
+});
+let opened = 0;
+function openOne() {
+  const lis = [...rankEl.children], li = lis[lis.length - 1 - opened];
+  if (!li) return;
+  li.classList.remove('hide'); li.classList.add('pop');
+  requestAnimationFrame(() => requestAnimationFrame(() => { const i = li.querySelector('i'); i.style.width = i.dataset.w + '%'; }));
+  opened++;
+  if (opened >= lis.length) { $('openNext').disabled = true; $('openNext').textContent = '全部開きました'; $('openAll').style.display = 'none'; }
+  else $('openNext').textContent = `次の順位を開ける（残り${lis.length - opened}つ）`;
+}
+$('openNext').addEventListener('click', openOne);
+$('openAll').addEventListener('click', () => { while (opened < rankEl.children.length) openOne(); });
+
+// 3. 種類ごとの原文と答え
+$('cats').innerHTML = D.cats.map(c => {
+  const voices = c.texts.map(t => `<li${c.mod && c.mod.includes(t) ? ' class="mod"' : ''}>${esc(t)}</li>`).join('');
+  const quotes = c.quotes.map(q => `<blockquote>${esc(q.text)}</blockquote><p class="src">出どころ：<a href="${q.url}">${esc(q.src)}</a></p>`).join('');
+  const self = c.self ? `<p class="note">${esc(c.self)}（<a href="${c.selflink[0]}">${esc(c.selflink[1])}</a>）</p>` : '';
+  return `<details class="cat"><summary><span>${c.rank}位　${esc(c.name)}</span><span class="c num">${c.n}件</span></summary>
+    <div class="in"><ul class="voices">${voices}</ul>
+    <div class="sub-h">事実で返すと</div><div class="easy">${esc(c.answer)}</div>${quotes}${self}</div></details>`;
+}).join('');
+
+// 4. ほかの人とくらべる
+const o = D.others;
+$('oCh').textContent = o.channels.length; $('oRead').textContent = o.read.toLocaleString();
+$('rMe').textContent = per100(D.mine.anti_visible, D.mine.read) + '件';
+$('rOt').textContent = per100(o.anti, o.read) + '件';
+$('rMax').textContent = Math.max(...o.channels.map(c => per100(c.anti, c.read))) + '件';
+$('chTable').innerHTML =
+  `<tr class="me"><td>私</td><td>生活保護3年目の日常</td><td class="n num">${D.mine.read}</td><td class="n num">${D.mine.anti_visible}</td><td class="n num">${per100(D.mine.anti_visible, D.mine.read)}件</td></tr>` +
+  o.channels.map(c => `<tr><td>${c.label}</td><td>${esc(c.kind)}</td><td class="n num">${c.read}</td><td class="n num">${c.anti}</td><td class="n num">${per100(c.anti, c.read)}件</td></tr>`).join('');
+const cmpMax = Math.max(...D.cats.map(c => Math.max(pct(c.n, D.mine.anti), pct(c.others, o.anti))));
+$('cmp').innerHTML = D.cats.map(c => {
+  const a = pct(c.n, D.mine.anti), b = pct(c.others, o.anti);
+  return `<div class="row"><div class="lab">${esc(c.name)}</div>
+    <div class="pair me"><span>私</span><div class="t"><i data-w="${a / cmpMax * 100}"></i></div><b class="num">${a}%</b></div>
+    <div class="pair ot"><span>ほか</span><div class="t"><i data-w="${b / cmpMax * 100}"></i></div><b class="num">${b}%</b></div></div>`;
+}).join('');
+$('otherVoices').innerHTML = D.cats.filter(c => c.examples.length).map(c =>
+  c.examples.slice(0, 2).map(t => `<li>${esc(t)}<small>${esc(c.name)}</small></li>`).join('')).join('');
+
+// スクロールで表示
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in'); io.unobserve(e.target);
+  e.target.querySelectorAll('.cmp i[data-w]').forEach(i => requestAnimationFrame(() => requestAnimationFrame(() => i.style.width = i.dataset.w + '%')));
+}), {threshold: 0, rootMargin: '0px 0px -10% 0px'});
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

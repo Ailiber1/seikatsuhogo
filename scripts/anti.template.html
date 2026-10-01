@@ -62,7 +62,11 @@ blockquote{margin:8px 0 2px; padding:10px 14px; background:var(--panel); border-
 .rank .t i{display:block; height:100%; width:0; border-radius:6px; background:var(--navy); transition:width 1s cubic-bezier(.2,.8,.2,1)}
 .rank li.top .t i{background:var(--cyan)}
 .rank .cnt{font-weight:800; font-size:15px; color:var(--navy)}
-.rank li.hide .body{visibility:hidden}
+.rank li.hide .body{display:none}
+.rank li.hide{cursor:pointer}
+.rank li.hide:focus-visible{outline:3px solid var(--cyan); outline-offset:2px}
+.rank .tap{display:none; font-weight:800; color:var(--navy); font-size:15.5px}
+.rank li.hide .tap{display:block}
 .rank li.hide{background:repeating-linear-gradient(135deg,var(--panel),var(--panel) 10px,#fff 10px,#fff 20px)}
 .rank li.pop{animation:up .45s ease}
 @keyframes up{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
@@ -150,10 +154,8 @@ tr.me td{font-weight:800; background:var(--navy-soft)}
 
   <section class="ch fade">
     <h2><span class="b">2</span>多い順ランキング</h2>
-    <p>下の順位から1つずつ開けていきます。</p>
+    <p>伏せてある行を押すと、その場で開きます。上から順に押していくと、<span class="num" id="lastRank"></span>位から1位へ進みます。</p>
     <ol class="rank" id="rank"></ol>
-    <button class="btn" id="openNext">次の順位を開ける</button>
-    <button class="btn ghost" id="openAll">全部いっぺんに開ける</button>
   </section>
 
   <section class="ch fade">
@@ -220,26 +222,25 @@ $('checked').textContent = D.checked.replace(/^(\d+)-(\d+)-(\d+)$/, (m, y, mo, d
 // 2. ランキング（下の順位から開ける）
 const max = Math.max(...D.cats.map(c => c.n));
 const rankEl = $('rank');
-D.cats.forEach((c, i) => {
+$('lastRank').textContent = Math.max(...D.cats.map(c => c.rank));
+// 上が下位、下が1位。上から順に押すと1位が最後に出る
+[...D.cats].reverse().forEach(c => {
   const li = document.createElement('li');
   li.className = 'hide' + (c.rank === 1 ? ' top' : '');
+  li.tabIndex = 0; li.setAttribute('role', 'button'); li.setAttribute('aria-label', c.rank + '位を開ける');
   li.innerHTML = `<div class="r">${c.rank}<small>位</small></div>
+    <div class="tap">ここを押して開ける</div>
     <div class="body"><div class="nm">${esc(c.name)} <span class="cnt num">${c.n}件</span></div>
     <div class="nk">${esc(c.nick)}</div><div class="t"><i data-w="${c.n / max * 100}"></i></div></div>`;
+  const open = () => {
+    if (!li.classList.contains('hide')) return;
+    li.classList.remove('hide'); li.classList.add('pop'); li.removeAttribute('role'); li.removeAttribute('tabindex'); li.removeAttribute('aria-label');
+    requestAnimationFrame(() => requestAnimationFrame(() => { const i = li.querySelector('i'); i.style.width = i.dataset.w + '%'; }));
+  };
+  li.addEventListener('click', open);
+  li.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
   rankEl.appendChild(li);
 });
-let opened = 0;
-function openOne() {
-  const lis = [...rankEl.children], li = lis[lis.length - 1 - opened];
-  if (!li) return;
-  li.classList.remove('hide'); li.classList.add('pop');
-  requestAnimationFrame(() => requestAnimationFrame(() => { const i = li.querySelector('i'); i.style.width = i.dataset.w + '%'; }));
-  opened++;
-  if (opened >= lis.length) { $('openNext').disabled = true; $('openNext').textContent = '全部開きました'; $('openAll').style.display = 'none'; }
-  else $('openNext').textContent = `次の順位を開ける（残り${lis.length - opened}つ）`;
-}
-$('openNext').addEventListener('click', openOne);
-$('openAll').addEventListener('click', () => { while (opened < rankEl.children.length) openOne(); });
 
 // 3. 種類ごとの原文と答え
 $('cats').innerHTML = D.cats.map(c => {

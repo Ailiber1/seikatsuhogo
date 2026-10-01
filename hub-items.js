@@ -13,8 +13,8 @@
     video: true にすると「▶動画あり」が付く（そのツール・解説を説明する動画を、そのページに置いたとき）
 */
 const ITEMS = [
-  {kind:"tool", icon:"🛡️", title:"アンチコメ返し", desc:"言われた言葉を選ぶと、法律と国の資料での答えが出る", href:"anti-kaeshi.html", kw:"アンチ 悪口 働け 税金 贅沢 貯金 不正受給 申告 言われた 返し方 批判", isNew:true, locked:true},
-  {kind:"doc",  icon:"📕", title:"アンチコメ図鑑", desc:"3年目の私に届いた151件を全部数えた。多い順と事実での答え", href:"anti.html", kw:"アンチ 悪口 コメント 批判 叩かれる 働け 税金 ランキング YouTube 発信", isNew:true, locked:true},
+  {kind:"tool", icon:"🛡️", title:"アンチコメ返し", desc:"言われた言葉を選ぶと、法律と国の資料での答えが出る", href:"anti-kaeshi.html", kw:"アンチ 悪口 働け 税金 贅沢 貯金 不正受給 申告 言われた 返し方 批判", isNew:true},
+  {kind:"doc",  icon:"📕", title:"アンチコメ図鑑", desc:"3年目の私に届いた151件を全部数えた。多い順と事実での答え", href:"anti.html", kw:"アンチ 悪口 コメント 批判 叩かれる 働け 税金 ランキング YouTube 発信", isNew:true},
   {kind:"tool", icon:"🛰️", title:"暇人スキャン", desc:"ふだんの1日を国の平均・リスナーとくらべて暇人か判定", href:"hima.html", kw:"暇 ひま 1日 生活時間 過ごし方 睡眠 自由時間 平均 比較 暇人", isNew:true},
   {kind:"tool", icon:"💴", title:"給料いくら残るしらべ", desc:"働いた給料のうち、手元に残る額と差し引かれる額", href:"kyuryo.html", kw:"給料 収入 働く バイト パート 基礎控除 臨時収入 控除", isNew:true},
   {kind:"tool", icon:"🧮", title:"保護費しらべ", desc:"市区町村・人数・年齢から毎月の保護費を計算", href:"hogohi.html", kw:"保護費 家賃 住宅扶助 生活扶助 いくら 級地 もらえる金額", isNew:true},

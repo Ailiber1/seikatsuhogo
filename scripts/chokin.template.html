@@ -20,6 +20,8 @@ body{background:var(--ground); color:var(--ink); margin:0;
   font-size:16px; line-height:1.75; -webkit-text-size-adjust:100%}
 .mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
 .num{font-variant-numeric:tabular-nums}
+/* 言葉の途中で改行しない（対応ブラウザは文節で折り返す） */
+h1,.lead,.for-who li,.ans h3,.ans p,.box h3,.guide{word-break:auto-phrase}
 .wrap{max-width:720px; margin:0 auto; padding:24px 16px 44px}
 h1{font-size:clamp(24px,5.2vw,32px); line-height:1.4; margin:0 0 8px; color:var(--navy); text-wrap:balance}
 .lead{color:var(--sub); font-size:15px; margin:0 0 16px}

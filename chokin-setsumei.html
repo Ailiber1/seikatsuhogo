@@ -20,6 +20,9 @@ body{background:var(--ground); color:var(--ink); margin:0;
   font-size:16px; line-height:1.8; -webkit-text-size-adjust:100%}
 .mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
 .num{font-variant-numeric:tabular-nums}
+/* 言葉の途中で改行しない（「貯/金」のように切れないように）。対応ブラウザは文節で折り返す */
+.nb{display:inline-block}
+h1,.conclusion p,.ch h2,.for-who li,.cta,.card b{word-break:auto-phrase}
 .wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
 h1{font-size:clamp(26px,6vw,36px); line-height:1.4; margin:0 0 12px; color:var(--navy); text-wrap:balance}
 h1 small{display:block; font-size:.55em; color:var(--sub); font-weight:600}
@@ -137,14 +140,14 @@ window.gcUse = function (name) {
 </head>
 <body>
 <main class="wrap">
-  <h1 class="mincho">生活保護を受けられる貯金の境目は、いくら？<small>申請前に見て。3年目の私の申請と、国の決まりで答えます</small></h1>
+  <h1 class="mincho"><span class="nb">生活保護を</span><span class="nb">受けられる</span><span class="nb">貯金の境目は、</span><span class="nb">いくら？</span><small><span class="nb">申請前に見て。</span><span class="nb">3年目の私の申請と、</span><span class="nb">国の決まりで答えます</span></small></h1>
   <div class="for-who"><b>このページは、こういう方へ</b>
     <ul><li>生活保護の申請を考えている方</li>
     <li>「貯金を全部使い切らないと受けられない」と不安な方</li>
     <li>家具・家電や車・保険を売らないといけないのか、知りたい方</li></ul></div>
 
   <div class="conclusion"><div class="k">結論</div>
-    <p>申請のとき手元に残せるお金は、<b>1か月の最低生活費の半分まで</b>。<br>長崎市のひとり暮らしなら <b class="big num">54,965円</b> です（試算）。<br>家具・家電・服・布団は<b>売らなくていい</b>。手放すように言われるのは、車・金・株などです。</p></div>
+    <p>申請のとき手元に残せるお金は、<b><span class="nb">1か月の</span><span class="nb">最低生活費の</span><span class="nb">半分まで</span></b>。<br>長崎市のひとり暮らしなら <b class="big num nb">54,965円</b> です（試算）。<br>家具・家電・服・布団は<b class="nb">売らなくていい</b>。手放すように言われるのは、<span class="nb">車・金・株など</span>です。</p></div>
   <a class="cta" href="chokin.html"><span>あなたの地域・人数だと、いくら残せる？（貯金の境目しらべ）</span><span>→</span></a>
 
   <section class="ch fade">

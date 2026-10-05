@@ -13,6 +13,8 @@
     video: true にすると「▶動画あり」が付く（そのツール・解説を説明する動画を、そのページに置いたとき）
 */
 const ITEMS = [
+  {kind:"tool", icon:"🐷", title:"貯金の境目しらべ", desc:"申請のとき、貯金はいくらまで残せる？車や家電は？", href:"chokin.html", kw:"貯金 預金 手持金 申請 いくらまで 残せる 使い切る 車 家電 保険 持ち家 売る 資産", isNew:true, locked:true},
+  {kind:"doc",  icon:"🏦", title:"受けられる貯金の境目", desc:"3年目の申請の実体験と国の決まり。家具・家電は売らなくていい", href:"chokin-setsumei.html", kw:"貯金 預金 手持金 申請 5万円 半分 家具 家電 車 保険 持ち家 売る 資産", isNew:true, locked:true},
   {kind:"tool", icon:"🛡️", title:"アンチコメ返し", desc:"言われた言葉を選ぶと、法律と国の資料での答えが出る", href:"anti-kaeshi.html", kw:"アンチ 悪口 働け 税金 贅沢 貯金 不正受給 申告 言われた 返し方 批判", isNew:true},
   {kind:"doc",  icon:"📕", title:"アンチコメ図鑑", desc:"3年目の私に届いた151件を全部数えた。多い順と事実での答え", href:"anti.html", kw:"アンチ 悪口 コメント 批判 叩かれる 働け 税金 ランキング YouTube 発信", isNew:true},
   {kind:"tool", icon:"🛰️", title:"暇人スキャン", desc:"ふだんの1日を国の平均・リスナーとくらべて暇人か判定", href:"hima.html", kw:"暇 ひま 1日 生活時間 過ごし方 睡眠 自由時間 平均 比較 暇人", isNew:true},

@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>貯金の境目しらべ</title>
+<meta name="description" content="住んでいる市区町村と世帯の人数・年齢、手元のお金を入れると、生活保護の申請のときに手元に残せるお金の目安（最低生活費の半分）を、国の表で計算します">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:16px; line-height:1.75; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:720px; margin:0 auto; padding:24px 16px 44px}
+h1{font-size:clamp(24px,5.2vw,32px); line-height:1.4; margin:0 0 8px; color:var(--navy); text-wrap:balance}
+.lead{color:var(--sub); font-size:15px; margin:0 0 16px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:18px; font-size:15px}
+.for-who b{color:var(--navy)}
+.for-who ul{margin:4px 0 0; padding-left:1.2em}
+
+.step{background:var(--panel); border:2px solid var(--line); border-radius:13px; padding:14px 16px; margin-bottom:12px; transition:border-color .3s, opacity .3s}
+.step.off{opacity:.5}
+.step.done{border-color:var(--navy)}
+.step h2{font-size:16.5px; margin:0 0 8px; display:flex; gap:9px; align-items:center}
+.step h2 .n{flex:none; width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; display:grid; place-items:center; font-size:13px}
+.step .hint{font-size:13px; color:var(--sub); margin:6px 0 0}
+select,input[type=number]{font:inherit; font-size:16px; width:100%; min-height:44px; padding:8px 10px; border:2px solid var(--line); border-radius:9px; background:#fff; color:var(--ink)}
+select:focus,input:focus{outline:3px solid var(--navy-soft); border-color:var(--navy)}
+select:disabled,input:disabled{background:var(--line-soft); color:var(--sub)}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.ages{display:grid; gap:8px}
+.ages label{font-size:13px; font-weight:700; color:var(--sub); display:block; margin-bottom:2px}
+.yen-in{display:flex; align-items:center; gap:8px}
+.yen-in span{flex:none; font-weight:700}
+
+#result{margin-top:18px}
+.guide{border:2px dashed var(--line); border-radius:13px; padding:18px; text-align:center; color:var(--sub)}
+.guide b{color:var(--navy)}
+.res{animation:pop .45s ease}
+@keyframes pop{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+.verdict{border-left:6px solid var(--navy); background:var(--navy-soft); border-radius:0 13px 13px 0; padding:14px 16px; margin-bottom:12px}
+.verdict .k{font-size:13px; font-weight:700; color:var(--sub)}
+.verdict .place{font-size:14px; color:var(--sub); margin:0 0 2px}
+.amount{font-size:18px; font-weight:700; margin:2px 0}
+.amount b{font-size:clamp(38px,9vw,52px); color:var(--navy); font-variant-numeric:tabular-nums; letter-spacing:.01em}
+.calc{font-size:14px; margin:2px 0 0; color:var(--sub)}
+.calc b{color:var(--ink)}
+
+.gauge{margin:14px 0 6px}
+.gauge .bar{position:relative; height:26px; border-radius:13px; background:var(--line-soft); overflow:hidden}
+.gauge .bar i{position:absolute; top:0; bottom:0; left:0; width:0; transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.gauge .keep{background:var(--ok)} .gauge .cut{background:var(--warn)} .gauge .over{background:var(--ng)}
+.gauge .ticks{position:relative; height:34px; font-size:12px; color:var(--sub)}
+.gauge .ticks span{position:absolute; top:3px; transform:translateX(-50%); white-space:nowrap; text-align:center; line-height:1.3}
+.gauge .ticks span::before{content:""; position:absolute; left:50%; top:-8px; height:8px; border-left:2px solid var(--sub)}
+.legend{display:flex; flex-wrap:wrap; gap:4px 14px; font-size:13px; color:var(--sub); margin:0 0 4px}
+.legend span::before{content:""; display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:5px; background:var(--c)}
+
+.ans{border-radius:0 13px 13px 0; padding:13px 16px; margin-bottom:12px; border-left:6px solid}
+.ans.ok{background:var(--ok-bg); border-color:var(--ok)} .ans.ok h3{color:var(--ok)}
+.ans.cut{background:var(--warn-bg); border-color:var(--warn)} .ans.cut h3{color:var(--warn)}
+.ans.over{background:var(--ng-bg); border-color:var(--ng)} .ans.over h3{color:var(--ng)}
+.ans h3{font-size:clamp(18px,4.6vw,21px); margin:0 0 4px; line-height:1.45}
+.ans p{margin:0 0 6px; font-size:15px} .ans p:last-child{margin:0}
+
+details.rentopt{margin:6px 0 2px}
+details.rentopt summary{cursor:pointer; font-size:14px; font-weight:700; color:var(--navy); min-height:40px; display:flex; align-items:center; list-style:none; gap:6px}
+details.rentopt summary::-webkit-details-marker{display:none}
+details.rentopt summary::before{content:"＋"; font-weight:800}
+details.rentopt[open] summary::before{content:"−"}
+details.rentopt .hint{font-size:13px; color:var(--sub); margin:6px 0 0}
+
+.box{background:var(--panel); border:2px solid var(--line); border-radius:12px; padding:12px 15px; margin-bottom:10px}
+.box h3{font-size:15.5px; margin:0 0 6px; color:var(--navy)}
+.box p{margin:0 0 6px; font-size:15px} .box p:last-child{margin:0}
+.box ul{margin:0; padding-left:1.2em; font-size:14.5px}
+.box.warn{background:var(--warn-bg); border-color:var(--warn)} .box.warn h3{color:var(--warn)}
+
+.chips{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 10px}
+.chip{font:inherit; font-size:15px; font-weight:700; color:var(--navy); background:#fff; border:2px solid var(--line); border-radius:22px; padding:6px 14px; min-height:42px; cursor:pointer}
+.chip[aria-pressed=true]{border-color:var(--navy); background:var(--navy-soft)}
+.item{border:1px solid var(--line); border-left:5px solid var(--c); border-radius:0 11px 11px 0; padding:10px 14px; margin-bottom:8px; background:#fff; animation:pop .35s ease}
+.item .tag{display:inline-block; font-size:13px; font-weight:800; color:var(--c); margin-bottom:2px}
+.item b.t{display:block; font-size:16px}
+.item p{margin:4px 0 0; font-size:14.5px}
+.item .q{font-size:13px; color:var(--sub); background:var(--panel); border-left:3px solid var(--line); padding:5px 9px; margin-top:6px}
+.item .q a{color:var(--navy)}
+.item.ok{--c:var(--ok)} .item.mid{--c:var(--warn)} .item.ng{--c:var(--ng)}
+
+.reset{font:inherit; font-size:14px; font-weight:700; color:var(--navy); background:var(--navy-soft); border:none; border-radius:8px; padding:8px 14px; min-height:40px; cursor:pointer; margin-top:4px}
+.foot{margin-top:24px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (max-width:480px){ .row2{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){ .res,.item{animation:none} .gauge .bar i{transition:none} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho">貯金の境目しらべ</h1>
+  <p class="lead">住んでいる場所・人数・年齢と、いま手元にあるお金を入れると、生活保護の申請のときに<b>手元に残せるお金の目安</b>を、国の決まりと国の表で計算します。</p>
+  <div class="for-who"><b>このツールは、こういう方へ</b>
+    <ul><li>生活保護の申請を考えていて、貯金をいくらまで残せるか知りたい方</li>
+    <li>「貯金を全部使い切らないと受けられない」と思っている方</li>
+    <li>車・保険・家電など、持っている物を売らないといけないのか気になる方</li></ul></div>
+
+  <div class="step" id="s1">
+    <h2><span class="n">1</span>住んでいる場所</h2>
+    <div class="row2">
+      <select id="pref" aria-label="都道府県"><option value="">都道府県を選んでください</option></select>
+      <select id="city" disabled aria-label="市区町村"><option value="">市区町村を選んでください</option></select>
+    </div>
+  </div>
+
+  <div class="step off" id="s2">
+    <h2><span class="n">2</span>一緒に暮らす人数（あなたも含む）</h2>
+    <select id="size" disabled aria-label="世帯の人数"><option value="">選んでください</option></select>
+  </div>
+
+  <div class="step off" id="s3">
+    <h2><span class="n">3</span>それぞれの年齢</h2>
+    <div class="ages" id="ages"><p class="hint" style="margin:0">上で人数を選ぶと、ここに年齢の欄が出ます。</p></div>
+  </div>
+
+  <div class="step off" id="s4">
+    <h2><span class="n">4</span>いま手元にあるお金（現金＋貯金の合計）</h2>
+    <div class="yen-in"><input type="number" id="money" inputmode="numeric" min="0" step="1000" placeholder="例 80000" disabled aria-label="手元にあるお金"><span>円</span></div>
+    <p class="hint">財布の中の現金と、通帳・ネット銀行の残高を、世帯の全員分たした額です。</p>
+  </div>
+
+  <div id="result" aria-live="polite"></div>
+
+  <div class="foot">
+    <p>この結果は、厚生労働省の公開資料から計算した目安（試算）です。最終的な判断は福祉事務所がします。入力した内容はこの画面の中だけで計算していて、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</p>
+    <p>計算のしかた：残せる額＝最低生活費（生活扶助＋家賃の上限か実際の家賃。医療扶助・介護扶助を除く）の5割。生活扶助の計算は「保護費しらべ」と同じで、厚労省の資料のモデル世帯54通りと1円単位で一致することを確かめています。冬の上乗せ（冬季加算）や、障害のある方・ひとり親・子育て中の加算は入っていないので、その分、実際の最低生活費は高くなります。</p>
+    <p>根拠: <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8433&amp;dataType=1&amp;pageNo=2" target="_blank" rel="noopener">厚労省 課長通知「生活保護法による保護の実施要領の取扱いについて」第10 問10の2（手持金）</a> ／ <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8432&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">局長通知 第3 資産の活用</a> ／ <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8433&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">課長通知 第3（家電・車・保険・家）</a> ／ <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/seikatsuhogopage.html" target="_blank" rel="noopener">厚労省「生活保護を申請したい方へ」</a> ／ <a href="https://www.mhlw.go.jp/content/001152601.pdf" target="_blank" rel="noopener">生活扶助基準額の算出方法（令和8年4月）</a> ／ <a href="https://www.mhlw.go.jp/content/12002000/001662704.pdf" target="_blank" rel="noopener">第55回生活保護基準部会 資料4</a></p>
+    <p>確認日: 2026年10月5日 ／ 個人が作ったもので、行政の公式ツールではありません。</p>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+const KYUCHI = /*KYUCHI*/;
+const KEIKA = /*KEIKA*/;
+const KIJUN = /*KIJUN*/;
+const JUTAKU = /*JUTAKU*/;
+const AGES = ["0～2","3～5","6～11","12～17","18～19","20～40","41～59","60～64","65～69","70～74","75～"];
+const AGE_LABEL = {"0～2":"0〜2歳","3～5":"3〜5歳","6～11":"6〜11歳","12～17":"12〜17歳","18～19":"18〜19歳","20～40":"20〜40歳","41～59":"41〜59歳","60～64":"60〜64歳","65～69":"65〜69歳","70～74":"70〜74歳","75～":"75歳以上"};
+const LV = ["1級地-1","1級地-2","2級地-1","2級地-2","3級地-1","3級地-2"];
+
+// CALC-START
+// 生活扶助 = 第1類の合計×逓減率（1円未満切り捨て→10円未満切り上げ）＋第2類＋特例加算＋経過的加算
+function calcKijun(ages, lv, oct, K, KE) {
+  const n = ages.length;
+  const raw = ages.reduce((s, a) => s + K.dai1[a][lv], 0);
+  const d1 = Math.ceil(Math.floor(Math.round(raw * K.teigen[n] * 1e6) / 1e6) / 10) * 10;
+  const d2 = K.dai2[n];
+  const per = oct ? K.tokurei.from_2026_10 : K.tokurei.until_2026_09;
+  const tok = per * n;
+  // 10月からは特例加算が1人1,000円増える分、経過的加算が1人最大1,000円減る（従前額保障）
+  const kei = ages.reduce((s, a) => { const k = KE[n][a][lv]; return s + (oct ? k - Math.min(1000, k) : k); }, 0);
+  return {raw, d1, d2, tok, kei, total: d1 + d2 + tok + kei};
+}
+// CALC-END
+
+// KEEP-START
+// 申請のときに残せるお金 = 最低生活費の5割（課長通知 第10 問10の2）。それを超えた分は最初の月の保護費から差し引かれる
+function judgeMoney(minLiving, money) {
+  const keep = Math.floor(minLiving / 2);
+  const cut = Math.max(0, money - keep);
+  const kind = money <= keep ? 'ok' : money < minLiving ? 'cut' : 'over';
+  return {keep, cut, kind};
+}
+// KEEP-END
+
+// 持っている物ごとの答え（国の通知の原文つき）
+const T1 = 'https://www.mhlw.go.jp/web/t_doc?dataId=00ta8432&dataType=1&pageNo=1';
+const T2 = 'https://www.mhlw.go.jp/web/t_doc?dataId=00ta8433&dataType=1&pageNo=1';
+const T0 = 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/seikatsuhogopage.html';
+const ITEMS = [
+  {k:'kaden', name:'家具・家電・服・布団', cls:'ok', tag:'売らなくていい',
+   say:'暮らしに必要な家具・家電・服・布団は、そのまま持っていられます。数も、世帯の人数に合っていれば大丈夫です。',
+   q:'家具什器及び衣類寝具　当該世帯の人員、構成等から判断して利用の必要があると認められる品目及び数量は、保有を認めること。', src:['局長通知 第3の4', T1]},
+  {k:'pc', name:'テレビ・パソコン・カメラ', cls:'ok', tag:'ふつうは売らなくていい',
+   say:'売っても値段がほとんど付かない物はそのまま持てます。それ以外も、その地域の7割くらいの家にある物なら持てます。パソコンは通知に名前がありませんが、同じ考え方で判断されると考えられます（推測）。',
+   q:'「一般世帯との均衡を失することにならない」場合とは、当該物品の普及率をもって判断するものとし、具体的には、当該地域の全世帯の70％程度（中略）の普及率を基準として認定すること。', src:['課長通知 第3 問6', T2]},
+  {k:'home', name:'住んでいる持ち家', cls:'mid', tag:'残せることが多い',
+   say:'自分が住んでいる家と土地は、原則として持ったまま受けられます。ただし、とても高く売れる家や、ローンが残っている家は別です（ローン中は原則として受けられません）。',
+   q:'当該世帯の居住の用に供される家屋　保有を認めること。ただし、処分価値が利用価値に比して著しく大きいと認められるものは、この限りでない。', src:['局長通知 第3の2', T1]},
+  {k:'car', name:'車・バイク', cls:'ng', tag:'原則は手放す（例外あり）',
+   say:'原則は手放します。ただし、障害のある方の通院・通勤、バスや電車がほとんど無い地域での通院・通勤、深夜の仕事などは持てる場合があります。おおむね6か月以内に働いて保護を抜ける見込みで、売っても安い車は、売るのを待ってもらえることがあります（その間は原則として乗れません）。',
+   q:'自動車については処分していただくのが原則ですが、通勤用の自動車を持ちながら求職している場合に、処分しないまま保護を受けることができる場合があります。', src:['厚労省「生活保護を申請したい方へ」', T0]},
+  {k:'hoken', name:'生命保険・学資保険', cls:'mid', tag:'解約しなくていい場合あり',
+   say:'解約して戻ってくるお金（解約返戻金）は、生活に使うのが原則です。ただし、戻るお金が少なく、毎月の保険料もふつうの家と同じくらいなら、解約しないまま受けられます（あとで保険金や返戻金を受け取ったら、その分を返します）。',
+   q:'保険の解約返戻金は、資産として活用させるのが原則である。ただし、返戻金が少額であり、かつ、保険料額が当該地域の一般世帯との均衡を失しない場合に限り、（中略）解約させないで保護を適用して差しつかえない。', src:['課長通知 第3 問11', T2]},
+  {k:'kin', name:'金・宝石・株・投資信託', cls:'ng', tag:'売って生活費に',
+   say:'金や宝石などの貴金属、株・投資信託・国債は持ったまま受けられません。売って生活費にあててから受けることになります（すぐに売れない株などには例外があります）。',
+   q:'貴金属及び債券　保有を認めないこと。', src:['局長通知 第3の4', T1]},
+  {k:'shumi', name:'趣味の物・ブランド品', cls:'mid', tag:'安い物ならOK',
+   say:'売っても値段がほとんど付かない物なら、そのまま持てます。高く売れる物は、売って生活費にあてるように言われることがあります。',
+   q:'趣味装飾品　処分価値の小さいものは、保有を認めること。', src:['局長通知 第3の4', T1]},
+  {k:'tochi', name:'住んでいない土地・家', cls:'ng', tag:'売るか貸す',
+   say:'自分が住んでいない土地や家は、売るか貸すなどして生活費にあてます。売るのに時間がかかる場合は、先に保護を受けて、売れたらその分を返す形になることがあります。',
+   q:'預貯金、生活に利用されていない土地・家屋等があれば売却等し生活費に充ててください。', src:['厚労省「生活保護制度」', 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/seikatuhogo/index.html']}
+];
+
+const $ = id => document.getElementById(id);
+const pref = $('pref'), city = $('city'), size = $('size'), money = $('money');
+let rentVal = '', rentOpen = false, picked = new Set();
+const yen = n => n.toLocaleString('ja-JP');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+Object.keys(KYUCHI).forEach(p => pref.add(new Option(p, p)));
+for (let i = 1; i <= 5; i++) size.add(new Option(i + '人', String(i)));
+size.add(new Option('6人以上', '6'));
+
+function buildAges() {
+  const n = +size.value;
+  const prev = [...document.querySelectorAll('.age')].map(s => s.value);
+  if (!n) { $('ages').innerHTML = '<p class="hint" style="margin:0">上で人数を選ぶと、ここに年齢の欄が出ます。</p>'; return; }
+  if (n >= 6) { $('ages').innerHTML = '<p class="hint" style="margin:0">6人以上の世帯は、公表されている表に一部の金額が無いため計算できません。</p>'; return; }
+  $('ages').innerHTML = Array.from({length: n}, (_, i) => `
+    <div><label for="age${i}">${i === 0 ? 'あなた' : (i + 1) + '人目'}</label>
+    <select class="age" id="age${i}"><option value="">選んでください</option>${AGES.map(a => `<option value="${a}">${AGE_LABEL[a]}</option>`).join('')}</select></div>`).join('');
+  document.querySelectorAll('.age').forEach((s, i) => { if (prev[i]) s.value = prev[i]; s.addEventListener('change', refresh); });
+}
+
+const setStep = (el, on, done) => { el.classList.toggle('off', !on); el.classList.toggle('done', !!done); };
+
+function refresh() {
+  const ages = [...document.querySelectorAll('.age')].map(s => s.value);
+  const agesDone = ages.length > 0 && ages.every(Boolean) && +size.value < 6;
+  city.disabled = !pref.value;
+  size.disabled = !city.value;
+  document.querySelectorAll('.age').forEach(s => s.disabled = !size.value);
+  money.disabled = !agesDone;
+  const moneyDone = agesDone && money.value !== '' && +money.value >= 0;
+  setStep($('s1'), true, city.value);
+  setStep($('s2'), !size.disabled, size.value);
+  setStep($('s3'), !!size.value && +size.value < 6, agesDone);
+  setStep($('s4'), agesDone, moneyDone);
+  render(ages, agesDone, moneyDone);
+}
+
+function render(ages, agesDone, moneyDone) {
+  const out = $('result');
+  if (!city.value) {
+    out.innerHTML = `<div class="guide">上の <b>1〜4</b> を入れると、ここに<br><b>申請のときに手元に残せるお金の目安</b>と、<b>持っている物を売る必要があるか</b>が出ます。</div>`;
+    return;
+  }
+  if (+size.value >= 6) {
+    out.innerHTML = `<div class="guide">6人以上の世帯は計算できません。<br>福祉事務所（役所の生活保護の窓口）で確かめてください。</div>`;
+    return;
+  }
+  if (!agesDone) {
+    out.innerHTML = `<div class="guide">あと少しです。<b>${size.value ? '全員の年齢' : '人数'}</b>を選んでください。</div>`;
+    return;
+  }
+  if (!moneyDone) {
+    out.innerHTML = `<div class="guide">最後に <b>4 のいま手元にあるお金</b> を入れてください。<br>ゼロの方は 0 と入れてください。</div>`;
+    return;
+  }
+  if (window.gcUse) gcUse('貯金の境目しらべ');
+  const [name, lvs] = city.value.split('|');
+  const lv = +lvs, n = ages.length;
+  const life = calcKijun(ages, lv, true, KIJUN, KEIKA).total;
+  const lim = jutakuLimit(pref.value, name, lv, n);
+  // 結果の中の入力欄は、選び直しても値と開閉を残す
+  out.innerHTML = `<div class="res">
+    <div class="verdict">
+      <p class="place"><b>${esc(pref.value)} ${esc(name)}</b>（${LV[lv]}）／ ${n}人世帯</p>
+      <div class="k">申請のときに手元に残せるお金の目安</div>
+      <p class="amount"><b id="keep"></b> 円まで</p>
+      <p class="calc" id="calcLine"></p>
+      <details class="rentopt" id="rentBox"${rentOpen ? ' open' : ''}><summary>家賃が ${yen(lim)}円より安い方は、実際の家賃で計算できます</summary>
+        <div class="yen-in"><input type="number" id="rent" inputmode="numeric" min="0" step="1000" placeholder="例 30000" value="${esc(rentVal)}" aria-label="実際の家賃"><span>円</span></div>
+        <p class="hint">共益費・管理費は除いてください。</p></details>
+    </div>
+    <div class="gauge" aria-hidden="true">
+      <div class="legend"><span style="--c:var(--ok)">残せる</span><span style="--c:var(--warn)">保護費から差し引かれる</span><span style="--c:var(--ng)">1か月分の生活費を超える</span></div>
+      <div class="bar"><i class="keep" id="gKeep"></i><i class="cut" id="gCut"></i><i class="over" id="gOver"></i></div>
+      <div class="ticks" id="ticks"></div>
+    </div>
+    <div id="answer"></div>
+    <div class="box">
+      <h3>ほかに持っている物はありますか？（押すと答えが出ます）</h3>
+      <div class="chips">${ITEMS.map(it => `<button type="button" class="chip" data-k="${it.k}" aria-pressed="${picked.has(it.k)}">${it.name}</button>`).join('')}</div>
+      <div id="items"></div>
+    </div>
+    <div class="box warn"><h3>この結果を見るときの注意</h3><ul>
+      <li><b>申請はいつでもできます。</b>手元のお金が多くても、申請すること自体は断られません</li>
+      <li>給料・年金などの<b>毎月の収入</b>がある人は、その分が保護費から差し引かれます。収入が上の最低生活費より多いと、受けられない可能性が高いです</li>
+      <li>冬の上乗せ（冬季加算）や、障害のある方・ひとり親・子育て中の加算は入っていません。入る人は、残せる額も上がります</li>
+      <li>申請の月の途中から始まる場合など、細かい計算は福祉事務所で変わります</li></ul></div>
+    <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button>
+  </div>`;
+  window._ctx = {life, lim, n};
+  $('rent').addEventListener('input', e => { rentVal = e.target.value; paint(); });
+  $('rentBox').addEventListener('toggle', e => { rentOpen = e.target.open; });
+  out.querySelectorAll('.chip').forEach(b => b.addEventListener('click', () => {
+    picked.has(b.dataset.k) ? picked.delete(b.dataset.k) : picked.add(b.dataset.k);
+    b.setAttribute('aria-pressed', picked.has(b.dataset.k)); paintItems();
+  }));
+  paint(); paintItems();
+}
+
+function paint() {
+  const {life, lim} = window._ctx;
+  const r = Math.max(0, Math.floor(+rentVal || 0));
+  const house = r > 0 ? Math.min(r, lim) : lim;
+  const minLiving = life + house;
+  const m = Math.max(0, Math.floor(+money.value || 0));
+  const {keep, cut, kind} = judgeMoney(minLiving, m);
+  $('keep').textContent = yen(keep);
+  $('calcLine').innerHTML = `1か月の最低生活費 <b>${yen(minLiving)}円</b>（生活費 ${yen(life)}円＋家賃${r > 0 ? '' : 'の上限'} ${yen(house)}円）の半分`;
+  // 目盛り: 0・半分・1か月分。手元のお金が多いときは右端を広げる
+  const max = Math.max(minLiving * 1.25, m * 1.08);
+  const pct = v => Math.min(100, v / max * 100);
+  const ticks = [[0, '0円'], [keep, '半分<br>' + yen(keep) + '円'], [minLiving, '1か月分<br>' + yen(minLiving) + '円']];
+  $('ticks').innerHTML = ticks.map(([v, t]) => `<span style="left:${Math.max(4, Math.min(92, pct(v)))}%">${t}</span>`).join('');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    $('gKeep').style.width = pct(Math.min(m, keep)) + '%';
+    $('gCut').style.left = pct(keep) + '%'; $('gCut').style.width = (m > keep ? pct(Math.min(m, minLiving)) - pct(keep) : 0) + '%';
+    $('gOver').style.left = pct(minLiving) + '%'; $('gOver').style.width = (m > minLiving ? pct(m) - pct(minLiving) : 0) + '%';
+  }));
+  const A = {
+    ok: `<div class="ans ok"><h3>あなたの ${yen(m)}円は、全部残せます</h3>
+      <p>残せる目安（${yen(keep)}円）以下なので、最初の月の保護費から差し引かれない計算です。<b>申請の前に、無理に使い切る必要はありません。</b></p>
+      <p>このお金は、保護費が振り込まれるまでの生活費として残しておくものです。</p></div>`,
+    cut: `<div class="ans cut"><h3>${yen(cut)}円が、最初の月の保護費から差し引かれる計算です</h3>
+      <p>残せる目安（${yen(keep)}円）を超えた分は、最初の月の保護費から差し引かれます。<b>受けられなくなるわけではありません。</b></p>
+      <p>申請の前に大きな買い物をすると、使い道を聞かれます。レシートや購入履歴を残しておくと説明が楽です。</p></div>`,
+    over: `<div class="ans over"><h3>1か月分の生活費（${yen(minLiving)}円）以上あります</h3>
+      <p>生活保護は、手元のお金などを生活に使っても足りないときに受ける制度です。この額だと、申請しても「まずは手元のお金で生活を」と言われることがあります。</p>
+      <p>国の通知に「いくら以上ならだめ」という金額の決まりはありません。お金が減ってくる見込みの時期を、福祉事務所に相談してください。</p></div>`
+  };
+  $('answer').innerHTML = A[kind];
+}
+
+function paintItems() {
+  $('items').innerHTML = ITEMS.filter(it => picked.has(it.k)).map(it => `<div class="item ${it.cls}">
+    <span class="tag">${it.tag}</span><b class="t">${it.name}</b><p>${it.say}</p>
+    <div class="q">「${it.q}」<br><a href="${it.src[1]}" target="_blank" rel="noopener">${it.src[0]}</a></div></div>`).join('')
+    || '<p class="hint" style="margin:0;font-size:13px;color:var(--sub)">上のボタンを押すと、売る必要があるかと、国の通知の原文が出ます。</p>';
+}
+
+// 家賃（住宅扶助）の上限。政令市・中核市は市の額、それ以外は都道府県×級地（1・2・3級地）の額
+function jutakuLimit(prefName, cityName, lv, n) {
+  const row = JUTAKU.city[cityName] || JUTAKU.pref[prefName][String(Math.floor(lv / 2) + 1)];
+  return row[n === 1 ? 0 : n === 2 ? 1 : n <= 5 ? 2 : n === 6 ? 3 : 4];
+}
+
+function resetAll() {
+  pref.value = ''; size.value = ''; money.value = ''; rentVal = ''; rentOpen = false; picked = new Set();
+  city.innerHTML = '<option value="">市区町村を選んでください</option>';
+  buildAges(); refresh();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+pref.addEventListener('change', () => {
+  city.innerHTML = '<option value="">市区町村を選んでください</option>';
+  (KYUCHI[pref.value] || []).slice().sort((a, b) => a[0].localeCompare(b[0], 'ja'))
+    .forEach(([nm, lv]) => city.add(new Option(nm, nm + '|' + lv)));
+  size.value = ''; buildAges(); refresh();
+});
+city.addEventListener('change', refresh);
+size.addEventListener('change', () => { buildAges(); refresh(); });
+// 結果が出ているあいだは金額だけ描き直す（入力のたびに結果全体を作り直さない）
+money.addEventListener('input', () => { if ($('keep') && money.value !== '') paint(); else refresh(); });
+refresh();
+</script>
+</body>
+</html>

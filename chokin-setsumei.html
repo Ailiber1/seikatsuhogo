@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>生活保護を受けられる貯金の境目</title>
+<meta name="description" content="生活保護の申請のとき、貯金はいくらまで残せるのか。家具・家電や車・保険は売らないといけないのか。生活保護3年目の申請の実体験と、国の通知の原文で答えます">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:16px; line-height:1.8; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
+h1{font-size:clamp(26px,6vw,36px); line-height:1.4; margin:0 0 12px; color:var(--navy); text-wrap:balance}
+h1 small{display:block; font-size:.55em; color:var(--sub); font-weight:600}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:16px; font-size:15px}
+.for-who b{color:var(--navy)} .for-who ul{margin:4px 0 0; padding-left:1.2em}
+.conclusion{border:2px solid var(--navy); border-radius:14px; padding:16px; margin-bottom:10px; background:#fff}
+.conclusion .k{font-size:13px; font-weight:700; color:var(--sub)}
+.conclusion p{margin:4px 0 0; font-size:18px; font-weight:700; line-height:1.6}
+.conclusion b{color:var(--navy)}
+.conclusion .big{font-size:1.35em}
+.cta{display:flex; align-items:center; justify-content:space-between; gap:10px; text-decoration:none; color:var(--navy); background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:11px 14px; margin:12px 0 22px; font-weight:700; font-size:15px; min-height:48px}
+.cta span:last-child{flex:none}
+section.ch{margin:30px 0 8px}
+.ch h2{display:flex; align-items:center; gap:10px; font-size:clamp(19px,4.6vw,23px); line-height:1.45; margin:0 0 12px; color:var(--navy)}
+.ch h2 .b{flex:none; width:34px; height:34px; border-radius:50%; border:2px solid var(--navy); display:grid; place-items:center; font-size:15px; font-family:system-ui,sans-serif}
+.ch p{margin:0 0 12px}
+blockquote{margin:10px 0 4px; padding:10px 14px; background:var(--panel); border-left:4px solid var(--line); font-size:14.5px; border-radius:0 10px 10px 0}
+.src{font-size:12.5px; color:var(--sub); margin:0 0 8px} .src a{color:var(--navy)}
+.easy{background:var(--ok-bg); border-left:4px solid var(--ok); border-radius:0 10px 10px 0; padding:9px 14px; font-size:15px; margin:6px 0 12px}
+.easy b{color:var(--ok)}
+.note{font-size:13px; color:var(--sub); margin:4px 0 12px}
+
+/* 1章: 申請までの年表 */
+.tl{list-style:none; margin:4px 0 12px; padding:0 0 0 22px; position:relative}
+.tl::before{content:""; position:absolute; left:7px; top:6px; bottom:6px; width:3px; background:var(--line); border-radius:2px}
+.tl .line{position:absolute; left:7px; top:6px; width:3px; height:0; background:var(--navy); border-radius:2px; transition:height 1.6s ease}
+.tl li{position:relative; margin:0 0 12px; opacity:0; transform:translateX(8px); transition:opacity .5s ease, transform .5s ease}
+.tl.in li{opacity:1; transform:none}
+.tl li::before{content:""; position:absolute; left:-21px; top:7px; width:13px; height:13px; border-radius:50%; background:#fff; border:3px solid var(--navy)}
+.tl li.key::before{background:var(--navy)}
+.tl .d{display:block; font-size:13px; font-weight:700; color:var(--sub)}
+.tl .m{display:inline-block; font-weight:800; color:var(--navy); font-size:1.15em}
+.asked{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:8px 0 12px}
+@media (max-width:480px){ .asked{grid-template-columns:1fr} }
+.asked div{border:1px solid var(--line); border-radius:11px; padding:10px 12px; background:var(--panel); font-size:14.5px}
+.asked b{display:block; font-size:14px; margin-bottom:2px}
+.asked .y b{color:var(--navy)} .asked .n b{color:var(--ok)}
+.asked ul{margin:0; padding-left:1.1em}
+
+/* 2章: 手元のお金のスライダー */
+.sim{border:1.5px solid var(--navy); border-radius:14px; padding:14px 16px; background:#fff; margin:8px 0 12px}
+.sim .lbl{font-size:13px; font-weight:700; color:var(--sub)}
+.sim .val{font-size:clamp(30px,8vw,40px); font-weight:800; color:var(--navy); line-height:1.3}
+.sim input[type=range]{width:100%; height:44px; accent-color:var(--navy)}
+.sim .bar{position:relative; height:22px; border-radius:11px; background:var(--line-soft); overflow:hidden; margin:4px 0}
+.sim .bar i{position:absolute; top:0; bottom:0}
+.sim .ticks{position:relative; height:30px; font-size:12px; color:var(--sub)}
+.sim .ticks span{position:absolute; transform:translateX(-50%); white-space:nowrap; text-align:center; line-height:1.3}
+.sim .out{font-size:16px; font-weight:700; margin:6px 0 0; padding:9px 12px; border-radius:0 10px 10px 0; border-left:5px solid}
+.sim .out.ok{background:var(--ok-bg); border-color:var(--ok); color:var(--ok)}
+.sim .out.cut{background:var(--warn-bg); border-color:var(--warn); color:var(--warn)}
+.sim .out.over{background:var(--ng-bg); border-color:var(--ng); color:var(--ng)}
+.vs{display:grid; grid-template-columns:1fr auto 1fr; gap:8px; align-items:center; margin:8px 0 12px; text-align:center}
+.vs div{border:1px solid var(--line); border-radius:12px; padding:10px; background:var(--panel)}
+.vs small{display:block; font-size:12.5px; color:var(--sub); line-height:1.5}
+.vs b{display:block; font-size:clamp(24px,6.5vw,32px); color:var(--navy); line-height:1.3}
+.vs .eq{font-size:22px; font-weight:800; color:var(--sub)}
+
+/* 3章: 持っている物のカード */
+.things{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:8px 0 12px}
+@media (max-width:420px){ .things{grid-template-columns:1fr} }
+.thing{font:inherit; text-align:left; border:1.5px solid var(--line); border-radius:12px; background:#fff; padding:10px 12px; cursor:pointer; min-height:56px; color:var(--ink)}
+.thing .nm{display:block; font-weight:800; font-size:15.5px}
+.thing .hid{display:block; font-size:13px; color:var(--sub)}
+.thing .ans{display:none; font-size:14px; margin-top:4px}
+.thing .ans .tag{display:inline-block; font-weight:800; font-size:14.5px; color:var(--c)}
+.thing .ans q{display:block; font-size:12.5px; color:var(--sub); border-left:3px solid var(--line); padding-left:7px; margin-top:4px; quotes:"「" "」"}
+.thing.open{border-color:var(--c); border-left-width:5px; background:var(--panel)}
+.thing.open .hid{display:none} .thing.open .ans{display:block; animation:up .35s ease}
+.thing.ok{--c:var(--ok)} .thing.mid{--c:var(--warn)} .thing.ng{--c:var(--ng)}
+@keyframes up{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+
+/* 4章: 押せるチェックリスト */
+.check{list-style:none; margin:6px 0 12px; padding:0}
+.check li{margin-bottom:8px}
+.check button{font:inherit; width:100%; text-align:left; display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:#fff; cursor:pointer; color:var(--ink); min-height:48px}
+.check .bx{flex:none; width:24px; height:24px; border-radius:7px; border:2px solid var(--navy); display:grid; place-items:center; color:#fff; font-weight:800; font-size:14px; margin-top:2px; transition:background .2s}
+.check button[aria-pressed=true] .bx{background:var(--navy)}
+.check b{display:block; font-size:15.5px} .check small{display:block; color:var(--sub); font-size:13.5px; line-height:1.55}
+
+.sum h3{font-size:15px; margin:14px 0 6px; color:var(--navy)}
+.card{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px; background:#fff}
+.card .mk{flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:14px}
+.card .mk.y{background:var(--ok-bg); color:var(--ok)} .card .mk.q{background:var(--warn-bg); color:var(--warn)}
+.card b{display:block; font-size:15px} .card small{color:var(--sub); font-size:13px; line-height:1.5; display:block}
+.fade{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+.fade.in{opacity:1; transform:none}
+.foot{margin-top:28px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot h3{font-size:14px; color:var(--ink); margin:12px 0 4px}
+.foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .fade,.tl li{opacity:1; transform:none; transition:none} .tl .line{transition:none} .thing .ans{animation:none} }
+</style>
+<script>
+/* URLの後ろの ?… は付けず、ページの場所だけで数える（同じページが別々に数えられないように） */
+window.goatcounter = {path: function () { return location.pathname; }};
+</script>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho">生活保護を受けられる貯金の境目は、いくら？<small>申請前に見て。3年目の私の申請と、国の決まりで答えます</small></h1>
+  <div class="for-who"><b>このページは、こういう方へ</b>
+    <ul><li>生活保護の申請を考えている方</li>
+    <li>「貯金を全部使い切らないと受けられない」と不安な方</li>
+    <li>家具・家電や車・保険を売らないといけないのか、知りたい方</li></ul></div>
+
+  <div class="conclusion"><div class="k">結論</div>
+    <p>申請のとき手元に残せるお金は、<b>1か月の最低生活費の半分まで</b>。<br>長崎市のひとり暮らしなら <b class="big num">54,965円</b> です（試算）。<br>家具・家電・服・布団は<b>売らなくていい</b>。手放すように言われるのは、車・金・株などです。</p></div>
+  <a class="cta" href="chokin.html"><span>あなたの地域・人数だと、いくら残せる？（貯金の境目しらべ）</span><span>→</span></a>
+
+  <section class="ch fade">
+    <h2><span class="b">1</span>私の申請。「貯金は5万円以下に」と言われた</h2>
+    <p>2024年、私は県外から長崎市に引っ越し、体を壊して働けなくなりました。申請までのお金の動きです。</p>
+    <ol class="tl" id="tl"><span class="line"></span>
+      <li><span class="d">2024年3月</span>相談センターに相談。このとき手元に <span class="m num">約60万円</span></li>
+      <li><span class="d">3〜4月</span>洗濯機・冷蔵庫・布団、動画編集用のパソコンなどを買う</li>
+      <li class="key"><span class="d">相談センターで言われたこと</span>「現金と通帳を合わせて<b>5万円以下</b>にしてから申請した方がいい」</li>
+      <li class="key"><span class="d">4月30日 申請</span>現金と通帳で <span class="m num">3万8,617円</span></li>
+      <li><span class="d">2日後</span>ケースワーカー2人が自宅に。家の中は調べられず、通帳の出入りを確かめて約1時間</li>
+      <li><span class="d">5月上旬</span>生活保護が決まる</li>
+    </ol>
+    <div class="asked">
+      <div class="y"><b>申請の窓口で聞かれたこと</b><ul><li>60万円を何に使ったか（Amazonの購入履歴を見せたら、写真を撮ってOK）</li><li>失業保険・住宅確保給付金は試したか</li><li>車・バイクはあるか（折りたたみ自転車だけ）</li><li>生命保険に入っているか（入っていない）</li></ul></div>
+      <div class="n"><b>聞かれなかったこと</b><ul><li>家具・家電を売れるか</li><li>部屋の中の物（訪問でも、ロフトまで見られることはなかった）</li></ul></div>
+    </div>
+    <div data-yt data-id="sgm7MowuwDI" data-title="もう限界が来たので、生活保護の申請を出しに行って来ました" data-label="当時の申請の動画（2024年5月）"></div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">2</span>国の決まりは「最低生活費の半分まで」</h2>
+    <p>「5万円」という金額は、国の決まりのどこにもありません。書いてあるのは、こうです。</p>
+    <blockquote>保護開始時の程度の決定に当たって認定すべき手持金は、当該世帯の最低生活費（医療扶助及び介護扶助を除く。）の５割を超える額とする。</blockquote>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8433&amp;dataType=1&amp;pageNo=2" target="_blank" rel="noopener">厚労省 課長通知「生活保護法による保護の実施要領の取扱いについて」第10 問10の2</a></p>
+    <div class="easy"><b>やさしく言うと：</b>1か月の生活費（生活費＋家賃）の<b>半分までは、手元に残してよい</b>。半分を超えた分だけ、最初の月の保護費から差し引かれる。保護費が振り込まれるまでの生活費として残す、という考え方です。</div>
+    <div class="sim" id="sim">
+      <div class="lbl">長崎市・ひとり暮らし（20〜40歳）で動かしてみる ／ 手元のお金</div>
+      <div class="val num"><span id="simV">38,617</span>円</div>
+      <input type="range" id="simR" min="0" max="150000" step="1" value="38617" aria-label="手元のお金">
+      <div class="bar" aria-hidden="true"><i id="bKeep" style="left:0;background:var(--ok)"></i><i id="bCut" style="background:var(--warn)"></i><i id="bOver" style="background:var(--ng)"></i></div>
+      <div class="ticks" aria-hidden="true"><span style="left:4%">0円</span><span id="tHalf">半分 54,965円</span><span id="tFull">1か月分 109,930円</span></div>
+      <p class="out ok" id="simOut"></p>
+    </div>
+    <p class="note">最低生活費 109,930円＝生活費 73,930円＋家賃の上限 36,000円（2026年10月から）。冬の上乗せなどの加算は入っていません。</p>
+    <p>では、あのとき言われた「5万円以下」は何だったのか。私が申請した2024年の最低生活費は、当時の動画で「約10万7,000円」と話しています。その半分は約5万3,500円です。</p>
+    <div class="vs">
+      <div><small>2024年の私の最低生活費の半分</small><b class="num">約5.35万円</b></div><span class="eq">≒</span>
+      <div><small>相談センターで言われた目安</small><b class="num">5万円</b></div>
+    </div>
+    <p class="note">「5万円以下」は、この半分の決まりを分かりやすく丸めた数字だった可能性が高いです（<b>推測</b>。相談センターに理由は確かめていません）。</p>
+  </section>
+  <a class="cta" href="chokin.html"><span>人数・地域が違う方は、ここから先は人によって違います → ツールで</span><span>→</span></a>
+
+  <section class="ch fade">
+    <h2><span class="b">3</span>家具・家電は売らなくていい。手放すのは？</h2>
+    <p>国の決まりの基本は「最低限の暮らしに使っていない物は、売って生活費に」です。何がそれに当たるかは、通知に細かく書いてあります。<b>押すと答えが開きます。</b></p>
+    <div class="things" id="things">
+      <button class="thing ok" type="button"><span class="nm">家具・家電・服・布団</span><span class="hid">押して確かめる</span><span class="ans"><span class="tag">◯ 売らなくていい</span><br>人数に合った数なら持てる<q>当該世帯の人員、構成等から判断して利用の必要があると認められる品目及び数量は、保有を認めること。</q></span></button>
+      <button class="thing ok" type="button"><span class="nm">テレビ・カメラ</span><span class="hid">押して確かめる</span><span class="ans"><span class="tag">◯ ふつうは持てる</span><br>地域の7割くらいの家にある物は持てる<q>当該地域の全世帯の70％程度（中略）の普及率を基準として認定すること。</q></span></button>
+      <button class="thing mid" type="button"><span class="nm">住んでいる持ち家</span><span class="hid">押して確かめる</span><span class="ans"><span class="tag">△ 残せることが多い</span><br>ローンが残っている家は原則だめ<q>持ち家がある人でも申請できます。（中略）居住用の持ち家については、保有が認められる場合があります。</q></span></button>
+      <button class="thing mid" type="button"><span class="nm">生命保険</span><span class="hid">押して確かめる</span><span class="ans"><span class="tag">△ 解約しなくていい場合あり</span><br>戻るお金が少なく、保険料がふつう程度なら<q>返戻金が少額であり、かつ、保険料額が当該地域の一般世帯との均衡を失しない場合に限り（中略）解約させないで保護を適用して差しつかえない。</q></span></button>
+      <button class="thing ng" type="button"><span class="nm">車・バイク</span><span class="hid">押して確かめる</span><span class="ans"><span class="tag">✕ 原則は手放す（例外あり）</span><br>障害のある方の通院、通勤用などは例外<q>自動車については処分していただくのが原則ですが、通勤用の自動車を持ちながら求職している場合に、処分しないまま保護を受けることができる場合があります。</q></span></button>
+      <button class="thing ng" type="button"><span class="nm">金・宝石・株</span><span class="hid">押して確かめる</span><span class="ans"><span class="tag">✕ 売って生活費に</span><br>投資信託・国債も同じ<q>貴金属及び債券　保有を認めないこと。</q></span></button>
+    </div>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8432&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">局長通知 第3 資産の活用</a> ／ <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8433&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">課長通知 第3 問6・問11</a> ／ <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/seikatsuhogopage.html" target="_blank" rel="noopener">厚労省「生活保護を申請したい方へ」</a></p>
+    <p><b>売れる物がないか、聞かれる？</b> → 聞かれます。申請書には「資産及び収入の状況」を書く決まりで（生活保護法24条）、福祉事務所は銀行などに問い合わせることもできます（29条）。私の場合、車・バイクと生命保険は口で聞かれましたが、家具・家電について聞かれることはありませんでした。</p>
+    <p class="src">出典: <a href="https://laws.e-gov.go.jp/law/325AC0000000144" target="_blank" rel="noopener">生活保護法（e-Gov法令検索）</a></p>
+  </section>
+  <a class="cta" href="chokin.html"><span>持っている物ごとの答えは、ツールでまとめて見られます</span><span>→</span></a>
+
+  <section class="ch fade">
+    <h2><span class="b">4</span>申請の前にやっておくと楽なこと</h2>
+    <p>私が実際に聞かれたことから、準備しておくと話が早いことです。押してチェックできます。</p>
+    <ul class="check" id="check">
+      <li><button type="button" aria-pressed="false"><span class="bx">✓</span><span><b>大きな買い物は、使い道を説明できるように</b><small>レシートがなくても、ネットの購入履歴で通じました</small></span></button></li>
+      <li><button type="button" aria-pressed="false"><span class="bx">✓</span><span><b>通帳は、申請の日に記帳してコピーを取る</b><small>相談センターで「なるべく当日の最新の通帳のコピーを持って行った方がいい」と言われました</small></span></button></li>
+      <li><button type="button" aria-pressed="false"><span class="bx">✓</span><span><b>ほかの制度を試したか、答えられるように</b><small>失業保険・住宅確保給付金など、ほかの制度を先に使うのが決まりです（国の通知「他法他施策の活用」）</small></span></button></li>
+      <li><button type="button" aria-pressed="false"><span class="bx">✓</span><span><b>書類がそろっていなくても、申請はできる</b><small>厚労省「必要な書類が揃っていなくても申請はできます。」</small></span></button></li>
+    </ul>
+  </section>
+
+  <section class="ch sum fade">
+    <h2><span class="b">✓</span>まとめ</h2>
+    <h3>分かっていること</h3>
+    <div class="card"><span class="mk y">✓</span><div><b>残せるのは、1か月の最低生活費の半分まで</b><small>長崎市のひとり暮らしなら54,965円。超えた分は最初の月の保護費から差し引かれる</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>家具・家電・服・布団は売らなくていい</b><small>手放すように言われるのは、車・金・株・住んでいない土地など</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>申請は、手元にお金があってもできる</b><small>受けられるかどうかは、申請のあとで福祉事務所が判断する</small></div></div>
+    <h3>まだ分からないこと</h3>
+    <div class="card"><span class="mk q">？</span><div><b>「5万円以下」が、半分の決まりから来た数字なのか</b><small>金額が近いので可能性は高いが、相談センターに確かめていない</small></div></div>
+    <div class="card"><span class="mk q">？</span><div><b>1か月分以上あるときに、どう判断されるか</b><small>国の通知に金額の決まりはなく、福祉事務所の判断になる</small></div></div>
+  </section>
+  <a class="cta" href="chokin.html"><span>貯金の境目しらべで、あなたの場合を計算する</span><span>→</span></a>
+
+  <div class="foot">
+    <h3>根拠資料</h3>
+    <ul>
+      <li><a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8433&amp;dataType=1&amp;pageNo=2" target="_blank" rel="noopener">厚労省 課長通知「生活保護法による保護の実施要領の取扱いについて」（昭和38年4月1日社保第34号）第10 問10の2</a></li>
+      <li><a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8433&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">同 第3 問6（普及率70%）・問9（通勤用の車）・問11（保険）・問14（ローン中の家）</a></li>
+      <li><a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8432&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">厚労省 局長通知「生活保護法による保護の実施要領について」（昭和38年4月1日社発第246号）第3 資産の活用</a></li>
+      <li><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/seikatsuhogopage.html" target="_blank" rel="noopener">厚労省「生活保護を申請したい方へ」</a></li>
+      <li><a href="https://laws.e-gov.go.jp/law/325AC0000000144" target="_blank" rel="noopener">生活保護法 4条・24条・29条（e-Gov法令検索）</a></li>
+      <li>最低生活費: <a href="https://www.mhlw.go.jp/content/001152601.pdf" target="_blank" rel="noopener">厚労省「生活扶助基準額の算出方法（令和8年4月）」</a>・<a href="https://www.mhlw.go.jp/content/12002000/001662704.pdf" target="_blank" rel="noopener">第55回生活保護基準部会 資料4</a>（計算は「保護費しらべ」と同じ）</li>
+      <li>私の申請の記録: 動画「もう限界が来たので、生活保護の申請を出しに行って来ました」「生活保護の申請がやっと決定したので、手続きに行ってきました」「【自宅訪問】生活保護の申請日から二日後に、ケースワーカーが訪問しにきました...」（2024年5月）</li>
+    </ul>
+    <h3>読むときの注意</h3>
+    <ul>
+      <li>「半分まで残せる」は、受けられると決まった世帯の、最初の月の計算の決まりです。受けられるかどうかの判断そのものを変えるものではないと、同じ通知に書かれています</li>
+      <li>長崎市の金額は、ひとり暮らし・20〜40歳・家賃が上限の場合の試算です。冬の上乗せや障害・ひとり親などの加算がある人は、最低生活費も残せる額も高くなります</li>
+      <li>私の申請の話は、2024年の長崎市での1件の体験です。聞かれることは、自治体や担当の方によって違う場合があります</li>
+      <li>確認日: 2026年10月5日 ／ 個人が作ったもので、行政の公式資料ではありません。法律上の助言でもありません</li>
+    </ul>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+const yen = n => n.toLocaleString('ja-JP');
+
+// スクロールで表示（スマホで縦に長い要素も出るように threshold:0）
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in'); io.unobserve(e.target);
+  const tl = e.target.querySelector('#tl');
+  if (tl) {
+    tl.querySelectorAll('li').forEach((li, i) => li.style.transitionDelay = (i * 0.22) + 's');
+    requestAnimationFrame(() => { tl.classList.add('in'); tl.querySelector('.line').style.height = 'calc(100% - 12px)'; });
+  }
+}), {threshold: 0, rootMargin: '0px 0px -12% 0px'});
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
+
+// 2章: 長崎市・単身（2026年10月から）で手元のお金を動かす
+const FULL = 109930, HALF = Math.floor(FULL / 2), MAX = 150000;
+const pct = v => Math.min(100, v / MAX * 100);
+document.getElementById('tHalf').style.left = pct(HALF) + '%';
+document.getElementById('tFull').style.left = Math.min(88, pct(FULL)) + '%';
+function sim() {
+  const m = +document.getElementById('simR').value;
+  document.getElementById('simV').textContent = yen(m);
+  const b = id => document.getElementById(id).style;
+  b('bKeep').width = pct(Math.min(m, HALF)) + '%';
+  b('bCut').left = pct(HALF) + '%'; b('bCut').width = (m > HALF ? pct(Math.min(m, FULL)) - pct(HALF) : 0) + '%';
+  b('bOver').left = pct(FULL) + '%'; b('bOver').width = (m > FULL ? pct(m) - pct(FULL) : 0) + '%';
+  const out = document.getElementById('simOut');
+  if (m <= HALF) { out.className = 'out ok'; out.textContent = '全部残せる（差し引きなし）' + (m === 38617 ? '。申請したときの私' : ''); }
+  else if (m < FULL) { out.className = 'out cut'; out.textContent = yen(m - HALF) + '円が、最初の月の保護費から差し引かれる'; }
+  else { out.className = 'out over'; out.textContent = '1か月分以上。「まずは手元のお金で」と言われることがある'; }
+}
+document.getElementById('simR').addEventListener('input', sim);
+sim();
+
+// 3章: 押すと答えが開く
+document.querySelectorAll('.thing').forEach(t => t.addEventListener('click', () => t.classList.toggle('open')));
+// 4章: 押せるチェックリスト
+document.querySelectorAll('#check button').forEach(b => b.addEventListener('click', () => b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') !== 'true')));
+</script>
+<script src="video-embed.js" defer></script>
+</body>
+</html>

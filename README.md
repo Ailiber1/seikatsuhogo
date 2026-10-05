@@ -29,6 +29,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `hima-setsumei.html` | 解説 | 生活保護は暇じゃない。3年目の1日を国の平均とくらべた（国の定義だと収入のある仕事は7時間30分で「かなりの暇人」、ながらAI作業まで足すと作業時間は合計16時間45分） | [/hima-setsumei.html](https://ailiber1.github.io/seikatsuhogo/hima-setsumei.html) |
 | `anti.html` | 解説 | アンチコメ図鑑。このチャンネルの動画185本のコメント880件を全部読み、アンチコメ151件を11種類に分けて多い順に並べた。原文（投稿者名なし）、法律と国の資料での答え、ほかの生活保護YouTuber 11チャンネルとの比較（名前は伏せる） | [/anti.html](https://ailiber1.github.io/seikatsuhogo/anti.html) |
 | `anti-kaeshi.html` | ツール | アンチコメ返し（言われた言葉を選ぶと、同じ種類が何件届いたかと、事実での答え・原文の引用が出る） | [/anti-kaeshi.html](https://ailiber1.github.io/seikatsuhogo/anti-kaeshi.html) |
+| `chokin.html` | ツール | 貯金の境目しらべ（申請のとき手元に残せるお金＝最低生活費の5割の目安、車・家電・保険など持ち物ごとに売る必要があるか） | [/chokin.html](https://ailiber1.github.io/seikatsuhogo/chokin.html) |
+| `chokin-setsumei.html` | 解説 | 生活保護を受けられる貯金の境目は、いくら？（3年目の申請の実体験・課長通知の「5割」・家具家電は売らなくていい） | [/chokin-setsumei.html](https://ailiber1.github.io/seikatsuhogo/chokin-setsumei.html) |
 | `database.rules.json` / `firebase.json` / `.firebaserc` | 設定 | 暇人スキャンの保存先（Firebase Realtime Database）の書き込みルール | — |
 | `data/` | データ | ページに埋め込む元データ（JSON） | — |
 | `scripts/` | スクリプト | 公的資料からデータを作り、ページを生成する | — |
@@ -63,6 +65,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `extract_jikan.py` | 社会生活基本調査の表から `data/jikan_r3.json` を作る（全区分の合計が24時間になるか確かめる） |
 | `gen_hima_tool.py` | `data/jikan_r3.json` を `hima.template.html` に埋め込んで `hima.html` を生成する |
 | `gen_anti.py` | `data/anti.json` から `anti.html` と `anti-kaeshi.html` を生成する。件数・順位・割合はここで数え、合計と内訳が合わないときは止まる |
+| `gen_chokin_tool.py` | 級地・経過的加算・基準額・住宅扶助の上限を `chokin.template.html` に埋め込んで `chokin.html` を生成する |
+| `verify_chokin.py` | `chokin.html` の生活扶助の計算が `hogohi.html` と同じでモデル世帯54通りと一致するか、残せる額の判定の境目が正しいかを確かめる |
 | `verify_hogohi.py` | `hogohi.html` の計算式を node で動かし、資料4のモデル世帯54通りと1円単位で一致するか確かめる |
 
 ---

@@ -1,0 +1,46 @@
+{
+  "tool": "blacklist.html",
+  "title": "ブラックリスト、いつ消える？しらべ",
+  "checked": "2026-10-10",
+  "rules": [
+    {
+      "key": "zengin",
+      "name": "全国銀行個人信用情報センター",
+      "who": "銀行など",
+      "from": "破産手続開始決定の日",
+      "years": 7,
+      "quote": "破産・民事再生手続開始決定の日（官報情報の官報公告区分日）から７年後の応当日の前日まで登録",
+      "note": "免責に関する情報は登録しない（同資料Q5）。2022年11月4日に10年から7年に短縮",
+      "source": "https://www.zenginkyo.or.jp/fileadmin/res/abstract/pcic/open/kaiji_viewpoint2025.pdf",
+      "source_name": "登録情報開示報告書の見方（2025年8月）Q5・Q6"
+    },
+    {
+      "key": "cic",
+      "name": "CIC",
+      "who": "クレジット会社など",
+      "from": "免責により契約が終了した日（登録元が契約終了日として登録）",
+      "years": 5,
+      "quote": "自己破産により免責許可決定が確定した場合、登録元であるクレジット会社等が免責許可決定の事実を確認のうえ、契約が免責により終了した日を契約終了日としてCICに登録します。この情報は、契約終了日から5年間保有されます。",
+      "note": "官報に掲載される自己破産の情報はCICに登録されない",
+      "source": "https://www.cic.co.jp/faq/detail/cre/cre01/002585.html",
+      "source_name": "CIC FAQ「自己破産をするとCICに登録されますか？」"
+    },
+    {
+      "key": "jicc",
+      "name": "JICC",
+      "who": "消費者金融など",
+      "from": "免責確定日（登録会社が免責確定日付で完済として報告）",
+      "years": 5,
+      "quote": "契約継続中及び契約終了後５年以内",
+      "note": "2019年9月30日以前の契約の破産申立等の取引事実は「当該事実の発生日から５年を超えない期間」で、免責確定から5年より先には延びない",
+      "source": "https://www.jicc.co.jp/aboutus/credit-info/registration",
+      "source_name": "JICC「信用情報の内容と登録期間」＋FAQ https://www.jicc.co.jp/faq/detail/a095i000000LtgGAAS"
+    }
+  ],
+  "caveats": [
+    "裁判所はクレジット会社等に免責通知を行わないため、登録元が更新していない場合がある（CIC FAQ https://www.cic.co.jp/faq/detail/cre/cre02/002592.html ・JICC FAQ）。その場合は本人が免責の資料を用意して登録元に連絡する",
+    "月までしか聞かないため、結果は年月単位の目安。終わりの月がいまと同じ月なら「今月ごろ消える目安」と表示",
+    "記録が消えても審査に通るとは限らない（千葉地裁 Q17「お金を貸す側の判断になります」）"
+  ],
+  "verify": "scripts/verify_blacklist.py（7件）"
+}

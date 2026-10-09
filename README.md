@@ -31,6 +31,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `anti-kaeshi.html` | ツール | アンチコメ返し（言われた言葉を選ぶと、同じ種類が何件届いたかと、事実での答え・原文の引用が出る） | [/anti-kaeshi.html](https://ailiber1.github.io/seikatsuhogo/anti-kaeshi.html) |
 | `chokin.html` | ツール | 貯金の境目しらべ（申請のとき手元に残せるお金＝最低生活費の5割の目安、車・家電・保険など持ち物ごとに売る必要があるか） | [/chokin.html](https://ailiber1.github.io/seikatsuhogo/chokin.html) |
 | `chokin-setsumei.html` | 解説 | 生活保護を受けられる貯金の境目は、いくら？（3年目の申請の実体験・課長通知の「5割」・家具家電は売らなくていい） | [/chokin-setsumei.html](https://ailiber1.github.io/seikatsuhogo/chokin-setsumei.html) |
+| `blacklist.html` | ツール | ブラックリスト、いつ消える？しらべ（破産手続開始決定と免責確定の年月から、CIC・JICC・全国銀行個人信用情報センターで記録がいつまで残るかの目安） | [/blacklist.html](https://ailiber1.github.io/seikatsuhogo/blacklist.html) |
 | `jikohasan-setsumei.html` | 解説 | 【借金に悩む人へ】自己破産は人生の終わりじゃなかった（私の申請〜終了の記録と当時の動画6本・裁判所の説明・「ブラックリスト」は5〜7年・クレジットとデビットカード・法テラス） | [/jikohasan-setsumei.html](https://ailiber1.github.io/seikatsuhogo/jikohasan-setsumei.html) |
 | `database.rules.json` / `firebase.json` / `.firebaserc` | 設定 | 暇人スキャンの保存先（Firebase Realtime Database）の書き込みルール | — |
 | `data/` | データ | ページに埋め込む元データ（JSON） | — |
@@ -48,6 +49,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `kiso_kojo.json` | 勤労収入の基礎控除額表（1人目・2人目以降）、新規就労控除・20歳未満控除・臨時収入の扱い | 厚労省「生活保護法による保護の実施要領について」（次官通知）別表（法令等データベースの画像から書き写し） |
 | `jikan_r3.json` | 1日の生活時間の平均（曜日×男女×働いているか×5歳刻みの年齢）。20種類の行動を6項目にまとめたもの | 総務省「令和3年社会生活基本調査」第7-1表（写し `shakai2021_t7-1_source.xlsx`） |
 | `anti.json` | アンチコメの本文と種類（投稿者名なし）、ほかのチャンネルの集計（チャンネル名なし・Aさん〜Kさん）。2026年10月1日に、公開コメントとAIモデレーターの記録を1件ずつ読んで分けたもの | このチャンネルと、ほかの生活保護系チャンネルのコメント欄 |
+| `blacklist.json` | 3つの信用情報機関で、自己破産の記録をいつから何年持つかの決まり（原文・出典つき）と注意点 | 全国銀行個人信用情報センター「登録情報開示報告書の見方」Q5・Q6、CIC・JICCのFAQと登録期間のページ |
 | `jikohasan.json` | 自己破産の解説で使った動画6本・引用した原文・出典URL・確認日、配信者本人が伝えた事実 | 千葉地裁・大分地裁（写し `jikohasan_chiba_source.pdf`・`jikohasan_oita_source.pdf`）、CIC・JICC・全国銀行個人信用情報センター、全国銀行協会、法テラス |
 | `kijun_r8.json` | 生活扶助の第1類・第2類・逓減率・特例加算と、照合用のモデル世帯9類型 | 厚労省「生活扶助基準額の算出方法（令和8年4月）」＋第55回生活保護基準部会 資料4 |
 
@@ -69,6 +71,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `gen_anti.py` | `data/anti.json` から `anti.html` と `anti-kaeshi.html` を生成する。件数・順位・割合はここで数え、合計と内訳が合わないときは止まる |
 | `gen_chokin_tool.py` | 級地・経過的加算・基準額・住宅扶助の上限を `chokin.template.html` に埋め込んで `chokin.html` を生成する |
 | `verify_chokin.py` | `chokin.html` の生活扶助の計算が `hogohi.html` と同じでモデル世帯54通りと一致するか、残せる額の判定の境目が正しいかを確かめる |
+| `verify_blacklist.py` | `blacklist.html` の計算式を node で動かし、7年・5年の決まりどおりの年月と、同じ月に消える機関の表示・「今月ごろ」の境目が正しいか確かめる |
 | `verify_hogohi.py` | `hogohi.html` の計算式を node で動かし、資料4のモデル世帯54通りと1円単位で一致するか確かめる |
 
 ---

@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>自己破産は人生の終わりじゃなかった</title>
+<meta name="description" content="借金に悩む人へ。自己破産をして今は借金0円の経験者が、申請から終わるまでの記録と、裁判所・信用情報機関・法テラスの情報で、破産後のカード事情まで答えます">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:16px; line-height:1.8; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+/* 言葉の途中で改行しない。対応ブラウザは文節で折り返す */
+.nb{display:inline-block}
+h1,.conclusion p,.ch h2,.for-who li,.cta,.card b{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
+h1{font-size:clamp(26px,6vw,36px); line-height:1.4; margin:0 0 12px; color:var(--navy); text-wrap:balance}
+h1 small{display:block; font-size:.55em; color:var(--sub); font-weight:600}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:16px; font-size:15px}
+.for-who b{color:var(--navy)} .for-who ul{margin:4px 0 0; padding-left:1.2em}
+.conclusion{border:2px solid var(--navy); border-radius:14px; padding:16px; margin-bottom:10px; background:#fff}
+.conclusion .k{font-size:13px; font-weight:700; color:var(--sub)}
+.conclusion p{margin:4px 0 0; font-size:18px; font-weight:700; line-height:1.6}
+.conclusion b{color:var(--navy)}
+.conclusion .big{font-size:1.35em}
+.cta{display:flex; align-items:center; justify-content:space-between; gap:10px; text-decoration:none; color:var(--navy); background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:11px 14px; margin:12px 0 22px; font-weight:700; font-size:15px; min-height:48px}
+.cta span:last-child{flex:none}
+section.ch{margin:30px 0 8px}
+.ch h2{display:flex; align-items:center; gap:10px; font-size:clamp(19px,4.6vw,23px); line-height:1.45; margin:0 0 12px; color:var(--navy)}
+.ch h2 .b{flex:none; width:34px; height:34px; border-radius:50%; border:2px solid var(--navy); display:grid; place-items:center; font-size:15px; font-family:system-ui,sans-serif}
+.ch p{margin:0 0 12px}
+blockquote{margin:10px 0 4px; padding:10px 14px; background:var(--panel); border-left:4px solid var(--line); font-size:14.5px; border-radius:0 10px 10px 0}
+.src{font-size:12.5px; color:var(--sub); margin:0 0 8px} .src a{color:var(--navy)}
+.easy{background:var(--ok-bg); border-left:4px solid var(--ok); border-radius:0 10px 10px 0; padding:9px 14px; font-size:15px; margin:6px 0 12px}
+.easy b{color:var(--ok)}
+.mine{background:var(--warn-bg); border-left:4px solid var(--warn); border-radius:0 10px 10px 0; padding:9px 14px; font-size:15px; margin:6px 0 12px}
+.mine b{color:var(--warn)}
+.note{font-size:13px; color:var(--sub); margin:4px 0 12px}
+
+/* 1章: 年表（押すとその時の動画が開く） */
+.tl{list-style:none; margin:4px 0 12px; padding:0 0 0 22px; position:relative}
+.tl::before{content:""; position:absolute; left:7px; top:6px; bottom:6px; width:3px; background:var(--line); border-radius:2px}
+.tl .line{position:absolute; left:7px; top:6px; width:3px; height:0; background:var(--navy); border-radius:2px; transition:height 1.8s ease}
+.tl li{position:relative; margin:0 0 12px; opacity:0; transform:translateX(8px); transition:opacity .5s ease, transform .5s ease}
+.tl.in li{opacity:1; transform:none}
+.tl li::before{content:""; position:absolute; left:-21px; top:7px; width:13px; height:13px; border-radius:50%; background:#fff; border:3px solid var(--navy)}
+.tl li.key::before{background:var(--navy)}
+.tl .d{display:block; font-size:13px; font-weight:700; color:var(--sub)}
+.tl .m{font-weight:800; color:var(--navy)}
+.tl li.key .m{font-size:1.2em}
+.tl .vbtn{font:inherit; font-size:13.5px; font-weight:700; color:var(--navy); background:var(--navy-soft); border:1px solid #cfdcea; border-radius:999px; padding:4px 14px; margin-top:4px; cursor:pointer; min-height:40px}
+.tl .vbtn[aria-expanded=true]{background:#fff}
+.tl .vbox{display:none} .tl .vbox.open{display:block; animation:up .35s ease}
+.tl .vbox .yt{margin:10px 0 4px}
+
+/* 2章: 押すと答えが開くカード */
+.things{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:8px 0 12px}
+@media (max-width:420px){ .things{grid-template-columns:1fr} }
+.thing{font:inherit; text-align:left; border:1.5px solid var(--line); border-radius:12px; background:#fff; padding:10px 12px; cursor:pointer; min-height:56px; color:var(--ink)}
+.thing .nm{display:block; font-weight:800; font-size:15.5px}
+.thing .hid{display:block; font-size:13px; color:var(--sub)}
+.thing .ans{display:none; font-size:14px; margin-top:4px}
+.thing .ans .tag{display:inline-block; font-weight:800; font-size:14.5px; color:var(--c)}
+.thing .ans q{display:block; font-size:12.5px; color:var(--sub); border-left:3px solid var(--line); padding-left:7px; margin-top:4px; quotes:"「" "」"}
+.thing.open{border-color:var(--c); border-left-width:5px; background:var(--panel)}
+.thing.open .hid{display:none} .thing.open .ans{display:block; animation:up .35s ease}
+.thing.ok{--c:var(--ok)} .thing.mid{--c:var(--warn)} .thing.ng{--c:var(--ng)}
+@keyframes up{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+
+/* 3章: 何年残るかの棒 */
+.years{border:1.5px solid var(--navy); border-radius:14px; padding:14px 16px; background:#fff; margin:8px 0 12px}
+.years .row{margin:0 0 12px}
+.years .row:last-of-type{margin-bottom:4px}
+.years .nm{display:flex; justify-content:space-between; gap:8px; font-size:14px; font-weight:700}
+.years .nm small{font-weight:400; color:var(--sub)}
+.years .nm .y{color:var(--navy); font-size:18px; font-weight:800; white-space:nowrap}
+.years .bar{position:relative; height:20px; border-radius:10px; background:var(--line-soft); overflow:hidden; margin-top:3px}
+.years .bar i{position:absolute; left:0; top:0; bottom:0; width:0; background:var(--navy); border-radius:10px; transition:width 1.2s ease}
+.years .row.old .bar i{background:repeating-linear-gradient(45deg,#d9dee4 0 6px,#eef1f4 6px 12px)}
+.years .row.old .nm .y{color:var(--sub); text-decoration:line-through}
+.years .scale{display:flex; justify-content:space-between; font-size:12px; color:var(--sub); margin-top:2px}
+
+/* 4章: クレジットとデビットの比較 */
+.vs2{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:8px 0 12px}
+.vs2 div{border:1px solid var(--line); border-radius:12px; padding:12px; background:var(--panel)}
+.vs2 .dc{border:2px solid var(--ok); background:var(--ok-bg)}
+.vs2 h3{margin:0 0 6px; font-size:15.5px}
+.vs2 .dc h3{color:var(--ok)}
+.vs2 ul{margin:0; padding-left:1.1em; font-size:14.5px; line-height:1.65}
+.vs2 .tag{display:inline-block; font-size:12.5px; font-weight:800; padding:0 8px; border-radius:6px; margin-bottom:4px}
+.vs2 .cc .tag{background:var(--ng-bg); color:var(--ng)}
+.vs2 .dc .tag{background:#fff; color:var(--ok)}
+.caution{background:var(--ng-bg); border-left:4px solid var(--ng); border-radius:0 10px 10px 0; padding:9px 14px; font-size:14.5px; margin:6px 0 12px}
+.caution b{color:var(--ng)}
+
+/* 5章: 相談先 */
+.tel{border:1.5px solid var(--navy); border-radius:14px; padding:14px 16px; background:#fff; margin:8px 0 12px}
+.tel .lbl{font-size:13px; font-weight:700; color:var(--sub)}
+.tel a{display:inline-block; font-size:clamp(26px,7vw,34px); font-weight:800; color:var(--navy); text-decoration:none; letter-spacing:.03em; line-height:1.3}
+.tel small{display:block; font-size:13.5px; color:var(--sub)}
+
+.sum h3{font-size:15px; margin:14px 0 6px; color:var(--navy)}
+.card{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px; background:#fff}
+.card .mk{flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:14px}
+.card .mk.y{background:var(--ok-bg); color:var(--ok)} .card .mk.q{background:var(--warn-bg); color:var(--warn)}
+.card b{display:block; font-size:15px} .card small{color:var(--sub); font-size:13px; line-height:1.5; display:block}
+.fade{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+.fade.in{opacity:1; transform:none}
+.foot{margin-top:28px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot h3{font-size:14px; color:var(--ink); margin:12px 0 4px}
+.foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .fade,.tl li{opacity:1; transform:none; transition:none} .tl .line,.years .bar i{transition:none} .thing .ans,.tl .vbox.open{animation:none} }
+</style>
+<script>
+/* URLの後ろの ?… は付けず、ページの場所だけで数える（同じページが別々に数えられないように） */
+window.goatcounter = {path: function () { return location.pathname; }};
+</script>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho"><span class="nb">【借金に悩む人へ】</span><span class="nb">自己破産は</span><span class="nb">人生の終わりじゃ</span><span class="nb">なかった。</span><small><span class="nb">経験者の私の記録と、</span><span class="nb">裁判所・公的機関の情報で</span><span class="nb">答えます</span></small></h1>
+  <div class="for-who"><b>このページは、こういう方へ</b>
+    <ul><li>借金の返済に悩んでいて、どうしたらいいか分からない方</li>
+    <li>「自己破産をしたら人生が終わる」と不安な方</li>
+    <li>破産したあと、カードや買い物がどうなるのか知りたい方</li></ul></div>
+
+  <div class="conclusion"><div class="k">結論</div>
+    <p>私は自己破産をして、いまは<b class="big nb">借金0円</b>。<span class="nb">お金の不安はありません。</span><br>クレジットカードは作れませんが、<b class="nb">デビットカードが使いやすい</b>。<br>いわゆる「ブラックリスト」の記録は一生ではなく、<b class="nb">5〜7年</b>です。</p></div>
+
+  <section class="ch fade">
+    <h2><span class="b">1</span>私の自己破産。申請から終わるまで</h2>
+    <p>当時、その時々に動画を出していました。<b>「▶ この時の動画」を押すと開きます。</b></p>
+    <ol class="tl" id="tl"><span class="line"></span>
+      <li><span class="d">2024年6月</span>生活保護を受けてから、<span class="m">自己破産の申請</span>を出す
+        <br><button class="vbtn" type="button" aria-expanded="false">▶ この時の動画</button>
+        <div class="vbox"><div data-yt data-id="d_9RIip9uvg" data-title="生活保護を受けてから「自己破産の申請」も出してきました"></div></div></li>
+      <li><span class="d">2024年7月</span>申請から2か月。<span class="m">書類</span>が送られてくる
+        <br><button class="vbtn" type="button" aria-expanded="false">▶ この時の動画</button>
+        <div class="vbox"><div data-yt data-id="z3iI7w-fzAI" data-title="自己破産の申請を出してから2ヶ月後・・・書類が送られてきました"></div></div></li>
+      <li><span class="d">2024年8月</span><span class="m">弁護士事務所</span>から連絡が来る
+        <br><button class="vbtn" type="button" aria-expanded="false">▶ この時の動画</button>
+        <div class="vbox"><div data-yt data-id="mNIeAvg4wyE" data-title="弁護士事務所から連絡が来ました・・・(自己破産申請中)"></div></div></li>
+      <li><span class="d">2024年9月</span>申請から4か月。<span class="m">破産管財人</span>が付いて面談
+        <br><button class="vbtn" type="button" aria-expanded="false">▶ この時の動画</button>
+        <div class="vbox"><div data-yt data-id="8f_YfugCgTY" data-title="自己破産の申請を出してから4ヶ月後、管財人が付いて面談することになりました"></div></div></li>
+      <li><span class="d">2024年12月</span><span class="m">裁判所</span>に出頭
+        <br><button class="vbtn" type="button" aria-expanded="false">▶ この時の動画</button>
+        <div class="vbox"><div data-yt data-id="HOsiBVS06M0" data-title="【生活保護受給者の日常】裁判所に出頭してきます。"></div></div></li>
+      <li><span class="d">2025年3月</span>終わったと思ったら、<span class="m">法テラスから37万円</span>の請求。電話で確認
+        <br><button class="vbtn" type="button" aria-expanded="false">▶ この時の動画</button>
+        <div class="vbox"><div data-yt data-id="j8hwwnT02pg" data-title="自己破産が終わったと思ったら「法テラス」から「37万円」の請求が来たので電話しました"></div></div></li>
+      <li class="key"><span class="d">いま</span><span class="m">借金0円</span>。お金に対する不安はない</li>
+    </ol>
+    <p class="note">月は動画を公開した月です。出来事の日とは少しずれることがあります。</p>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">2</span>自己破産って、そもそも何？</h2>
+    <blockquote>残った借金の支払を免除して，申立人の生活を再建するための手続が免責手続です。</blockquote>
+    <p class="src">出典: <a href="https://www.courts.go.jp/chiba/vc-files/chiba/file/setumeisho.pdf" target="_blank" rel="noopener">千葉地方裁判所「破産・免責手続について」Q1</a></p>
+    <div class="easy"><b>やさしく言うと：</b>どうしても返せない借金を、裁判所が<b>「もう払わなくていい」と認める</b>手続き。目的は罰ではなく、<b>生活をやり直すこと</b>です。</div>
+    <p>よく聞かれる不安です。<b>押すと答えが開きます。</b></p>
+    <div class="things" id="things">
+      <button class="thing ok" type="button"><span class="nm">戸籍・住民票に載る？</span><span class="hid">押して確かめる</span><span class="ans"><span class="tag">◯ 載らない</span><br>選挙権もなくならない<q>自己破産をしても戸籍や住民票に載ることはありませんし，選挙権を失うこともありません。</q></span></button>
+      <button class="thing mid" type="button"><span class="nm">家族や職場にバレる？</span><span class="hid">押して確かめる</span><span class="ans"><span class="tag">△ 裁判所からは知らせない</span><br>ただし官報（国の新聞）に名前と住所が載る<q>裁判所から勤務先やご家族あてに通知することはありません。</q></span></button>
+      <button class="thing mid" type="button"><span class="nm">仕事は続けられる？</span><span class="hid">押して確かめる</span><span class="ans"><span class="tag">△ ほとんどは続けられる</span><br>警備員・保険外交員などは一時的に就けない<q>その後，免責決定が確定すれば，この制限は解除されます。</q></span></button>
+      <button class="thing ng" type="button"><span class="nm">借金は全部なくなる？</span><span class="hid">押して確かめる</span><span class="ans"><span class="tag">✕ 消えないものもある</span><br>税金・罰金は対象外。保証人の支払いも残る<q>税金や罰金は対象外ですし，債務があるとわかっていながら債権者一覧表に書かなかった債務も 同様です。</q></span></button>
+    </div>
+    <p class="src">出典: <a href="https://www.courts.go.jp/oita/vc-files/oita/file/R1.10.1saimuseiri-q-a.pdf" target="_blank" rel="noopener">大分地方裁判所「債務整理の方法についてのQ&amp;A」</a> ／ <a href="https://www.courts.go.jp/chiba/vc-files/chiba/file/setumeisho.pdf" target="_blank" rel="noopener">千葉地方裁判所「破産・免責手続について」Q16・Q18・Q19・Q22</a></p>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">3</span>「ブラックリスト」は何年？</h2>
+    <p>「ブラックリスト」という名簿があるわけではありません。正体は、<b>信用情報機関に残る記録</b>です。カード会社や銀行は、審査のときにここを見ます。機関は3つあり、それぞれの公式ページに期間が書いてあります。</p>
+    <div class="years" id="years">
+      <div class="row" data-y="5"><div class="nm"><span>CIC<small>（クレジット会社など）</small></span><span class="y num">5年</span></div><div class="bar"><i></i></div></div>
+      <div class="row" data-y="5"><div class="nm"><span>JICC<small>（消費者金融など）</small></span><span class="y num">5年</span></div><div class="bar"><i></i></div></div>
+      <div class="row" data-y="7"><div class="nm"><span>全国銀行個人信用情報センター<small>（銀行など）</small></span><span class="y num">7年</span></div><div class="bar"><i></i></div></div>
+      <div class="row old" data-y="10"><div class="nm"><span>同センターの以前の期間<small>（2022年11月に短縮）</small></span><span class="y num">10年</span></div><div class="bar"><i></i></div></div>
+      <div class="scale num" aria-hidden="true"><span>0年</span><span>5年</span><span>10年</span></div>
+    </div>
+    <blockquote>官報情報については、登録期間を10年間から7年間に短縮しております</blockquote>
+    <p class="src">出典: <a href="https://www.zenginkyo.or.jp/pcic/info/18379/" target="_blank" rel="noopener">全国銀行個人信用情報センター（2022年11月4日）</a> ／ <a href="https://www.cic.co.jp/confidence/posession.html" target="_blank" rel="noopener">CIC</a> ／ <a href="https://www.jicc.co.jp/aboutus/credit-info/registration" target="_blank" rel="noopener">JICC</a></p>
+    <div class="easy"><b>やさしく言うと：</b>「10年」はひと昔前の話。<b>いまは5〜7年で記録は消えます</b>。ただし、消えたら必ずカードが作れる、という決まりはありません。</div>
+    <blockquote>一般的に約５～７年と言われていますが，これは法律上の制限ではありません。お金を貸す側の判断になります。</blockquote>
+    <p class="src">出典: <a href="https://www.courts.go.jp/chiba/vc-files/chiba/file/setumeisho.pdf" target="_blank" rel="noopener">千葉地方裁判所「破産・免責手続について」Q17</a></p>
+    <p class="note">自分の記録は、本人が確認できます（開示）。CICならインターネットで500円です（<a href="https://www.cic.co.jp/mydata/index.html" target="_blank" rel="noopener">CIC</a>）。</p>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">4</span>クレジットの代わりに、デビットカード</h2>
+    <div class="vs2">
+      <div class="cc"><span class="tag">破産後は作れない</span><h3>クレジットカード</h3><ul><li>あとで払う（後払い）</li><li>口座にお金がなくても使える</li><li>使いすぎると借金になる</li></ul></div>
+      <div class="dc"><span class="tag">破産後も作れた</span><h3>デビットカード</h3><ul><li>その場で口座から引かれる</li><li>残高の分しか使えない</li><li>借金にならない</li></ul></div>
+    </div>
+    <blockquote>クレジットカードと異なり預金残高の範囲内でしか買い物ができないため、使いすぎが避けられます。</blockquote>
+    <p class="src">出典: <a href="https://www.zenginkyo.or.jp/article/tag-e/4314/" target="_blank" rel="noopener">全国銀行協会「使い過ぎがないから安心『デビットカード』」</a></p>
+    <div class="mine"><b>私の場合：</b>破産のあと、デビットカードを作れました。使った分だけその場で減るので、借金になりようがないので、使いやすいです。</div>
+    <p class="note">全国銀行協会は、デビットカードは「多くは無審査」と説明しています（<a href="https://www.zenginkyo.or.jp/article/life/student/5173/" target="_blank" rel="noopener">出典</a>）。「多く」なので、すべてではありません。1日に使える上限や年会費は銀行ごとに違います。</p>
+    <div class="caution"><b>気をつけて：</b>裁判所は、ヤミ金（国に登録していない貸金業者）が<b>過去に自己破産をした人を狙い</b>、ダイレクトメールなどで勧誘すると注意しています。「破産した人でも借りられます」には応じないでください（<a href="https://www.courts.go.jp/oita/vc-files/oita/file/R1.10.1saimuseiri-q-a.pdf" target="_blank" rel="noopener">大分地方裁判所</a>）。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">5</span>お金がなくても、相談はできる</h2>
+    <p>弁護士・司法書士の費用は、法テラスが立て替える制度があります（収入などの条件と審査あり）。生活保護を受けている人は、さらにこうなっています。</p>
+    <blockquote>生活保護を受給中の間は、返済は猶予されます。また、事件が全て終了した後も生活保護を受給されている場合は、返済の免除の申請ができます。</blockquote>
+    <p class="src">出典: <a href="https://www.houterasu.or.jp/site/soudan-tatekae/tatekaeqa.html" target="_blank" rel="noopener">法テラス「立替制度に関するよくあるご質問」</a></p>
+    <div class="easy"><b>やさしく言うと：</b>立て替えてもらったお金は、生活保護を受けているあいだは返さなくてよく、終わったあとに<b>「免除してください」と申請できる</b>。ただし、必ず免除されるわけではなく、<b>自分で申請が必要</b>です。</div>
+    <div class="tel"><div class="lbl">まずはここに電話</div><a class="num" href="tel:0570078374">0570-078374</a><small>法テラス・サポートダイヤル（平日9時〜21時、土曜9時〜17時）</small></div>
+    <p class="note">裁判所は手続きの方法には答えてくれますが、「あなたは破産した方がいいか」には答えられません。それは弁護士・司法書士への相談になります。また、「借金を一本化します」と持ちかけて高い報酬を取る者がいると、裁判所が注意しています（<a href="https://www.courts.go.jp/chiba/vc-files/chiba/file/setumeisho.pdf" target="_blank" rel="noopener">千葉地方裁判所 Q24・末尾</a>）。</p>
+  </section>
+
+  <section class="ch sum fade">
+    <h2><span class="b">✓</span>まとめ</h2>
+    <h3>分かっていること</h3>
+    <div class="card"><span class="mk y">✓</span><div><b>自己破産は、生活をやり直すための手続き</b><small>戸籍・住民票には載らない。選挙権もなくならない</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>「ブラックリスト」の記録は5〜7年</b><small>「10年」は2022年11月より前の話</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>デビットカードは、残高の分しか使えない</b><small>私は破産後に作れて、借金0円のまま暮らしている</small></div></div>
+    <h3>人によって違うこと</h3>
+    <div class="card"><span class="mk q">？</span><div><b>あなたが自己破産をした方がいいか</b><small>借金の中身・収入・財産で変わる。ほかに任意整理・個人再生などの方法もある</small></div></div>
+    <div class="card"><span class="mk q">？</span><div><b>記録が消えたあと、カードの審査に通るか</b><small>決めるのは各カード会社・銀行。期間が過ぎれば必ず作れる、という決まりはない</small></div></div>
+  </section>
+  <a class="cta" href="tel:0570078374"><span>まずは無料で相談する（法テラス 0570-078374）</span><span>→</span></a>
+
+  <div class="foot">
+    <h3>根拠資料</h3>
+    <ul>
+      <li><a href="https://www.courts.go.jp/chiba/vc-files/chiba/file/setumeisho.pdf" target="_blank" rel="noopener">千葉地方裁判所 民事第4部・破産係「破産・免責手続について －よくあるご質問・お問い合わせ－」（平成26年2月改訂）</a></li>
+      <li><a href="https://www.courts.go.jp/oita/vc-files/oita/file/R1.10.1saimuseiri-q-a.pdf" target="_blank" rel="noopener">大分地方裁判所「債務整理の方法についてのQ&amp;A」</a></li>
+      <li><a href="https://www.cic.co.jp/confidence/posession.html" target="_blank" rel="noopener">CIC「CICが保有する信用情報」</a>（クレジット情報：契約期間中および契約終了後5年間）・<a href="https://www.cic.co.jp/mydata/index.html" target="_blank" rel="noopener">「情報開示とは」</a></li>
+      <li><a href="https://www.jicc.co.jp/aboutus/credit-info/registration" target="_blank" rel="noopener">JICC「信用情報の内容と登録期間」</a>（債務整理・破産申立等：契約継続中及び契約終了後5年以内。2019年10月1日以降の契約）</li>
+      <li><a href="https://www.zenginkyo.or.jp/pcic/about/" target="_blank" rel="noopener">全国銀行個人信用情報センター「センターの概要」</a>（官報情報：当該決定日から7年を超えない期間）・<a href="https://www.zenginkyo.or.jp/pcic/info/18379/" target="_blank" rel="noopener">「一部情報の登録終了および登録期間の短縮について」（2022年11月4日）</a></li>
+      <li><a href="https://www.zenginkyo.or.jp/article/tag-e/4314/" target="_blank" rel="noopener">全国銀行協会「使い過ぎがないから安心『デビットカード』」</a>・<a href="https://www.zenginkyo.or.jp/article/life/student/5173/" target="_blank" rel="noopener">「学生も口座があればクレジットカードを持てるのでしょうか?」</a></li>
+      <li><a href="https://www.houterasu.or.jp/site/soudan-tatekae/tatekaeqa.html" target="_blank" rel="noopener">法テラス「立替制度に関するよくあるご質問」</a>・<a href="https://www.houterasu.or.jp/site/houterasuuser/menjyoshinsei.html" target="_blank" rel="noopener">「立替金の償還免除申請に関するよくあるお問合せ」</a>・<a href="https://www.houterasu.or.jp/site/soudan-tatekae/" target="_blank" rel="noopener">「無料法律相談・弁護士等費用の立替」</a></li>
+      <li>私の記録: 動画「生活保護を受けてから『自己破産の申請』も出してきました」ほか5本（2024年6月〜2025年3月）</li>
+    </ul>
+    <h3>読むときの注意</h3>
+    <ul>
+      <li>「5〜7年」は、各機関が記録を持っている期間です。いつから数えるかは機関や契約によって違います。正確には、自分の記録を開示して確かめてください</li>
+      <li>裁判所の資料は千葉と大分のものです。費用や期間は、裁判所や時期、事情によって違います</li>
+      <li>私の話は、私ひとりの例です。自己破産が合うかどうかは人によって違うので、弁護士・司法書士・法テラスに相談してください</li>
+      <li>確認日: 2026年10月9日 ／ 個人が作ったもので、行政や裁判所の公式資料ではありません。法律上の助言でもありません</li>
+    </ul>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+// スクロールで表示（スマホで縦に長い要素も出るように threshold:0）
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in'); io.unobserve(e.target);
+  const tl = e.target.querySelector('#tl');
+  if (tl) {
+    tl.querySelectorAll('li').forEach((li, i) => li.style.transitionDelay = (i * 0.2) + 's');
+    requestAnimationFrame(() => { tl.classList.add('in'); tl.querySelector('.line').style.height = 'calc(100% - 12px)'; });
+  }
+  const ys = e.target.querySelector('#years');
+  if (ys) ys.querySelectorAll('.row').forEach((r, i) => setTimeout(() => { r.querySelector('i').style.width = (r.dataset.y * 10) + '%'; }, i * 250));
+}), {threshold: 0, rootMargin: '0px 0px -12% 0px'});
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
+
+// 1章: 押すとその時の動画が開く
+document.querySelectorAll('.tl .vbtn').forEach(b => b.addEventListener('click', () => {
+  const box = b.nextElementSibling, open = !box.classList.contains('open');
+  box.classList.toggle('open', open);
+  b.setAttribute('aria-expanded', open);
+  b.textContent = open ? '▲ 動画を閉じる' : '▶ この時の動画';
+}));
+// 2章: 押すと答えが開く
+document.querySelectorAll('.thing').forEach(t => t.addEventListener('click', () => t.classList.toggle('open')));
+</script>
+<script src="video-embed.js" defer></script>
+</body>
+</html>

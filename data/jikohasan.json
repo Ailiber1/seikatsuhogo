@@ -1,0 +1,110 @@
+{
+  "page": "jikohasan-setsumei.html",
+  "title": "【借金に悩む人へ】自己破産は人生の終わりじゃなかった。経験者が語る",
+  "checked": "2026-10-09",
+  "author_facts": {
+    "note": "配信者本人がチャットで伝えた事実（2026-10-09）。これ以外の体験は資料に書かない",
+    "items": [
+      "自己破産をして、いまは借金0円",
+      "お金に対する不安はない",
+      "クレジットカードは作れない",
+      "デビットカードは作れた。使った分だけその時に引かれるので借金することもなく、活用しやすい"
+    ]
+  },
+  "videos": [
+    {"id": "d_9RIip9uvg", "published": "2024-06-15", "title": "生活保護を受けてから「自己破産の申請」も出してきました"},
+    {"id": "z3iI7w-fzAI", "published": "2024-07-24", "title": "自己破産の申請を出してから2ヶ月後・・・書類が送られてきました"},
+    {"id": "mNIeAvg4wyE", "published": "2024-08-14", "title": "弁護士事務所から連絡が来ました・・・(自己破産申請中)"},
+    {"id": "8f_YfugCgTY", "published": "2024-09-18", "title": "自己破産の申請を出してから4ヶ月後、管財人が付いて面談することになりました"},
+    {"id": "HOsiBVS06M0", "published": "2024-12-21", "title": "【生活保護受給者の日常】裁判所に出頭してきます。", "note": "題名に自己破産はないが、概要欄に #自己破産"},
+    {"id": "j8hwwnT02pg", "published": "2025-03-08", "title": "【生活保護受給者の日常】自己破産が終わったと思ったら「法テラス」から「37万円」の請求が来たので電話しました"}
+  ],
+  "videos_check": "yt-dlp で全6本 availability=public・playable_in_embed=True を確認（2026-10-09）",
+  "sources": [
+    {
+      "key": "chiba",
+      "name": "千葉地方裁判所 民事第4部・破産係「破産・免責手続について －よくあるご質問・お問い合わせ－」（平成26年2月改訂）",
+      "url": "https://www.courts.go.jp/chiba/vc-files/chiba/file/setumeisho.pdf",
+      "copy": "data/jikohasan_chiba_source.pdf",
+      "quotes": {
+        "Q1": "残った借金の支払を免除して，申立人の生活を再建するための手続が免責手続です。",
+        "Q16": "その後，免責決定が確定すれば，この制限は解除されます。",
+        "Q17": "一般的に約５～７年と言われていますが，これは法律上の制限ではありません。お金を貸す側の判断になります。",
+        "Q18": "裁判所から勤務先やご家族あてに通知することはありません。",
+        "Q19": "税金や罰金は対象外ですし，債務があるとわかっていながら債権者一覧表に書かなかった債務も 同様です。"
+      },
+      "also_used": ["Q22 免責の効果は保証人には及ばない", "Q24 個別の相談には答えられない", "末尾 「借金問題解決」「一本化」を持ちかけて法外な報酬を請求する者への注意"]
+    },
+    {
+      "key": "oita",
+      "name": "大分地方裁判所「債務整理の方法についてのQ&A」（PDFの作成日 2019年10月1日）",
+      "url": "https://www.courts.go.jp/oita/vc-files/oita/file/R1.10.1saimuseiri-q-a.pdf",
+      "copy": "data/jikohasan_oita_source.pdf",
+      "quotes": {
+        "不利益": "自己破産をしても戸籍や住民票に載ることはありませんし，選挙権を失うこともありません。"
+      },
+      "also_used": ["ヤミ金は過去に自己破産をした人を狙いダイレクトメールなどで勧誘する", "事故情報（いわゆるブラックリスト）として登録される"]
+    },
+    {
+      "key": "cic",
+      "name": "CIC「CICが保有する信用情報」",
+      "url": "https://www.cic.co.jp/confidence/posession.html",
+      "fact": "クレジット情報：契約期間中および契約終了後5年間"
+    },
+    {
+      "key": "cic_open",
+      "name": "CIC「情報開示とは」",
+      "url": "https://www.cic.co.jp/mydata/index.html",
+      "fact": "インターネット開示 手数料500円／郵送 1,500円"
+    },
+    {
+      "key": "jicc",
+      "name": "JICC「信用情報の内容と登録期間」",
+      "url": "https://www.jicc.co.jp/aboutus/credit-info/registration",
+      "fact": "取引事実に関する情報（債務整理・破産申立等）：契約日2019/10/1以降は契約継続中及び契約終了後5年以内／2019/9/30以前は当該事実の発生日から5年を超えない期間"
+    },
+    {
+      "key": "zengin_about",
+      "name": "全国銀行個人信用情報センター「センターの概要」",
+      "url": "https://www.zenginkyo.or.jp/pcic/about/",
+      "fact": "官報情報（官報に公告された破産・民事再生手続開始決定）：当該決定日から7年を超えない期間"
+    },
+    {
+      "key": "zengin_info",
+      "name": "全国銀行個人信用情報センター「一部情報の登録終了および登録期間の短縮について」（2022年11月4日）",
+      "url": "https://www.zenginkyo.or.jp/pcic/info/18379/",
+      "quotes": {"本文": "官報情報については、登録期間を10年間から7年間に短縮しております"}
+    },
+    {
+      "key": "zengin_debit",
+      "name": "全国銀行協会「使い過ぎがないから安心『デビットカード』」",
+      "url": "https://www.zenginkyo.or.jp/article/tag-e/4314/",
+      "quotes": {"本文": "クレジットカードと異なり預金残高の範囲内でしか買い物ができないため、使いすぎが避けられます。"},
+      "also_used": ["一日の利用可能金額に上限が定められています", "年会費を要する場合もあります"]
+    },
+    {
+      "key": "zengin_student",
+      "name": "全国銀行協会「Q. 学生も口座があればクレジットカードを持てるのでしょうか?」",
+      "url": "https://www.zenginkyo.or.jp/article/life/student/5173/",
+      "fact": "デビットカードは「多くは無審査」"
+    },
+    {
+      "key": "houterasu_qa",
+      "name": "法テラス「立替制度に関するよくあるご質問」",
+      "url": "https://www.houterasu.or.jp/site/soudan-tatekae/tatekaeqa.html",
+      "quotes": {"生活保護": "生活保護を受給中の間は、返済は猶予されます。また、事件が全て終了した後も生活保護を受給されている場合は、返済の免除の申請ができます。"}
+    },
+    {
+      "key": "houterasu_menjo",
+      "name": "法テラス「立替金の償還免除申請に関するよくあるお問合せ」",
+      "url": "https://www.houterasu.or.jp/site/houterasuuser/menjyoshinsei.html",
+      "fact": "生活保護を受けていることのみを理由に必ず免除になるわけではない（Q-9）。申請は援助事件がすべて終了し終結決定がされた後"
+    },
+    {
+      "key": "houterasu_top",
+      "name": "法テラス「無料法律相談・弁護士等費用の立替」",
+      "url": "https://www.houterasu.or.jp/site/soudan-tatekae/",
+      "fact": "サポートダイヤル 0570-078374（平日9時から21時 土曜9時から17時）。立替は収入や資産が一定基準以下などの条件と審査あり"
+    }
+  ]
+}

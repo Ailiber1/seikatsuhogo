@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>失業・低収入チェック</title>
+<meta name="description" content="仕事を失ったら失業給付は何日・1日いくら出るか。働いていても収入が少ないとき、生活保護の基準より何円少ないか。選ぶだけで、国の表から計算します">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:16px; line-height:1.75; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+/* 言葉の途中で改行しない（対応ブラウザは文節で折り返す） */
+h1,.lead,.for-who li,.ans h3,.ans p,.box h3,.guide,.mode b{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:24px 16px 44px}
+h1{font-size:clamp(24px,5.2vw,32px); line-height:1.4; margin:0 0 8px; color:var(--navy); text-wrap:balance}
+.lead{color:var(--sub); font-size:15px; margin:0 0 16px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:18px; font-size:15px}
+.for-who b{color:var(--navy)}
+.for-who ul{margin:4px 0 0; padding-left:1.2em}
+
+.modes{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:0 0 14px}
+@media (max-width:480px){ .modes{grid-template-columns:1fr} }
+.mode{font:inherit; text-align:left; border:2px solid var(--line); border-radius:13px; background:#fff; padding:12px 14px; cursor:pointer; min-height:64px; color:var(--ink)}
+.mode b{display:block; font-size:16.5px; color:var(--navy)}
+.mode small{display:block; font-size:13px; color:var(--sub); line-height:1.5}
+.mode[aria-pressed=true]{border-color:var(--navy); border-left-width:6px; background:var(--navy-soft)}
+
+.step{background:var(--panel); border:2px solid var(--line); border-radius:13px; padding:14px 16px; margin-bottom:12px; transition:border-color .3s, opacity .3s}
+.step.off{opacity:.5}
+.step.done{border-color:var(--navy)}
+.step h2{font-size:16.5px; margin:0 0 8px; display:flex; gap:9px; align-items:center}
+.step h2 .n{flex:none; width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; display:grid; place-items:center; font-size:13px}
+.step .hint{font-size:13px; color:var(--sub); margin:6px 0 0}
+select,input[type=number]{font:inherit; font-size:16px; width:100%; min-height:44px; padding:8px 10px; border:2px solid var(--line); border-radius:9px; background:#fff; color:var(--ink)}
+select:focus,input:focus{outline:3px solid var(--navy-soft); border-color:var(--navy)}
+select:disabled,input:disabled{background:var(--line-soft); color:var(--sub)}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.ages{display:grid; gap:8px}
+.ages label,.in2 label{font-size:13px; font-weight:700; color:var(--sub); display:block; margin-bottom:2px}
+.yen-in{display:flex; align-items:center; gap:8px}
+.yen-in span{flex:none; font-weight:700}
+.in2{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.hidden{display:none}
+
+#result{margin-top:18px}
+.guide{border:2px dashed var(--line); border-radius:13px; padding:18px; text-align:center; color:var(--sub)}
+.guide b{color:var(--navy)}
+.res{animation:pop .45s ease}
+@keyframes pop{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+.verdict{border-left:6px solid var(--navy); background:var(--navy-soft); border-radius:0 13px 13px 0; padding:14px 16px; margin-bottom:12px}
+.verdict .k{font-size:13px; font-weight:700; color:var(--sub)}
+.verdict .place{font-size:14px; color:var(--sub); margin:0 0 2px}
+.amount{font-size:18px; font-weight:700; margin:2px 0}
+.amount b{font-size:clamp(38px,9vw,52px); color:var(--navy); font-variant-numeric:tabular-nums; letter-spacing:.01em}
+.calc{font-size:14px; margin:2px 0 0; color:var(--sub)}
+.calc b{color:var(--ink)}
+
+/* 失業給付の時間の流れ */
+.flow{display:flex; margin:10px 0 4px; border-radius:10px; overflow:hidden; font-size:12.5px; font-weight:700; text-align:center; line-height:1.35}
+.flow div{padding:7px 4px; color:#fff}
+.flow .w{background:#8b95a1} .flow .s{background:var(--warn)} .flow .p{background:var(--ok); flex:1}
+
+/* 低収入: 2本の棒 */
+.bars{margin:12px 0 6px}
+.bars .r{display:grid; grid-template-columns:7.5em 1fr; gap:8px; align-items:center; margin-bottom:8px; font-size:13.5px}
+.bars .r span{color:var(--sub); font-weight:700; line-height:1.35}
+.bars .t{position:relative; height:30px; border-radius:8px; background:var(--line-soft); overflow:hidden}
+.bars .t i{position:absolute; top:0; bottom:0; left:0; width:0; transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.bars .t em{position:absolute; left:8px; top:50%; transform:translateY(-50%); font-style:normal; font-weight:800; font-size:14px; color:var(--ink); white-space:nowrap}
+.bars .net{background:#c9d6e3} .bars .gap{background:var(--ok)}
+
+.ans{border-radius:0 13px 13px 0; padding:13px 16px; margin-bottom:12px; border-left:6px solid}
+.ans.ok{background:var(--ok-bg); border-color:var(--ok)} .ans.ok h3{color:var(--ok)}
+.ans.cut{background:var(--warn-bg); border-color:var(--warn)} .ans.cut h3{color:var(--warn)}
+.ans.ng{background:var(--ng-bg); border-color:var(--ng)} .ans.ng h3{color:var(--ng)}
+.ans h3{font-size:clamp(18px,4.6vw,21px); margin:0 0 4px; line-height:1.45}
+.ans p{margin:0 0 6px; font-size:15px} .ans p:last-child{margin:0}
+
+details.opt{margin:6px 0 2px}
+details.opt summary{cursor:pointer; font-size:14px; font-weight:700; color:var(--navy); min-height:40px; display:flex; align-items:center; list-style:none; gap:6px}
+details.opt summary::-webkit-details-marker{display:none}
+details.opt summary::before{content:"＋"; font-weight:800}
+details.opt[open] summary::before{content:"−"}
+details.opt .hint{font-size:13px; color:var(--sub); margin:6px 0 0}
+.daily{margin:8px 0 0; font-size:15px}
+.daily b{font-size:1.5em; color:var(--navy)}
+
+.box{background:var(--panel); border:2px solid var(--line); border-radius:12px; padding:12px 15px; margin-bottom:10px}
+.box h3{font-size:15.5px; margin:0 0 6px; color:var(--navy)}
+.box p{margin:0 0 6px; font-size:15px} .box p:last-child{margin:0}
+.box ul{margin:0; padding-left:1.2em; font-size:14.5px}
+.box.warn{background:var(--warn-bg); border-color:var(--warn)} .box.warn h3{color:var(--warn)}
+.steps3{counter-reset:s; list-style:none; margin:0; padding:0}
+.steps3 li{position:relative; border:1px solid var(--line); border-left:5px solid var(--c); border-radius:0 11px 11px 0; padding:10px 14px 10px 14px; margin-bottom:8px; background:#fff}
+.steps3 li > b{display:block; font-size:15.5px; color:var(--c)}
+.steps3 li p{margin:2px 0 0; font-size:14.5px}
+.steps3 .q{font-size:13px; color:var(--sub); background:var(--panel); border-left:3px solid var(--line); padding:5px 9px; margin-top:6px}
+.steps3 a{color:var(--navy)}
+.c1{--c:var(--navy)} .c2{--c:var(--warn)} .c3{--c:var(--ok)}
+
+.reset{font:inherit; font-size:14px; font-weight:700; color:var(--navy); background:var(--navy-soft); border:none; border-radius:8px; padding:8px 14px; min-height:40px; cursor:pointer; margin-top:4px}
+.foot{margin-top:24px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (max-width:480px){ .row2,.in2{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){ .res{animation:none} .bars .t i{transition:none} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho">失業・低収入チェック</h1>
+  <p class="lead">仕事を失ったときの<b>失業給付（雇用保険）</b>と、働いていても収入が少ないときの<b>生活保護の基準</b>を、選ぶだけで国の表から計算します。</p>
+  <div class="for-who"><b>このツールは、こういう方へ</b>
+    <ul><li>仕事を失った・失いそうで、いくら・いつまで出るのか知りたい方</li>
+    <li>働いているのに毎月ぎりぎりで、生活保護の対象になるのか知りたい方</li></ul></div>
+
+  <div class="modes" id="modes">
+    <button type="button" class="mode" data-m="job" aria-pressed="false"><b>仕事を失った・失いそう</b><small>失業給付が何日・1日いくら出るか</small></button>
+    <button type="button" class="mode" data-m="low" aria-pressed="false"><b>働いているけど、収入が少ない</b><small>生活保護の基準より何円少ないか</small></button>
+  </div>
+
+  <!-- 仕事を失った・失いそう -->
+  <div id="jobForm" class="hidden">
+    <div class="step" id="j1">
+      <h2><span class="n">1</span>辞めた（辞める）理由</h2>
+      <select id="reason" aria-label="辞めた理由">
+        <option value="">選んでください</option>
+        <option value="tosan">会社の倒産・廃業</option>
+        <option value="kaiko">会社に解雇された</option>
+        <option value="kansho">会社から辞めるよう勧められた</option>
+        <option value="kibou">人減らしの希望退職に応じた</option>
+        <option value="keiyaku">契約が更新されなかった</option>
+        <option value="byoki_ok">病気・けがで辞めた（今は働ける）</option>
+        <option value="byoki_ng">病気・けがで、今は働けない</option>
+        <option value="jiko">自分の都合で辞めた</option>
+      </select>
+      <p class="hint" id="reasonHint">迷ったら、いちばん近いものを選んでください。最終的にはハローワークが決めます。</p>
+    </div>
+    <div class="step off" id="j2">
+      <h2><span class="n">2</span>辞めた日の年齢</h2>
+      <select id="age" disabled aria-label="辞めた日の年齢">
+        <option value="">選んでください</option>
+        <option value="0">29歳以下</option><option value="1">30〜34歳</option><option value="2">35〜44歳</option>
+        <option value="3">45〜59歳</option><option value="4">60〜64歳</option><option value="5">65歳以上</option>
+      </select>
+    </div>
+    <div class="step off" id="j3">
+      <h2><span class="n">3</span>雇用保険に入っていた期間</h2>
+      <select id="period" disabled aria-label="雇用保険に入っていた期間">
+        <option value="">選んでください</option>
+        <option value="0">6か月未満</option><option value="1">6か月〜1年未満</option><option value="2">1年〜5年未満</option>
+        <option value="3">5年〜10年未満</option><option value="4">10年〜20年未満</option><option value="5">20年以上</option>
+      </select>
+      <p class="hint">給与明細で「雇用保険料」が引かれていた期間です。前の会社の期間を足せる場合もあります（ハローワークで確かめられます）。</p>
+    </div>
+  </div>
+
+  <!-- 働いているけど、収入が少ない -->
+  <div id="lowForm" class="hidden">
+    <div class="step" id="l1">
+      <h2><span class="n">1</span>住んでいる場所</h2>
+      <div class="row2">
+        <select id="pref" aria-label="都道府県"><option value="">都道府県を選んでください</option></select>
+        <select id="city" disabled aria-label="市区町村"><option value="">市区町村を選んでください</option></select>
+      </div>
+    </div>
+    <div class="step off" id="l2">
+      <h2><span class="n">2</span>一緒に暮らす人数（あなたも含む）</h2>
+      <select id="size" disabled aria-label="世帯の人数"><option value="">選んでください</option></select>
+    </div>
+    <div class="step off" id="l3">
+      <h2><span class="n">3</span>それぞれの年齢</h2>
+      <div class="ages" id="ages"><p class="hint" style="margin:0">上で人数を選ぶと、ここに年齢の欄が出ます。</p></div>
+    </div>
+    <div class="step off" id="l4">
+      <h2><span class="n">4</span>毎月の給料（給与明細の金額）</h2>
+      <div class="in2">
+        <div><label for="gross">総支給額（額面）</label><div class="yen-in"><input type="number" id="gross" inputmode="numeric" min="0" step="1000" placeholder="例 170000" disabled><span>円</span></div></div>
+        <div><label for="net">手取り（振り込まれる額）</label><div class="yen-in"><input type="number" id="net" inputmode="numeric" min="0" step="1000" placeholder="例 140000" disabled><span>円</span></div></div>
+      </div>
+      <p class="hint">世帯で働いている人が1人の場合の計算です。月によって違う方は、だいたいの平均を入れてください。</p>
+    </div>
+  </div>
+
+  <div id="result" aria-live="polite"></div>
+
+  <div class="foot">
+    <p>この結果は、厚生労働省・ハローワークの公開資料から計算した目安（試算）です。最終的な判断は、失業給付はハローワーク、生活保護は福祉事務所がします。入力した内容はこの画面の中だけで計算していて、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</p>
+    <p>計算のしかた：失業給付の日数はハローワークの「所定給付日数」の表のとおり。1日の額は、月給×6か月÷180を賃金日額として、令和8年8月1日からの計算式で出しています（賞与・残業代の変動は入っていません）。生活保護の基準は「保護費しらべ」と同じ計算（生活扶助＋家賃の上限）で、収入から差し引かれる額は「給料いくら残るしらべ」と同じ基礎控除の表を使っています。冬の上乗せや、子育て・障害・ひとり親などの加算は入っていません。</p>
+    <p>根拠: <a href="https://www.hellowork.mhlw.go.jp/insurance/insurance_benefitdays.html" target="_blank" rel="noopener">ハローワーク 基本手当の所定給付日数</a> ／ <a href="https://www.hellowork.mhlw.go.jp/insurance/insurance_basicbenefit.html" target="_blank" rel="noopener">基本手当について</a> ／ <a href="https://www.hellowork.mhlw.go.jp/insurance/insurance_range.html" target="_blank" rel="noopener">特定受給資格者・特定理由離職者の範囲</a> ／ <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000160564_00045.html" target="_blank" rel="noopener">給付制限（令和7年4月から原則1か月）</a> ／ <a href="https://www.mhlw.go.jp/content/001726936.pdf" target="_blank" rel="noopener">基本手当日額の計算式（令和8年8月1日〜）</a> ／ <a href="https://www.mhlw.go.jp/hellotraining/support/" target="_blank" rel="noopener">求職者支援制度</a> ／ <a href="https://www.mhlw.go.jp/content/12600000/001436774.pdf" target="_blank" rel="noopener">住居確保給付金</a> ／ <a href="https://www.mhlw.go.jp/content/001106332.pdf" target="_blank" rel="noopener">生活保護制度に関するQ&amp;A</a> ／ <a href="https://www.mhlw.go.jp/content/001152601.pdf" target="_blank" rel="noopener">生活扶助基準額の算出方法（令和8年4月）</a> ／ <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8431&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">次官通知 別表（基礎控除）</a></p>
+    <p>確認日: 2026年10月10日 ／ 個人が作ったもので、行政の公式ツールではありません。</p>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+const S = /*SHITSUGYO*/;
+const KYUCHI = /*KYUCHI*/;
+const KEIKA = /*KEIKA*/;
+const KIJUN = /*KIJUN*/;
+const JUTAKU = /*JUTAKU*/;
+const KISO = /*KISO*/;
+const AGES = ["0～2","3～5","6～11","12～17","18～19","20～40","41～59","60～64","65～69","70～74","75～"];
+const AGE_LABEL = {"0～2":"0〜2歳","3～5":"3〜5歳","6～11":"6〜11歳","12～17":"12〜17歳","18～19":"18〜19歳","20～40":"20〜40歳","41～59":"41〜59歳","60～64":"60〜64歳","65～69":"65〜69歳","70～74":"70〜74歳","75～":"75歳以上"};
+const LV = ["1級地-1","1級地-2","2級地-1","2級地-2","3級地-1","3級地-2"];
+
+// CALC-START
+// 生活扶助 = 第1類の合計×逓減率（1円未満切り捨て→10円未満切り上げ）＋第2類＋特例加算＋経過的加算
+function calcKijun(ages, lv, oct, K, KE) {
+  const n = ages.length;
+  const raw = ages.reduce((s, a) => s + K.dai1[a][lv], 0);
+  const d1 = Math.ceil(Math.floor(Math.round(raw * K.teigen[n] * 1e6) / 1e6) / 10) * 10;
+  const d2 = K.dai2[n];
+  const per = oct ? K.tokurei.from_2026_10 : K.tokurei.until_2026_09;
+  const tok = per * n;
+  // 10月からは特例加算が1人1,000円増える分、経過的加算が1人最大1,000円減る（従前額保障）
+  const kei = ages.reduce((s, a) => { const k = KE[n][a][lv]; return s + (oct ? k - Math.min(1000, k) : k); }, 0);
+  return {raw, d1, d2, tok, kei, total: d1 + d2 + tok + kei};
+}
+// CALC-END
+
+// KISO-START
+// 基礎控除（1人目）。表の区分で決まる。0〜15,199円は全額。23万1千円以上は4,000円ごとに400円ずつ加算
+function kisoKojo(x, T) {
+  if (x >= T.over.from) {
+    const last = T.rows[T.rows.length - 1][2];
+    return last + T.over.add_first * (Math.floor((x - T.over.from) / T.over.step) + 1);
+  }
+  const row = T.rows.find(r => x >= r[0] && x <= r[1]);
+  return row[2] === null ? x : row[2];
+}
+// KISO-END
+
+// KIHON-START
+// 辞めた理由 → 区分。toku=特定受給資格者、keiyaku=一部の特定理由離職者（日数は特定受給資格者と同じ）、
+// riyu=正当な理由のある自己都合（特定理由離職者・日数は一般・給付制限なし）、jiko=自己都合（給付制限あり）、none=今は受けられない
+const REASON_TYPE = {tosan:'toku', kaiko:'toku', kansho:'toku', kibou:'riyu', keiyaku:'keiyaku', byoki_ok:'riyu', byoki_ng:'none', jiko:'jiko'};
+// 年齢の選択（0:29歳以下 1:30〜34 2:35〜44 3:45〜59 4:60〜64 5:65歳以上）→ 日数表の年齢区分と、1日の額の計算式の区分
+const AGE_DAYS = ["30歳未満","30歳以上35歳未満","35歳以上45歳未満","45歳以上60歳未満","60歳以上65歳未満"];
+const AGE_PAY = ["30歳未満","30歳以上45歳未満","30歳以上45歳未満","45歳以上60歳未満","60歳以上65歳未満"];
+// 期間の選択（0:6か月未満 1:6か月〜1年未満 2:1〜5年 3:5〜10年 4:10〜20年 5:20年以上）
+function kihonDays(reason, age, period, K) {
+  const type = REASON_TYPE[reason];
+  if (age === 5) return {kind: 'over65', type};
+  if (type === 'none') return {kind: 'cannot', type};
+  if (period === 0) return {kind: 'short', type};                      // 6か月未満はどの区分も足りない
+  if (type === 'jiko' && period === 1) return {kind: 'short', type};   // 自己都合は2年間に12か月以上が必要
+  const col = period - 1;
+  const days = (type === 'toku' || type === 'keiyaku') ? K.days_tokutei[AGE_DAYS[age]][col] : K.days_ippan['全年齢'][col];
+  if (days === null) return {kind: 'invalid', type};                    // 表の「―」（29歳以下で20年以上）
+  return {kind: 'ok', type, days, waitDays: K.seigen.taiki_days, waitMonths: type === 'jiko' ? K.seigen.jiko_months : 0};
+}
+// 基本手当日額（令和8年8月1日から）。賃金日額 w は下限額まで引き上げる。1円未満切り捨て
+function kihonDaily(w, age, K) {
+  const B = K.nichigaku.bands[AGE_PAY[age]];
+  w = Math.max(w, K.nichigaku.wage_min);
+  let y;
+  if (w < B.a) y = 0.8 * w;
+  else if (w <= B.b) {
+    y = 0.8 * w - B.r * ((w - B.a) / (B.b - B.a)) * w;
+    if (B.alt) y = Math.min(y, B.alt[0] * w + B.alt[1]);
+  }
+  else if (w <= B.cap_w) y = B.high * w;
+  else y = B.cap;
+  return Math.floor(y + 1e-9);
+}
+// KIHON-END
+
+// LOW-START
+// 働いていて収入が少ないとき: 保護費の目安 = 最低生活費 −（手取り − 基礎控除）。手取り＝総支給から税・社会保険料などを引いた額
+function lowIncome(minLiving, gross, net, T) {
+  const kiso = kisoKojo(gross, T);
+  const counted = Math.max(0, net - kiso);
+  const gap = minLiving - counted;
+  return {kiso, counted, gap, total: net + Math.max(0, gap)};
+}
+// LOW-END
+
+const $ = id => document.getElementById(id);
+const yen = n => Math.round(n).toLocaleString('ja-JP');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let mode = '', salary = '', salaryOpen = false, rentVal = '', rentOpen = false;
+const K = S.kihon, O = S.other_support;
+
+const HINTS = {
+  tosan: '倒産・事業所の閉鎖は、会社の都合での離職（特定受給資格者）になります。',
+  kaiko: '本人に重大な責任がある解雇（重責解雇）は除きます。',
+  kansho: '会社から直接・間接に辞めるよう勧められた場合です。いつもある「早期退職制度」に自分から応募した場合は、これに当たりません。',
+  kibou: '会社の人員整理で募集された希望退職です。いつもある「早期退職制度」に自分から応募した場合は「自分の都合」になることがあります。',
+  keiyaku: '契約社員・派遣などで、あなたは更新を望んだのに更新されなかった場合です。',
+  byoki_ok: '病気・けがで辞めたのは「正当な理由のある自己都合」で、待たされる期間（給付制限）がありません。',
+  byoki_ng: '失業給付は「いつでも働ける人」が対象です。今は受けられません。',
+  jiko: '転職・人間関係などで自分から辞めた場合です。'
+};
+
+// --- 画面の切り替え ---
+document.querySelectorAll('.mode').forEach(b => b.addEventListener('click', () => {
+  mode = b.dataset.m;
+  document.querySelectorAll('.mode').forEach(x => x.setAttribute('aria-pressed', x === b));
+  $('jobForm').classList.toggle('hidden', mode !== 'job');
+  $('lowForm').classList.toggle('hidden', mode !== 'low');
+  refresh();
+}));
+
+// --- 低収入の入力欄 ---
+const pref = $('pref'), city = $('city'), size = $('size'), gross = $('gross'), net = $('net');
+Object.keys(KYUCHI).forEach(p => pref.add(new Option(p, p)));
+for (let i = 1; i <= 5; i++) size.add(new Option(i + '人', String(i)));
+size.add(new Option('6人以上', '6'));
+function buildAges() {
+  const n = +size.value;
+  const prev = [...document.querySelectorAll('.age')].map(s => s.value);
+  if (!n) { $('ages').innerHTML = '<p class="hint" style="margin:0">上で人数を選ぶと、ここに年齢の欄が出ます。</p>'; return; }
+  if (n >= 6) { $('ages').innerHTML = '<p class="hint" style="margin:0">6人以上の世帯は、公表されている表に一部の金額が無いため計算できません。</p>'; return; }
+  $('ages').innerHTML = Array.from({length: n}, (_, i) => `
+    <div><label for="ag${i}">${i === 0 ? 'あなた' : (i + 1) + '人目'}</label>
+    <select class="age" id="ag${i}"><option value="">選んでください</option>${AGES.map(a => `<option value="${a}">${AGE_LABEL[a]}</option>`).join('')}</select></div>`).join('');
+  document.querySelectorAll('.age').forEach((s, i) => { if (prev[i]) s.value = prev[i]; s.addEventListener('change', refresh); });
+}
+function jutakuLimit(prefName, cityName, lv, n) {
+  const row = JUTAKU.city[cityName] || JUTAKU.pref[prefName][String(Math.floor(lv / 2) + 1)];
+  return row[n === 1 ? 0 : n === 2 ? 1 : n <= 5 ? 2 : n === 6 ? 3 : 4];
+}
+
+const setStep = (el, on, done) => { el.classList.toggle('off', !on); el.classList.toggle('done', !!done); };
+
+function refresh() {
+  if (mode === 'job') return refreshJob();
+  if (mode === 'low') return refreshLow();
+  $('result').innerHTML = `<div class="guide">上の <b>2つのどちらか</b> を押すと、質問が出ます。<br>答えると、ここに<b>あなたの場合の金額</b>が出ます。</div>`;
+}
+
+// ===== 仕事を失った・失いそう =====
+function refreshJob() {
+  const r = $('reason').value, a = $('age').value, p = $('period').value;
+  $('reasonHint').textContent = r ? HINTS[r] : '迷ったら、いちばん近いものを選んでください。最終的にはハローワークが決めます。';
+  $('age').disabled = !r || r === 'byoki_ng';
+  const needPeriod = r && r !== 'byoki_ng' && a !== '5';
+  $('period').disabled = !(r && a !== '') || !needPeriod;
+  setStep($('j1'), true, r);
+  setStep($('j2'), r && r !== 'byoki_ng', a !== '');
+  setStep($('j3'), r && a !== '' && needPeriod, p !== '');
+  const out = $('result');
+  if (!r) { out.innerHTML = `<div class="guide">上の <b>1〜3</b> を選ぶと、ここに<br><b>失業給付が何日・いつから出るか</b>と、<b>そのあとに使える支え</b>が出ます。</div>`; return; }
+  if (r !== 'byoki_ng' && a === '') { out.innerHTML = `<div class="guide">あと少しです。<b>2 の年齢</b>を選んでください。</div>`; return; }
+  if (needPeriod && p === '') { out.innerHTML = `<div class="guide">最後に <b>3 の雇用保険に入っていた期間</b>を選んでください。</div>`; return; }
+  if (window.gcUse) gcUse('失業・低収入チェック');
+  const res = kihonDays(r, a === '' ? 0 : +a, p === '' ? 0 : +p, K);
+  if (res.kind === 'invalid') { out.innerHTML = `<div class="guide">29歳以下で「20年以上」は、表にない組み合わせです。<br><b>3 の期間</b>を選び直してください。</div>`; return; }
+  out.innerHTML = `<div class="res">${jobTop(res, +a)}${nextSteps(res)}
+    <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button></div>`;
+  const s = $('salary');
+  if (s) {
+    s.addEventListener('input', e => { salary = e.target.value; paintDaily(res, +a); });
+    $('salaryBox').addEventListener('toggle', e => { salaryOpen = e.target.open; });
+    paintDaily(res, +a);
+  }
+}
+
+function jobTop(res, age) {
+  if (res.kind === 'cannot') return `<div class="ans ng"><h3>今は、失業給付を受けられません</h3>
+    <p>失業給付は「いつでも働ける人」が対象で、ハローワークは受けられない例として「<b>病気やけがのため、すぐには就職できないとき</b>」を挙げています。</p>
+    <p>ただし、受け取れる期間（原則1年）は、30日以上働けない日数だけ延ばせます（最長3年）。<b>辞めたら、延長の手続きだけはハローワークで</b>しておくと、治ったあとに受けられます。</p>
+    <p>今の生活費が足りないときは、下の <b>生活保護</b> が支えになります。配信者の私も、このパターンでした。</p></div>`;
+  if (res.kind === 'over65') return `<div class="ans cut"><h3>65歳以上で辞めた方は、別の仕組みです</h3>
+    <p>65歳以上で辞めた方は、毎日の失業給付ではなく、一時金（高年齢求職者給付金）の仕組みになります。日数・金額はハローワークで確かめてください。</p></div>`;
+  if (res.kind === 'short') return `<div class="ans cut"><h3>今の期間だと、失業給付の条件に届かない可能性が高いです</h3>
+    <p>${res.type === 'jiko' ? '自分の都合で辞めた場合は、<b>辞める前の2年間に、雇用保険に入っていた月が12か月以上</b>必要です。' : '<b>辞める前の1年間に、雇用保険に入っていた月が6か月以上</b>必要です。'}前の会社の期間を足せることがあるので、ハローワークで確かめてください。</p>
+    <p>失業給付を受けられない方には、下の <b>求職者支援制度（月10万円）</b> があります。</p></div>`;
+  const waitTxt = res.waitMonths ? `手続きから7日＋1か月は待つ` : `手続きから7日待つ`;
+  return `<div class="verdict">
+      <div class="k">失業給付（雇用保険の基本手当）を受けられる日数</div>
+      <p class="amount">最大 <b class="num">${res.days}</b> 日分</p>
+      <p class="calc">${waitTxt}と、そこから支給の対象になります（受け取れるのは、辞めた翌日から原則1年のうち）</p>
+      <div class="flow" aria-hidden="true"><div class="w" style="flex:0 0 ${res.waitMonths ? 14 : 18}%">7日<br>待つ</div>${res.waitMonths ? '<div class="s" style="flex:0 0 26%">1か月<br>待つ</div>' : ''}<div class="p">${res.days}日分 出る</div></div>
+      <details class="opt" id="salaryBox"${salaryOpen ? ' open' : ''}><summary>辞める前の月給を入れると、1日いくら・合計いくらか出ます</summary>
+        <div class="yen-in"><input type="number" id="salary" inputmode="numeric" min="0" step="1000" placeholder="例 220000" value="${esc(salary)}" aria-label="辞める前の月給"><span>円</span></div>
+        <p class="hint">辞める前の6か月の、毎月の給料の平均（総支給額。通勤手当・残業代を含み、ボーナスは除く）。</p>
+        <div id="daily"></div></details>
+    </div>
+    ${res.waitMonths ? `<div class="box"><h3>自分の都合で辞めた方へ</h3><p>自分の都合で辞めると、7日のあと<b>1か月</b>は支給されません（2025年4月から、2か月→1か月に短くなりました）。5年以内に2回以上自分の都合で辞めた方は3か月です。</p><p>国が決めた教育訓練（リ・スキリング）を受けると、この1か月がなくなります。</p></div>` : ''}`;
+}
+
+function paintDaily(res, age) {
+  const box = $('daily'); if (!box) return;
+  const m = Math.floor(+salary || 0);
+  if (!m) { box.innerHTML = ''; return; }
+  const w = Math.floor(m * 6 / 180);
+  const y = kihonDaily(w, age, K);
+  box.innerHTML = `<p class="daily">1日 <b class="num">${yen(y)}</b> 円 × ${res.days}日 ＝ 合計 <b class="num">${yen(y * res.days)}</b> 円</p>
+    <p class="hint">4週間（28日）あたり約 ${yen(y * 28)}円。月給の約${Math.round(y * 30 / m * 100)}%です（給料が低い人ほど割合が高くなる仕組み）。賃金日額 ${yen(Math.max(w, K.nichigaku.wage_min))}円で計算した試算です。</p>`;
+}
+
+function nextSteps(res) {
+  const noKihon = res.kind !== 'ok';
+  return `<div class="box"><h3>${noKihon ? '失業給付の代わりに使える支え' : '失業給付が終わっても仕事がないとき'}</h3>
+    <ol class="steps3">
+      ${res.kind === 'cannot' ? '' : `<li class="c2"><b>求職者支援制度：月10万円＋無料の職業訓練</b>
+        <p>雇用保険を受けられない方（受け終わった方も含む）が、訓練を受けながら月10万円を受け取れます。本人の収入が月8万円以下・世帯の金融資産300万円以下などの条件があります。</p>
+        <div class="q">「${O.kyushokusha.quote}」 <a href="https://www.mhlw.go.jp/hellotraining/support/" target="_blank" rel="noopener">厚労省 ハロトレ</a></div></li>
+      <li class="c2"><b>住居確保給付金：家賃を原則3か月（最長9か月）</b>
+        <p>辞めてから2年以内で、家賃が払えなくなりそうな方。ハローワークでの求職活動などが条件です。窓口は自立相談支援機関。</p>
+        <div class="q">「${O.jukyo.quote}」 <a href="https://www.mhlw.go.jp/content/12600000/001436774.pdf" target="_blank" rel="noopener">厚労省 リーフレット</a></div></li>`}
+      <li class="c3"><b>生活保護：それでも生活費が足りないとき</b>
+        <p>${res.kind === 'ok' ? '失業給付を受けていても、その額が生活保護の基準（最低生活費）より少なければ、<b>差額</b>を受けられます。' : '上の支えが使えなくても、最後に受け止める制度です。'}働ける方は、仕事を探しながら受けられます。</p>
+        <div class="q">「${O.hogo.kado}」 <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8432&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">局長通知 第4 稼働能力の活用</a></div>
+        <p style="margin-top:6px">→ <a href="hogohi.html">保護費しらべ</a>（あなたの地域の基準）／ <a href="chokin.html">貯金の境目しらべ</a>（申請のとき残せるお金）</p></li>
+    </ol></div>`;
+}
+
+// ===== 働いているけど、収入が少ない =====
+function refreshLow() {
+  const ages = [...document.querySelectorAll('.age')].map(s => s.value);
+  const agesDone = ages.length > 0 && ages.every(Boolean) && +size.value < 6;
+  city.disabled = !pref.value;
+  size.disabled = !city.value;
+  document.querySelectorAll('.age').forEach(s => s.disabled = !size.value);
+  gross.disabled = net.disabled = !agesDone;
+  const g = +gross.value, nt = +net.value;
+  const payDone = agesDone && gross.value !== '' && net.value !== '' && g >= 0 && nt >= 0 && nt <= g;
+  setStep($('l1'), true, city.value);
+  setStep($('l2'), !size.disabled, size.value);
+  setStep($('l3'), !!size.value && +size.value < 6, agesDone);
+  setStep($('l4'), agesDone, payDone);
+  const out = $('result');
+  if (!city.value) { out.innerHTML = `<div class="guide">上の <b>1〜4</b> を入れると、ここに<br><b>生活保護の基準より何円少ないか</b>が出ます。</div>`; return; }
+  if (+size.value >= 6) { out.innerHTML = `<div class="guide">6人以上の世帯は計算できません。<br>福祉事務所（役所の生活保護の窓口）で確かめてください。</div>`; return; }
+  if (!agesDone) { out.innerHTML = `<div class="guide">あと少しです。<b>${size.value ? '全員の年齢' : '人数'}</b>を選んでください。</div>`; return; }
+  if (gross.value !== '' && net.value !== '' && nt > g) { out.innerHTML = `<div class="guide">手取りが総支給額より多くなっています。<br>給与明細の<b>総支給額</b>と<b>差引支給額（手取り）</b>を確かめてください。</div>`; return; }
+  if (!payDone) { out.innerHTML = `<div class="guide">最後に <b>4 の毎月の給料</b>（総支給額と手取り）を入れてください。</div>`; return; }
+  if (window.gcUse) gcUse('失業・低収入チェック');
+  const [name, lvs] = city.value.split('|');
+  const lv = +lvs, n = ages.length;
+  const life = calcKijun(ages, lv, true, KIJUN, KEIKA).total;
+  const lim = jutakuLimit(pref.value, name, lv, n);
+  out.innerHTML = `<div class="res">
+    <div class="verdict">
+      <p class="place"><b>${esc(pref.value)} ${esc(name)}</b>（${LV[lv]}）／ ${n}人世帯</p>
+      <div class="k" id="lowK"></div>
+      <p class="amount" id="lowAmt"></p>
+      <p class="calc" id="lowCalc"></p>
+      <details class="opt" id="rentBox"${rentOpen ? ' open' : ''}><summary>家賃が ${yen(lim)}円より安い方は、実際の家賃で計算できます</summary>
+        <div class="yen-in"><input type="number" id="rent" inputmode="numeric" min="0" step="1000" placeholder="例 30000" value="${esc(rentVal)}" aria-label="実際の家賃"><span>円</span></div>
+        <p class="hint">共益費・管理費は除いてください。</p></details>
+    </div>
+    <div class="bars" aria-hidden="true">
+      <div class="r"><span>今の手取り</span><div class="t"><i class="net" id="bNet"></i><em id="eNet"></em></div></div>
+      <div class="r"><span>生活保護を<br>受けた場合</span><div class="t"><i class="net" id="bNet2"></i><i class="gap" id="bGap"></i><em id="eTot"></em></div></div>
+    </div>
+    <div id="lowAns"></div>
+    <div class="box warn"><h3>この結果を見るときの注意</h3><ul>
+      <li>受けられるかどうかは、<b>貯金・車などの資産</b>も見て福祉事務所が決めます（→ <a href="chokin.html">貯金の境目しらべ</a>）</li>
+      <li>給料のほかに年金・手当・仕送りなどがある方は、その分も差し引かれます</li>
+      <li>冬の上乗せや、子育て・障害・ひとり親などの加算は入っていません。入る人は、基準がもっと高くなります</li>
+      <li><b>仕事を辞めて受ける、はおすすめしません。</b>働ける人は、その力を活かすことが条件です。働いたまま、足りない分を受けられます</li></ul></div>
+    <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button>
+  </div>`;
+  window._low = {life, lim};
+  $('rent').addEventListener('input', e => { rentVal = e.target.value; paintLow(); });
+  $('rentBox').addEventListener('toggle', e => { rentOpen = e.target.open; });
+  paintLow();
+}
+
+function paintLow() {
+  const {life, lim} = window._low;
+  const r = Math.max(0, Math.floor(+rentVal || 0));
+  const house = r > 0 ? Math.min(r, lim) : lim;
+  const minLiving = life + house;
+  const g = Math.floor(+gross.value), nt = Math.floor(+net.value);
+  const res = lowIncome(minLiving, g, nt, KISO);
+  const short = res.gap > 0;
+  $('lowK').textContent = short ? '生活保護の基準より、毎月これだけ少ない（受けられる可能性のある保護費の目安）' : '今の収入は、生活保護の基準を上回っています';
+  $('lowAmt').innerHTML = short ? `<b class="num">${yen(res.gap)}</b> 円／月` : `<b class="num">＋${yen(-res.gap)}</b> 円／月`;
+  $('lowCalc').innerHTML = `基準（最低生活費）<b>${yen(minLiving)}円</b>（生活費 ${yen(life)}円＋家賃${r > 0 ? '' : 'の上限'} ${yen(house)}円）− 収入として数える額 <b>${yen(res.counted)}円</b>（手取り ${yen(nt)}円 − 働く人の控除 ${yen(res.kiso)}円）`;
+  const max = Math.max(res.total, nt) * 1.06 || 1;
+  const pct = v => v / max * 100;
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    $('bNet').style.width = pct(nt) + '%';
+    $('bNet2').style.width = pct(nt) + '%';
+    $('bGap').style.left = pct(nt) + '%'; $('bGap').style.width = (short ? pct(res.gap) : 0) + '%';
+  }));
+  $('eNet').textContent = yen(nt) + '円';
+  $('eTot').textContent = yen(res.total) + '円' + (short ? '（＋' + yen(res.gap) + '円）' : '');
+  $('lowAns').innerHTML = short
+    ? `<div class="ans ok"><h3>働いたまま、月 約${yen(res.gap)}円を受けられる可能性があります</h3>
+       <p>手元に入るお金は、今の手取り ${yen(nt)}円 → <b>約${yen(res.total)}円</b>（年間で約${yen(res.gap * 12)}円の差）。</p>
+       <p>さらに、受けている間は<b>医療費の自己負担なし</b>・<b>住民税がかからない</b>・<b>国民年金の保険料を納めなくてよい</b>（法律で決まっています）。</p>
+       <p>国のQ&amp;Aにも「働いていて、就労収入がある方でも、その収入及び資産が（中略）最低生活費に満たない場合」は受けられるとあります。<b>申請先は、住んでいる地域の福祉事務所</b>です。</p></div>`
+    : `<div class="ans cut"><h3>今の収入だと、生活保護の対象にならない可能性が高いです</h3>
+       <p>収入として数える額が、基準を月${yen(-res.gap)}円上回っています。家族が増えた・収入が減ったなど、状況が変わったら、もう一度試してください。</p>
+       <p>家賃や生活費の相談は、<a href="sodan.html">相談窓口をさがす</a>から近くの自立相談支援機関へ。</p></div>`;
+}
+
+function resetAll() {
+  mode = ''; salary = ''; salaryOpen = false; rentVal = ''; rentOpen = false;
+  document.querySelectorAll('.mode').forEach(x => x.setAttribute('aria-pressed', 'false'));
+  $('jobForm').classList.add('hidden'); $('lowForm').classList.add('hidden');
+  ['reason', 'age', 'period'].forEach(id => $(id).value = '');
+  pref.value = ''; size.value = ''; gross.value = ''; net.value = '';
+  city.innerHTML = '<option value="">市区町村を選んでください</option>';
+  buildAges(); refresh();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+['reason', 'age', 'period'].forEach(id => $(id).addEventListener('change', () => {
+  if (id === 'reason' && $('reason').value === 'byoki_ng') { $('age').value = ''; $('period').value = ''; }
+  if (id === 'age' && $('age').value === '5') $('period').value = '';
+  refresh();
+}));
+pref.addEventListener('change', () => {
+  city.innerHTML = '<option value="">市区町村を選んでください</option>';
+  (KYUCHI[pref.value] || []).slice().sort((a, b) => a[0].localeCompare(b[0], 'ja'))
+    .forEach(([nm, lv]) => city.add(new Option(nm, nm + '|' + lv)));
+  size.value = ''; buildAges(); refresh();
+});
+city.addEventListener('change', refresh);
+size.addEventListener('change', () => { buildAges(); refresh(); });
+// 結果が出ているあいだは金額だけ描き直す（入力のたびに結果全体を作り直さない）
+[gross, net].forEach(el => el.addEventListener('input', () => {
+  const ok = window._low && $('lowAmt') && gross.value !== '' && net.value !== '' && +net.value <= +gross.value;
+  ok ? paintLow() : refresh();
+}));
+refresh();
+</script>
+</body>
+</html>

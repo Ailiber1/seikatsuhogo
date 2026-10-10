@@ -13,6 +13,8 @@
     video: true にすると「▶動画あり」が付く（そのツール・解説を説明する動画を、そのページに置いたとき）
 */
 const ITEMS = [
+  {kind:"tool", icon:"🧭", title:"失業・低収入チェック", desc:"失業給付は何日・1日いくら？働いていても基準より何円少ない？", href:"shitsugyo.html", kw:"失業 失業保険 失業給付 雇用保険 基本手当 何日 いくら 解雇 倒産 リストラ 退職 自己都合 会社都合 低収入 給料 手取り 年収 働きながら 求職者支援 住居確保給付金", isNew:true, locked:true},
+  {kind:"doc",  icon:"🪜", title:"仕事を失っても、生活保護を頼っていい", desc:"失業者180万人。クビにならないは本当？3段の支えと、働いていても受けられる理由", href:"shitsugyo-setsumei.html", kw:"失業 失業者 失業率 クビ 解雇 倒産 希望退職 AI 雇用保険 求職者支援 住居確保給付金 働きながら 年収250万 権利 恥ずかしい", isNew:true, locked:true, video:true},
   {kind:"tool", icon:"📅", title:"ブラックリスト、いつ消える？しらべ", desc:"自己破産の時期を選ぶと、3つの信用情報機関で記録がいつまで残るか", href:"blacklist.html", kw:"ブラックリスト 自己破産 信用情報 CIC JICC 銀行 いつ消える 何年 クレジットカード 作れる 審査 免責", isNew:true, locked:true},
   {kind:"doc",  icon:"🌱", title:"自己破産は人生の終わりじゃなかった", desc:"経験者の記録と、破産後のカード事情（ブラックリストは何年？）", href:"jikohasan-setsumei.html", kw:"自己破産 借金 債務整理 免責 ブラックリスト 信用情報 クレジットカード デビットカード 法テラス 返済", isNew:true, locked:true, video:true},
   {kind:"tool", icon:"🐷", title:"貯金の境目しらべ", desc:"申請のとき、貯金はいくらまで残せる？車や家電は？", href:"chokin.html", kw:"貯金 預金 手持金 申請 いくらまで 残せる 使い切る 車 家電 保険 持ち家 売る 資産", isNew:true},

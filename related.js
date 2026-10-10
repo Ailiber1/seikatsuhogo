@@ -58,15 +58,15 @@
   if (!list.length) return;
   var css =
     ".rel-box{max-width:720px;margin:34px auto 0;padding:0 16px;font-family:inherit}" +
-    ".rel-box h2{font-size:17px;margin:0 0 10px;color:#2b5d8f;font-family:inherit}" +
+    ".rel-box h2{font-size:18px;margin:0 0 10px;color:#2b5d8f;font-family:inherit}" +
     ".rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}" +
     "@media (max-width:520px){.rel-grid{grid-template-columns:1fr}}" +
     ".rel-card{display:flex;gap:10px;align-items:flex-start;text-decoration:none;color:#242c36;border:1.5px solid #e2e7ec;border-radius:12px;padding:10px 12px;background:#fff;min-height:64px}" +
     ".rel-card:hover,.rel-card:focus-visible{border-color:#2b5d8f;background:#eef3f8}" +
     ".rel-card .ic{flex:none;font-size:24px;line-height:1.3}" +
-    ".rel-card b{display:block;font-size:15px;line-height:1.45;color:#2b5d8f}" +
-    ".rel-card small{display:block;font-size:12.5px;line-height:1.5;color:#5f6a77;margin-top:2px}" +
-    ".rel-card .kd{display:inline-block;font-size:11px;font-weight:700;color:#5f6a77;border:1px solid #e2e7ec;border-radius:10px;padding:0 7px;margin-bottom:2px}" +
+    ".rel-card b{display:block;font-size:16.5px;line-height:1.45;color:#2b5d8f}" +
+    ".rel-card small{display:block;font-size:14px;line-height:1.5;color:#5f6a77;margin-top:2px}" +
+    ".rel-card .kd{display:inline-block;font-size:13px;font-weight:700;color:#5f6a77;border:1px solid #e2e7ec;border-radius:10px;padding:0 7px;margin-bottom:2px}" +
     ".rel-card.locked{border-style:dashed;background:#fafbfc;cursor:not-allowed}" +
     ".rel-card.locked .ic,.rel-card.locked b,.rel-card.locked small{opacity:.5;filter:grayscale(.6)}" +
     ".rel-locked{font-size:.92em;color:#5f6a77;font-weight:700;white-space:nowrap}" +

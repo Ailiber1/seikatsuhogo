@@ -15,6 +15,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 |---|---|---|---|
 | `index.html` | 一覧 | 視聴者に伝える1つのリンク。カードの格子・種類タブ・検索つき | [/](https://ailiber1.github.io/seikatsuhogo/) |
 | `hub-items.js` | 一覧 | 一覧に並ぶカードのデータ。足すときはここに1行 | — |
+| `related.js` | 部品 | ページの下に「あわせて読みたい」を出し、鍵付きページへの本文リンクを押せなくする。ページごとの関連は中の `RELATED` に書く。まとめサイト以外の全ページが読み込む（`count_snippet.py` が自動で入れる） | — |
 | `video-embed.js` | 部品 | YouTube動画を「押したら読み込む」形で置く。全ページ共通 | — |
 | `sodan.html` | ツール | 生活の相談窓口をさがす（全国1,370か所） | [/sodan.html](https://ailiber1.github.io/seikatsuhogo/sodan.html) |
 | `tokurei.html` | ツール | 特例加算しらべ（自分がいくら増えるか） | [/tokurei.html](https://ailiber1.github.io/seikatsuhogo/tokurei.html) |
@@ -117,6 +118,12 @@ https://ailiber1.github.io/seikatsuhogo/◯◯.html
 - 新しく足したものだけ `isNew:true` にし、古くなったら外す
 - そのツール・解説を説明する動画をページに置いたら、そのカードに `video:true` を付ける（「▶動画あり」が出る）。まとめページに動画そのものは置かない（YouTube APIは使わない）
 - 関係のない近況の動画などは入れない。**そのツール・解説を説明している動画だけ**
+
+### ページどうしをつなぐ（内部リンク）
+- 新しい資料・ツールを足したら、`related.js` の `RELATED` に「そのページ → 関連させるページ（最大4つ）」を足し、**相互に張るなら相手側にも足す**。`python3 scripts/count_snippet.py` で全ページに部品が入る
+- 本文の中の内部リンク（`<a href="xxx.html">`）は**鍵付きのページにも最初から張ってよい**。`hub-items.js` で `locked:true` のあいだは、自動で「🔐 配信で公開予定のページ」になって押せない。鍵（`locked:true`）を消せば、本文のリンクも「あわせて読みたい」も自動で押せるようになる
+- いま開いているページ自体が鍵付きのときは、鍵付きページどうしのリンクは押せる（配信前の確認用）
+- 生成ページ（`gen_*.py`）の中で変数名 `ITEMS` は使わない（`hub-items.js` と衝突する）
 
 ### 動画をページに置く
 ページの「こういう方へ」の枠の下に、次の1行を置く。ファイルの末尾に `<script src="video-embed.js" defer></script>` も1回置く。

@@ -209,7 +209,7 @@ function judgeMoney(minLiving, money) {
 const T1 = 'https://www.mhlw.go.jp/web/t_doc?dataId=00ta8432&dataType=1&pageNo=1';
 const T2 = 'https://www.mhlw.go.jp/web/t_doc?dataId=00ta8433&dataType=1&pageNo=1';
 const T0 = 'https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/seikatsuhogopage.html';
-const ITEMS = [
+const THINGS = [
   {k:'kaden', name:'家具・家電・服・布団', cls:'ok', tag:'売らなくていい',
    say:'暮らしに必要な家具・家電・服・布団は、そのまま持っていられます。数も、世帯の人数に合っていれば大丈夫です。',
    q:'家具什器及び衣類寝具　当該世帯の人員、構成等から判断して利用の必要があると認められる品目及び数量は、保有を認めること。', src:['局長通知 第3の4', T1]},
@@ -316,7 +316,7 @@ function render(ages, agesDone, moneyDone) {
     <div id="answer"></div>
     <div class="box">
       <h3>ほかに持っている物はありますか？（押すと答えが出ます）</h3>
-      <div class="chips">${ITEMS.map(it => `<button type="button" class="chip" data-k="${it.k}" aria-pressed="${picked.has(it.k)}">${it.name}</button>`).join('')}</div>
+      <div class="chips">${THINGS.map(it => `<button type="button" class="chip" data-k="${it.k}" aria-pressed="${picked.has(it.k)}">${it.name}</button>`).join('')}</div>
       <div id="items"></div>
     </div>
     <div class="box warn"><h3>この結果を見るときの注意</h3><ul>
@@ -370,7 +370,7 @@ function paint() {
 }
 
 function paintItems() {
-  $('items').innerHTML = ITEMS.filter(it => picked.has(it.k)).map(it => `<div class="item ${it.cls}">
+  $('items').innerHTML = THINGS.filter(it => picked.has(it.k)).map(it => `<div class="item ${it.cls}">
     <span class="tag">${it.tag}</span><b class="t">${it.name}</b><p>${it.say}</p>
     <div class="q">「${it.q}」<br><a href="${it.src[1]}" target="_blank" rel="noopener">${it.src[0]}</a></div></div>`).join('')
     || '<p class="hint" style="margin:0;font-size:13px;color:var(--sub)">上のボタンを押すと、売る必要があるかと、国の通知の原文が出ます。</p>';
@@ -401,5 +401,7 @@ size.addEventListener('change', () => { buildAges(); refresh(); });
 money.addEventListener('input', () => { if ($('keep') && money.value !== '') paint(); else refresh(); });
 refresh();
 </script>
+<script src="hub-items.js"></script>
+<script src="related.js" defer></script>
 </body>
 </html>

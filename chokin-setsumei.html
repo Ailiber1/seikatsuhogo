@@ -215,7 +215,7 @@ window.gcUse = function (name) {
     <ul class="check" id="check">
       <li><button type="button" aria-pressed="false"><span class="bx">✓</span><span><b>大きな買い物は、使い道を説明できるように</b><small>レシートがなくても、ネットの購入履歴で通じました</small></span></button></li>
       <li><button type="button" aria-pressed="false"><span class="bx">✓</span><span><b>通帳は、申請の日に記帳してコピーを取る</b><small>相談センターで「なるべく当日の最新の通帳のコピーを持って行った方がいい」と言われました</small></span></button></li>
-      <li><button type="button" aria-pressed="false"><span class="bx">✓</span><span><b>ほかの制度を試したか、答えられるように</b><small>失業保険・住宅確保給付金など、ほかの制度を先に使うのが決まりです（国の通知「他法他施策の活用」）</small></span></button></li>
+      <li><button type="button" aria-pressed="false"><span class="bx">✓</span><span><b>ほかの制度を試したか、答えられるように</b><small>失業保険・住宅確保給付金など、ほかの制度を先に使うのが決まりです（国の通知「他法他施策の活用」）。→ <a href="shitsugyo-setsumei.html">失業したときの3段の支え</a></small></span></button></li>
       <li><button type="button" aria-pressed="false"><span class="bx">✓</span><span><b>書類がそろっていなくても、申請はできる</b><small>厚労省「必要な書類が揃っていなくても申請はできます。」</small></span></button></li>
     </ul>
   </section>
@@ -295,5 +295,7 @@ document.querySelectorAll('.thing').forEach(t => t.addEventListener('click', () 
 document.querySelectorAll('#check button').forEach(b => b.addEventListener('click', () => b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') !== 'true')));
 </script>
 <script src="video-embed.js" defer></script>
+<script src="hub-items.js"></script>
+<script src="related.js" defer></script>
 </body>
 </html>

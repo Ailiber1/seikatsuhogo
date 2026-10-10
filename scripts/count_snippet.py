@@ -40,7 +40,19 @@ window.gcUse = function (name) {
 """
 
 
+# ページどうしをつなぐ部品（related.js）。本文の最後に入れる。まとめサイト（index.html）は自分で hub-items.js を読むので入れない
+RELATED_TAG = '<script src="hub-items.js"></script>\n<script src="related.js" defer></script>\n'
+
+
+def add_related(html: str) -> str:
+    if "related.js" in html:
+        return html
+    i = html.lower().rfind("</body>")
+    return html + RELATED_TAG if i < 0 else html[:i] + RELATED_TAG + html[i:]
+
+
 def add_snippet(html: str) -> str:
+    html = add_related(html)
     if MARK in html:
         return html
     i = html.lower().find("</head>")
@@ -57,11 +69,13 @@ if __name__ == "__main__":
     missing = []
     for p in sorted(ROOT.glob("*.html")):
         s = p.read_text(encoding="utf-8")
-        t = add_snippet(s)
+        t = s if p.name == "index.html" else add_snippet(s)
         if t != s:
             p.write_text(t, encoding="utf-8")
             print("追加:", p.name)
         if MARK not in t:
             missing.append(p.name)
+        if p.name != "index.html" and "related.js" not in t:
+            missing.append(p.name + "（related.js）")
     print("計測が入っていないページ:", missing or "なし")
     sys.exit(1 if missing else 0)

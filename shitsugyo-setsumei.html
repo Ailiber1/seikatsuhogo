@@ -65,6 +65,12 @@ blockquote{margin:10px 0 4px; padding:10px 14px; background:var(--panel); border
 .fact b{display:block; font-size:14.5px}
 .fact small{display:block; font-size:12.5px; color:var(--sub); line-height:1.5; margin-top:2px}
 .fact small a{color:var(--navy)}
+.world{border:1px solid var(--line); border-left:5px solid var(--navy); border-radius:0 12px 12px 0; padding:12px 14px; background:#fff; margin:12px 0}
+.world .k{display:inline-block; font-size:12.5px; font-weight:800; color:var(--navy); border:1.5px solid var(--navy); border-radius:20px; padding:0 9px; margin-bottom:4px}
+.world p{margin:4px 0 8px; font-size:15px} .world blockquote{margin:6px 0} .world .src{margin:0}
+.cos{list-style:none; margin:4px 0 6px; padding:0}
+.cos li{border:1px solid var(--line); border-radius:10px; padding:8px 12px; margin-bottom:6px; background:var(--panel)}
+.cos b{font-size:15px} .cos span{display:block; font-size:14px; font-weight:700; color:var(--ng)} .cos small{display:block; font-size:13px; color:var(--sub); line-height:1.5}
 .guess{border:2px dashed var(--warn); border-radius:12px; padding:12px 14px; background:var(--warn-bg); margin:12px 0}
 .guess .k{display:inline-block; font-size:12.5px; font-weight:800; color:var(--warn); border:1.5px solid var(--warn); border-radius:20px; padding:0 9px; margin-bottom:4px; background:#fff}
 .guess p{margin:4px 0 0; font-size:15px}
@@ -187,9 +193,25 @@ window.gcUse = function (name) {
     </div>
     <blockquote>大企業の59.1％が生成AIを組織的に活用しており、今後は事務職、管理職を対象にした「AIウォッシング」の広がりも懸念される。</blockquote>
     <p class="src">出典: <a href="https://www.tsr-net.co.jp/data/detail/1202787_1527.html" target="_blank" rel="noopener">東京商工リサーチ（2026年4月30日）</a>　※AIウォッシング＝AIを理由にした人減らし</p>
+    <div class="world"><span class="k">世界ではもう始まっている</span>
+      <p>イーロン・マスク氏は2025年8月、<b>AIだけで動くソフトウェア会社「マクロハード」</b>を作ると発表しました。名前は冗談まじりですが、本人は「このプロジェクトはまさに現実のものだ」と書いています。</p>
+      <blockquote>In principle, given that software companies like Microsoft do not themselves manufacture any physical hardware, it should be possible to simulate them entirely with AI.</blockquote>
+      <div class="easy" style="margin-bottom:8px"><b>やさしく言うと：</b>マイクロソフトのような会社は工場で物を作っていない。だから、<b>会社まるごとAIで再現できるはず</b>。</div>
+      <p>2026年3月には、テスラとxAIの共同プロジェクトとして中身が発表され、マスク氏は「原理的には、会社全体の機能を再現できる」と話しています（ロイター）。</p>
+      <p class="src">出典: <a href="https://x.com/elonmusk/status/1958852874236305793" target="_blank" rel="noopener">マスク氏のX投稿（2025年8月）</a> ／ <a href="https://www.businessinsider.jp/article/2509-elon-musk-recreate-microsoft-software-companies-macrohard-with-ai/" target="_blank" rel="noopener">Business Insider Japan（2025年9月11日）</a> ／ <a href="https://www.globalbankingandfinance.com/musk-unveils-joint-tesla-xai-project-macrohard-eyes-software/" target="_blank" rel="noopener">ロイター配信記事（2026年3月11日）</a></p>
+      <p style="margin-top:12px"><b>マスク氏だけではありません。</b>2026年に入って、AIを理由に人を大きく減らした会社がアメリカで相次いでいます。</p>
+      <ul class="cos">
+        <li><b>Block（ブロック）</b><span>2026年2月・約4,000人（社員の半分近く）</span><small>創業者のドーシー氏「作って使っているAIの道具と、より小さく平らなチームで」</small></li>
+        <li><b>オラクル</b><span>2026年3月〜・約2万1,000人</span><small>理由として「業務全体でのAI技術の採用と展開」を挙げた</small></li>
+        <li><b>セールスフォース</b><span>2025〜26年・サポート約4,000人ほか</span><small>ベニオフCEO「AIエージェントが仕事をするので、人が少なくて済む」</small></li>
+      </ul>
+      <p class="src">出典: <a href="https://techcrunch.com/2026/07/25/the-running-list-major-tech-layoffs-in-2026-where-employers-cited-ai/" target="_blank" rel="noopener">TechCrunch「AIを理由に人員削減したテック企業の一覧」（2026年7月25日）</a></p>
+      <p>日本についても、コンサル大手のPwC Japanがこう書いています。</p>
+      <blockquote>少人数で大規模な事業を運営する企業が国内外で生まれ始める一方、AI活用を理由に新卒採用数を前年から数割削減する企業も現れています。</blockquote>
+      <p class="src">出典: <a href="https://www.pwc.com/jp/ja/knowledge/thoughtleadership/generative-ai-survey2026-consideration.html" target="_blank" rel="noopener">PwC Japan「生成AIの将来技術動向 2026年」（2026年6月12日）</a></p></div>
     <div class="guess"><span class="k">ここから先は、私の推測です</span>
-      <p>AIで人を減らしたい会社が、今の会社をたたんで、少ない人数とAIで回る会社に作り直す。そんな経営者が出てきてもおかしくない、と私は考えています。そうなれば「クビにならない」という守りは関係ありません。</p>
-      <p style="font-size:13.5px;color:var(--sub)">ただし、AIで失業が増えた、という国の統計は今のところありません。</p></div>
+      <p>世界のトップが、実際に「人ではなくAIで回る会社」を作り始め、大きな会社もAIを理由に人を減らしています。将来どうなるかは誰にも分かりませんが、<b>日本でも、少ない人数とAIで回る会社が増えてくる可能性はある</b>と私は考えています。今の会社をたたんで、AI中心の会社に作り直す経営者が出てくれば、「クビにならない」という守りは関係ありません。</p>
+      <p style="font-size:13.5px;color:var(--sub)">ただし、AIで失業が増えた、という国の統計は今のところありません。マクロハードがどこまで完成しているかも、公表されていません。AIで人を減らしたあと、「質が下がった」として人の採用に戻した会社（クラーナ・<a href="https://www.entrepreneur.com/business-news/klarna-ceo-reverses-course-by-hiring-more-humans-not-ai/491396" target="_blank" rel="noopener">2025年の報道</a>）もあります。</p></div>
   </section>
 
   <section class="ch fade">
@@ -279,6 +301,8 @@ window.gcUse = function (name) {
       <li><a href="https://laws.e-gov.go.jp/law/419AC0000000128" target="_blank" rel="noopener">労働契約法16条</a> ／ <a href="https://www.startup-roudou.mhlw.go.jp/qa/zigyonushi/kaiko/q6.html" target="_blank" rel="noopener">厚労省「整理解雇とはどのようなものですか」</a></li>
       <li><a href="https://www.tsr-net.co.jp/data/detail/1202787_1527.html" target="_blank" rel="noopener">東京商工リサーチ「2025年度の『早期・希望退職』は2万781人」（2026年4月30日）</a> ／ <a href="https://www.tsr-net.co.jp/news/status/detail/1203029_1610.html" target="_blank" rel="noopener">同「2026年上半期 全国企業倒産」</a></li>
       <li><a href="https://www.pewresearch.org/global/2026/09/17/globally-more-people-expect-ai-to-cause-job-loss-than-growth/" target="_blank" rel="noopener">Pew Research Center「Globally, More People Expect AI to Cause Job Loss Than Growth」（2026年9月17日）</a>・<a href="https://www.pewresearch.org/wp-content/uploads/sites/20/2026/09/pg_2026.09.17_global-views-of-ai_topline.pdf" target="_blank" rel="noopener">集計表 Q57</a></li>
+      <li>マクロハード: <a href="https://x.com/elonmusk/status/1958852874236305793" target="_blank" rel="noopener">イーロン・マスク氏のX投稿（2025年8月22日）</a> ／ <a href="https://www.businessinsider.jp/article/2509-elon-musk-recreate-microsoft-software-companies-macrohard-with-ai/" target="_blank" rel="noopener">Business Insider Japan（2025年9月11日）</a> ／ <a href="https://www.globalbankingandfinance.com/musk-unveils-joint-tesla-xai-project-macrohard-eyes-software/" target="_blank" rel="noopener">Musk unveils joint Tesla-xAI project Macrohard（ロイター配信、2026年3月11日）</a></li>
+      <li><a href="https://techcrunch.com/2026/07/25/the-running-list-major-tech-layoffs-in-2026-where-employers-cited-ai/" target="_blank" rel="noopener">TechCrunch「Monday.com is the latest tech company to blame AI for layoffs — here are 20 others」（2026年7月25日）</a> ／ <a href="https://www.pwc.com/jp/ja/knowledge/thoughtleadership/generative-ai-survey2026-consideration.html" target="_blank" rel="noopener">PwC Japan「生成AIの将来技術動向 2026年」（2026年6月12日）</a></li>
       <li><a href="https://www.hellowork.mhlw.go.jp/insurance/insurance_benefitdays.html" target="_blank" rel="noopener">ハローワーク「基本手当の所定給付日数」</a> ／ <a href="https://www.hellowork.mhlw.go.jp/insurance/insurance_basicbenefit.html" target="_blank" rel="noopener">「基本手当について」</a> ／ <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000160564_00045.html" target="_blank" rel="noopener">厚労省 給付制限（令和7年4月から）</a></li>
       <li><a href="https://www.mhlw.go.jp/hellotraining/support/" target="_blank" rel="noopener">厚労省 求職者支援制度</a> ／ <a href="https://www.mhlw.go.jp/content/12600000/001436774.pdf" target="_blank" rel="noopener">住居確保給付金のご案内</a></li>
       <li><a href="https://www.mhlw.go.jp/content/001106332.pdf" target="_blank" rel="noopener">厚労省「生活保護制度に関するＱ＆Ａ」</a> ／ <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8432&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">局長通知 第4 稼働能力の活用</a> ／ <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/seikatuhogo/index.html" target="_blank" rel="noopener">厚労省「生活保護制度」</a> ／ <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/seikatsuhogopage.html" target="_blank" rel="noopener">「生活保護を申請したい方へ」</a></li>
@@ -289,7 +313,7 @@ window.gcUse = function (name) {
     <h3>読むときの注意</h3>
     <ul>
       <li>失業者数・失業率は2026年8月の数字です。毎月変わります</li>
-      <li>「会社を作り直す経営者が出てくる」は私の推測で、裏付けるデータはありません</li>
+      <li>マクロハードは、マスク氏が作っていると公表している計画です。どこまで完成し、何人で動いているかは公表されていません。「日本でもAI中心の会社が増える」「会社を作り直す経営者が出てくる」は私の推測で、裏付けるデータはありません</li>
       <li>年額の比べは、家賃が上限・加算なしの試算です。実際の保護費は、収入・資産・加算で人によって違います</li>
       <li>私の話は、2024年の長崎市での1件の体験です</li>
       <li>確認日: 2026年10月10日 ／ 個人が作ったもので、行政の公式資料ではありません。法律上の助言でもありません</li>

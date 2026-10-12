@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ためらう理由チェック</title>
+<meta name="description" content="生活保護を使っていない・迷っている理由を選ぶと、それが本当に壁なのかを国の文書の原文で確かめられます。住んでいる場所・収入・貯金から、自分が生活保護の線より下かどうかも計算できます">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:17px; line-height:1.75; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+h1,.lead,.for-who li,.ans h3,.ans p,.box h3,.guide,.item b.t{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:24px 16px 44px}
+h1{font-size:clamp(24px,5.2vw,32px); line-height:1.4; margin:0 0 8px; color:var(--navy); text-wrap:balance}
+.lead{color:var(--sub); font-size:16px; margin:0 0 16px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:18px; font-size:16px}
+.for-who b{color:var(--navy)}
+.for-who ul{margin:4px 0 0; padding-left:1.2em}
+
+.step{background:var(--panel); border:2px solid var(--line); border-radius:13px; padding:14px 16px; margin-bottom:12px; transition:border-color .3s, opacity .3s}
+.step.off{opacity:.5}
+.step.done{border-color:var(--navy)}
+.step h2{font-size:17px; margin:0 0 8px; display:flex; gap:9px; align-items:center; line-height:1.45}
+.step h2 .n{flex:none; width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; display:grid; place-items:center; font-size:13px}
+.step .hint{font-size:14px; color:var(--sub); margin:6px 0 0}
+select,input[type=number]{font:inherit; font-size:16px; width:100%; min-height:44px; padding:8px 10px; border:2px solid var(--line); border-radius:9px; background:#fff; color:var(--ink)}
+select:focus,input:focus{outline:3px solid var(--navy-soft); border-color:var(--navy)}
+select:disabled,input:disabled{background:var(--line-soft); color:var(--sub)}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.ages{display:grid; gap:8px}
+.ages label,.lab{font-size:14px; font-weight:700; color:var(--sub); display:block; margin-bottom:2px}
+.yen-in{display:flex; align-items:center; gap:8px}
+.yen-in span{flex:none; font-weight:700}
+
+.chips{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 2px}
+.chip{font:inherit; font-size:15.5px; font-weight:700; color:var(--navy); background:#fff; border:2px solid var(--line); border-radius:22px; padding:7px 14px; min-height:44px; cursor:pointer; text-align:left; line-height:1.4}
+.chip[aria-pressed=true]{border-color:var(--navy); background:var(--navy-soft)}
+
+#result,#result2{margin-top:14px}
+.guide{border:2px dashed var(--line); border-radius:13px; padding:18px; text-align:center; color:var(--sub); font-size:16px}
+.guide b{color:var(--navy)}
+.res{animation:pop .45s ease}
+@keyframes pop{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+.verdict{border-left:6px solid var(--navy); background:var(--navy-soft); border-radius:0 13px 13px 0; padding:14px 16px; margin-bottom:12px}
+.verdict .k{font-size:14px; font-weight:700; color:var(--sub)}
+.verdict .place{font-size:14.5px; color:var(--sub); margin:0 0 2px}
+.amount{font-size:18px; font-weight:700; margin:2px 0; line-height:1.5}
+.amount b{font-size:clamp(36px,9vw,50px); color:var(--navy); font-variant-numeric:tabular-nums; letter-spacing:.01em}
+.calc{font-size:14.5px; margin:2px 0 0; color:var(--sub)}
+.calc b{color:var(--ink)}
+
+.item{border:1px solid var(--line); border-left:5px solid var(--c); border-radius:0 11px 11px 0; padding:11px 14px; margin-bottom:8px; background:#fff; animation:pop .35s ease}
+.item .tag{display:inline-block; font-size:14px; font-weight:800; color:var(--c); margin-bottom:2px}
+.item b.t{display:block; font-size:17px; line-height:1.5}
+.item p{margin:4px 0 0; font-size:16px}
+.item .q{font-size:14.5px; color:var(--sub); background:var(--panel); border-left:3px solid var(--line); padding:6px 10px; margin-top:7px}
+.item .q a{color:var(--navy)}
+.item .go{display:inline-block; margin-top:7px; font-size:15.5px; font-weight:700; color:var(--navy)}
+.item.ok{--c:var(--ok)} .item.mid{--c:var(--warn)}
+
+.ans{border-radius:0 13px 13px 0; padding:13px 16px; margin-bottom:12px; border-left:6px solid}
+.ans.ok{background:var(--ok-bg); border-color:var(--ok)} .ans.ok h3{color:var(--ok)}
+.ans.cut{background:var(--warn-bg); border-color:var(--warn)} .ans.cut h3{color:var(--warn)}
+.ans.over{background:var(--ng-bg); border-color:var(--ng)} .ans.over h3{color:var(--ng)}
+.ans h3{font-size:clamp(18px,4.6vw,21px); margin:0 0 4px; line-height:1.45}
+.ans p{margin:0 0 6px; font-size:16px} .ans p:last-child{margin:0}
+.ans a{color:var(--navy); font-weight:700}
+
+.box{background:var(--panel); border:2px solid var(--line); border-radius:12px; padding:12px 15px; margin-bottom:10px}
+.box h3{font-size:16.5px; margin:0 0 6px; color:var(--navy)}
+.box p{margin:0 0 6px; font-size:16px} .box p:last-child{margin:0}
+.box ul{margin:0; padding-left:1.2em; font-size:15.5px}
+.box a{color:var(--navy); font-weight:700}
+.box.warn{background:var(--warn-bg); border-color:var(--warn)} .box.warn h3{color:var(--warn)}
+.part{font-size:clamp(19px,4.6vw,22px); color:var(--navy); margin:30px 0 4px; line-height:1.45}
+.part-lead{font-size:15.5px; color:var(--sub); margin:0 0 12px}
+
+.reset{font:inherit; font-size:15px; font-weight:700; color:var(--navy); background:var(--navy-soft); border:none; border-radius:8px; padding:8px 14px; min-height:44px; cursor:pointer; margin-top:4px}
+.foot{margin-top:24px; font-size:14.5px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (max-width:480px){ .row2{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){ .res,.item{animation:none} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho">ためらう理由チェック</h1>
+  <p class="lead">生活保護を使っていない・迷っている理由を選ぶと、<b>それが本当に壁なのか</b>を、国の文書の原文で確かめられます。下では、<b>自分が生活保護の線より下かどうか</b>も計算できます。</p>
+  <div class="for-who"><b>このツールは、こういう方へ</b>
+    <ul><li>生活が苦しいけれど、生活保護はためらっている方</li>
+    <li>「自分は対象じゃない」と思っているが、確かめたことはない方</li>
+    <li>家族や知り合いに、生活保護をすすめるか迷っている方</li></ul></div>
+
+  <div class="step done" id="r1">
+    <h2><span class="n">1</span>使っていない・迷っている理由は？（いくつでも）</h2>
+    <div class="chips" id="reasons"></div>
+    <p class="hint">当てはまるものを押してください。もう一度押すと外れます。</p>
+  </div>
+  <div id="result" aria-live="polite"></div>
+
+  <h2 class="part mincho">数字で確かめたい方は</h2>
+  <p class="part-lead">住んでいる場所と人数・年齢、毎月の収入、手元のお金を入れると、あなたが生活保護の線（最低生活費）より下かどうかを、国の表で計算します。</p>
+
+  <div class="step" id="s1">
+    <h2><span class="n">2</span>住んでいる場所</h2>
+    <div class="row2">
+      <select id="pref" aria-label="都道府県"><option value="">都道府県を選んでください</option></select>
+      <select id="city" disabled aria-label="市区町村"><option value="">市区町村を選んでください</option></select>
+    </div>
+  </div>
+  <div class="step off" id="s2">
+    <h2><span class="n">3</span>一緒に暮らす人数（あなたも含む）</h2>
+    <select id="size" disabled aria-label="世帯の人数"><option value="">選んでください</option></select>
+  </div>
+  <div class="step off" id="s3">
+    <h2><span class="n">4</span>それぞれの年齢</h2>
+    <div class="ages" id="ages"><p class="hint" style="margin:0">上で人数を選ぶと、ここに年齢の欄が出ます。</p></div>
+  </div>
+  <div class="step off" id="s4">
+    <h2><span class="n">5</span>毎月の収入と、手元のお金</h2>
+    <span class="lab">1か月の収入（世帯の全員分。給料は手取り、年金・手当・仕送りも足す）</span>
+    <div class="yen-in"><input type="number" id="income" inputmode="numeric" min="0" step="1000" placeholder="例 90000" disabled aria-label="1か月の収入"><span>円</span></div>
+    <span class="lab" style="margin-top:10px">いま手元にあるお金（現金＋貯金の合計）</span>
+    <div class="yen-in"><input type="number" id="money" inputmode="numeric" min="0" step="1000" placeholder="例 50000" disabled aria-label="手元にあるお金"><span>円</span></div>
+    <p class="hint">ゼロの方は 0 と入れてください。</p>
+  </div>
+  <div id="result2" aria-live="polite"></div>
+
+  <div class="foot">
+    <p>この結果は、厚生労働省の公開資料から作った目安（試算）です。受けられるかどうかの最終的な判断は、申請のあとに福祉事務所がします。入力した内容はこの画面の中だけで計算していて、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</p>
+    <p>計算のしかた：線（最低生活費）＝生活扶助＋家賃の上限（医療扶助・介護扶助を除く）。生活扶助の計算は「保護費しらべ」と同じで、厚労省の資料のモデル世帯54通りと1円単位で一致することを確かめています。冬の上乗せ（冬季加算）や、障害のある方・ひとり親・子育て中の加算は入っていないので、その分、実際の線は高くなります。給料には、一部を収入として数えない決まり（基礎控除）がありますが、ここでは入れていません。</p>
+    <p>「国の数え方」は、厚労省の推計と同じ分け方です（収入が最低生活費より少ないか。貯金が最低生活費の1か月分より少ないか）。割合は国会での国の答弁（22.6%・43.7%。2016年の調査がもと）です。</p>
+    <p>根拠: <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/seikatsuhogopage.html" target="_blank" rel="noopener">厚労省「生活保護を申請したい方へ」</a> ／ <a href="https://www.mhlw.go.jp/content/001106332.pdf" target="_blank" rel="noopener">厚労省「生活保護制度に関するＱ＆Ａ」</a> ／ <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8431&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">次官通知 第9</a> ／ <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8433&amp;dataType=1&amp;pageNo=2" target="_blank" rel="noopener">課長通知 第10 問10の2</a> ／ <a href="https://kokkai.ndl.go.jp/txt/121214260X00620231207/43" target="_blank" rel="noopener">参議院 厚生労働委員会 2023年12月7日</a> ／ <a href="https://kokkai.ndl.go.jp/txt/120804889X00320220209/125" target="_blank" rel="noopener">衆議院 内閣委員会 2022年2月9日</a> ／ <a href="https://kokkai.ndl.go.jp/txt/119614260X01620180529/47" target="_blank" rel="noopener">参議院 厚生労働委員会 2018年5月29日</a> ／ <a href="https://www.mhlw.go.jp/shingi/2010/04/dl/s0409-2d.pdf" target="_blank" rel="noopener">厚労省「生活保護基準未満の低所得世帯数の推計について」</a> ／ <a href="https://www.mhlw.go.jp/content/001152601.pdf" target="_blank" rel="noopener">生活扶助基準額の算出方法（令和8年4月）</a></p>
+    <p>確認日: 2026年10月12日 ／ 個人が作ったもので、行政の公式ツールではありません。</p>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+const KYUCHI = /*KYUCHI*/;
+const KEIKA = /*KEIKA*/;
+const KIJUN = /*KIJUN*/;
+const JUTAKU = /*JUTAKU*/;
+const REASONS = /*REASONS*/;
+const AGES = ["0～2","3～5","6～11","12～17","18～19","20～40","41～59","60～64","65～69","70～74","75～"];
+const AGE_LABEL = {"0～2":"0〜2歳","3～5":"3〜5歳","6～11":"6〜11歳","12～17":"12〜17歳","18～19":"18〜19歳","20～40":"20〜40歳","41～59":"41〜59歳","60～64":"60〜64歳","65～69":"65〜69歳","70～74":"70〜74歳","75～":"75歳以上"};
+const LV = ["1級地-1","1級地-2","2級地-1","2級地-2","3級地-1","3級地-2"];
+
+// CALC-START
+// 生活扶助 = 第1類の合計×逓減率（1円未満切り捨て→10円未満切り上げ）＋第2類＋特例加算＋経過的加算
+function calcKijun(ages, lv, oct, K, KE) {
+  const n = ages.length;
+  const raw = ages.reduce((s, a) => s + K.dai1[a][lv], 0);
+  const d1 = Math.ceil(Math.floor(Math.round(raw * K.teigen[n] * 1e6) / 1e6) / 10) * 10;
+  const d2 = K.dai2[n];
+  const per = oct ? K.tokurei.from_2026_10 : K.tokurei.until_2026_09;
+  const tok = per * n;
+  // 10月からは特例加算が1人1,000円増える分、経過的加算が1人最大1,000円減る（従前額保障）
+  const kei = ages.reduce((s, a) => { const k = KE[n][a][lv]; return s + (oct ? k - Math.min(1000, k) : k); }, 0);
+  return {raw, d1, d2, tok, kei, total: d1 + d2 + tok + kei};
+}
+// CALC-END
+
+// KEEP-START
+// 申請のときに残せるお金 = 最低生活費の5割（課長通知 第10 問10の2）。それを超えた分は最初の月の保護費から差し引かれる
+function judgeMoney(minLiving, money) {
+  const keep = Math.floor(minLiving / 2);
+  const cut = Math.max(0, money - keep);
+  const kind = money <= keep ? 'ok' : money < minLiving ? 'cut' : 'over';
+  return {keep, cut, kind};
+}
+// KEEP-END
+
+// LINE-START
+// 国の推計と同じ分け方: 収入が最低生活費より少ないか／貯金が最低生活費の1か月分より少ないか
+//   both   = 収入も貯金も線より下（「貯金も考えて数える」でも線の下。使っているのは43.7%）
+//   income = 収入は線より下だが、貯金は1か月分以上ある（「収入だけで数える」と線の下。使っているのは22.6%）
+//   above  = 収入が線以上
+function judgeLine(minLiving, income, money) {
+  const gap = minLiving - income;
+  const pos = income >= minLiving ? 'above' : money < minLiving ? 'both' : 'income';
+  return {gap, pos};
+}
+// LINE-END
+
+const $ = id => document.getElementById(id);
+const pref = $('pref'), city = $('city'), size = $('size'), income = $('income'), money = $('money');
+const yen = n => n.toLocaleString('ja-JP');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let picked = [];
+
+// ---- 1. ためらう理由 ----
+$('reasons').innerHTML = REASONS.map(r => `<button type="button" class="chip" data-k="${r.k}" aria-pressed="false">${esc(r.name)}</button>`).join('');
+$('reasons').querySelectorAll('.chip').forEach(b => b.addEventListener('click', () => {
+  const k = b.dataset.k;
+  picked = picked.includes(k) ? picked.filter(x => x !== k) : picked.concat(k);
+  b.setAttribute('aria-pressed', picked.includes(k));
+  paintReasons();
+}));
+
+function paintReasons() {
+  const out = $('result');
+  if (!picked.length) {
+    out.innerHTML = `<div class="guide">上で<b>理由</b>を押すと、ここに<br><b>それが本当に壁なのか</b>と、<b>国の文書の原文</b>が出ます。</div>`;
+    return;
+  }
+  if (window.gcUse) gcUse('ためらう理由チェック');
+  const list = picked.map(k => REASONS.find(r => r.k === k));
+  const mid = list.filter(r => r.cls === 'mid').length;
+  out.innerHTML = `<div class="res">
+    <div class="verdict">
+      <div class="k">選んだ ${list.length}個のうち、申請を止める決まりは</div>
+      <p class="amount"><b>0</b> 個</p>
+      <p class="calc">${mid ? `<b>${mid}個</b>は、受けるときに条件がつくものです。それでも、申請することはできます。` : 'どれも、申請を止める決まりではありません。'}</p>
+    </div>
+    ${list.map(r => `<div class="item ${r.cls}">
+      <span class="tag">${esc(r.tag)}</span><b class="t">${esc(r.name)}</b><p>${esc(r.say)}</p>
+      <div class="q">「${esc(r.q)}」<br><a href="${esc(r.src[1])}" target="_blank" rel="noopener">${esc(r.src[0])}</a></div>
+      ${r.go ? `<a class="go" href="${esc(r.go[1])}">→ ${esc(r.go[0])}</a>` : ''}</div>`).join('')}
+    <div class="box warn"><h3>この結果を見るときの注意</h3><ul>
+      <li>「申請できる」と「受けられる」は別です。受けられるかどうかは、申請のあとに福祉事務所が、収入・持ち物・働けるかどうかなどを見て決めます</li>
+      <li>窓口の対応は、自治体や担当の方によって違います。不安な方は、先に相談窓口で話を聞いてもらえます → <a href="sodan.html">相談窓口をさがす</a></li></ul></div>
+  </div>`;
+}
+
+// ---- 2. 数字で確かめる ----
+Object.keys(KYUCHI).forEach(p => pref.add(new Option(p, p)));
+for (let i = 1; i <= 5; i++) size.add(new Option(i + '人', String(i)));
+size.add(new Option('6人以上', '6'));
+
+function buildAges() {
+  const n = +size.value;
+  const prev = [...document.querySelectorAll('.age')].map(s => s.value);
+  if (!n) { $('ages').innerHTML = '<p class="hint" style="margin:0">上で人数を選ぶと、ここに年齢の欄が出ます。</p>'; return; }
+  if (n >= 6) { $('ages').innerHTML = '<p class="hint" style="margin:0">6人以上の世帯は、公表されている表に一部の金額が無いため計算できません。</p>'; return; }
+  $('ages').innerHTML = Array.from({length: n}, (_, i) => `
+    <div><label for="age${i}">${i === 0 ? 'あなた' : (i + 1) + '人目'}</label>
+    <select class="age" id="age${i}"><option value="">選んでください</option>${AGES.map(a => `<option value="${a}">${AGE_LABEL[a]}</option>`).join('')}</select></div>`).join('');
+  document.querySelectorAll('.age').forEach((s, i) => { if (prev[i]) s.value = prev[i]; s.addEventListener('change', refresh); });
+}
+
+const setStep = (el, on, done) => { el.classList.toggle('off', !on); el.classList.toggle('done', !!done); };
+const filled = el => el.value !== '' && +el.value >= 0;
+
+function refresh() {
+  const ages = [...document.querySelectorAll('.age')].map(s => s.value);
+  const agesDone = ages.length > 0 && ages.every(Boolean) && +size.value < 6;
+  city.disabled = !pref.value;
+  size.disabled = !city.value;
+  document.querySelectorAll('.age').forEach(s => s.disabled = !size.value);
+  income.disabled = money.disabled = !agesDone;
+  const numDone = agesDone && filled(income) && filled(money);
+  setStep($('s1'), true, city.value);
+  setStep($('s2'), !size.disabled, size.value);
+  setStep($('s3'), !!size.value && +size.value < 6, agesDone);
+  setStep($('s4'), agesDone, numDone);
+  render(ages, agesDone, numDone);
+}
+
+// 家賃（住宅扶助）の上限。政令市・中核市は市の額、それ以外は都道府県×級地（1・2・3級地）の額
+function jutakuLimit(prefName, cityName, lv, n) {
+  const row = JUTAKU.city[cityName] || JUTAKU.pref[prefName][String(Math.floor(lv / 2) + 1)];
+  return row[n === 1 ? 0 : n === 2 ? 1 : n <= 5 ? 2 : n === 6 ? 3 : 4];
+}
+
+function render(ages, agesDone, numDone) {
+  const out = $('result2');
+  if (!city.value) {
+    out.innerHTML = `<div class="guide">上の <b>2〜5</b> を入れると、ここに<br><b>あなたの線（最低生活費）</b>と、<b>収入・貯金が線より下かどうか</b>が出ます。</div>`;
+    return;
+  }
+  if (+size.value >= 6) {
+    out.innerHTML = `<div class="guide">6人以上の世帯は計算できません。<br>福祉事務所（役所の生活保護の窓口）で確かめてください。</div>`;
+    return;
+  }
+  if (!agesDone) {
+    out.innerHTML = `<div class="guide">あと少しです。<b>${size.value ? '全員の年齢' : '人数'}</b>を選んでください。</div>`;
+    return;
+  }
+  if (!numDone) {
+    out.innerHTML = `<div class="guide">最後に <b>5 の収入と手元のお金</b> を両方入れてください。<br>ゼロの方は 0 と入れてください。</div>`;
+    return;
+  }
+  if (window.gcUse) gcUse('ためらう理由チェック（数字）');
+  const [name, lvs] = city.value.split('|');
+  const lv = +lvs, n = ages.length;
+  const life = calcKijun(ages, lv, true, KIJUN, KEIKA).total;
+  const lim = jutakuLimit(pref.value, name, lv, n);
+  const minLiving = life + lim;
+  const inc = Math.floor(+income.value), mon = Math.floor(+money.value);
+  const {gap, pos} = judgeLine(minLiving, inc, mon);
+  const {keep, kind} = judgeMoney(minLiving, mon);
+  const moneyLine = {
+    ok: `手元の ${yen(mon)}円は、申請のときに<b>全部残せる</b>目安（${yen(keep)}円まで）の中です。`,
+    cut: `手元の ${yen(mon)}円のうち、${yen(keep)}円を超えた分は、最初の月の保護費から差し引かれる計算です。<b>受けられなくなるわけではありません。</b>`,
+    over: `手元に、1か月分の生活費（${yen(minLiving)}円）以上のお金があります。`
+  }[kind];
+  const A = {
+    both: `<div class="ans ok"><h3>収入も貯金も、線より下です</h3>
+      <p>毎月の収入が、線より <b>${yen(gap)}円</b> 少ない計算です。${moneyLine}</p>
+      <p>国の数え方だと、あなたは<b>「貯金も考えて数えても、線より下」</b>の側です。同じ側の世帯で生活保護を使っているのは、100世帯のうち約44世帯（国の推計）。<b>相談する理由は、十分にあります。</b></p>
+      <p>→ <a href="sodan.html">相談窓口をさがす</a></p></div>`,
+    income: `<div class="ans cut"><h3>収入は線より下。手元のお金は1か月分以上あります</h3>
+      <p>毎月の収入が、線より <b>${yen(gap)}円</b> 少ない計算です。ただ、${moneyLine}この額だと、申請しても「まずは手元のお金で生活を」と言われることがあります。</p>
+      <p>国の数え方だと、あなたは<b>「収入だけで数えると、線より下」</b>の側です。お金が減ってくる見込みの時期を、先に相談しておくことはできます。</p>
+      <p>→ <a href="chokin.html">貯金の境目しらべ</a></p></div>`,
+    above: `<div class="ans over"><h3>収入は、線より ${yen(-gap)}円 多い計算です</h3>
+      <p>収入だけで見ると、線の上です。ただし、<b>給料には、一部を収入として数えない決まり（基礎控除）があります。</b>給料で暮らしている方は、線を少し超えていても対象になることがあります。</p>
+      <p>冬の上乗せや、障害のある方・ひとり親・子育て中の加算がある方は、線そのものがもっと高くなります。</p>
+      <p>→ <a href="shitsugyo.html">失業・低収入チェック</a>（給料の決まりを入れて計算できます）</p></div>`
+  };
+  out.innerHTML = `<div class="res">
+    <div class="verdict">
+      <p class="place"><b>${esc(pref.value)} ${esc(name)}</b>（${LV[lv]}）／ ${n}人世帯</p>
+      <div class="k">あなたの線（1か月の最低生活費の目安）</div>
+      <p class="amount"><b>${yen(minLiving)}</b> 円</p>
+      <p class="calc">生活費 <b>${yen(life)}円</b>＋家賃の上限 <b>${yen(lim)}円</b>（2026年10月から）</p>
+    </div>
+    ${A[pos]}
+    <div class="box warn"><h3>この結果を見るときの注意</h3><ul>
+      <li><b>申請はいつでもできます。</b>線より上でも下でも、申請すること自体は断られません</li>
+      <li>家賃が上限より安い方は、線もその分低くなります。細かく計算するなら → <a href="hogohi.html">保護費しらべ</a></li>
+      <li>車・家・保険などの持ち物、家族からの援助、働けるかどうかは、この計算に入っていません</li></ul></div>
+    <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button>
+  </div>`;
+}
+
+function resetAll() {
+  pref.value = ''; size.value = ''; income.value = ''; money.value = '';
+  city.innerHTML = '<option value="">市区町村を選んでください</option>';
+  picked = [];
+  $('reasons').querySelectorAll('.chip').forEach(b => b.setAttribute('aria-pressed', 'false'));
+  buildAges(); refresh(); paintReasons();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+pref.addEventListener('change', () => {
+  city.innerHTML = '<option value="">市区町村を選んでください</option>';
+  (KYUCHI[pref.value] || []).slice().sort((a, b) => a[0].localeCompare(b[0], 'ja'))
+    .forEach(([nm, lv]) => city.add(new Option(nm, nm + '|' + lv)));
+  size.value = ''; buildAges(); refresh();
+});
+city.addEventListener('change', refresh);
+size.addEventListener('change', () => { buildAges(); refresh(); });
+income.addEventListener('input', refresh);
+money.addEventListener('input', refresh);
+paintReasons(); refresh();
+</script>
+</body>
+</html>

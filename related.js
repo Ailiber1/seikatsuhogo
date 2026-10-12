@@ -12,6 +12,8 @@
 */
 (function () {
   var RELATED = {
+    "hosoku-setsumei.html":    ["tamerai.html", "fuyo.html", "chokin-setsumei.html", "shitsugyo-setsumei.html"],
+    "tamerai.html":            ["hosoku-setsumei.html", "sodan.html", "chokin.html", "shitsugyo.html"],
     "shitsugyo-setsumei.html": ["hogohi.html", "chokin-setsumei.html", "kyuryo.html", "fuyo.html"],
     "shitsugyo.html":          ["hogohi.html", "chokin.html", "kyuryo.html", "shitsugyo-setsumei.html"],
     "chokin-setsumei.html":    ["chokin.html", "hogohi.html", "fuyo.html", "shitsugyo-setsumei.html"],
@@ -24,10 +26,10 @@
     "tsuika-setsumei.html":    ["tsuika.html", "tokurei-setsumei.html", "hogohi.html"],
     "tsuika.html":             ["tsuika-setsumei.html", "tokurei.html", "hogohi.html"],
     "anti.html":               ["anti-kaeshi.html", "hima-setsumei.html", "shitsugyo-setsumei.html", "fuyo.html"],
-    "anti-kaeshi.html":        ["anti.html", "hima-setsumei.html", "shitsugyo-setsumei.html"],
+    "anti-kaeshi.html":        ["anti.html", "hima-setsumei.html", "shitsugyo-setsumei.html", "tamerai.html"],
     "hima-setsumei.html":      ["hima.html", "anti.html", "kyuryo.html"],
     "hima.html":               ["hima-setsumei.html", "anti.html", "kyuryo.html"],
-    "basic-income.html":       ["shitsugyo-setsumei.html", "hogohi.html", "hima-setsumei.html"],
+    "basic-income.html":       ["shitsugyo-setsumei.html", "hogohi.html", "hima-setsumei.html", "hosoku-setsumei.html"],
     "jikohasan-setsumei.html": ["blacklist.html", "chokin-setsumei.html", "sodan.html", "fuyo.html"],
     "blacklist.html":          ["jikohasan-setsumei.html", "chokin-setsumei.html", "sodan.html"],
     "sodan.html":              ["fuyo.html", "chokin-setsumei.html", "shitsugyo-setsumei.html", "jikohasan-setsumei.html"]

@@ -36,6 +36,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `jikohasan-setsumei.html` | 解説 | 【借金に悩む人へ】自己破産は人生の終わりじゃなかった（私の申請〜終了の記録と当時の動画6本・裁判所の説明・「ブラックリスト」は5〜7年・クレジットとデビットカード・法テラス） | [/jikohasan-setsumei.html](https://ailiber1.github.io/seikatsuhogo/jikohasan-setsumei.html) |
 | `shitsugyo.html` | ツール | 失業・低収入チェック（仕事を失った人は失業給付の日数・1日の額・待つ期間とその後の支え、働いている人は生活保護の基準より何円少ないか） | [/shitsugyo.html](https://ailiber1.github.io/seikatsuhogo/shitsugyo.html) |
 | `shitsugyo-setsumei.html` | 解説 | 失業者180万人、次はあなたかも。仕事を失っても、生活保護を頼っていい理由（クビにならないは本当？・3段の支え・私がこぼれた話・働いていても受けられる・年収250万円との比べ） | [/shitsugyo-setsumei.html](https://ailiber1.github.io/seikatsuhogo/shitsugyo-setsumei.html) |
+| `tamerai.html` | ツール | ためらう理由チェック（使っていない・迷っている理由を選ぶと、それが本当に壁なのかを国の文書の原文で確かめられる。場所・人数・年齢・収入・手元のお金から、生活保護の線より下かどうかも計算） | [/tamerai.html](https://ailiber1.github.io/seikatsuhogo/tamerai.html) |
+| `hosoku-setsumei.html` | 解説 | 生活保護を使えている人は、2割だけ？（国が国会で答えた22.6%・43.7%、数字が古いこと、申請した人の多くは通っていること、使わない5つの理由と国の文書の答え） | [/hosoku-setsumei.html](https://ailiber1.github.io/seikatsuhogo/hosoku-setsumei.html) |
 | `database.rules.json` / `firebase.json` / `.firebaserc` | 設定 | 暇人スキャンの保存先（Firebase Realtime Database）の書き込みルール | — |
 | `data/` | データ | ページに埋め込む元データ（JSON） | — |
 | `scripts/` | スクリプト | 公的資料からデータを作り、ページを生成する | — |
@@ -55,6 +57,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `blacklist.json` | 3つの信用情報機関で、自己破産の記録をいつから何年持つかの決まり（原文・出典つき）と注意点 | 全国銀行個人信用情報センター「登録情報開示報告書の見方」Q5・Q6、CIC・JICCのFAQと登録期間のページ |
 | `jikohasan.json` | 自己破産の解説で使った動画6本・引用した原文・出典URL・確認日、配信者本人が伝えた事実 | 千葉地裁・大分地裁（写し `jikohasan_chiba_source.pdf`・`jikohasan_oita_source.pdf`）、CIC・JICC・全国銀行個人信用情報センター、全国銀行協会、法テラス |
 | `shitsugyo.json` | 失業給付（基本手当）の日数の表・受ける条件・給付制限・1日の額の計算式（令和8年8月1日から）、求職者支援制度・住居確保給付金・生活保護の原文、労働力調査・解雇・希望退職・倒産の数字 | ハローワーク（写し `hellowork_benefitdays_source.html`）、厚労省「基本手当日額の計算式及び金額」（写し `kihon_nichigaku_r8_source.pdf`）、総務省 労働力調査 2026年8月分（写し `rodo_2026_08_gaiyou_source.pdf`）、東京商工リサーチ、e-Gov |
+| `hosoku.json` | 基準より収入が少ない世帯のうち生活保護を使っている割合（国の推計と国会答弁の原文）、被保護者調査 2026年7月分の件数、ためらう理由9つの答えと原文、配信者本人の体験 | 国会会議録（2018〜2025年）、厚労省「生活保護基準未満の低所得世帯数の推計について」（写し `teishotoku_suikei_h22_source.pdf`）、被保護者調査 令和8年7月分概数（写し `hihogosha_2026_07_source.pdf`）、厚労省「生活保護制度に関するＱ＆Ａ」（写し `seiho_qa_source.pdf`）、「生活保護を申請したい方へ」、次官通知 |
 | `kijun_r8.json` | 生活扶助の第1類・第2類・逓減率・特例加算と、照合用のモデル世帯9類型 | 厚労省「生活扶助基準額の算出方法（令和8年4月）」＋第55回生活保護基準部会 資料4 |
 
 ## scripts/ の中身
@@ -78,6 +81,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `verify_blacklist.py` | `blacklist.html` の計算式を node で動かし、7年・5年の決まりどおりの年月と、同じ月に消える機関の表示・「今月ごろ」の境目が正しいか確かめる |
 | `gen_shitsugyo_tool.py` | 失業給付の決まり・級地・基準額・住宅扶助の上限・基礎控除額表を `shitsugyo.template.html` に埋め込んで `shitsugyo.html` を生成する |
 | `verify_shitsugyo.py` | 給付日数の表をハローワークの写しから読み直して照合し、1日の額が上限・下限と一致して途切れないか、生活扶助・基礎控除が他のツールと同じか確かめる |
+| `gen_tamerai_tool.py` | `data/hosoku.json` のためらう理由と、級地・基準額・住宅扶助の上限を `tamerai.template.html` に埋め込んで `tamerai.html` を生成する |
+| `verify_tamerai.py` | `tamerai.html` の生活扶助の計算が `hogohi.html` と同じでモデル世帯54通りと一致するか、線より下かどうかの分け方の境目、資料とツールに書いた数字・引用が `data/hosoku.json` と合っているかを確かめる |
 | `verify_hogohi.py` | `hogohi.html` の計算式を node で動かし、資料4のモデル世帯54通りと1円単位で一致するか確かめる |
 
 ---

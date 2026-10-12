@@ -15,6 +15,8 @@
 const ITEMS = [
   {kind:"tool", icon:"🧭", title:"失業・低収入チェック", desc:"失業給付は何日・1日いくら？働いていても基準より何円少ない？", href:"shitsugyo.html", kw:"失業 失業保険 失業給付 雇用保険 基本手当 何日 いくら 解雇 倒産 リストラ 退職 自己都合 会社都合 低収入 給料 手取り 年収 働きながら 求職者支援 住居確保給付金", isNew:true},
   {kind:"doc",  icon:"🪜", title:"仕事を失っても、生活保護を頼っていい", desc:"失業者180万人。クビにならないは本当？3段の支えと、働いていても受けられる理由", href:"shitsugyo-setsumei.html", kw:"失業 失業者 失業率 クビ 解雇 倒産 希望退職 AI 雇用保険 求職者支援 住居確保給付金 働きながら 年収250万 権利 恥ずかしい", isNew:true, video:true},
+  {kind:"tool", icon:"🎯", title:"生活保護イメージ当てクイズ", desc:"受けているのはどんな人？5問に予想で答えて、国の数字と答え合わせ", href:"naiwake-quiz.html", kw:"クイズ イメージ 誤解 怠け者 働かない 高齢者 若者 割合 内訳 何割 どんな人 ひとり暮らし 何年 当てる", locked:true},
+  {kind:"doc",  icon:"👥", title:"生活保護は怠け者ばかり？", desc:"半分以上は高齢者、4分の1は障害・病気。受けている人の内訳を国のデータで", href:"naiwake-setsumei.html", kw:"怠け者 働かない 働けるのに 誤解 イメージ 内訳 高齢者 障害 傷病 母子 その他の世帯 年齢 若者 割合 ひとり暮らし 受給期間 理由 データ 統計", locked:true},
   {kind:"tool", icon:"🚪", title:"ためらう理由チェック", desc:"使っていない理由は本当に壁？国の原文で確かめる。線より下かも計算", href:"tamerai.html", kw:"ためらう 迷う 恥ずかしい 家族 バレる 貯金 持ち家 車 働いている 窓口 断られた 水際 書類 住所 対象 受けられる 基準 最低生活費 捕捉率", locked:true},
   {kind:"doc",  icon:"🔍", title:"使えている人は2割だけ？", desc:"基準より収入が少ないのに、生活保護を使っていない世帯が多い理由", href:"hosoku-setsumei.html", kw:"捕捉率 2割 8割 受けていない 使っていない 割合 推計 国会 申請 恥ずかしい 家族 窓口 水際 権利 ためらう", locked:true, video:true},
   {kind:"tool", icon:"📅", title:"ブラックリスト、いつ消える？しらべ", desc:"自己破産の時期を選ぶと、3つの信用情報機関で記録がいつまで残るか", href:"blacklist.html", kw:"ブラックリスト 自己破産 信用情報 CIC JICC 銀行 いつ消える 何年 クレジットカード 作れる 審査 免責", locked:true},

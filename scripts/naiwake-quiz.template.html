@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>生活保護イメージ当てクイズ</title>
+<meta name="description" content="生活保護を受けているのはどんな人か。5つの質問に予想で答えると、国の調査の数字と答え合わせができます。あなたのイメージは、どれくらい合っていますか">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:17px; line-height:1.75; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+h1,.lead,.for-who li,.q h2,.exp p,.guide,.verdict p{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:24px 16px 44px}
+h1{font-size:clamp(24px,5.2vw,32px); line-height:1.4; margin:0 0 8px; color:var(--navy); text-wrap:balance}
+.lead{color:var(--sub); font-size:16px; margin:0 0 16px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:18px; font-size:16px}
+.for-who b{color:var(--navy)}
+.for-who ul{margin:4px 0 0; padding-left:1.2em}
+
+.q{background:var(--panel); border:2px solid var(--line); border-radius:13px; padding:14px 16px; margin-bottom:12px; transition:border-color .3s, opacity .3s}
+.q.off{opacity:.45}
+.q.done{border-color:var(--navy)}
+.q h2{font-size:17.5px; margin:0 0 4px; display:flex; gap:9px; align-items:flex-start; line-height:1.5}
+.q h2 .n{flex:none; width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; display:grid; place-items:center; font-size:13px; margin-top:2px}
+.q .hint{font-size:14.5px; color:var(--sub); margin:0 0 8px 35px}
+.opts{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px}
+@media (max-width:420px){ .opts{grid-template-columns:1fr} }
+.opt{font:inherit; font-size:16px; font-weight:700; min-height:48px; border:2px solid var(--line); border-radius:11px; background:#fff; color:var(--navy); cursor:pointer; padding:6px 10px}
+.opt:disabled{cursor:default; color:var(--sub)}
+.opt.right{border-color:var(--ok); background:var(--ok-bg); color:var(--ok)}
+.opt.wrong{border-color:var(--ng); background:var(--ng-bg); color:var(--ng)}
+.opt .mk{margin-right:5px}
+.exp{margin-top:10px; border-left:5px solid var(--c); background:#fff; border-radius:0 11px 11px 0; padding:10px 14px; animation:pop .4s ease}
+.exp.right{--c:var(--ok)} .exp.wrong{--c:var(--ng)}
+.exp .res{font-weight:800; color:var(--c); font-size:16px}
+.exp .big{font-size:clamp(32px,8.5vw,42px); font-weight:800; color:var(--navy); line-height:1.25}
+.exp .big small{font-size:.42em; color:var(--sub); font-weight:700}
+.exp .tr{height:16px; border-radius:8px; background:var(--line-soft); overflow:hidden; margin:4px 0 6px}
+.exp .tr i{display:block; height:100%; width:0; border-radius:8px; background:var(--navy); transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+.exp p{margin:0 0 4px; font-size:16px}
+.exp .src{font-size:14px; color:var(--sub)} .exp .src a{color:var(--navy)}
+@keyframes pop{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+
+#result{margin-top:18px}
+.guide{border:2px dashed var(--line); border-radius:13px; padding:18px; text-align:center; color:var(--sub); font-size:16px}
+.guide b{color:var(--navy)}
+.verdict{border-left:6px solid var(--navy); background:var(--navy-soft); border-radius:0 13px 13px 0; padding:14px 16px; margin-bottom:12px; animation:pop .45s ease}
+.verdict .k{font-size:14px; font-weight:700; color:var(--sub)}
+.amount{font-size:18px; font-weight:700; margin:2px 0; line-height:1.5}
+.amount b{font-size:clamp(40px,10vw,54px); color:var(--navy); font-variant-numeric:tabular-nums}
+.verdict p.say{font-size:17px; font-weight:700; margin:4px 0 0}
+.gap{list-style:none; margin:0 0 12px; padding:0}
+.gap li{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:9px 12px; margin-bottom:7px; background:#fff; font-size:15.5px}
+.gap .mk{flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:14px}
+.gap .mk.y{background:var(--ok-bg); color:var(--ok)} .gap .mk.n{background:var(--ng-bg); color:var(--ng)}
+.gap b{display:block} .gap small{display:block; color:var(--sub); font-size:14.5px}
+.box{background:var(--panel); border:2px solid var(--line); border-radius:12px; padding:12px 15px; margin-bottom:10px}
+.box h3{font-size:16.5px; margin:0 0 6px; color:var(--navy)}
+.box p{margin:0 0 6px; font-size:16px} .box p:last-child{margin:0}
+.box a{color:var(--navy); font-weight:700}
+.reset{font:inherit; font-size:15px; font-weight:700; color:var(--navy); background:var(--navy-soft); border:none; border-radius:8px; padding:8px 14px; min-height:44px; cursor:pointer; margin-top:4px}
+.foot{margin-top:24px; font-size:14.5px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .exp,.verdict{animation:none} .exp .tr i{transition:none} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho">生活保護イメージ当てクイズ</h1>
+  <p class="lead">生活保護を受けているのは、どんな人でしょうか。<b>5つの質問に予想で答える</b>と、国の調査の数字と答え合わせができます。</p>
+  <div class="for-who"><b>このクイズは、こういう方へ</b>
+    <ul><li>「働けるのに受けている人が多い」と思っている方</li>
+    <li>自分のイメージが合っているか、試してみたい方</li>
+    <li>家族や友だちと、生活保護の話をしてみたい方</li></ul></div>
+
+  <div id="quiz"></div>
+  <div id="result" aria-live="polite"></div>
+
+  <div class="foot">
+    <p>答えは、すべて厚生労働省「被保護者調査」の数字です。選んだ答えはこの画面の中だけで使っていて、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</p>
+    <p>数字の時点：高齢者世帯の割合は2026年7月（毎月の調査）。年齢・ひとり暮らし・働いている世帯・受けている期間は2024年7月末（年に1回の調査。いちばん新しいもの）。20代・30代の割合は、国の表の人数から計算したものです（試算）。</p>
+    <p>根拠: <a href="https://www.mhlw.go.jp/toukei/saikin/hw/hihogosya/m2026/dl/07-01.pdf" target="_blank" rel="noopener">厚労省「被保護者調査（令和8年7月分概数）」</a> ／ <a href="https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040434523&amp;fileKind=2" target="_blank" rel="noopener">厚労省「令和6年度 被保護者調査 年次調査（確定値）結果の概要」</a></p>
+    <p>確認日: 2026年10月12日 ／ 個人が作ったもので、行政の公式ツールではありません。</p>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+const QUIZ = /*QUIZ*/;
+const SOURCES = /*SOURCES*/;
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let picked = QUIZ.map(() => null);
+
+// SCORE-START
+// 正解の数と、結果のひとこと（生活保護そのものは笑わない。ずれていた「イメージ」のほうを突く）
+function score(picks, quiz) {
+  const right = picks.filter((p, i) => p === quiz[i].answer).length;
+  const say = right === quiz.length ? '全問正解。あなたの頭の中は、ほぼ厚生労働省です。'
+    : right >= 3 ? 'だいたい合っています。はずれた問題が、世間のイメージとの差です。'
+    : right >= 1 ? 'イメージと数字が、けっこう違いました。SNSやテレビの印象のほうを信じていたかもしれません。'
+    : '全問はずれ。逆にすごい。今日、イメージが丸ごと入れ替わりました。';
+  return {right, say};
+}
+// SCORE-END
+
+function build() {
+  $('quiz').innerHTML = QUIZ.map((q, i) => `
+    <div class="q" id="q${i}">
+      <h2><span class="n">${i + 1}</span><span>${esc(q.q)}</span></h2>
+      ${q.hint ? `<p class="hint">${esc(q.hint)}</p>` : ''}
+      <div class="opts">${q.choices.map((c, j) => `<button type="button" class="opt" data-i="${i}" data-j="${j}">${esc(c)}</button>`).join('')}</div>
+      <div class="expbox"></div>
+    </div>`).join('');
+  $('quiz').querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => answer(+b.dataset.i, +b.dataset.j)));
+}
+
+function paint() {
+  const next = picked.indexOf(null);              // まだ答えていない最初の問題
+  QUIZ.forEach((q, i) => {
+    const box = $('q' + i), done = picked[i] !== null;
+    box.classList.toggle('done', done);
+    box.classList.toggle('off', !done && i !== next);
+    box.querySelectorAll('.opt').forEach((b, j) => {
+      b.disabled = done || i !== next;
+      b.classList.toggle('right', done && j === q.answer);
+      b.classList.toggle('wrong', done && j === picked[i] && j !== q.answer);
+      b.innerHTML = (done && j === q.answer ? '<span class="mk">◯</span>' : done && j === picked[i] ? '<span class="mk">✕</span>' : '') + esc(q.choices[j]);
+    });
+  });
+  const out = $('result');
+  if (next === 0) {
+    out.innerHTML = `<div class="guide">上の <b>1</b> から順に、予想で答えてください。<br>5問ぜんぶ答えると、ここに<b>あなたのイメージと国の数字のずれ</b>が出ます。</div>`;
+  } else if (next > 0) {
+    out.innerHTML = `<div class="guide">あと <b>${QUIZ.length - next}問</b> です。</div>`;
+  } else {
+    const {right, say} = score(picked, QUIZ);
+    out.innerHTML = `
+      <div class="verdict"><div class="k">あなたのイメージと、国の数字</div>
+        <p class="amount"><b>${right}</b> ／ ${QUIZ.length}問 正解</p>
+        <p class="say">${esc(say)}</p></div>
+      <ul class="gap">${QUIZ.map((q, i) => { const ok = picked[i] === q.answer; return `<li><span class="mk ${ok ? 'y' : 'n'}">${ok ? '◯' : '✕'}</span><span><b>${esc(q.q)}</b><small>あなた「${esc(q.choices[picked[i]])}」 → 国の数字 ${esc(q.label)}</small></span></li>`; }).join('')}</ul>
+      <div class="box"><h3>数字のうしろにある話</h3>
+        <p>受けている世帯の半分以上は高齢者、4分の1は障害・病気の世帯です。図と国の資料の原文は、解説のページにまとめました。</p>
+        <p>→ <a href="naiwake-setsumei.html">生活保護は、怠け者ばかり？</a></p></div>
+      <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button>`;
+  }
+}
+
+function answer(i, j) {
+  if (picked[i] !== null || i !== picked.indexOf(null)) return;
+  if (window.gcUse) gcUse('生活保護イメージ当てクイズ');
+  picked[i] = j;
+  const q = QUIZ[i], ok = j === q.answer, s = SOURCES[q.src];
+  $('q' + i).querySelector('.expbox').innerHTML = `<div class="exp ${ok ? 'right' : 'wrong'}">
+    <div class="res">${ok ? '◯ 正解' : '✕ はずれ'}</div>
+    <div class="big num">${esc(q.label)}${q.calc ? '<small>（試算）</small>' : ''}</div>
+    <div class="tr" aria-hidden="true"><i></i></div>
+    <p>${esc(q.say)}</p>
+    <p class="src">出典: <a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a></p></div>`;
+  const bar = $('q' + i).querySelector('.tr i');
+  requestAnimationFrame(() => requestAnimationFrame(() => { bar.style.width = q.pct + '%'; }));
+  paint();
+  if (picked.indexOf(null) === -1) setTimeout(() => $('result').scrollIntoView({behavior: 'smooth', block: 'start'}), 900);
+}
+
+function resetAll() {
+  picked = QUIZ.map(() => null);
+  build(); paint();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+build(); paint();
+</script>
+</body>
+</html>

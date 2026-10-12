@@ -1,0 +1,24 @@
+{
+  "note": "/seiho-week で、他のチャンネルの伸びているタイトルを集めるときの検索語と参考チャンネル。足すときはここに1行。scripts/research_titles.py が読む",
+  "keywords": [
+    "生活保護",
+    "生活保護 生活",
+    "生活保護 一日",
+    "生活保護 ライブ 雑談",
+    "生活保護 受給者 本音",
+    "無職 一人暮らし 生活",
+    "働かない 生き方",
+    "頑張らない 生き方",
+    "40代 独身 低収入 一人暮らし",
+    "貧困 リアル 生活",
+    "仕事 辞めたい 限界",
+    "うつ 休職 その後",
+    "AI 仕事 なくなる 不安"
+  ],
+  "channels": [
+    {"name": "愛・宇宙博", "url": "https://www.youtube.com/channel/UCdwZSvOabSpjaAg0M0war-g", "why": "2026-10-12にユーザーが参考に挙げた。「〜して良い」と許す言葉＋悟った＋とは？の型"}
+  ],
+  "own_channel": "https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA",
+  "exclude_channels_like": ["リベル"],
+  "news_channels_like": ["NEWS", "ニュース", "FNN", "ANN", "ABEMA", "放送", "テレビ", "報道"]
+}

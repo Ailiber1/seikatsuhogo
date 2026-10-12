@@ -61,6 +61,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `shitsugyo.json` | 失業給付（基本手当）の日数の表・受ける条件・給付制限・1日の額の計算式（令和8年8月1日から）、求職者支援制度・住居確保給付金・生活保護の原文、労働力調査・解雇・希望退職・倒産の数字 | ハローワーク（写し `hellowork_benefitdays_source.html`）、厚労省「基本手当日額の計算式及び金額」（写し `kihon_nichigaku_r8_source.pdf`）、総務省 労働力調査 2026年8月分（写し `rodo_2026_08_gaiyou_source.pdf`）、東京商工リサーチ、e-Gov |
 | `hosoku.json` | 基準より収入が少ない世帯のうち生活保護を使っている割合（国の推計と国会答弁の原文）、被保護者調査 2026年7月分の件数、ためらう理由9つの答えと原文、配信者本人の体験 | 国会会議録（2018〜2025年）、厚労省「生活保護基準未満の低所得世帯数の推計について」（写し `teishotoku_suikei_h22_source.pdf`）、被保護者調査 令和8年7月分概数（写し `hihogosha_2026_07_source.pdf`）、厚労省「生活保護制度に関するＱ＆Ａ」（写し `seiho_qa_source.pdf`）、「生活保護を申請したい方へ」、次官通知 |
 | `naiwake.json` | 受けている世帯・人の内訳（世帯の種類・働いているか・年齢・ひとり暮らし・受けている期間・受け始めた理由）の件数と割合、クイズ5問 | 厚労省 被保護者調査 令和8年7月分概数（写し `hihogosha_2026_07_source.pdf`）、令和6年度 年次調査（確定値）結果の概要（写し `hihogosha_nenji_r6_gaiyou_source.pdf`）、令和5年度 月次調査（確定値）結果の概要（写し `hihogosha_r5_kakutei_gaiyou_source.pdf`） |
+| `research_keywords.json` | 他のチャンネルの伸びているタイトルを調べるときの検索語と参考チャンネル（`/seiho-week` の下調べ用） | ユーザーが挙げた参考チャンネルと、2026年10月12日に使った検索語 |
 | `kijun_r8.json` | 生活扶助の第1類・第2類・逓減率・特例加算と、照合用のモデル世帯9類型 | 厚労省「生活扶助基準額の算出方法（令和8年4月）」＋第55回生活保護基準部会 資料4 |
 
 ## scripts/ の中身
@@ -88,6 +89,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `verify_tamerai.py` | `tamerai.html` の生活扶助の計算が `hogohi.html` と同じでモデル世帯54通りと一致するか、線より下かどうかの分け方の境目、資料とツールに書いた数字・引用が `data/hosoku.json` と合っているかを確かめる |
 | `gen_naiwake_quiz.py` | `data/naiwake.json` のクイズを `naiwake-quiz.template.html` に埋め込んで `naiwake-quiz.html` を生成する |
 | `verify_naiwake.py` | 解説とクイズの数字を、国の表の件数から計算し直して確かめる（原本の割合・自分で計算した割合・100世帯の図の合計・引用・クイズの正解が1つに決まるか） |
+| `research_titles.py` | `data/research_keywords.json` の検索語と参考チャンネルで、他のチャンネルの動画を集めて再生数の多い順に並べる（yt-dlpだけ使う。ショートと自分のチャンネルは除く。ニュース番組は別枠） |
 | `verify_hogohi.py` | `hogohi.html` の計算式を node で動かし、資料4のモデル世帯54通りと1円単位で一致するか確かめる |
 
 ---

@@ -130,7 +130,7 @@ table.rk{width:100%; border-collapse:collapse; font-size:14px; background:#fff}
       <li>級地: <a href="https://www.mhlw.go.jp/content/kyuchi.3010.pdf" target="_blank" rel="noopener">厚労省「お住まいの地域の級地」</a> ／ 家賃の上限: 平成27年4月14日 社援発0414第9号</li>
       <li>物価: <a href="https://www.stat.go.jp/data/kouri/kouzou/pdf/g_2025.pdf" target="_blank" rel="noopener">総務省「消費者物価地域差指数 2025年結果」</a>（家賃を除く総合・住居）</li>
       <li>光熱費・ガソリン・水道代: <a href="https://www.stat.go.jp/data/kakei/5.html" target="_blank" rel="noopener">総務省 家計調査（二人以上の世帯）品目別都道府県庁所在市及び政令指定都市ランキング 2023〜2025年平均</a></li>
-      <li>燃やすごみが有料か: <a href="https://www.env.go.jp/recycle/waste_tech/ippan/r5/index.html" target="_blank" rel="noopener">環境省 一般廃棄物処理実態調査 令和5年度</a>（市区町村の答え）。袋の値段と減免は各市の公式ページ（<a href="chiiki-setsumei.html#gomi">一覧</a>）</li>
+      <li>ごみ袋の決まり（指定袋のあり・なしなど）: <a href="https://www.env.go.jp/recycle/waste_tech/ippan/r5/index.html" target="_blank" rel="noopener">環境省 一般廃棄物処理実態調査 令和5年度</a>（市区町村の答え）。袋の値段と減免は各市の公式ページ（<a href="chiiki-setsumei.html#gomi">一覧</a>）</li>
       <li>確認日: /*CHECKED*/ ／ 個人が作ったもので、行政の公式ツールではありません</li>
     </ul>
     <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
@@ -138,7 +138,7 @@ table.rk{width:100%; border-collapse:collapse; font-size:14px; background:#fff}
 </main>
 
 <script>
-const KYUCHI = /*KYUCHI*/;   // {都道府県: [[市区町村, 級地0〜5, 燃やすごみ 0有料 1無料 2一部有料 3収集無し], ...]}
+const KYUCHI = /*KYUCHI*/;   // {都道府県: [[市区町村, 級地0〜5, 燃やすごみ 0有料 1無料 2一部有料 3収集無し, 決まった指定袋 1ある 0ない -1不明], ...]}
 const KEIKA = /*KEIKA*/;
 const KIJUN = /*KIJUN*/;
 const JUTAKU = /*JUTAKU*/;
@@ -157,7 +157,7 @@ const MEAS = [
   {k:'m1', hb:true,  name:'物価で見た生活扶助', sub:'物価の高さを考えると、いくら分か', unit:'円/月'},
   {k:'m2', hb:false, name:'光熱費（冬季加算を引いたあと）', sub:'電気・ガス・灯油の1年分から冬季加算を引く', unit:'円/年'},
   {k:'m3', hb:false, name:'車なしの暮らしにくさ', sub:'ガソリン代の1年分（多いほど、車がないと暮らしにくい地域）', unit:'円/年'},
-  {k:'m4', hb:false, name:'ごみ袋', sub:'燃やすごみの袋10枚の値段（大きさをそろえて比べる）', unit:'円'},
+  {k:'m4', hb:false, name:'ごみ袋', sub:'市が値段を決めた袋10枚の値段（決まった袋がない市・袋そのものの値段だけの市は0円で比べる）', unit:'円'},
   {k:'m5', hb:true,  name:'家賃の上限の余裕', sub:'上限の額が、地域の家賃の高さに見合うか', unit:'円'},
   {k:'m6', hb:false, name:'水道代', sub:'上下水道料の1年分', unit:'円/年'},
 ];
@@ -275,21 +275,36 @@ function render() {
   // 出ていくお金の側
   const pr = PRICE[p][0];
   const priceBox = `<div class="box ${pr >= 101 ? 'bad' : pr <= 98.5 ? 'good' : 'mid'}"><h3>物価（家賃を除く）<span class="v">${pr.toFixed(1)}</span></h3><p>${esc(p)}の物価は、全国平均を100とすると <b>${pr.toFixed(1)}</b>（${Math.round(pr - 100) === 0 ? '全国平均くらい' : '全国平均より約' + Math.abs(Math.round(pr - 100)) + '%' + (pr > 100 ? '高い' : '安い')}）。${pr >= 101 ? '<span class="tag bad">高い方</span>' : pr <= 98.5 ? '<span class="tag good">安い方</span>' : ''}</p><p>物価の高さを考えると、生活扶助は全国平均の物価で <b>月${yen(mr.val)}円分</b>の買い物ができる額。全${yen(mr.n)}市区町村の中で<b>${fmtR(mr.rank)}</b>（多い順）。</p><p class="s">物価は都道府県の値（市区町村ごとの値は国が出していません）。総務省「消費者物価地域差指数 2025年」${r ? `。${esc(k52)}は市だけの物価（${r.price.toFixed(1)}）も出ているので、下の52都市の比べではそちらを使います` : ''}</p></div>`;
-  let gomiBody;
+  let gomiBody, gomiHead, gomiCls;
   const ward = p === '東京都' && name.endsWith('区');
-  if (ward) {
-    gomiBody = `<p>東京23区の家庭の燃やすごみは、<b>基本的に無料</b>です（指定の有料袋はありません）。${g !== 1 ? `<br><span class="s">環境省の調査では、${esc(name)}は「${gomiTxt}」と答えています。たくさん出す場合などの扱いと考えられます。区のページで確かめてください。</span>` : ''}</p>`;
-  } else if (bag) {
+  const sh = row[3];  // 決まった指定袋があるか（1=ある 0=ない -1=分からない）
+  if (bag) {
     const per45 = bag.yen / bag.liters * 45;
-    gomiBody = `<p>燃やすごみの袋 ${bag.liters}リットル<b>10枚で${yen(bag.yen * 10)}円</b>（1枚${bag.yen}円）${bag.liters !== 45 ? `（45リットルにすると約${Math.round(per45)}円）` : ''}。週2枚使うと <b>年${yen(bag.yen * 2 * 52)}円</b>。${bag.since ? `<br><span class="s">${esc(bag.since)}</span>` : ''}</p>` +
-      (bag.genmen ? `<p>生活保護の世帯への減免: <b>${esc(bag.genmen)}</b>${bag.genmen_src ? ` <span class="s">（<a href="${bag.genmen_src}" target="_blank" rel="noopener">市のページ</a>）</span>` : ''}</p>` : `<p>生活保護の世帯への減免: このツールでは<b>確かめられていません</b>。市の窓口（ごみの担当課）で「生活保護を受けていると、ごみ袋の減免はありますか」と聞いてみてください。</p>`) +
+    gomiHead = '10枚' + yen(bag.yen * 10) + '円'; gomiCls = per45 >= 60 ? 'bad' : 'mid';
+    gomiBody = `<p><b>市が値段を決めた袋</b>を買って出します。袋の値段に、ごみを燃やすお金が入っています。</p><p>燃やすごみの袋 ${bag.liters}リットル<b>10枚で${yen(bag.yen * 10)}円</b>（1枚${bag.yen}円）。週2枚使うと <b>年${yen(bag.yen * 2 * 52)}円</b>。${bag.since ? `<br><span class="s">${esc(bag.since)}</span>` : ''}</p>` +
+      (bag.genmen ? `<p>生活保護の世帯への減免: <b>${esc(bag.genmen)}</b>${bag.genmen_src ? ` <span class="s">（<a href="${bag.genmen_src}" target="_blank" rel="noopener">市のページ</a>）</span>` : ''}</p>` : `<p>生活保護の世帯への減免（袋を安くしたり無料で配ったりすること）: このツールでは<b>確かめられていません</b>。市の窓口で「生活保護を受けていると、ごみ袋が安くなりますか」と聞いてみてください。</p>`) +
       `<p class="s">値段: <a href="${bag.src}" target="_blank" rel="noopener">${bag.unofficial ? '民間の生活情報サイト（市の公式ページで確認できなかった）' : '市の公式ページ'}</a>${bag.note ? '。' + esc(bag.note) : ''}</p>`;
+  } else if (ward) {
+    gomiHead = '決まった袋なし'; gomiCls = 'good';
+    gomiBody = `<p>東京23区には、<b>決まったごみ袋（市が値段を決めた袋）はありません</b>。区のルールに合う袋（お店で売っているごみ袋など）で出せます。</p>`;
   } else if (g === 0 || g === 2) {
-    gomiBody = `<p>燃やすごみは<b>${gomiTxt}</b>（市区町村の答え）。袋の値段は、このツールには入っていません。お住まいの市区町村のページで確かめてください。</p><p>市によっては、<b>生活保護の世帯にごみ袋を減免・無料で配っている</b>ところがあります（北見市・宮崎市・大分市など）。窓口で聞いてみる価値があります。</p>`;
+    gomiHead = '市が値段を決めた袋'; gomiCls = 'mid';
+    gomiBody = `<p><b>市が値段を決めた袋</b>を買って出す地域です（袋の値段に、ごみを燃やすお金が入っている）${g === 2 ? '。一部のごみだけ、この形です' : ''}。袋の値段は、このツールには入っていません。お住まいの市区町村のページで確かめてください。</p><p>市によっては、<b>生活保護の世帯にごみ袋を安くしたり、無料で配ったりしている</b>ところがあります（北見市・宮崎市・大分市など）。窓口で聞いてみる価値があります。</p>`;
+  } else if (sh === 1) {
+    gomiHead = '袋を買う（値段はお店しだい）'; gomiCls = 'mid';
+    gomiBody = `<p><b>決まったごみ袋をお店で買って出します。無料ではありません。</b></p><p>ただし袋の値段は、<b>袋そのものの値段だけ</b>です。北見市のように、ごみを燃やすお金は入っていません。値段はお店や商品によって違います。</p>`;
+  } else if (sh === 0) {
+    gomiHead = '決まった袋なし'; gomiCls = 'good';
+    gomiBody = `<p>市が決めたごみ袋はありません。<b>市のルールに合う袋（お店で売っているごみ袋など）</b>で出せます。袋を買うお金はかかりますが、決まった袋を買う必要はありません。</p>`;
   } else {
-    gomiBody = `<p>燃やすごみは<b>${gomiTxt}</b>（市区町村の答え）。${g === 1 ? 'ごみ袋に処理の手数料はかかりません（市販の袋代だけ）。' : ''}</p>`;
+    gomiHead = '市のページで確認'; gomiCls = 'mid';
+    gomiBody = `<p>ごみ袋の決まりは、このツールでは分かりませんでした。お住まいの市区町村のページで確かめてください。</p>`;
   }
-  const gomiBox = `<div class="box ${g === 1 || ward ? 'good' : bag && bag.yen / bag.liters * 45 >= 60 ? 'bad' : 'mid'}"><h3>ごみ袋<span class="v">${g === 1 || ward ? '無料' : bag ? '10枚' + yen(bag.yen * 10) + '円' : gomiTxt}</span></h3>${gomiBody}<p class="s">有料か無料か: 環境省 一般廃棄物処理実態調査 令和5年度。その後に変わった市もあります</p></div>`;
+  // 早見表: 指定袋があるか／袋の値段に、ごみを燃やすお金が入っているか
+  const shitei = ward ? 'なし' : bag || g === 0 || g === 2 ? 'あり' : sh === 1 ? 'あり' : sh === 0 ? 'なし' : '分からない';
+  const moyasuMoney = ward ? '入っていない' : bag || g === 0 || g === 2 ? '<b style="color:var(--ng)">入っている</b>' : g === 1 ? '入っていない' : '分からない';
+  const quick = `<table class="rk" style="margin:4px 0 8px"><tbody><tr><td class="c">市が決めた指定袋</td><td class="c"><b>${shitei}</b></td></tr><tr><td class="c">袋の値段に、ごみを燃やすお金</td><td class="c">${moyasuMoney}</td></tr></tbody></table>`;
+  const gomiBox = `<div class="box ${gomiCls}"><h3>ごみ袋<span class="v">${gomiHead}</span></h3>${quick}${gomiBody}<p class="s">袋の決まり: 環境省 一般廃棄物処理実態調査 令和5年度（市区町村の答え）。その後に変わった市もあります</p></div>`;
 
   // 52都市の中の順位
   let rankBox;
@@ -297,7 +312,7 @@ function render() {
     const all = ranking52(MEAS.map(m => m.k));
     const cells = MEAS.map(m => {
       const rr = all.per[m.k][k52];
-      const v = m.k === 'm4' ? (r[m.k] ? '10枚' + yen(r[m.k] * 10) + '円' : '0円（無料）') : m.k === 'm1' ? yen(r[m.k]) + '円/月（' + esc(k52) + 'の物価で計算）' : yen(r[m.k]) + m.unit;
+      const v = m.k === 'm4' ? (r[m.k] ? '10枚' + yen(r[m.k] * 10) + '円' : '0円で比べる（市が値段を決めた袋ではない）') : m.k === 'm1' ? yen(r[m.k]) + '円/月（' + esc(k52) + 'の物価で計算）' : yen(r[m.k]) + m.unit;
       return `<tr><td class="c">${m.name}<br><small>${v}</small></td><td class="r">${fmtR(rr)}</td></tr>`;
     }).join('');
     const tr = all.total[k52];

@@ -145,10 +145,13 @@ def read_gomi(env_dir):
         assert fee[1][14] == "可燃ごみ" and fee[1][3] == "混合ごみ", (fee[1][3], fee[1][14])
         bag = sheets["指定収集袋の導入状況"]
         assert bag[5][7] == "有料化である" and bag[5][8] == "有料化ではない", bag[5][7:9]
-        bag_map = {}
+        assert bag[5][3] == "導入している" and bag[5][4] == "導入していない" and bag[3][3] == "生活系ごみ", (bag[3][3], bag[5][3:5])
+        bag_map, intro_map = {}, {}
         for r in bag[7:]:
             if len(r) > 2 and r[0] == p and r[2]:
                 bag_map[norm(r[2])] = "有料化" if len(r) > 7 and r[7] == "○" else ("有料化ではない" if len(r) > 8 and r[8] == "○" else "")
+                # 生活系ごみの収集に指定袋を入れているか（3=導入している 4=導入していない）
+                intro_map[norm(r[2])] = True if len(r) > 3 and r[3] == "○" else (False if len(r) > 4 and r[4] == "○" else None)
         d = {}
         for r in fee[7:]:
             if len(r) <= 2 or r[0] != p or not r[2] or r[2] in ("合計", "東京都23区"):  # 23区はまとめ行（中身は区ごと）
@@ -159,7 +162,7 @@ def read_gomi(env_dir):
             assert len(mixed) == 1, (p, r[2], mixed)
             # 燃やすごみの扱い: 可燃ごみの答え。可燃ごみが収集無しなら混合ごみの答え
             moyasu = mixed[0] if marks[0] == "収集無し" else marks[0]
-            d[norm(r[2])] = {"kanen": marks[0], "kongo": mixed[0], "moyasu": moyasu, "bag": bag_map.get(norm(r[2]), "")}
+            d[norm(r[2])] = {"kanen": marks[0], "kongo": mixed[0], "moyasu": moyasu, "bag": bag_map.get(norm(r[2]), ""), "shitei": intro_map.get(norm(r[2]))}
         # 合計行の数と一致するか
         tot = fee[6]
         assert tot[2] == "合計"

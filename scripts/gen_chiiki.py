@@ -130,6 +130,15 @@ F["GAS_RATIO"] = f'{C[m3[-1]]["m3"] / C[m3[0]]["m3"]:.1f}'
 # 6章: ごみ袋
 paid = [c for c in C if C[c]["gomi_status"] == "有料"]
 F["GOMI_PAID_N"] = str(len(paid))
+unpaid = [c for c in C if c not in paid]
+gs = lambda c: (True if c == "東京都区部" else False) if c == "東京都区部" else ch["gomi"][C[c]["pref"]][c]["shitei"]
+buy = sorted([c for c in unpaid if c != "東京都区部" and gs(c) is True], key=lambda c: -C[c].get("m1", 0))
+none_ = [c for c in unpaid if c == "東京都区部" or gs(c) is False]
+assert len(buy) + len(none_) == len(unpaid), [c for c in unpaid if c not in buy + none_]
+F["GOMI_BUY_N"], F["GOMI_NONE_N"] = str(len(buy)), str(len(none_))
+pick = lambda L, want: "・".join([c for c in want if c in L][:4])
+F["GOMI_BUY_EX"] = pick(buy, ["長崎市", "神戸市", "名古屋市", "浜松市", "静岡市"])
+F["GOMI_NONE_EX"] = pick(none_, ["東京都区部", "大阪市", "横浜市", "広島市"]).replace("東京都区部", "東京23区")
 F["GOMI_NAT_PAID"] = f'{sum(1 for p in ch["gomi"].values() for v in p.values() if v["moyasu"] == "有料"):,}'
 assert set(paid) | {"北見市"} == set(bag), set(paid) ^ set(bag)
 
@@ -184,7 +193,7 @@ assert all(C[c]["r4"] == (1 + n_free) / 2 for c in C if C[c]["m4"] == 0)
 ex = lambda c: "＋".join(fr(C[c]["r" + str(k)]) for k in range(1, 7)) + f'＝<b>{fr(C[c]["rank_sum"])}</b>'
 F["RANK_EXAMPLE"] = (f'合計は<b>小さいほど暮らしやすい</b>。例：{order[0]}の6つの順位は {ex(order[0])}。52都市でいちばん小さいので<b>総合1位</b>。'
                      f'<small>{order[-1]}は {ex(order[-1])} でいちばん大きく、総合52位です。'
-                     f'小数の順位は、同じ値の都市どうしで順位を分け合ったもの（ごみ袋が無料の{n_free}都市は、1〜{n_free}位の真ん中の{fr((1 + n_free) / 2)}位で全部同じ）。</small>')
+                     f'小数の順位は、同じ値の都市どうしで順位を分け合ったもの（市が値段を決めた袋ではない{n_free}都市は、ごみ袋を0円として比べたので、1〜{n_free}位の真ん中の{fr((1 + n_free) / 2)}位で全部同じ）。</small>')
 
 # 資料を書き出す
 doc = (ROOT / "scripts" / "chiiki-setsumei.template.html").read_text(encoding="utf-8")
@@ -195,7 +204,8 @@ assert not left, left
 (ROOT / "chiiki-setsumei.html").write_text(add_snippet(doc), encoding="utf-8")
 
 # ツールを書き出す
-kyuchi_rows = {p: [[c, lv, GOMI_CODE[ch["gomi"][p][norm(c)]["moyasu"]]] for c, lv in cs.items()]
+sh_code = lambda v: 1 if v is True else 0 if v is False else -1
+kyuchi_rows = {p: [[c, lv, GOMI_CODE[ch["gomi"][p][norm(c)]["moyasu"]], sh_code(ch["gomi"][p][norm(c)]["shitei"])] for c, lv in cs.items()]
                for p, cs in rk.kyuchi.items()}
 r52 = {c: {k: v[k] for k in ("pref", "rank", "price", "m1", "m2", "m3", "m4", "m5", "m6")} for c, v in C.items()}
 tool = (ROOT / "scripts" / "chiiki.template.html").read_text(encoding="utf-8")

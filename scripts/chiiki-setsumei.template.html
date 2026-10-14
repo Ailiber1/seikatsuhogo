@@ -115,7 +115,7 @@ table.t{width:100%; border-collapse:collapse; font-size:15px; background:#fff}
     <h2><span class="b">1</span>きっかけ：北見市のごみ袋が10枚1,350円に（1枚135円）</h2>
     <p>北海道北見市は、2026年10月1日から燃やすごみの指定袋（45リットル）を、10枚入りの1セットで<b>900円から1,350円</b>に値上げしました（1枚あたり90円から135円）。週に2枚使うと、1年で<b class="num">%%KITAMI_BAG_YEAR%%円</b>です。</p>
     <p class="src">出典: <a href="https://www.city.kitami.lg.jp/detail.php?content=9268" target="_blank" rel="noopener">北見市「ごみに関する手数料一覧」</a>（45リットル 10枚1セット 1,350円）、<a href="https://www.city.kitami.lg.jp/administration/life/detail.php?content=13742" target="_blank" rel="noopener">北見市「指定ごみ袋の価格改定に伴うお知らせ」</a></p>
-    <p>ここで大事なことが1つあります。北見市には、<b>生活保護を受けている人のごみの減免</b>があります（減免＝手数料を安くしたり、無料にしたりすること）。</p>
+    <p>ここで大事なことが1つあります。北見市には、<b>生活保護を受けている人のごみの減免</b>があります（減免＝ごみを出すお金を安くしたり、無料にしたりすること）。</p>
     <blockquote>生活保護受給者が排出するごみや災害等に伴って発生したごみは、減免を受けることができます。</blockquote>
     <p class="src">出典: <a href="https://www.city.kitami.lg.jp/detail.php?content=9338" target="_blank" rel="noopener">北見市「ごみに関する届出」</a>（申請書の提出が必要）</p>
     <p>ところが、同じ北海道でも<b>札幌・函館・釧路・帯広・苫小牧などは、生活保護の世帯のごみ袋の減免がありません</b>（旭川市が2025年12月にまとめた、道内10市の比較表）。国は「ごみ袋代は、生活扶助の中に入っている」と考えているからです。</p>
@@ -179,11 +179,17 @@ table.t{width:100%; border-collapse:collapse; font-size:15px; background:#fff}
   </section>
 
   <section class="ch fade" id="gomi">
-    <h2><span class="b">6</span>ごみ袋：52都市のうち%%GOMI_PAID_N%%市が有料</h2>
-    <p>環境省の調査（2023年度）では、燃やすごみが有料の市区町村は全国%%GOMI_NAT_PAID%%（全%%N_MUNI%%のうち）。52都市では%%GOMI_PAID_N%%市が有料、残りは無料です。有料の市の、燃やすごみの袋（いちばん大きい袋）の<b>10枚入りの値段</b>です。袋の大きさが市によって少しちがう（35〜45リットル）ので、<b>大きさをそろえたときに高い順</b>に並べています。</p>
+    <h2><span class="b">6</span>ごみ袋：市によって、袋の値段の決まり方が違う</h2>
+    <p>ごみ袋は、市によって次の3つの形があります（環境省の調査・2023年度の市区町村の答え）。<b>どの形でも、袋を買うお金はかかります</b>。違うのは、袋の値段に「ごみを燃やすお金」が入っているかどうかです。</p>
+    <div class="stats" style="grid-template-columns:1fr">
+      <div style="text-align:left"><small>① 指定袋あり・市が値段を決めている（ごみを燃やすお金が袋の値段に入っている）</small><b class="ng" style="font-size:20px">52都市のうち%%GOMI_PAID_N%%市（全国%%GOMI_NAT_PAID%%市区町村）</b><small>北見市・札幌市など。袋が高くなりやすい</small></div>
+      <div style="text-align:left"><small>② 指定袋あり・値段はお店しだい（袋そのものの値段だけ）</small><b style="font-size:20px">52都市のうち%%GOMI_BUY_N%%市</b><small>%%GOMI_BUY_EX%%など。無料ではないが、①より安い</small></div>
+      <div style="text-align:left"><small>③ 指定袋なし（市のルールに合う、お店のごみ袋で出せる）</small><b style="font-size:20px">52都市のうち%%GOMI_NONE_N%%市</b><small>%%GOMI_NONE_EX%%など</small></div>
+    </div>
+    <p>下の表は、①の市の、燃やすごみの袋（いちばん大きい袋）の<b>10枚入りの値段</b>です。袋の大きさが市によって少しちがう（35〜45リットル）ので、<b>大きさをそろえたときに高い順</b>に並べています。②の市の袋の値段は、お店によって違い、市が決めた値段がないので、表には入れていません。</p>
     <div class="tbl-scroll"><table class="t g"><thead><tr><th class="c">市</th><th>10枚</th><th>週2枚で1年</th><th class="c">受給者の減免</th></tr></thead><tbody>%%GOMI_TABLE%%</tbody></table></div>
-    <p class="src">出典: 各市の公式ページ（市の名前を押すと開きます）。那覇市（※）だけは市の公式ページで値段を確かめられず、民間の生活情報サイトの値です。「受給者の減免」は生活保護の世帯へのごみ袋の減免・無料の配布で、「未確認」は市の公式ページで確かめられなかったもの（ないとは限りません）。「＋袋代」の市は、処理の手数料に袋そのものの代金（店によって違う）が加わります。有料か無料か: <a href="https://www.env.go.jp/recycle/waste_tech/ippan/r5/index.html" target="_blank" rel="noopener">環境省 一般廃棄物処理実態調査 令和5年度</a></p>
-    <div class="easy"><b>やさしく言うと：</b>同じ生活保護でも、東京23区（家庭のごみは基本的に無料）や大阪市なら袋代は0円。札幌市なら週2枚で年%%SAPPORO_BAG_YEAR%%円。<b>北見市・宮崎市・大分市のように、生活保護の世帯は減免・無料で配る市もあります。</b>住んでいる市の窓口で聞いてみる価値があります。</div>
+    <p class="src">出典: 各市の公式ページ（市の名前を押すと開きます）。那覇市（※）だけは市の公式ページで値段を確かめられず、民間の生活情報サイトの値です。「受給者の減免」は生活保護の世帯へのごみ袋の減免・無料の配布で、「未確認」は市の公式ページで確かめられなかったもの（ないとは限りません）。「＋袋代」の市は、表の値段に、袋そのものの値段（お店によって違う）が少し加わります。袋の決まり（指定袋のあり・なしなど）: <a href="https://www.env.go.jp/recycle/waste_tech/ippan/r5/index.html" target="_blank" rel="noopener">環境省 一般廃棄物処理実態調査 令和5年度</a></p>
+    <div class="easy"><b>やさしく言うと：</b>同じ生活保護でも、札幌市なら週2枚で年%%SAPPORO_BAG_YEAR%%円かかります。東京23区や大阪市は決まった袋がなく、お店のごみ袋で出せます。長崎市や神戸市は決まった袋を買いますが、値段は袋そのものの分だけです。<b>北見市・宮崎市・大分市のように、生活保護の世帯は減免・無料で配る市もあります。</b>住んでいる市の窓口で聞いてみる価値があります。</div>
   </section>
 
   <section class="ch fade">
@@ -205,7 +211,7 @@ table.t{width:100%; border-collapse:collapse; font-size:15px; background:#fff}
     <p class="lowgood">表の数字はすべて「順位」です。<b>数字が小さいほど暮らしやすい</b>（1位がいちばん楽、52位がいちばん大変）。</p>
     <div class="tbl-scroll"><table class="t"><thead><tr><th class="c">順位</th><th class="c">都市</th><th>物価</th><th>光熱</th><th>車なし</th><th>ごみ</th><th>家賃</th><th>水道</th><th>合計<br><small>小さいほど楽</small></th></tr></thead><tbody>%%RANK_TABLE%%</tbody></table></div>
     <p class="note">数字は物差しごとの順位（1位がいちばん楽）。物価＝物価で見た生活扶助、光熱＝光熱費−冬季加算、車なし＝車なしの暮らしにくさ（ガソリン代が少ないほど上位）、ごみ＝ごみ袋、家賃＝家賃の上限の余裕、水道＝水道代。真ん中の都市は省いています。全52都市と、物差しを選んで並べかえる表は、ツールにあります。</p>
-    <div class="easy"><b>やさしく言うと：</b>暮らしやすいのは、<b>級地が高く、車がいらず、ごみ袋が無料の大都市</b>。大変なのは、<b>級地が低いのに、冬は寒く、車がないと動けず、水道代も高い地方の市</b>です。</div>
+    <div class="easy"><b>やさしく言うと：</b>暮らしやすいのは、<b>級地が高く、車がいらず、ごみ袋が安い大都市</b>。大変なのは、<b>級地が低いのに、冬は寒く、車がないと動けず、水道代も高い地方の市</b>です。</div>
     <div class="caution"><b>ここは言いすぎないでおきます。</b>6つの物差しを同じ重さで足しています。どれを大事にするかで順位は変わります（ツールで試せます）。光熱費・ガソリン・水道代は二人以上の世帯の数字で、ひとり暮らしの生活保護の世帯とは金額がちがいます。順位は「どこが比べて重いか」の目安です。</div>
   </section>
   <a class="cta" href="chiiki.html"><span>物差しを選んで、52都市を並べかえてみる</span><span>→</span></a>
@@ -230,7 +236,7 @@ table.t{width:100%; border-collapse:collapse; font-size:15px; background:#fff}
     <h3>分かっていること</h3>
     <div class="card"><span class="mk y">✓</span><div><b>生活扶助は6区分だけ。高い区分と低い区分で月%%FUJO_DIFF%%円</b><small>ひとり暮らし・20〜40歳。冬季加算は寒い地域ほど多く、年%%TOUKI6_Y%%円〜%%TOUKI1_Y%%円</small></div></div>
     <div class="card"><span class="mk y">✓</span><div><b>北海道は、家賃を除く物価が全国1位</b><small>%%P_HOKKAIDO%%（東京都は%%P_TOKYO%%）。なのに町村の多くは生活扶助がいちばん低い区分</small></div></div>
-    <div class="card"><span class="mk y">✓</span><div><b>ごみ袋は、市によって0円から10枚1,350円（1枚135円）まで</b><small>生活保護の世帯の減免がある市（北見市・宮崎市・大分市など）と、ない市（札幌市など）がある</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>ごみ袋は、お店のごみ袋で出せる市から、10枚1,350円（1枚135円）の市まで</b><small>生活保護の世帯の減免がある市（北見市・宮崎市・大分市など）と、ない市（札幌市など）がある</small></div></div>
     <h3>まだ分からないこと</h3>
     <div class="card"><span class="mk q">？</span><div><b>ひとり暮らしの生活保護の世帯で、実際いくらかかっているか</b><small>家計調査は二人以上の世帯の平均。生活保護の世帯の地域ごとの出費は、国が出していない</small></div></div>
     <div class="card"><span class="mk q">？</span><div><b>52都市以外の市区町村の光熱費・ガソリン・水道代</b><small>家計調査は都道府県庁のある市などだけ。北見市も対象外</small></div></div>
@@ -254,7 +260,7 @@ table.t{width:100%; border-collapse:collapse; font-size:15px; background:#fff}
       <li>物差しはどれも試算です。生活扶助はひとり暮らし・20〜40歳・2026年10月からの額。光熱費・ガソリン・水道代は二人以上の世帯の平均で、そこから引く冬季加算も2人世帯の額にそろえています</li>
       <li>「物価で見た生活扶助」は、52都市はその市の物価、全市区町村での比べは都道府県の物価で割っています</li>
       <li>「家賃の上限の余裕」は、上限を都道府県の住居の物価（全国平均100）で割ったものです。市ごとの家賃の相場ではありません</li>
-      <li>ごみ袋は、生活保護の世帯の減免を入れる前の値段で比べています（減免があるかどうかを、すべての市で確かめられないため）。燃やすごみが有料かどうかは、市区町村が環境省に答えた2023年度の内容です</li>
+      <li>ごみ袋は、生活保護の世帯の減免を入れる前の値段で比べています（減免があるかどうかを、すべての市で確かめられないため）。②（決まった袋をお店で買うが、袋そのものの値段だけ）と③（決まった袋がない）の市は、ランキングでは0円として比べています。実際には袋を買うお金がかかるので、①の市と比べて少し有利に出ています。袋の決まりは、市区町村が環境省に答えた2023年度の内容です</li>
       <li>電気代には、夏の冷房の分も入っています</li>
       <li>確認日: %%CHECKED%% ／ 個人が作ったもので、行政の公式資料ではありません。法律上の助言でもありません</li>
     </ul>

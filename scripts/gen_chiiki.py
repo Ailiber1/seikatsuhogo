@@ -147,7 +147,7 @@ for c in sorted(bag, key=lambda c: (-bag[c]["yen"] / bag[c]["liters"], c)):
     per45 = b["yen"] / b["liters"] * 45
     label = f'<a href="{esc(b["src"])}" target="_blank" rel="noopener">{esc(c)}</a>' + ("<small class=\"blk\">52都市の外</small>" if c not in C else "") + ("<small>※</small>" if b.get("unofficial") else "")
     plus = "<small>＋袋代</small>" if "袋の代金" in (b.get("note", "") + b.get("since", "")) else ""
-    grows.append(f'<tr><td class="c">{label}</td><td>{b["yen"]:g}円<small>{b["liters"]}L</small>{plus}</td><td>{yen(b["yen"] * 2 * 52)}円</td><td class="c w">{genmen_short(b.get("genmen", ""))}</td></tr>')
+    grows.append(f'<tr><td class="c">{label}</td><td>{yen(b["yen"] * 10)}円<small class="blk">{b["liters"]}L{"・" + plus[7:-8] if plus else ""}</small></td><td>{yen(b["yen"] * 2 * 52)}円</td><td class="c w">{genmen_short(b.get("genmen", ""))}</td></tr>')
 F["GOMI_TABLE"] = "".join(grows)
 F["SAPPORO_BAG_YEAR"] = yen(bag["札幌市"]["yen"] * 2 * 52)
 

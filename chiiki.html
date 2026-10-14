@@ -302,7 +302,7 @@ function render() {
     gomiBody = `<p>東京23区の家庭の燃やすごみは、<b>基本的に無料</b>です（指定の有料袋はありません）。${g !== 1 ? `<br><span class="s">環境省の調査では、${esc(name)}は「${gomiTxt}」と答えています。たくさん出す場合などの扱いと考えられます。区のページで確かめてください。</span>` : ''}</p>`;
   } else if (bag) {
     const per45 = bag.yen / bag.liters * 45;
-    gomiBody = `<p>燃やすごみの袋 ${bag.liters}リットル1枚 <b>${bag.yen}円</b>${bag.liters !== 45 ? `（45リットルにすると約${Math.round(per45)}円）` : ''}。週2枚使うと <b>年${yen(bag.yen * 2 * 52)}円</b>。${bag.since ? `<br><span class="s">${esc(bag.since)}</span>` : ''}</p>` +
+    gomiBody = `<p>燃やすごみの袋 ${bag.liters}リットル<b>10枚で${yen(bag.yen * 10)}円</b>（1枚${bag.yen}円）${bag.liters !== 45 ? `（45リットルにすると約${Math.round(per45)}円）` : ''}。週2枚使うと <b>年${yen(bag.yen * 2 * 52)}円</b>。${bag.since ? `<br><span class="s">${esc(bag.since)}</span>` : ''}</p>` +
       (bag.genmen ? `<p>生活保護の世帯への減免: <b>${esc(bag.genmen)}</b>${bag.genmen_src ? ` <span class="s">（<a href="${bag.genmen_src}" target="_blank" rel="noopener">市のページ</a>）</span>` : ''}</p>` : `<p>生活保護の世帯への減免: このツールでは<b>確かめられていません</b>。市の窓口（ごみの担当課）で「生活保護を受けていると、ごみ袋の減免はありますか」と聞いてみてください。</p>`) +
       `<p class="s">値段: <a href="${bag.src}" target="_blank" rel="noopener">${bag.unofficial ? '民間の生活情報サイト（市の公式ページで確認できなかった）' : '市の公式ページ'}</a>${bag.note ? '。' + esc(bag.note) : ''}</p>`;
   } else if (g === 0 || g === 2) {
@@ -310,7 +310,7 @@ function render() {
   } else {
     gomiBody = `<p>燃やすごみは<b>${gomiTxt}</b>（市区町村の答え）。${g === 1 ? 'ごみ袋に処理の手数料はかかりません（市販の袋代だけ）。' : ''}</p>`;
   }
-  const gomiBox = `<div class="box ${g === 1 || ward ? 'good' : bag && bag.yen / bag.liters * 45 >= 60 ? 'bad' : 'mid'}"><h3>ごみ袋<span class="v">${g === 1 || ward ? '無料' : bag ? bag.yen + '円' : gomiTxt}</span></h3>${gomiBody}<p class="s">有料か無料か: 環境省 一般廃棄物処理実態調査 令和5年度。その後に変わった市もあります</p></div>`;
+  const gomiBox = `<div class="box ${g === 1 || ward ? 'good' : bag && bag.yen / bag.liters * 45 >= 60 ? 'bad' : 'mid'}"><h3>ごみ袋<span class="v">${g === 1 || ward ? '無料' : bag ? '10枚' + yen(bag.yen * 10) + '円' : gomiTxt}</span></h3>${gomiBody}<p class="s">有料か無料か: 環境省 一般廃棄物処理実態調査 令和5年度。その後に変わった市もあります</p></div>`;
 
   // 52都市の中の順位
   let rankBox;

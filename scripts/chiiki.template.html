@@ -338,12 +338,12 @@ $('rankBtn').addEventListener('click', () => {
   const me = city.value ? key52(pref.value, city.value) : null;
   const order = Object.keys(R52).sort((x, y) => total[x] - total[y] || x.localeCompare(y, 'ja'));
   const ms = MEAS.filter(m => sel.includes(m.k));
-  const head = `<tr><th class="c">順位</th><th class="c">都市</th><th>合計</th>${ms.map(m => `<th>${m.name}</th>`).join('')}</tr>`;
+  const head = `<tr><th class="c">順位</th><th class="c">都市</th><th>合計<br><small style="font-weight:400">小さいほど楽</small></th>${ms.map(m => `<th>${m.name}</th>`).join('')}</tr>`;
   const body = order.map(c => {
     const v = R52[c], tr = total[c];
     return `<tr class="${c === me ? 'me' : ''} ${tr <= 5 ? 'top' : tr >= 48 ? 'low' : ''}"><td class="r c">${fmtR(tr)}</td><td class="c">${esc(c)}</td><td>${Number.isInteger(sum[c]) ? sum[c] : sum[c].toFixed(1)}</td>${ms.map(m => `<td>${m.k === 'm4' ? yen(v.m4 * 10) : yen(v[m.k])}<small>${fmtR(per[m.k][c])}</small></td>`).join('')}</tr>`;
   }).join('');
-  $('rankOut').innerHTML = `<div class="res"><p class="s" style="font-size:13.5px; color:var(--sub); margin:6px 0">数字の右の小さい字は、その物差しでの順位。「合計」はその順位を足したもので、小さいほど暮らしやすい。${me ? '色のついた行が、あなたの選んだ地域です。' : ''}左右にスクロールできます。</p>
+  $('rankOut').innerHTML = `<div class="res"><p style="border:2px solid var(--ok); background:var(--ok-bg); border-radius:10px; padding:8px 12px; font-weight:700; margin:8px 0 4px; font-size:15px">順位も合計も、<b style="color:var(--ok)">数字が小さいほど暮らしやすい</b>（1位がいちばん楽）。</p><p class="s" style="font-size:13.5px; color:var(--sub); margin:6px 0">数字の右の小さい字は、その物差しでの順位。「合計」はその順位を足したもので、小さいほど暮らしやすい。${me ? '色のついた行が、あなたの選んだ地域です。' : ''}左右にスクロールできます。</p>
     <div class="tbl-scroll"><table class="rk"><thead>${head}</thead><tbody>${body}</tbody></table></div></div>`;
 });
 

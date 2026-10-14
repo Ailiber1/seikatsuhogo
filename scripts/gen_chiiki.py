@@ -182,7 +182,7 @@ F["RANK_TABLE"] = "".join(rrows)
 n_free = sum(1 for c in C if C[c]["m4"] == 0)
 assert all(C[c]["r4"] == (1 + n_free) / 2 for c in C if C[c]["m4"] == 0)
 ex = lambda c: "＋".join(fr(C[c]["r" + str(k)]) for k in range(1, 7)) + f'＝<b>{fr(C[c]["rank_sum"])}</b>'
-F["RANK_EXAMPLE"] = (f'例：{order[0]}の6つの順位は {ex(order[0])}。52都市でいちばん小さいので<b>総合1位</b>。'
+F["RANK_EXAMPLE"] = (f'合計は<b>小さいほど暮らしやすい</b>。例：{order[0]}の6つの順位は {ex(order[0])}。52都市でいちばん小さいので<b>総合1位</b>。'
                      f'<small>{order[-1]}は {ex(order[-1])} でいちばん大きく、総合52位です。'
                      f'小数の順位は、同じ値の都市どうしで順位を分け合ったもの（ごみ袋が無料の{n_free}都市は、1〜{n_free}位の真ん中の{fr((1 + n_free) / 2)}位で全部同じ）。</small>')
 

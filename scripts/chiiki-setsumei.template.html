@@ -74,6 +74,9 @@ table.t{width:100%; border-collapse:collapse; font-size:15px; background:#fff}
 .t tr.good td.r{color:var(--ok)} .t tr.bad td.r{color:var(--ng)}
 .t td small{color:var(--sub); font-size:12px; margin-left:2px}
 .t td.w{white-space:normal; min-width:4.5em} .t.g th{white-space:normal} .t td small.blk{display:block; margin-left:0}
+.lowgood{border:2px solid var(--ok); background:var(--ok-bg); border-radius:11px; padding:9px 14px; font-weight:700; margin:10px 0 4px}
+.lowgood b{color:var(--ok); font-size:1.1em}
+.t th small{font-weight:400; font-size:11px}
 .t tr.sep td{border-bottom:2px dashed var(--line); color:var(--sub); text-align:center; font-size:13px}
 .links{font-size:15.5px; margin:0 0 12px; padding-left:1.2em}
 .links li{margin-bottom:3px}
@@ -194,7 +197,8 @@ table.t{width:100%; border-collapse:collapse; font-size:15px; background:#fff}
       <li><b>合計が小さい順に並べる</b><small>合計がいちばん小さい都市が、総合1位（いちばん暮らしやすい）</small></li>
     </ol>
     <div class="one">%%RANK_EXAMPLE%%</div>
-    <div class="tbl-scroll"><table class="t"><thead><tr><th class="c">順位</th><th class="c">都市</th><th>物価</th><th>光熱</th><th>車</th><th>ごみ</th><th>家賃</th><th>水道</th><th>合計</th></tr></thead><tbody>%%RANK_TABLE%%</tbody></table></div>
+    <p class="lowgood">表の数字はすべて「順位」です。<b>数字が小さいほど暮らしやすい</b>（1位がいちばん楽、52位がいちばん大変）。</p>
+    <div class="tbl-scroll"><table class="t"><thead><tr><th class="c">順位</th><th class="c">都市</th><th>物価</th><th>光熱</th><th>車</th><th>ごみ</th><th>家賃</th><th>水道</th><th>合計<br><small>小さいほど楽</small></th></tr></thead><tbody>%%RANK_TABLE%%</tbody></table></div>
     <p class="note">数字は物差しごとの順位（1位がいちばん楽）。物価＝物価で見た生活扶助、光熱＝光熱費−冬季加算、車＝ガソリン代、ごみ＝ごみ袋、家賃＝家賃の上限の余裕、水道＝水道代。真ん中の都市は省いています。全52都市と、物差しを選んで並べかえる表は、ツールにあります。</p>
     <div class="easy"><b>やさしく言うと：</b>暮らしやすいのは、<b>級地が高く、車がいらず、ごみ袋が無料の大都市</b>。大変なのは、<b>級地が低いのに、冬は寒く、車がないと動けず、水道代も高い地方の市</b>です。</div>
     <div class="caution"><b>ここは言いすぎないでおきます。</b>6つの物差しを同じ重さで足しています。どれを大事にするかで順位は変わります（ツールで試せます）。光熱費・ガソリン・水道代は二人以上の世帯の数字で、ひとり暮らしの生活保護の世帯とは金額がちがいます。順位は「どこが比べて重いか」の目安です。</div>

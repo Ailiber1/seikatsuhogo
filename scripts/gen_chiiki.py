@@ -108,7 +108,7 @@ for c in show:
     if c is None:
         rows.append((None, None, 0, "", ""))
         continue
-    rows.append((c, f'光熱費{yen(C[c]["konetsu"])}−加算{yen(C[c]["touki2_year"])}', C[c]["m2"], yen(C[c]["m2"]) + "円",
+    rows.append((c, f'光熱費{yen(C[c]["konetsu"])}円−冬季加算{yen(C[c]["touki2_year"])}円', C[c]["m2"], yen(C[c]["m2"]) + "円",
                  "ng" if c in m2[-5:] else ("ok" if c in m2[:3] else "")))
 F["SVG_KONETSU"] = bars(rows)
 F["KON_SAPPORO"] = yen(C["札幌市"]["konetsu"])
@@ -153,8 +153,14 @@ F["SAPPORO_BAG_YEAR"] = yen(bag["札幌市"]["yen"] * 2 * 52)
 
 # 7章: 家賃の上限・水道
 m5 = by("m5", rev=True)
-F["M5_BEST"] = f'{m5[0]}（上限{yen(C[m5[0]]["jutaku1"])}円・住居の物価{C[m5[0]]["jukyo_idx"]:.1f}）'
-F["M5_WORST"] = f'{m5[-1]}（上限{yen(C[m5[-1]]["jutaku1"])}円・住居の物価{C[m5[-1]]["jukyo_idx"]:.1f}）'
+def pct(idx):
+    d = round(idx - 100)
+    return f"全国平均より約{abs(d)}%{'高い' if d > 0 else '安い'}" if d else "全国平均くらい"
+b5, w5 = C[m5[0]], C[m5[-1]]
+low_n = 1 + sum(1 for c in C if C[c]["jutaku1"] < w5["jutaku1"])
+F["M5_TEXT"] = (f'いちばん余裕があるのは<b>{m5[0]}</b>（ひとり暮らしの上限{yen(b5["jutaku1"])}円。{b5["pref"]}の家賃は{pct(b5["jukyo_idx"])}）。'
+                f'いちばん苦しいのは<b>{m5[-1]}</b>（上限{yen(w5["jutaku1"])}円で、52都市の中で低い方から{low_n}番目。それなのに{w5["pref"]}の家賃は{pct(w5["jukyo_idx"])}）でした。')
+
 m6 = by("m6")
 F["SUIDO_MAX_CITY"], F["SUIDO_MAX"] = m6[-1], yen(C[m6[-1]]["m6"])
 F["SUIDO_MIN_CITY"], F["SUIDO_MIN"] = m6[0], yen(C[m6[0]]["m6"])

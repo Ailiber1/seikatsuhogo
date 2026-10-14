@@ -175,12 +175,12 @@ const AGES = ["18～19","20～40","41～59","60～64","65～69","70～74","75～
 const AGE_LABEL = {"18～19":"18〜19歳","20～40":"20〜40歳","41～59":"41〜59歳","60～64":"60〜64歳","65～69":"65〜69歳","70～74":"70〜74歳","75～":"75歳以上"};
 // 物差し（rank_chiiki.py と同じ定義。hb=true は大きいほど楽）
 const MEAS = [
-  {k:'m1', hb:true,  name:'物価で見た生活扶助', sub:'生活扶助÷家賃を除く物価', unit:'円/月'},
-  {k:'m2', hb:false, name:'光熱費（冬季加算を引いたあと）', sub:'電気・ガス・灯油の年額−冬季加算', unit:'円/年'},
-  {k:'m3', hb:false, name:'車への頼りぐあい', sub:'ガソリン代の年額', unit:'円/年'},
-  {k:'m4', hb:false, name:'ごみ袋', sub:'燃やすごみの袋1枚（45L換算）', unit:'円'},
-  {k:'m5', hb:true,  name:'家賃の上限の余裕', sub:'家賃の上限÷家賃の物価', unit:'円'},
-  {k:'m6', hb:false, name:'水道代', sub:'上下水道料の年額', unit:'円/年'},
+  {k:'m1', hb:true,  name:'物価で見た生活扶助', sub:'物価の高さを考えると、いくら分か', unit:'円/月'},
+  {k:'m2', hb:false, name:'光熱費（冬季加算を引いたあと）', sub:'電気・ガス・灯油の1年分から冬季加算を引く', unit:'円/年'},
+  {k:'m3', hb:false, name:'車への頼りぐあい', sub:'ガソリン代の1年分（多いほど車が必要な地域）', unit:'円/年'},
+  {k:'m4', hb:false, name:'ごみ袋', sub:'燃やすごみの袋10枚の値段（大きさをそろえて比べる）', unit:'円'},
+  {k:'m5', hb:true,  name:'家賃の上限の余裕', sub:'上限の額が、地域の家賃の高さに見合うか', unit:'円'},
+  {k:'m6', hb:false, name:'水道代', sub:'上下水道料の1年分', unit:'円/年'},
 ];
 
 // CALC-START
@@ -295,7 +295,7 @@ function render() {
 
   // 出ていくお金の側
   const pr = PRICE[p][0];
-  const priceBox = `<div class="box ${pr >= 101 ? 'bad' : pr <= 98.5 ? 'good' : 'mid'}"><h3>物価（家賃を除く）<span class="v">${pr.toFixed(1)}</span></h3><p>${esc(p)}の物価は、全国平均を100とすると <b>${pr.toFixed(1)}</b>。${pr >= 101 ? '<span class="tag bad">高い方</span>' : pr <= 98.5 ? '<span class="tag good">安い方</span>' : ''}</p><p>物価で割り戻すと、生活扶助は <b>月${yen(mr.val)}円ぶん</b>。全${yen(mr.n)}市区町村で<b>${fmtR(mr.rank)}</b>（高い順）。</p><p class="s">物価は都道府県の値（市区町村ごとの値は国が出していません）。総務省「消費者物価地域差指数 2025年」</p></div>`;
+  const priceBox = `<div class="box ${pr >= 101 ? 'bad' : pr <= 98.5 ? 'good' : 'mid'}"><h3>物価（家賃を除く）<span class="v">${pr.toFixed(1)}</span></h3><p>${esc(p)}の物価は、全国平均を100とすると <b>${pr.toFixed(1)}</b>（${Math.round(pr - 100) === 0 ? '全国平均くらい' : '全国平均より約' + Math.abs(Math.round(pr - 100)) + '%' + (pr > 100 ? '高い' : '安い')}）。${pr >= 101 ? '<span class="tag bad">高い方</span>' : pr <= 98.5 ? '<span class="tag good">安い方</span>' : ''}</p><p>物価の高さを考えると、生活扶助は全国平均の物価で <b>月${yen(mr.val)}円分</b>の買い物ができる額。全${yen(mr.n)}市区町村の中で<b>${fmtR(mr.rank)}</b>（多い順）。</p><p class="s">物価は都道府県の値（市区町村ごとの値は国が出していません）。総務省「消費者物価地域差指数 2025年」${r ? `。${esc(k52)}は市だけの物価（${r.price.toFixed(1)}）も出ているので、下の52都市の比べではそちらを使います` : ''}</p></div>`;
   let gomiBody;
   const ward = p === '東京都' && name.endsWith('区');
   if (ward) {
@@ -318,12 +318,12 @@ function render() {
     const all = ranking52(MEAS.map(m => m.k));
     const cells = MEAS.map(m => {
       const rr = all.per[m.k][k52];
-      const v = m.k === 'm4' ? (r[m.k] ? r[m.k] + '円' : '0円（無料）') : yen(r[m.k]) + m.unit.replace('円', '円');
+      const v = m.k === 'm4' ? (r[m.k] ? '10枚' + yen(r[m.k] * 10) + '円' : '0円（無料）') : m.k === 'm1' ? yen(r[m.k]) + '円/月（' + esc(k52) + 'の物価で計算）' : yen(r[m.k]) + m.unit;
       return `<tr><td class="c">${m.name}<br><small>${v}</small></td><td class="r">${fmtR(rr)}</td></tr>`;
     }).join('');
     const tr = all.total[k52];
     rankBox = `<div class="box ${tr <= 13 ? 'good' : tr >= 40 ? 'bad' : 'mid'}"><h3>52都市の総合順位<span class="v">${fmtR(tr)}</span></h3>
-      <p>${k52 === '東京都区部' ? '東京23区は、国の家計調査で「東京都区部」としてまとめて数えられています。' : ''}6つの物差しの順位を足した順位です（1位がいちばん暮らしやすい）。${tr <= 13 ? '<span class="tag good">上位4分の1</span>' : tr >= 40 ? '<span class="tag bad">下位4分の1</span>' : ''}</p>
+      <p>${k52 === '東京都区部' ? '東京23区は、国の家計調査で「東京都区部」としてまとめて数えられています。' : ''}6つの物差しそれぞれで52都市に順位をつけ、その順位を足した合計が小さい順に並べたものです（1位がいちばん暮らしやすい）。${tr <= 13 ? '<span class="tag good">上位4分の1</span>' : tr >= 40 ? '<span class="tag bad">下位4分の1</span>' : ''}</p>
       <div class="tbl-scroll"><table class="rk"><tbody>${cells}</tbody></table></div>
       <p class="s">光熱費・ガソリン・水道代は二人以上の世帯の年額、光熱費から引く冬季加算も2人世帯の額です。物価で見た生活扶助は、この市の物価（${r.price.toFixed(1)}）で割っています</p></div>`;
   } else {
@@ -362,7 +362,7 @@ $('rankBtn').addEventListener('click', () => {
   const head = `<tr><th class="c">順位</th><th class="c">都市</th><th>合計</th>${ms.map(m => `<th>${m.name}</th>`).join('')}</tr>`;
   const body = order.map(c => {
     const v = R52[c], tr = total[c];
-    return `<tr class="${c === me ? 'me' : ''} ${tr <= 5 ? 'top' : tr >= 48 ? 'low' : ''}"><td class="r c">${fmtR(tr)}</td><td class="c">${esc(c)}</td><td>${Number.isInteger(sum[c]) ? sum[c] : sum[c].toFixed(1)}</td>${ms.map(m => `<td>${m.k === 'm4' ? (v.m4 ? v.m4 : 0) : yen(v[m.k])}<small>${fmtR(per[m.k][c])}</small></td>`).join('')}</tr>`;
+    return `<tr class="${c === me ? 'me' : ''} ${tr <= 5 ? 'top' : tr >= 48 ? 'low' : ''}"><td class="r c">${fmtR(tr)}</td><td class="c">${esc(c)}</td><td>${Number.isInteger(sum[c]) ? sum[c] : sum[c].toFixed(1)}</td>${ms.map(m => `<td>${m.k === 'm4' ? yen(v.m4 * 10) : yen(v[m.k])}<small>${fmtR(per[m.k][c])}</small></td>`).join('')}</tr>`;
   }).join('');
   $('rankOut').innerHTML = `<div class="res"><p class="s" style="font-size:13.5px; color:var(--sub); margin:6px 0">数字の右の小さい字は、その物差しでの順位。「合計」はその順位を足したもので、小さいほど暮らしやすい。${me ? '色のついた行が、あなたの選んだ地域です。' : ''}左右にスクロールできます。</p>
     <div class="tbl-scroll"><table class="rk"><thead>${head}</thead><tbody>${body}</tbody></table></div></div>`;

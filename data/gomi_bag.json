@@ -154,5 +154,53 @@
    "src": "https://www.city.kitakyushu.lg.jp/contents/00800054.html",
    "genmen": ""
   }
- }
+ },
+ "store_note": "②（指定袋あり・値段はお店しだい）の市の、お店の値段の例。市が決めた値段ではない。カウネット（コクヨの通販）の商品ページ、2026年10月15日調べ（税込）。ケース（600枚など）の値段は10枚あたりに割った。見つからなかった市は、見つかった5市の真ん中の値を推定として使う（estimate）",
+ "store_checked": "2026年10月",
+ "store": {
+  "名古屋市": {
+   "liters": 45,
+   "count": 50,
+   "yen_total": 910,
+   "what": "名古屋市指定家庭用可燃ごみ袋45L・50枚",
+   "src": "https://www.kaunet.com/kaunet/goods/70467536/"
+  },
+  "静岡市": {
+   "liters": 45,
+   "count": 600,
+   "yen_total": 13610,
+   "what": "静岡市指定ごみ袋・可燃ごみ用45L・600枚（ケース）",
+   "src": "https://www.kaunet.com/kaunet/goods/70209631/"
+  },
+  "浜松市": {
+   "liters": 45,
+   "count": 20,
+   "yen_total": 480,
+   "what": "浜松市家庭ごみ袋とって付45L・20枚（燃やすごみ用かは商品ページに記載なし）",
+   "src": "https://www.kaunet.com/kaunet/goods/70467437/"
+  },
+  "長崎市": {
+   "liters": 45,
+   "count": 600,
+   "yen_total": 15950,
+   "what": "長崎市指定ごみ袋・可燃ごみ用とって付45L・600枚（ケース）",
+   "src": "https://www.kaunet.com/kaunet/goods/70209402/"
+  },
+  "大津市": {
+   "liters": 45,
+   "count": 600,
+   "yen_total": 16650,
+   "what": "大津市指定ごみ袋・家庭45L・600枚（ケース。燃やすごみ用かは商品ページに記載なし）",
+   "src": "https://www.kaunet.com/kaunet/goods/70209532/"
+  }
+ },
+ "store_missing": [
+  "青森市",
+  "前橋市",
+  "福井市",
+  "甲府市",
+  "和歌山市",
+  "神戸市"
+ ],
+ "store_missing_note": "通販サイトで値段を確かめられなかった（神戸市は商品はあるが「現在ご注文いただけません」で値段の表示なし）。市の公式ページにも参考の値段は見つからなかった（神戸市は「販売価格については自由価格」と明記）"
 }

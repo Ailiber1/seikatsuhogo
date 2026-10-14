@@ -7,7 +7,7 @@ data/chiiki_rank.json に書き出す。資料（chiiki-setsumei.html）とツ�
  1 物価で見た生活扶助 = 生活扶助（ひとり暮らし・20〜40歳・2026年10月から）÷（家賃を除く物価の指数÷100）。大きいほど楽
  2 冬の光熱費        = 電気＋都市ガス＋プロパンガス＋灯油の年額（家計調査・二人以上の世帯）−冬季加算の年額（2人世帯）。小さいほど楽
  3 車なしの暮らしにくさ = ガソリンの年額（家計調査・二人以上の世帯）。生活保護では車を原則持てないので、車に頼る地域ほど不便とみる。小さいほど楽
- 4 ごみ袋            = 燃やすごみの指定袋1枚（45リットル換算）。無料の市は0円。小さいほど楽
+ 4 ごみ袋            = 燃やすごみの指定袋1枚（45リットル換算）。①市が値段を決めた袋は市の値段、②指定袋あり・値段はお店しだいはお店の値段の例（なければ推定）、③指定袋なしは0円。小さいほど楽
  5 家賃の上限の余裕   = 住宅扶助の上限（ひとり暮らし）÷（その都道府県の住居の物価の指数÷100）。大きいほど楽
  6 水道代            = 上下水道料の年額（家計調査・二人以上の世帯）。小さいほど楽
 """
@@ -19,7 +19,12 @@ ROOT = Path(__file__).resolve().parent.parent
 load = lambda name: json.loads((ROOT / "data" / name).read_text(encoding="utf-8"))
 
 ch = load("chiiki.json")
-bag = load("gomi_bag.json")["cities"]
+_gb = load("gomi_bag.json")
+bag = _gb["cities"]
+store = _gb["store"]
+# ②（指定袋あり・値段はお店しだい）で値段が見つからなかった市は、見つかった市の真ん中の値を推定に使う
+_store_per_bag = sorted(v["yen_total"] / v["count"] / v["liters"] * 45 for v in store.values())
+STORE_MID = _store_per_bag[len(_store_per_bag) // 2]
 kyuchi = {p: dict(v) for p, v in load("kyuchi_by_city.json")["data"].items()}
 kijun = load("kijun_r8.json")
 keika = load("keika.json")["data"]
@@ -82,12 +87,25 @@ for c, p in ch["city_pref"].items():
         moyasu = "無料"  # 23区は区ごとの答え。17区が無料、4区が一部有料、2区が有料（多く出す家庭などの扱い）。家庭の燃やすごみは基本的に無料
     else:
         moyasu = g["moyasu"]
+    shitei = None if c == "東京都区部" else g.get("shitei")
     if c in bag:
         b = bag[c]
         per45 = round(b["yen"] / b["liters"] * 45, 1)
+        gomi_kind = "市が決めた値段"
+    elif moyasu == "無料" and shitei is True:
+        # ② 指定袋あり・値段はお店しだい: お店の値段の例、なければ推定
+        if c in store:
+            v = store[c]
+            per45 = round(v["yen_total"] / v["count"] / v["liters"] * 45, 1)
+            gomi_kind = "お店の値段の例"
+        else:
+            assert c in _gb["store_missing"], c
+            per45 = round(STORE_MID, 1)
+            gomi_kind = "推定"
     else:
         assert moyasu != "有料", c  # 有料と答えた市は値段を調べてある
-        per45 = 0.0
+        per45 = 0.0  # ③ 指定袋なし（お店のふつうのごみ袋で出せる）
+        gomi_kind = "指定袋なし"
     jl = jutaku_limit(p, "東京都" if c == "東京都区部" else c, lv)
     cities[c] = {
         "pref": p, "lv": lv, "lv_name": LV[lv], "area": area, "area_name": AREA[area],
@@ -97,7 +115,7 @@ for c, p in ch["city_pref"].items():
         "konetsu": kon, "toyu": k["toyu"], "toyu_l": k["toyu_l"], "touki2_year": t2, "touki1_year": t1,
         "m2": kon - t2,
         "m3": k["gasoline"], "bus": k["bus"],
-        "m4": per45, "gomi_status": moyasu,
+        "m4": per45, "gomi_status": moyasu, "gomi_kind": gomi_kind,
         "jutaku1": jl, "jukyo_idx": ch["price_pref"][p]["jukyo"],
         "m5": round(jl / (ch["price_pref"][p]["jukyo"] / 100)),
         "m6": k["suido"],

@@ -146,6 +146,7 @@ const TOUKI = /*TOUKI*/;
 const PRICE = /*PRICE*/;     // {都道府県: [家賃を除く総合, 住居]}
 const R52 = /*R52*/;
 const BAG = /*BAG*/;
+const STORE = /*STORE*/;  // ②（指定袋あり・値段はお店しだい）の市の、お店の値段の例（2026年10月調べ）
 const NAT = /*NAT*/;
 const LV = ["1級地-1","1級地-2","2級地-1","2級地-2","3級地-1","3級地-2"];
 const AREA = ["","Ⅰ区","Ⅱ区","Ⅲ区","Ⅳ区","Ⅴ区","Ⅵ区"];
@@ -157,7 +158,7 @@ const MEAS = [
   {k:'m1', hb:true,  name:'物価で見た生活扶助', sub:'物価の高さを考えると、いくら分か', unit:'円/月'},
   {k:'m2', hb:false, name:'光熱費（冬季加算を引いたあと）', sub:'電気・ガス・灯油の1年分から冬季加算を引く', unit:'円/年'},
   {k:'m3', hb:false, name:'車なしの暮らしにくさ', sub:'ガソリン代の1年分（多いほど、車がないと暮らしにくい地域）', unit:'円/年'},
-  {k:'m4', hb:false, name:'ごみ袋', sub:'市が値段を決めた袋10枚の値段（決まった袋がない市・袋そのものの値段だけの市は0円で比べる）', unit:'円'},
+  {k:'m4', hb:false, name:'ごみ袋', sub:'燃やすごみの袋10枚の値段（2026年10月調べ。指定袋がない市は0円で比べる）', unit:'円'},
   {k:'m5', hb:true,  name:'家賃の上限の余裕', sub:'上限の額が、地域の家賃の高さに見合うか', unit:'円'},
   {k:'m6', hb:false, name:'水道代', sub:'上下水道料の1年分', unit:'円/年'},
 ];
@@ -281,7 +282,7 @@ function render() {
   if (bag) {
     const per45 = bag.yen / bag.liters * 45;
     gomiHead = '10枚' + yen(bag.yen * 10) + '円'; gomiCls = per45 >= 60 ? 'bad' : 'mid';
-    gomiBody = `<p><b>市が値段を決めた袋</b>を買って出します。袋の値段に、ごみを燃やすお金が入っています。</p><p>燃やすごみの袋 ${bag.liters}リットル<b>10枚で${yen(bag.yen * 10)}円</b>（1枚${bag.yen}円）。週2枚使うと <b>年${yen(bag.yen * 2 * 52)}円</b>。${bag.since ? `<br><span class="s">${esc(bag.since)}</span>` : ''}</p>` +
+    gomiBody = `<p><b>市が値段を決めた袋</b>を買って出します。袋の値段に、ごみを燃やすお金が入っています。</p><p>燃やすごみの袋 ${bag.liters}リットル<b>10枚で${yen(bag.yen * 10)}円</b>（1枚${bag.yen}円）。週2枚使うと <b>年${yen(bag.yen * 2 * 52)}円</b>（<b>2026年10月調べ</b>）。${bag.since ? `<br><span class="s">${esc(bag.since)}</span>` : ''}</p>` +
       (bag.genmen ? `<p>生活保護の世帯への減免: <b>${esc(bag.genmen)}</b>${bag.genmen_src ? ` <span class="s">（<a href="${bag.genmen_src}" target="_blank" rel="noopener">市のページ</a>）</span>` : ''}</p>` : `<p>生活保護の世帯への減免（袋を安くしたり無料で配ったりすること）: このツールでは<b>確かめられていません</b>。市の窓口で「生活保護を受けていると、ごみ袋が安くなりますか」と聞いてみてください。</p>`) +
       `<p class="s">値段: <a href="${bag.src}" target="_blank" rel="noopener">${bag.unofficial ? '民間の生活情報サイト（市の公式ページで確認できなかった）' : '市の公式ページ'}</a>${bag.note ? '。' + esc(bag.note) : ''}</p>`;
   } else if (ward) {
@@ -292,7 +293,7 @@ function render() {
     gomiBody = `<p><b>市が値段を決めた袋</b>を買って出す地域です（袋の値段に、ごみを燃やすお金が入っている）${g === 2 ? '。一部のごみだけ、この形です' : ''}。袋の値段は、このツールには入っていません。お住まいの市区町村のページで確かめてください。</p><p>市によっては、<b>生活保護の世帯にごみ袋を安くしたり、無料で配ったりしている</b>ところがあります（北見市・宮崎市・大分市など）。窓口で聞いてみる価値があります。</p>`;
   } else if (sh === 1) {
     gomiHead = '袋を買う（値段はお店しだい）'; gomiCls = 'mid';
-    gomiBody = `<p><b>決まったごみ袋をお店で買って出します。無料ではありません。</b></p><p>ただし袋の値段は、<b>袋そのものの値段だけ</b>です。北見市のように、ごみを燃やすお金は入っていません。値段はお店や商品によって違います。</p>`;
+    gomiBody = `<p><b>決まったごみ袋をお店で買って出します。無料ではありません。</b></p><p>ただし袋の値段は、<b>袋そのものの値段だけ</b>です。北見市のように、ごみを燃やすお金は入っていません。値段はお店や商品によって違います。</p>` + (STORE.store[name] ? (() => { const v = STORE.store[name]; return `<p>お店の値段の例: <b>10枚あたり 約${yen(v.yen_total / v.count * 10)}円</b>（${esc(v.what)}で${yen(v.yen_total)}円。<a href="${v.src}" target="_blank" rel="noopener">通販サイト</a>・2026年10月調べ）</p>`; })() : `<p>同じ形の市で調べたお店の値段の例では、燃やすごみの45リットル袋が<b>10枚あたり 約${yen(STORE.min)}〜${yen(STORE.max)}円</b>でした（2026年10月調べ）。北見市（10枚1,350円）のような市より、ずっと安くなります。</p>`);
   } else if (sh === 0) {
     gomiHead = '決まった袋なし'; gomiCls = 'good';
     gomiBody = `<p>市が決めたごみ袋はありません。<b>市のルールに合う袋（お店で売っているごみ袋など）</b>で出せます。袋を買うお金はかかりますが、決まった袋を買う必要はありません。</p>`;
@@ -312,7 +313,7 @@ function render() {
     const all = ranking52(MEAS.map(m => m.k));
     const cells = MEAS.map(m => {
       const rr = all.per[m.k][k52];
-      const v = m.k === 'm4' ? (r[m.k] ? '10枚' + yen(r[m.k] * 10) + '円' : '0円で比べる（市が値段を決めた袋ではない）') : m.k === 'm1' ? yen(r[m.k]) + '円/月（' + esc(k52) + 'の物価で計算）' : yen(r[m.k]) + m.unit;
+      const v = m.k === 'm4' ? (r[m.k] ? '10枚' + yen(r[m.k] * 10) + '円' + (r.gomi_kind === 'お店の値段の例' ? '（お店の値段の例）' : r.gomi_kind === '推定' ? '（推定）' : '') : '0円で比べる（指定袋なし）') : m.k === 'm1' ? yen(r[m.k]) + '円/月（' + esc(k52) + 'の物価で計算）' : yen(r[m.k]) + m.unit;
       return `<tr><td class="c">${m.name}<br><small>${v}</small></td><td class="r">${fmtR(rr)}</td></tr>`;
     }).join('');
     const tr = all.total[k52];

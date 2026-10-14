@@ -159,6 +159,19 @@ for c in sorted(bag, key=lambda c: (-bag[c]["yen"] / bag[c]["liters"], c)):
     grows.append(f'<tr><td class="c">{label}</td><td>{yen(b["yen"] * 10)}円<small class="blk">{b["liters"]}L{"・" + plus[7:-8] if plus else ""}</small></td><td>{yen(b["yen"] * 2 * 52)}円</td><td class="c w">{genmen_short(b.get("genmen", ""))}</td></tr>')
 F["GOMI_TABLE"] = "".join(grows)
 F["SAPPORO_BAG_YEAR"] = yen(bag["札幌市"]["yen"] * 2 * 52)
+gb = json.loads((ROOT / "data" / "gomi_bag.json").read_text(encoding="utf-8"))
+st = gb["store"]
+per10 = {c: v["yen_total"] / v["count"] * 10 for c, v in st.items()}
+srows = []
+for c in sorted(per10, key=lambda c: per10[c]):
+    v = st[c]
+    srows.append(f'<tr><td class="c"><a href="{esc(v["src"])}" target="_blank" rel="noopener">{esc(c)}</a></td><td>約{yen(per10[c])}円</td><td class="c w"><small class="blk" style="margin:0">{esc(v["what"])}で{yen(v["yen_total"])}円</small></td></tr>')
+for c in gb["store_missing"]:
+    srows.append(f'<tr><td class="c">{esc(c)}</td><td>—</td><td class="c w"><small class="blk" style="margin:0">見つからなかった（ランキングでは推定 約{yen(rk.STORE_MID * 10)}円）</small></td></tr>')
+F["GOMI_STORE_TABLE"] = "".join(srows)
+F["STORE_MIN"], F["STORE_MAX"] = yen(min(per10.values())), yen(max(per10.values()))
+F["STORE_MID"] = yen(rk.STORE_MID * 10)
+F["STORE_N"] = str(len(st))
 
 # 7章: 家賃の上限・水道
 m5 = by("m5", rev=True)
@@ -189,11 +202,12 @@ for i, c in enumerate(order):
                  "".join(f'<td>{fr(v["r" + str(k)])}</td>' for k in range(1, 7)) + f'<td class="r">{fr(v["rank_sum"])}</td></tr>')
 F["RANK_TABLE"] = "".join(rrows)
 n_free = sum(1 for c in C if C[c]["m4"] == 0)
+assert all(C[c]["gomi_kind"] == "指定袋なし" for c in C if C[c]["m4"] == 0)
 assert all(C[c]["r4"] == (1 + n_free) / 2 for c in C if C[c]["m4"] == 0)
 ex = lambda c: "＋".join(fr(C[c]["r" + str(k)]) for k in range(1, 7)) + f'＝<b>{fr(C[c]["rank_sum"])}</b>'
 F["RANK_EXAMPLE"] = (f'合計は<b>小さいほど暮らしやすい</b>。例：{order[0]}の6つの順位は {ex(order[0])}。52都市でいちばん小さいので<b>総合1位</b>。'
                      f'<small>{order[-1]}は {ex(order[-1])} でいちばん大きく、総合52位です。'
-                     f'小数の順位は、同じ値の都市どうしで順位を分け合ったもの（市が値段を決めた袋ではない{n_free}都市は、ごみ袋を0円として比べたので、1〜{n_free}位の真ん中の{fr((1 + n_free) / 2)}位で全部同じ）。</small>')
+                     f'小数の順位は、同じ値の都市どうしで順位を分け合ったもの（指定袋がない{n_free}都市は、ごみ袋を0円として比べたので、1〜{n_free}位の真ん中の{fr((1 + n_free) / 2)}位で全部同じ）。</small>')
 
 # 資料を書き出す
 doc = (ROOT / "scripts" / "chiiki-setsumei.template.html").read_text(encoding="utf-8")
@@ -207,7 +221,7 @@ assert not left, left
 sh_code = lambda v: 1 if v is True else 0 if v is False else -1
 kyuchi_rows = {p: [[c, lv, GOMI_CODE[ch["gomi"][p][norm(c)]["moyasu"]], sh_code(ch["gomi"][p][norm(c)]["shitei"])] for c, lv in cs.items()]
                for p, cs in rk.kyuchi.items()}
-r52 = {c: {k: v[k] for k in ("pref", "rank", "price", "m1", "m2", "m3", "m4", "m5", "m6")} for c, v in C.items()}
+r52 = {c: {k: v[k] for k in ("pref", "rank", "price", "m1", "m2", "m3", "m4", "m5", "m6", "gomi_kind")} for c, v in C.items()}
 tool = (ROOT / "scripts" / "chiiki.template.html").read_text(encoding="utf-8")
 repl = {
     "/*KYUCHI*/": dump(kyuchi_rows),
@@ -218,6 +232,7 @@ repl = {
     "/*PRICE*/": dump({p: [v["yachin_nozoku"], v["jukyo"]] for p, v in pp.items()}),
     "/*R52*/": dump(r52),
     "/*BAG*/": dump(bag),
+    "/*STORE*/": dump({"store": gb["store"], "missing": gb["store_missing"], "min": round(min(per10.values())), "max": round(max(per10.values()))}),
     "/*NAT*/": dump(nat),
     "/*CHECKED*/": F["CHECKED"],
 }

@@ -115,7 +115,7 @@ table.rk{width:100%; border-collapse:collapse; font-size:14px; background:#fff}
 
   <div class="step" id="s3" style="margin-top:22px">
     <h2><span class="n">★</span>52都市ランキング（物差しを選んで並べかえ）</h2>
-    <p class="hint" style="margin:0 0 8px">都道府県庁のある市と、大きな市（川崎・相模原・浜松・堺・北九州）の52都市です。国の家計調査がある都市だけで比べています。選んだ物差しの順位を足して、少ない順に並べます。</p>
+    <p class="hint" style="margin:0 0 8px">都道府県庁のある市と、大きな市（川崎・相模原・浜松・堺・北九州）の52都市です。国の家計調査がある都市だけで比べています。物差しごとに暮らしやすい順に1位〜52位をつけ、選んだ物差しの順位を足した「合計」が小さい順に並べます。</p>
     <div class="checks" id="checks"></div>
     <button class="go" type="button" id="rankBtn">この物差しでランキングを出す</button>
     <div id="rankOut" aria-live="polite"></div>
@@ -338,12 +338,12 @@ $('rankBtn').addEventListener('click', () => {
   const me = city.value ? key52(pref.value, city.value) : null;
   const order = Object.keys(R52).sort((x, y) => total[x] - total[y] || x.localeCompare(y, 'ja'));
   const ms = MEAS.filter(m => sel.includes(m.k));
-  const head = `<tr><th class="c">順位</th><th class="c">都市</th>${ms.map(m => `<th>${m.name}</th>`).join('')}</tr>`;
+  const head = `<tr><th class="c">順位</th><th class="c">都市</th><th>合計</th>${ms.map(m => `<th>${m.name}</th>`).join('')}</tr>`;
   const body = order.map(c => {
     const v = R52[c], tr = total[c];
-    return `<tr class="${c === me ? 'me' : ''} ${tr <= 5 ? 'top' : tr >= 48 ? 'low' : ''}"><td class="r c">${fmtR(tr)}</td><td class="c">${esc(c)}</td>${ms.map(m => `<td>${m.k === 'm4' ? (v.m4 ? v.m4 : 0) : yen(v[m.k])}<small>${fmtR(per[m.k][c])}</small></td>`).join('')}</tr>`;
+    return `<tr class="${c === me ? 'me' : ''} ${tr <= 5 ? 'top' : tr >= 48 ? 'low' : ''}"><td class="r c">${fmtR(tr)}</td><td class="c">${esc(c)}</td><td>${Number.isInteger(sum[c]) ? sum[c] : sum[c].toFixed(1)}</td>${ms.map(m => `<td>${m.k === 'm4' ? (v.m4 ? v.m4 : 0) : yen(v[m.k])}<small>${fmtR(per[m.k][c])}</small></td>`).join('')}</tr>`;
   }).join('');
-  $('rankOut').innerHTML = `<div class="res"><p class="s" style="font-size:13.5px; color:var(--sub); margin:6px 0">数字の右の小さい字は、その物差しでの順位。${me ? '色のついた行が、あなたの選んだ地域です。' : ''}左右にスクロールできます。</p>
+  $('rankOut').innerHTML = `<div class="res"><p class="s" style="font-size:13.5px; color:var(--sub); margin:6px 0">数字の右の小さい字は、その物差しでの順位。「合計」はその順位を足したもので、小さいほど暮らしやすい。${me ? '色のついた行が、あなたの選んだ地域です。' : ''}左右にスクロールできます。</p>
     <div class="tbl-scroll"><table class="rk"><thead>${head}</thead><tbody>${body}</tbody></table></div></div>`;
 });
 

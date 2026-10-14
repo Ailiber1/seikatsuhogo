@@ -40,6 +40,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `hosoku-setsumei.html` | 解説 | 生活保護を使えている人は、2割だけ？（国が国会で答えた22.6%・43.7%、数字が古いこと、申請した人の多くは通っていること、使わない5つの理由と国の文書の答え） | [/hosoku-setsumei.html](https://ailiber1.github.io/seikatsuhogo/hosoku-setsumei.html) |
 | `naiwake-quiz.html` | ツール | 生活保護イメージ当てクイズ（受けているのはどんな人か、5問に予想で答えて国の調査の数字と答え合わせ。高齢者世帯・20代30代・ひとり暮らし・その他の世帯で働いている割合・5年以上） | [/naiwake-quiz.html](https://ailiber1.github.io/seikatsuhogo/naiwake-quiz.html) |
 | `naiwake-setsumei.html` | 解説 | 生活保護は、怠け者ばかり？（受けている世帯の内訳55.2%・25.6%・3.4%・15.8%、押すと色がつく100世帯の図、年齢、ひとり暮らし84.7%・平均9年6か月、受け始めた理由） | [/naiwake-setsumei.html](https://ailiber1.github.io/seikatsuhogo/naiwake-setsumei.html) |
+| `chiiki.html` | ツール | 住む場所の暮らしやすさしらべ（市区町村を選ぶと、生活扶助・冬季加算・家賃の上限と、物価・ごみ袋・52都市の順位。物差しを選んで52都市を並べかえられる） | [/chiiki.html](https://ailiber1.github.io/seikatsuhogo/chiiki.html) |
+| `chiiki-setsumei.html` | 解説 | 同じ生活保護でも、住む場所でこんなに違う（北見市のごみ袋135円から。物価・光熱費−冬季加算・車・ごみ袋・家賃の上限・水道代の6つの物差しで52都市を比べたランキング） | [/chiiki-setsumei.html](https://ailiber1.github.io/seikatsuhogo/chiiki-setsumei.html) |
 | `database.rules.json` / `firebase.json` / `.firebaserc` | 設定 | 暇人スキャンの保存先（Firebase Realtime Database）の書き込みルール | — |
 | `data/` | データ | ページに埋め込む元データ（JSON） | — |
 | `scripts/` | スクリプト | 公的資料からデータを作り、ページを生成する | — |
@@ -63,6 +65,9 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `naiwake.json` | 受けている世帯・人の内訳（世帯の種類・働いているか・年齢・ひとり暮らし・受けている期間・受け始めた理由）の件数と割合、クイズ5問 | 厚労省 被保護者調査 令和8年7月分概数（写し `hihogosha_2026_07_source.pdf`）、令和6年度 年次調査（確定値）結果の概要（写し `hihogosha_nenji_r6_gaiyou_source.pdf`）、令和5年度 月次調査（確定値）結果の概要（写し `hihogosha_r5_kakutei_gaiyou_source.pdf`） |
 | `research_keywords.json` | 他のチャンネルの伸びているタイトルを調べるときの検索語と参考チャンネル（`/seiho-week` の下調べ用） | ユーザーが挙げた参考チャンネルと、2026年10月12日に使った検索語 |
 | `kijun_r8.json` | 生活扶助の第1類・第2類・逓減率・特例加算と、照合用のモデル世帯9類型 | 厚労省「生活扶助基準額の算出方法（令和8年4月）」＋第55回生活保護基準部会 資料4 |
+| `chiiki.json` | 地域で差が出る負担: 消費者物価地域差指数（都道府県・都市）、家計調査の電気・ガス・灯油・上下水道・ガソリン（52都市）、冬季加算の額と地区（告示）、全1,741市区町村の燃やすごみが有料か | 総務省「消費者物価地域差指数 2025年」（写し `chiikisa_2025_source.pdf`）、家計調査 品目別ランキング 2023〜2025年平均（写し `kakei_rank14_2023-2025_source.xlsx`）、保護の基準（昭和38年厚生省告示第158号・2026年10月1日適用）、環境省 一般廃棄物処理実態調査 令和5年度（66MBのため写しは置かず、URLは `scripts/extract_chiiki.py`） |
+| `gomi_bag.json` | 燃やすごみが有料の22都市と北見市の、指定袋1枚の値段と、生活保護の世帯の減免（公式ページで確かめられたものだけ） | 各市の公式ページ（那覇市だけは民間サイト）、旭川市 資料3（写し `asahikawa_genmen_2025_source.pdf`） |
+| `chiiki_rank.json` | 52都市の6つの物差しの値・順位・総合順位（`scripts/rank_chiiki.py` が作る） | 上の2つと級地・基準額・住宅扶助の上限 |
 
 ## scripts/ の中身
 
@@ -91,6 +96,11 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `verify_naiwake.py` | 解説とクイズの数字を、国の表の件数から計算し直して確かめる（原本の割合・自分で計算した割合・100世帯の図の合計・引用・クイズの正解が1つに決まるか） |
 | `research_titles.py` | `data/research_keywords.json` の検索語と参考チャンネルで、他のチャンネルの動画を集めて再生数の多い順に並べる（yt-dlpだけ使う。ショートと自分のチャンネルは除く。ニュース番組は別枠） |
 | `verify_hogohi.py` | `hogohi.html` の計算式を node で動かし、資料4のモデル世帯54通りと1円単位で一致するか確かめる |
+| `xlsx_read.py` | openpyxl なしで xlsx を読む（ふりがなは除く） |
+| `extract_chiiki.py` | 物価・家計調査・冬季加算・環境省のごみの表から `data/chiiki.json` を作る（市区町村名が級地の表と1,741件すべて一致するか、都道府県ごとの件数が表の合計と合うかを確かめる） |
+| `rank_chiiki.py` | `data/chiiki_rank.json` を作る（6つの物差しと順位） |
+| `gen_chiiki.py` | `chiiki.template.html`・`chiiki-setsumei.template.html` から `chiiki.html` と `chiiki-setsumei.html` を生成する。資料の数字は全部データから差し込む |
+| `verify_chiiki.py` | ツールの計算式が `hogohi.html` と同じか、全年齢×全級地の生活扶助・52都市の全順位が `rank_chiiki.py` と一致するか、資料に差し込み忘れがないかを確かめる |
 
 ---
 

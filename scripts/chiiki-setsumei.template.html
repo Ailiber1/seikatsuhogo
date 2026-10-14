@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>同じ生活保護でも、住む場所でこんなに違う</title>
+<meta name="description" content="生活保護の生活費は全国6つの区分でしか変わらないのに、物価・光熱費・車・ごみ袋・水道代は地域で大きく違います。北見市のごみ袋135円をきっかけに、52都市を国の資料で比べたランキングです">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:17px; line-height:1.8; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+.nb{display:inline-block}
+h1,.conclusion p,.ch h2,.for-who li,.cta,.card b,.steps b,.one{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
+h1{font-size:clamp(26px,6vw,36px); line-height:1.4; margin:0 0 12px; color:var(--navy); text-wrap:balance}
+h1 small{display:block; font-size:.55em; color:var(--sub); font-weight:600; margin-top:4px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:16px; font-size:16.5px}
+.for-who b{color:var(--navy)} .for-who ul{margin:4px 0 0; padding-left:1.2em}
+.conclusion{border:2px solid var(--navy); border-radius:14px; padding:16px; margin-bottom:10px; background:#fff}
+.conclusion .k{font-size:14.5px; font-weight:700; color:var(--sub)}
+.conclusion p{margin:4px 0 0; font-size:18px; font-weight:700; line-height:1.6}
+.conclusion b{color:var(--navy)} .conclusion b.ng{color:var(--ng)}
+.conclusion .big{font-size:1.4em}
+.cta{display:flex; align-items:center; justify-content:space-between; gap:10px; text-decoration:none; color:var(--navy); background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:11px 14px; margin:12px 0 22px; font-weight:700; font-size:16.5px; min-height:48px}
+.cta span:last-child{flex:none}
+section.ch{margin:30px 0 8px}
+.ch h2{display:flex; align-items:center; gap:10px; font-size:clamp(19px,4.6vw,23px); line-height:1.45; margin:0 0 12px; color:var(--navy)}
+.ch h2 .b{flex:none; width:34px; height:34px; border-radius:50%; border:2px solid var(--navy); display:grid; place-items:center; font-size:16.5px; font-family:system-ui,sans-serif}
+.ch p{margin:0 0 12px}
+.ch a{color:var(--navy); font-weight:700}
+blockquote{margin:10px 0 4px; padding:10px 14px; background:var(--panel); border-left:4px solid var(--line); font-size:16px; border-radius:0 10px 10px 0}
+.src{font-size:14.5px; color:var(--sub); margin:0 0 8px} .src a{color:var(--navy); font-weight:400}
+.easy{background:var(--ok-bg); border-left:4px solid var(--ok); border-radius:0 10px 10px 0; padding:9px 14px; font-size:16.5px; margin:6px 0 12px}
+.easy b{color:var(--ok)}
+.note{font-size:14.5px; color:var(--sub); margin:4px 0 12px}
+.one{border-left:5px solid var(--navy); background:var(--navy-soft); border-radius:0 11px 11px 0; padding:10px 14px; font-weight:700; margin:8px 0 12px}
+.one small{display:block; font-weight:600; color:var(--sub); font-size:14.5px}
+.caution{background:var(--warn-bg); border-left:5px solid var(--warn); border-radius:0 11px 11px 0; padding:10px 14px; margin:8px 0 12px}
+.caution b{color:var(--warn)}
+.stats{display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin:8px 0 12px; text-align:center}
+@media (max-width:520px){ .stats{grid-template-columns:1fr} }
+.stats div{border:1px solid var(--line); border-radius:12px; padding:10px; background:var(--panel)}
+.stats small{display:block; font-size:14.5px; color:var(--sub); line-height:1.5}
+.stats b{display:block; font-size:clamp(24px,6.5vw,32px); color:var(--navy); line-height:1.3}
+.stats b.ng{color:var(--ng)}
+.fig{border:1px solid var(--line); border-radius:13px; background:var(--panel); padding:12px 14px; margin:8px 0 12px}
+.fig .cap{font-size:15px; font-weight:700; margin:0 0 6px}
+.hb .row{display:grid; grid-template-columns:7.2em 1fr auto; gap:8px; align-items:center; font-size:15px; margin:6px 0; line-height:1.35}
+.hb .lb small{display:block; font-size:12px; color:var(--sub)}
+.hb .tr{height:16px; background:var(--line-soft); border-radius:8px; overflow:hidden}
+.hb .tr i{display:block; height:100%; width:0; background:var(--navy); border-radius:8px; transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.hb .row.ng .tr i{background:var(--ng)} .hb .row.ok .tr i{background:var(--ok)}
+.hb .row.ng .v{color:var(--ng)} .hb .row.ok .v{color:var(--ok)}
+.hb .v{font-weight:800; font-variant-numeric:tabular-nums; white-space:nowrap; font-size:15px}
+.hb .gap{border-top:2px dashed var(--line); margin:8px 0; height:0}
+@media (prefers-reduced-motion:reduce){ .hb .tr i{transition:none} }
+.tbl-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; margin:8px 0 12px}
+table.t{width:100%; border-collapse:collapse; font-size:15px; background:#fff}
+.t th,.t td{padding:7px 8px; border-bottom:1px solid var(--line); text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums}
+.t th{font-size:13px; color:var(--sub); font-weight:700; white-space:nowrap; vertical-align:bottom}
+.t td.c,.t th.c{text-align:left}
+.t td.r{font-weight:800; color:var(--navy)}
+.t tr.good td.r{color:var(--ok)} .t tr.bad td.r{color:var(--ng)}
+.t td small{color:var(--sub); font-size:12px; margin-left:2px}
+.t td.w{white-space:normal; min-width:4.5em} .t td small.blk{display:block; margin-left:0}
+.t tr.sep td{border-bottom:2px dashed var(--line); color:var(--sub); text-align:center; font-size:13px}
+.links{font-size:15.5px; margin:0 0 12px; padding-left:1.2em}
+.links li{margin-bottom:3px}
+.sum h3{font-size:16px; margin:14px 0 6px; color:var(--navy)}
+.card{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px; background:#fff}
+.card .mk{flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:14px}
+.card .mk.y{background:var(--ok-bg); color:var(--ok)} .card .mk.q{background:var(--warn-bg); color:var(--warn)}
+.card b{display:block; font-size:16.5px} .card small{color:var(--sub); font-size:14.5px; line-height:1.55; display:block}
+.todo{counter-reset:s; list-style:none; padding:0; margin:6px 0 12px}
+.todo li{position:relative; border:1px solid var(--line); border-radius:12px; background:#fff; padding:10px 12px 10px 48px; margin-bottom:8px}
+.todo li::before{counter-increment:s; content:counter(s); position:absolute; left:12px; top:11px; width:26px; height:26px; border-radius:50%; background:var(--ok); color:#fff; display:grid; place-items:center; font-size:14px; font-weight:700}
+.todo b{display:block}
+.todo small{display:block; color:var(--sub); font-size:15px; line-height:1.6}
+.fade{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+.fade.in{opacity:1; transform:none}
+.foot{margin-top:28px; font-size:14.5px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot h3{font-size:15px; color:var(--ink); margin:12px 0 4px}
+.foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .fade{opacity:1; transform:none; transition:none} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho"><span class="nb">同じ生活保護でも、</span><span class="nb">住む場所でこんなに違う</span><small><span class="nb">ごみ袋・灯油・車・水道・物価。</span><span class="nb">52都市を国の資料で比べた</span></small></h1>
+  <div class="for-who"><b>このページは、こういう方へ</b>
+    <ul><li>生活保護を受けていて、自分の地域は<span class="nb">楽な方か大変な方か知りたい方</span></li>
+    <li>「どこに住んでも保護費は同じだから、<span class="nb">暮らしも同じ」と思っていた方</span></li>
+    <li>北見市のごみ袋135円の<span class="nb">ニュースを見た方</span></li></ul></div>
+
+  <div class="conclusion"><div class="k">結論</div>
+    <p>生活費の分（生活扶助）は、全国を<b>6つの区分</b>で分けて決まるだけ。<br>でも、物価・光熱費・車・ごみ袋・水道代は、<span class="nb">地域でもっと大きく違います。</span><br>52都市で比べると、暮らしやすいのは <b class="big">%%TOP1%%</b>、<span class="nb">大変なのは <b class="big ng">%%LAST1%%</b> でした（試算）。</span></p></div>
+  <a class="cta" href="chiiki.html"><span>自分の市区町村で調べる（住む場所の暮らしやすさしらべ）</span><span>→</span></a>
+
+  <section class="ch fade">
+    <h2><span class="b">1</span>きっかけ：北見市のごみ袋が1枚135円に</h2>
+    <p>北海道北見市は、2026年10月1日から燃やすごみの指定袋（45リットル）を<b>1枚90円から135円</b>に値上げしました。週に2枚使うと、1年で<b class="num">%%KITAMI_BAG_YEAR%%円</b>です。</p>
+    <p class="src">出典: <a href="https://www.city.kitami.lg.jp/detail.php?content=9268" target="_blank" rel="noopener">北見市「ごみに関する手数料一覧」</a>（45リットル 10枚1セット 1,350円）、<a href="https://www.city.kitami.lg.jp/administration/life/detail.php?content=13742" target="_blank" rel="noopener">北見市「指定ごみ袋の価格改定に伴うお知らせ」</a></p>
+    <p>ここで大事なことが1つあります。北見市には、<b>生活保護を受けている人のごみの減免</b>があります。</p>
+    <blockquote>生活保護受給者が排出するごみや災害等に伴って発生したごみは、減免を受けることができます。</blockquote>
+    <p class="src">出典: <a href="https://www.city.kitami.lg.jp/detail.php?content=9338" target="_blank" rel="noopener">北見市「ごみに関する届出」</a>（申請書の提出が必要）</p>
+    <p>ところが、同じ北海道でも<b>札幌・函館・釧路・帯広・苫小牧などは、生活保護の世帯のごみ袋の減免がありません</b>（旭川市が2025年12月にまとめた、道内10市の比較表）。国は「ごみ袋代は、生活扶助の中に入っている」と考えているからです。</p>
+    <blockquote>生活扶助のうち世帯共通的経費である第２類相当支出に清掃代の項目が含まれており（中略）市町村指定ごみ袋、粗大ごみの処分代が例示されていることから、これらの経費が生活扶助に含まれているものと考えられます。</blockquote>
+    <p class="src">出典: <a href="https://www.city.asahikawa.hokkaido.jp/kurashi/271/307/309/d083397_d/fil/genmen.pdf" target="_blank" rel="noopener">旭川市 廃棄物減量等推進審議会 資料3「減免制度の在り方の検討について」</a>（2025年12月）</p>
+    <div class="one">ひとことで言うと：保護費は全国共通の物差しで決まるのに、ごみ袋代は<span class="nb">「住む市」で0円にも年1万円超にもなる。</span><small>ごみ袋だけではありません。灯油・車・水道・物価も、地域で大きく違います。それを国の資料で並べたのが、このページです。</small></div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">2</span>保護費は、どう地域で変わる？</h2>
+    <p>生活費の分（生活扶助）は、住んでいる市区町村の<b>「級地」</b>で変わります。全国を6つに分けた区分です。ひとり暮らし・20〜40歳だと、こうなります（2026年10月から）。</p>
+    <div class="fig"><p class="cap">生活扶助（ひとり暮らし・20〜40歳・月）</p>%%SVG_KYUCHI%%</div>
+    <p>いちばん高い区分といちばん低い区分の差は、<b>月%%FUJO_DIFF%%円（年%%FUJO_DIFF_Y%%円）</b>。北見市は「3級地-1」で、いちばん高い区分より<b>月%%KITAMI_FUJO_DIFF%%円少ない</b>です。</p>
+    <p>もう1つ、冬だけ上乗せされる<b>「冬季加算」</b>があります。こちらは都道府県で6つに分かれ、寒い地域ほど多くなります。</p>
+    <div class="fig"><p class="cap">冬季加算（ひとり暮らし・1年ぶん）</p>%%SVG_TOUKI%%</div>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/web/t_doc?dataId=82051000&amp;dataType=0" target="_blank" rel="noopener">生活保護法による保護の基準（昭和38年厚生省告示第158号）別表第1</a>（令和8年6月11日 厚労省告示第245号による改正、2026年10月1日から）</p>
+    <div class="easy"><b>やさしく言うと：</b>北海道・青森・秋田は、冬の上乗せが<b>1年で%%TOUKI1_Y%%円</b>。東京や大阪などは%%TOUKI6_Y%%円です。寒い地域への配慮は、ちゃんとあります。</div>
+    <p>→ 自分の保護費がいくらかは <a href="hogohi.html">保護費しらべ</a> で計算できます。</p>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">3</span>物価：北海道は東京より高い</h2>
+    <p>総務省は毎年、都道府県ごとの物価を、全国平均を100として出しています。生活扶助と比べるなら、家賃を除いた物価です（家賃は住宅扶助で別に出るため）。</p>
+    <div class="stats">
+      <div><small>家賃を除く物価 1位</small><b class="ng">北海道 %%P_HOKKAIDO%%</b></div>
+      <div><small>同じく 東京都</small><b>%%P_TOKYO%%（%%P_TOKYO_RANK%%位）</b></div>
+    </div>
+    <p class="src">出典: <a href="https://www.stat.go.jp/data/kouri/kouzou/pdf/g_2025.pdf" target="_blank" rel="noopener">総務省「消費者物価地域差指数 −小売物価統計調査（構造編）2025年（令和7年）結果−」別表1</a></p>
+    <p>北海道は、光熱・水道の物価も<b>%%P_HOKKAIDO_KONETSU%%で全国1位</b>です。それなのに、北海道の町村の多くは、生活扶助がいちばん低い「3級地-2」です。</p>
+    <p>そこで、生活扶助をその地域の物価で割り戻して、<b>「その地域で、実際にどれだけの物が買えるか」</b>に直しました（試算）。全%%N_MUNI%%市区町村で比べると、いちばん低いのは<b>北海道の3級地-2の%%N_LOWEST%%町村</b>（月%%LOWEST_VAL%%円ぶん）。いちばん高い%%HIGHEST_NAME%%（月%%HIGHEST_VAL%%円ぶん）とは、<b>月%%MUNI_GAP%%円</b>の差です。</p>
+    <div class="caution"><b>ここは言いすぎないでおきます。</b>物価は都道府県の平均です。同じ北海道でも、札幌と町村では物価がちがう可能性があります。市区町村ごとの物価は、国が出していません。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">4</span>光熱費：冬季加算を引くと、北海道より重い都市がある</h2>
+    <p>灯油代は、地域の差がいちばん大きい出費です。家計調査（二人以上の世帯・2023〜2025年の平均）で、1年の灯油代は<b>青森市%%TOYU_AOMORI%%円</b>、全国平均%%TOYU_NAT%%円の%%TOYU_RATIO%%倍です。</p>
+    <p>ただし、寒い地域には冬季加算があります。そこで、電気・都市ガス・プロパンガス・灯油の1年の合計から、<b>冬季加算（2人世帯の1年ぶん）を引いた残り</b>を比べました（試算）。</p>
+    <div class="fig"><p class="cap">光熱費 − 冬季加算（1年・二人以上の世帯）。少ないほど楽</p>%%SVG_KONETSU%%</div>
+    <p class="src">出典: <a href="https://www.stat.go.jp/data/kakei/5.html" target="_blank" rel="noopener">総務省 家計調査（二人以上の世帯）品目別都道府県庁所在市及び政令指定都市ランキング（2023年〜2025年平均）</a>「電気代」「都市ガス」「プロパンガス」「灯油」</p>
+    <p>札幌市は光熱費が年%%KON_SAPPORO%%円と多いのですが、冬季加算が年%%TOUKI_SAPPORO%%円あるので、引くと<b>%%KON2_SAPPORO%%円で52都市の%%R2_SAPPORO%%位</b>。逆に<b>%%M2_WORST%%</b>は、冬季加算が少ないぶん、残りが多くなります。</p>
+    <div class="easy"><b>やさしく言うと：</b>北海道は「寒いぶんの上乗せ」で、ある程度カバーされています。重いのは、<b>冬の上乗せが少ないのに、光熱費が多くかかる都市</b>です（%%M2_WORST5%%）。</div>
+    <p class="note">北見市は家計調査の対象外です。1月の平均気温は北見−8.0℃、札幌−3.2℃（気象庁の1991〜2020年の平年値）で、北見は札幌より4.8℃寒く、灯油は札幌より多く使うと考えられます。 <a href="https://www.data.jma.go.jp/stats/etrn/view/nml_amd_ym.php?prec_no=17&amp;block_no=0074&amp;year=&amp;month=&amp;day=&amp;view=" target="_blank" rel="noopener">気象庁 北見の平年値</a> ／ <a href="https://www.data.jma.go.jp/stats/etrn/view/nml_sfc_ym.php?prec_no=14&amp;block_no=47412&amp;year=&amp;month=&amp;day=&amp;view=" target="_blank" rel="noopener">札幌の平年値</a></p>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">5</span>車：生活保護では、原則持てない</h2>
+    <blockquote>自動車は資産となりますので、原則として処分していただき、生活の維持のために活用していただくことになります。ただし、障害をお持ちの方の通勤、通院等に必要な場合等には自動車の保有を認められることがあります。</blockquote>
+    <p class="src">出典: 厚労省「生活保護制度に関するＱ＆Ａ」Ｑ７</p>
+    <p>車がないと暮らしにくい地域ほど、生活保護では不便です。その目安として、家計調査のガソリン代を見ました。</p>
+    <div class="fig"><p class="cap">ガソリン代（1年・二人以上の世帯）。少ないほど、車なしでも暮らしやすい</p>%%SVG_GAS%%</div>
+    <p>いちばん多い<b>%%GAS_MAX_CITY%%は年%%GAS_MAX%%円</b>、いちばん少ない<b>%%GAS_MIN_CITY%%は年%%GAS_MIN%%円</b>。%%GAS_RATIO%%倍の差です。ガソリン代が多い地域は、それだけ車に頼った暮らしになっています。</p>
+    <p class="note">ガソリン代そのものが生活保護の人の出費になるわけではありません（車を持てないため）。「車なしで通院・買い物ができるか」の目安として使っています。</p>
+  </section>
+
+  <section class="ch fade" id="gomi">
+    <h2><span class="b">6</span>ごみ袋：52都市のうち%%GOMI_PAID_N%%市が有料</h2>
+    <p>環境省の調査（2023年度）では、燃やすごみが有料の市区町村は全国%%GOMI_NAT_PAID%%（全%%N_MUNI%%のうち）。52都市では%%GOMI_PAID_N%%市が有料、残りは無料です。有料の市の、燃やすごみの袋1枚の値段です（1リットルあたりの高い順。45リットル袋が無い市は大袋）。</p>
+    <div class="tbl-scroll"><table class="t"><thead><tr><th class="c">市</th><th>袋1枚</th><th>週2枚で1年</th><th class="c">受給者の減免</th></tr></thead><tbody>%%GOMI_TABLE%%</tbody></table></div>
+    <p class="src">出典: 各市の公式ページ（市の名前を押すと開きます）。那覇市（※）だけは市の公式ページで値段を確かめられず、民間の生活情報サイトの値です。「受給者の減免」は生活保護の世帯へのごみ袋の減免・無料の配布で、「未確認」は市の公式ページで確かめられなかったもの（ないとは限りません）。「＋袋代」の市は、処理の手数料に袋そのものの代金（店によって違う）が加わります。有料か無料か: <a href="https://www.env.go.jp/recycle/waste_tech/ippan/r5/index.html" target="_blank" rel="noopener">環境省 一般廃棄物処理実態調査 令和5年度</a></p>
+    <div class="easy"><b>やさしく言うと：</b>同じ生活保護でも、東京23区（家庭のごみは基本的に無料）や大阪市なら袋代は0円。札幌市なら週2枚で年%%SAPPORO_BAG_YEAR%%円。<b>北見市や宮崎市のように、生活保護の世帯は減免・無料で配る市もあります。</b>住んでいる市の窓口で聞いてみる価値があります。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">7</span>家賃の上限と、水道代</h2>
+    <p><b>家賃の上限（住宅扶助）</b>も地域で決まっています。ただ、その地域の家賃の高さとは、必ずしも合っていません。上限を「その都道府県の家賃の物価」で割り戻すと（試算）、いちばん余裕があるのは<b>%%M5_BEST%%</b>、いちばん苦しいのは<b>%%M5_WORST%%</b>でした。</p>
+    <p><b>水道代</b>は生活扶助から払います。上乗せはありません。家計調査の上下水道料（1年）は、いちばん多い<b>%%SUIDO_MAX_CITY%%が%%SUIDO_MAX%%円</b>、いちばん少ない<b>%%SUIDO_MIN_CITY%%が%%SUIDO_MIN%%円</b>。%%SUIDO_RATIO%%倍の差です。</p>
+    <p class="src">出典: 家賃の上限 平成27年4月14日 社援発0414第9号の別表（<a href="hogohi.html">保護費しらべ</a>と同じ表）、住居の物価 総務省「消費者物価地域差指数 2025年」、上下水道料 総務省 家計調査（2023〜2025年平均）</p>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">8</span>52都市ランキング</h2>
+    <p>ここまでの6つの物差しは、単位がばらばらです。そこで、物差しごとに52都市の順位をつけ、<b>6つの順位を足して、少ない順</b>に並べました（試算）。</p>
+    <div class="tbl-scroll"><table class="t"><thead><tr><th class="c">順位</th><th class="c">都市</th><th>物価</th><th>光熱</th><th>車</th><th>ごみ</th><th>家賃</th><th>水道</th></tr></thead><tbody>%%RANK_TABLE%%</tbody></table></div>
+    <p class="note">数字は物差しごとの順位（1位がいちばん楽）。物価＝物価で見た生活扶助、光熱＝光熱費−冬季加算、車＝ガソリン代、ごみ＝ごみ袋、家賃＝家賃の上限の余裕、水道＝水道代。真ん中の都市は省いています。全52都市と、物差しを選んで並べかえる表は、ツールにあります。</p>
+    <div class="easy"><b>やさしく言うと：</b>暮らしやすいのは、<b>級地が高く、車がいらず、ごみ袋が無料の大都市</b>。大変なのは、<b>級地が低いのに、冬は寒く、車がないと動けず、水道代も高い地方の市</b>です。</div>
+    <div class="caution"><b>ここは言いすぎないでおきます。</b>6つの物差しを同じ重さで足しています。どれを大事にするかで順位は変わります（ツールで試せます）。光熱費・ガソリン・水道代は二人以上の世帯の数字で、ひとり暮らしの生活保護の世帯とは金額がちがいます。順位は「どこが比べて重いか」の目安です。</div>
+  </section>
+  <a class="cta" href="chiiki.html"><span>物差しを選んで、52都市を並べかえてみる</span><span>→</span></a>
+
+  <section class="ch fade">
+    <h2><span class="b">9</span>大変な地域に住んでいる人が、できること</h2>
+    <ol class="todo">
+      <li><b>ごみ袋の減免がないか、市の窓口で聞く</b><small>北見市・宮崎市のように、生活保護の世帯は申請すれば減免・無料になる市があります。申請しないと受けられません</small></li>
+      <li><b>車が必要な事情があれば、ケースワーカーに相談する</b><small>国のＱ＆Ａにも「障害をお持ちの方の通勤、通院等に必要な場合等には自動車の保有を認められることがあります」とあります</small></li>
+      <li><b>冬季加算の月数と額を確かめる</b><small>Ⅰ区・Ⅱ区は10月から4月までの7か月です。保護費の明細に入っているか見てみてください</small></li>
+      <li><b>引っ越しを考えるなら、行き先で比べる</b><small>級地・冬季加算・家賃の上限・ごみ袋が、市区町村ごとに変わります。ツールで行き先を選べば比べられます</small></li>
+    </ol>
+    <ul class="links">
+      <li>働いた給料がいくら手元に残るか → <a href="kyuryo.html">給料いくら残るしらべ</a></li>
+      <li>困ったときの相談先 → <a href="sodan.html">相談窓口をさがす</a></li>
+    </ul>
+  </section>
+
+  <section class="ch sum fade">
+    <h2><span class="b">✓</span>まとめ</h2>
+    <h3>分かっていること</h3>
+    <div class="card"><span class="mk y">✓</span><div><b>生活扶助は6区分だけ。高い区分と低い区分で月%%FUJO_DIFF%%円</b><small>ひとり暮らし・20〜40歳。冬季加算は寒い地域ほど多く、年%%TOUKI6_Y%%円〜%%TOUKI1_Y%%円</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>北海道は、家賃を除く物価が全国1位</b><small>%%P_HOKKAIDO%%（東京都は%%P_TOKYO%%）。なのに町村の多くは生活扶助がいちばん低い区分</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>ごみ袋は、市によって0円から1枚135円まで</b><small>生活保護の世帯の減免がある市（北見市・宮崎市など）と、ない市（札幌市など）がある</small></div></div>
+    <h3>まだ分からないこと</h3>
+    <div class="card"><span class="mk q">？</span><div><b>ひとり暮らしの生活保護の世帯で、実際いくらかかっているか</b><small>家計調査は二人以上の世帯の平均。生活保護の世帯の地域ごとの出費は、国が出していない</small></div></div>
+    <div class="card"><span class="mk q">？</span><div><b>52都市以外の市区町村の光熱費・ガソリン・水道代</b><small>家計調査は都道府県庁のある市などだけ。北見市も対象外</small></div></div>
+    <div class="card"><span class="mk q">？</span><div><b>全国すべての市区町村の、ごみ袋の減免</b><small>国のまとめた一覧はない。このページでは、市の公式ページで確かめられたものだけを書いた</small></div></div>
+  </section>
+  <a class="cta" href="chiiki.html"><span>自分の市区町村で調べる（住む場所の暮らしやすさしらべ）</span><span>→</span></a>
+
+  <div class="foot">
+    <h3>根拠資料</h3>
+    <ul>
+      <li><a href="https://www.mhlw.go.jp/web/t_doc?dataId=82051000&amp;dataType=0" target="_blank" rel="noopener">生活保護法による保護の基準（昭和38年厚生省告示第158号）</a>：生活扶助・冬季加算の額と地区の区分（2026年10月1日から）</li>
+      <li><a href="https://www.mhlw.go.jp/content/001152601.pdf" target="_blank" rel="noopener">厚労省「生活扶助基準額の算出方法（令和8年4月）」</a>、<a href="https://www.mhlw.go.jp/content/kyuchi.3010.pdf" target="_blank" rel="noopener">厚労省「お住まいの地域の級地」</a></li>
+      <li><a href="https://www.stat.go.jp/data/kouri/kouzou/pdf/g_2025.pdf" target="_blank" rel="noopener">総務省「消費者物価地域差指数 2025年（令和7年）結果」</a>：別表1（都道府県）・別表2（都市）</li>
+      <li><a href="https://www.stat.go.jp/data/kakei/5.html" target="_blank" rel="noopener">総務省 家計調査（二人以上の世帯）品目別都道府県庁所在市及び政令指定都市ランキング（2023年〜2025年平均）</a>：電気代・都市ガス・プロパンガス・灯油・上下水道料・ガソリン</li>
+      <li><a href="https://www.env.go.jp/recycle/waste_tech/ippan/r5/index.html" target="_blank" rel="noopener">環境省 一般廃棄物処理実態調査 令和5年度 市町村集計結果（ごみ処理体制）</a>：「手数料（生活系）」の可燃ごみ・混合ごみ</li>
+      <li><a href="https://www.city.asahikawa.hokkaido.jp/kurashi/271/307/309/d083397_d/fil/genmen.pdf" target="_blank" rel="noopener">旭川市 資料3「減免制度の在り方の検討について」</a>：道内10市の生活保護世帯の減免</li>
+      <li>北見市「ごみに関する手数料一覧」「ごみに関する届出」、各市のごみ袋の公式ページ（6章の表）、気象庁 過去の気象データ（平年値）、厚労省「生活保護制度に関するＱ＆Ａ」</li>
+    </ul>
+    <h3>読むときの注意</h3>
+    <ul>
+      <li>物差しはどれも試算です。生活扶助はひとり暮らし・20〜40歳・2026年10月からの額。光熱費・ガソリン・水道代は二人以上の世帯の平均で、そこから引く冬季加算も2人世帯の額にそろえています</li>
+      <li>「物価で見た生活扶助」は、52都市はその市の物価、全市区町村での比べは都道府県の物価で割っています</li>
+      <li>「家賃の上限の余裕」は、上限を都道府県の住居の物価（全国平均100）で割ったものです。市ごとの家賃の相場ではありません</li>
+      <li>ごみ袋は、生活保護の世帯の減免を入れる前の値段で比べています（減免があるかどうかを、すべての市で確かめられないため）。燃やすごみが有料かどうかは、市区町村が環境省に答えた2023年度の内容です</li>
+      <li>電気代には、夏の冷房の分も入っています</li>
+      <li>確認日: %%CHECKED%% ／ 個人が作ったもので、行政の公式資料ではありません。法律上の助言でもありません</li>
+    </ul>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in'); io.unobserve(e.target);
+  e.target.querySelectorAll('.hb i').forEach(i => requestAnimationFrame(() => { i.style.width = i.dataset.w + '%'; }));
+}), {threshold: 0, rootMargin: '0px 0px -12% 0px'});
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
+</script>
+<script src="hub-items.js"></script>
+<script src="related.js" defer></script>
+</body>
+</html>

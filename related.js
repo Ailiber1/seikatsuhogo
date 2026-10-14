@@ -12,6 +12,8 @@
 */
 (function () {
   var RELATED = {
+    "chiiki-setsumei.html":    ["chiiki.html", "hogohi.html", "kyuryo.html", "sodan.html"],
+    "chiiki.html":             ["chiiki-setsumei.html", "hogohi.html", "chokin.html", "sodan.html"],
     "naiwake-setsumei.html":   ["naiwake-quiz.html", "hosoku-setsumei.html", "anti.html", "hima-setsumei.html"],
     "naiwake-quiz.html":       ["naiwake-setsumei.html", "hosoku-setsumei.html", "anti-kaeshi.html", "hogohi.html"],
     "hosoku-setsumei.html":    ["tamerai.html", "fuyo.html", "chokin-setsumei.html", "shitsugyo-setsumei.html"],

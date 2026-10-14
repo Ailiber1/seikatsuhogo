@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>住む場所の暮らしやすさしらべ</title>
+<meta name="description" content="住んでいる市区町村を選ぶと、生活保護費（生活扶助・冬季加算・家賃の上限）と、物価・光熱費・車・ごみ袋・水道代の地域の差を、国の資料で並べて見られます。52都市のランキングも物差しを選んで並べかえられます">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:16px; line-height:1.75; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+.nb{display:inline-block}
+h1,.for-who li,.verdict p,.box h3{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:24px 16px 44px}
+h1{font-size:clamp(24px,5.2vw,32px); line-height:1.4; margin:0 0 8px; color:var(--navy); text-wrap:balance}
+.lead{color:var(--sub); font-size:15px; margin:0 0 16px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:18px; font-size:15px}
+.for-who b{color:var(--navy)}
+.for-who ul{margin:4px 0 0; padding-left:1.2em}
+
+.step{background:var(--panel); border:2px solid var(--line); border-radius:13px; padding:14px 16px; margin-bottom:12px; transition:border-color .3s, opacity .3s}
+.step.off{opacity:.5}
+.step.done{border-color:var(--navy)}
+.step h2{font-size:16.5px; margin:0 0 8px; display:flex; gap:9px; align-items:center}
+.step h2 .n{flex:none; width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; display:grid; place-items:center; font-size:13px}
+.step .hint{font-size:13px; color:var(--sub); margin:6px 0 0}
+select{font:inherit; font-size:16px; width:100%; min-height:44px; padding:8px 10px; border:2px solid var(--line); border-radius:9px; background:#fff; color:var(--ink)}
+select:focus{outline:3px solid var(--navy-soft); border-color:var(--navy)}
+select:disabled{background:var(--line-soft); color:var(--sub)}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+
+#result{margin-top:18px}
+.guide{border:2px dashed var(--line); border-radius:13px; padding:18px; text-align:center; color:var(--sub)}
+.guide b{color:var(--navy)}
+.res{animation:pop .45s ease}
+@keyframes pop{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+.verdict{border-left:6px solid var(--navy); background:var(--navy-soft); border-radius:0 13px 13px 0; padding:14px 16px; margin-bottom:12px}
+.verdict .place{font-size:14px; color:var(--sub); margin:0 0 2px}
+.verdict p{margin:2px 0 0; font-size:17px; font-weight:700; line-height:1.6}
+.verdict .big{font-size:clamp(30px,8vw,42px); color:var(--navy); font-variant-numeric:tabular-nums; line-height:1.25}
+.side{font-size:14px; font-weight:800; color:var(--sub); letter-spacing:.04em; margin:16px 0 6px}
+.box{background:#fff; border:2px solid var(--line); border-radius:12px; padding:12px 15px; margin-bottom:10px}
+.box h3{font-size:15.5px; margin:0 0 4px; color:var(--navy); display:flex; justify-content:space-between; gap:8px; align-items:baseline}
+.box h3 .v{font-size:20px; color:var(--ink); white-space:nowrap; font-variant-numeric:tabular-nums}
+.box p{margin:0 0 6px; font-size:15px} .box p:last-child{margin:0}
+.box .s{font-size:13.5px; color:var(--sub)}
+.box .s a{color:var(--navy)}
+.box.good{border-left:6px solid var(--ok)} .box.bad{border-left:6px solid var(--ng)} .box.mid{border-left:6px solid var(--line)}
+.tag{display:inline-block; font-size:12.5px; font-weight:800; border-radius:5px; padding:1px 8px; margin-left:2px; vertical-align:2px}
+.tag.good{background:var(--ok-bg); color:var(--ok)} .tag.bad{background:var(--ng-bg); color:var(--ng)} .tag.mid{background:var(--line-soft); color:var(--sub)}
+.box.warn{background:var(--warn-bg); border-color:var(--warn)}
+.box.warn h3{color:var(--warn)}
+.box ul{margin:0; padding-left:1.2em; font-size:14.5px}
+.tbl-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+table.rk{width:100%; border-collapse:collapse; font-size:14px; background:#fff}
+.rk th,.rk td{padding:7px 6px; border-bottom:1px solid var(--line); text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums}
+.rk th{font-size:12.5px; color:var(--sub); font-weight:700; vertical-align:bottom; white-space:normal; min-width:4.5em}
+.rk td.c,.rk th.c{text-align:left}
+.rk td.r{font-weight:800; color:var(--navy)}
+.rk td small{color:var(--sub); font-size:11.5px; margin-left:2px}
+.rk tr.me td{background:var(--warn-bg)}
+.rk tr.top td.r{color:var(--ok)} .rk tr.low td.r{color:var(--ng)}
+.reset,.go{font:inherit; font-size:14.5px; font-weight:700; color:var(--navy); background:var(--navy-soft); border:none; border-radius:8px; padding:8px 14px; min-height:44px; cursor:pointer; margin-top:4px}
+.go{background:var(--navy); color:#fff; width:100%; font-size:16px}
+.go:disabled{background:var(--line); color:var(--sub); cursor:not-allowed}
+.checks{display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:4px 0 10px}
+.checks label{display:flex; gap:8px; align-items:flex-start; background:#fff; border:2px solid var(--line); border-radius:10px; padding:8px 10px; font-size:14.5px; font-weight:700; cursor:pointer; min-height:46px; line-height:1.4}
+.checks label small{display:block; font-weight:400; color:var(--sub); font-size:12.5px}
+.checks input{width:18px; height:18px; margin-top:2px; flex:none; accent-color:var(--navy)}
+.checks label:has(input:checked){border-color:var(--navy); background:var(--navy-soft)}
+#rankOut{margin-top:10px}
+.foot{margin-top:24px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot a{color:var(--navy); word-break:break-all}
+.foot ul{padding-left:1.2em}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (max-width:480px){ .row2,.checks{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){ .res{animation:none} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho"><span class="nb">住む場所の</span><span class="nb">暮らしやすさしらべ</span></h1>
+  <p class="lead">住んでいる市区町村を選ぶと、<b>生活保護費（生活扶助・冬の上乗せ・家賃の上限）</b>と、<b>物価・ごみ袋など地域で差が出る出費</b>を、国の資料で並べて見られます。</p>
+  <div class="for-who"><b>このツールは、こういう方へ</b>
+    <ul><li>生活保護を受けていて、自分の地域は<span class="nb">楽な方か大変な方か知りたい方</span></li>
+    <li>引っ越しを考えていて、<span class="nb">地域で比べたい方</span></li>
+    <li>「どこに住んでも保護費は同じ」と<span class="nb">思っていた方</span></li></ul></div>
+
+  <div class="step" id="s1">
+    <h2><span class="n">1</span>住んでいる場所</h2>
+    <div class="row2">
+      <select id="pref" aria-label="都道府県"><option value="">都道府県を選んでください</option></select>
+      <select id="city" disabled aria-label="市区町村"><option value="">市区町村を選んでください</option></select>
+    </div>
+    <p class="hint">引っ越しを考えている方は、引っ越し先を選んでください。</p>
+  </div>
+
+  <div class="step off" id="s2">
+    <h2><span class="n">2</span>あなたの年齢（ひとり暮らしとして計算します）</h2>
+    <select id="age" disabled aria-label="年齢"><option value="">選んでください</option></select>
+  </div>
+
+  <div id="result" aria-live="polite"></div>
+
+  <div class="step" id="s3" style="margin-top:22px">
+    <h2><span class="n">★</span>52都市ランキング（物差しを選んで並べかえ）</h2>
+    <p class="hint" style="margin:0 0 8px">都道府県庁のある市と、大きな市（川崎・相模原・浜松・堺・北九州）の52都市です。国の家計調査がある都市だけで比べています。選んだ物差しの順位を足して、少ない順に並べます。</p>
+    <div class="checks" id="checks"></div>
+    <button class="go" type="button" id="rankBtn">この物差しでランキングを出す</button>
+    <div id="rankOut" aria-live="polite"></div>
+  </div>
+
+  <div class="foot">
+    <p>この結果は、国の公開資料から計算した目安（試算）です。実際の保護費は福祉事務所が決めます。入力した内容はこの画面の中だけで計算していて、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</p>
+    <p>くわしい説明と、物差しの作り方 → <a href="chiiki-setsumei.html">同じ生活保護でも、住む場所でこんなに違う</a></p>
+    <h3 style="font-size:14px; color:var(--ink); margin:12px 0 4px">根拠資料</h3>
+    <ul>
+      <li>生活扶助・冬季加算: <a href="https://www.mhlw.go.jp/web/t_doc?dataId=82051000&amp;dataType=0" target="_blank" rel="noopener">生活保護法による保護の基準（昭和38年厚生省告示第158号）</a>（令和8年10月1日適用の改正まで反映）、<a href="https://www.mhlw.go.jp/content/001152601.pdf" target="_blank" rel="noopener">厚労省「生活扶助基準額の算出方法（令和8年4月）」</a>。計算は<a href="hogohi.html">保護費しらべ</a>と同じ式です</li>
+      <li>級地: <a href="https://www.mhlw.go.jp/content/kyuchi.3010.pdf" target="_blank" rel="noopener">厚労省「お住まいの地域の級地」</a> ／ 家賃の上限: 平成27年4月14日 社援発0414第9号</li>
+      <li>物価: <a href="https://www.stat.go.jp/data/kouri/kouzou/pdf/g_2025.pdf" target="_blank" rel="noopener">総務省「消費者物価地域差指数 2025年結果」</a>（家賃を除く総合・住居）</li>
+      <li>光熱費・ガソリン・水道代: <a href="https://www.stat.go.jp/data/kakei/5.html" target="_blank" rel="noopener">総務省 家計調査（二人以上の世帯）品目別都道府県庁所在市及び政令指定都市ランキング 2023〜2025年平均</a></li>
+      <li>燃やすごみが有料か: <a href="https://www.env.go.jp/recycle/waste_tech/ippan/r5/index.html" target="_blank" rel="noopener">環境省 一般廃棄物処理実態調査 令和5年度</a>（市区町村の答え）。袋の値段と減免は各市の公式ページ（<a href="chiiki-setsumei.html#gomi">一覧</a>）</li>
+      <li>確認日: /*CHECKED*/ ／ 個人が作ったもので、行政の公式ツールではありません</li>
+    </ul>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+const KYUCHI = /*KYUCHI*/;   // {都道府県: [[市区町村, 級地0〜5, 燃やすごみ 0有料 1無料 2一部有料 3収集無し], ...]}
+const KEIKA = /*KEIKA*/;
+const KIJUN = /*KIJUN*/;
+const JUTAKU = /*JUTAKU*/;
+const TOUKI = /*TOUKI*/;
+const PRICE = /*PRICE*/;     // {都道府県: [家賃を除く総合, 住居]}
+const R52 = /*R52*/;
+const BAG = /*BAG*/;
+const NAT = /*NAT*/;
+const LV = ["1級地-1","1級地-2","2級地-1","2級地-2","3級地-1","3級地-2"];
+const AREA = ["","Ⅰ区","Ⅱ区","Ⅲ区","Ⅳ区","Ⅴ区","Ⅵ区"];
+const GOMI = ["有料","無料","一部有料","収集無し"];
+const AGES = ["18～19","20～40","41～59","60～64","65～69","70～74","75～"];
+const AGE_LABEL = {"18～19":"18〜19歳","20～40":"20〜40歳","41～59":"41〜59歳","60～64":"60〜64歳","65～69":"65〜69歳","70～74":"70〜74歳","75～":"75歳以上"};
+// 物差し（rank_chiiki.py と同じ定義。hb=true は大きいほど楽）
+const MEAS = [
+  {k:'m1', hb:true,  name:'物価で見た生活扶助', sub:'生活扶助÷家賃を除く物価', unit:'円/月'},
+  {k:'m2', hb:false, name:'光熱費（冬季加算を引いたあと）', sub:'電気・ガス・灯油の年額−冬季加算', unit:'円/年'},
+  {k:'m3', hb:false, name:'車への頼りぐあい', sub:'ガソリン代の年額', unit:'円/年'},
+  {k:'m4', hb:false, name:'ごみ袋', sub:'燃やすごみの袋1枚（45L換算）', unit:'円'},
+  {k:'m5', hb:true,  name:'家賃の上限の余裕', sub:'家賃の上限÷家賃の物価', unit:'円'},
+  {k:'m6', hb:false, name:'水道代', sub:'上下水道料の年額', unit:'円/年'},
+];
+
+// CALC-START
+// 生活扶助 = 第1類の合計×逓減率（1円未満切り捨て→10円未満切り上げ）＋第2類＋特例加算＋経過的加算
+function calcKijun(ages, lv, oct, K, KE) {
+  const n = ages.length;
+  const raw = ages.reduce((s, a) => s + K.dai1[a][lv], 0);
+  const d1 = Math.ceil(Math.floor(Math.round(raw * K.teigen[n] * 1e6) / 1e6) / 10) * 10;
+  const d2 = K.dai2[n];
+  const per = oct ? K.tokurei.from_2026_10 : K.tokurei.until_2026_09;
+  const tok = per * n;
+  // 10月からは特例加算が1人1,000円増える分、経過的加算が1人最大1,000円減る（従前額保障）
+  const kei = ages.reduce((s, a) => { const k = KE[n][a][lv]; return s + (oct ? k - Math.min(1000, k) : k); }, 0);
+  return {raw, d1, d2, tok, kei, total: d1 + d2 + tok + kei};
+}
+// CALC-END
+
+// RANK-START
+// 同じ値は同じ順位（平均順位）。1位がいちばん楽。rank_chiiki.py の rank と同じ
+function rankOf(values, hb) {
+  const keys = Object.keys(values).sort((a, b) => hb ? values[b] - values[a] : values[a] - values[b]);
+  const out = {};
+  for (let i = 0; i < keys.length;) {
+    let j = i;
+    while (j + 1 < keys.length && values[keys[j + 1]] === values[keys[i]]) j++;
+    for (let t = i; t <= j; t++) out[keys[t]] = (i + j) / 2 + 1;
+    i = j + 1;
+  }
+  return out;
+}
+function ranking52(sel) {
+  const per = {};
+  sel.forEach(k => { const m = MEAS.find(x => x.k === k); per[k] = rankOf(Object.fromEntries(Object.entries(R52).map(([c, v]) => [c, v[k]])), m.hb); });
+  const sum = Object.fromEntries(Object.keys(R52).map(c => [c, sel.reduce((s, k) => s + per[k][c], 0)]));
+  return {per, sum, total: rankOf(sum, false)};
+}
+// RANK-END
+
+const $ = id => document.getElementById(id);
+const pref = $('pref'), city = $('city'), age = $('age');
+const yen = n => Math.round(n).toLocaleString('ja-JP');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmtR = r => (Number.isInteger(r) ? r : r.toFixed(1)) + '位';
+
+Object.keys(KYUCHI).forEach(p => pref.add(new Option(p, p)));
+AGES.forEach(a => age.add(new Option(AGE_LABEL[a], a)));
+$('checks').innerHTML = MEAS.map(m => `<label><input type="checkbox" value="${m.k}" checked><span>${m.name}<small>${m.sub}</small></span></label>`).join('');
+
+pref.addEventListener('change', () => {
+  city.innerHTML = '<option value="">市区町村を選んでください</option>';
+  (KYUCHI[pref.value] || []).slice().sort((a, b) => a[0].localeCompare(b[0], 'ja')).forEach(([n]) => city.add(new Option(n, n)));
+  refresh();
+});
+city.addEventListener('change', refresh);
+age.addEventListener('change', refresh);
+
+function refresh() {
+  city.disabled = !pref.value;
+  age.disabled = !city.value;
+  $('s1').classList.toggle('done', !!city.value);
+  $('s2').classList.toggle('off', !city.value);
+  $('s2').classList.toggle('done', !!age.value);
+  render();
+}
+
+function jutakuLimit(prefName, cityName, lv, n) {
+  const row = JUTAKU.city[cityName] || JUTAKU.pref[prefName][String(Math.floor(lv / 2) + 1)];
+  return row[n === 1 ? 0 : n === 2 ? 1 : n <= 5 ? 2 : n === 6 ? 3 : 4];
+}
+function toukiYear(p, n) {
+  const a = String(TOUKI.pref_area[p] || 6);
+  return {area: +a, month: TOUKI.amount[a][n - 1], months: TOUKI.months[a], year: TOUKI.amount[a][n - 1] * TOUKI.months[a], period: TOUKI.period[a]};
+}
+// 52都市のどれに当たるか（東京23区は「東京都区部」）
+function key52(p, name) {
+  if (p === '東京都' && name.endsWith('区')) return '東京都区部';
+  return R52[name] && R52[name].pref === p ? name : null;
+}
+function capital52(p) { return Object.keys(R52).find(c => R52[c].pref === p); }
+// 全1,741市区町村の「物価で見た生活扶助」（都道府県の物価で割る）。選んだ年齢で計算し、高い順の順位
+function allMuniRank(a, target) {
+  const v = {};
+  Object.entries(KYUCHI).forEach(([p, rows]) => rows.forEach(([n, lv]) => { v[p + '|' + n] = calcKijun([a], lv, true, KIJUN, KEIKA).total / (PRICE[p][0] / 100); }));
+  // 1円未満の差は同じとみなす
+  Object.keys(v).forEach(k => v[k] = Math.round(v[k]));
+  return {rank: rankOf(v, true)[target], n: Object.keys(v).length, val: v[target]};
+}
+
+function render() {
+  const out = $('result');
+  if (!city.value) { out.innerHTML = `<div class="guide">上の <b>1・2</b> を選ぶと、ここに<br><b>あなたの地域の保護費と、地域で差が出る出費</b>が出ます。</div>`; return; }
+  if (!age.value) { out.innerHTML = `<div class="guide">あと少しです。<b>年齢</b>を選ぶと結果が出ます。</div>`; return; }
+  const p = pref.value, name = city.value, a = age.value;
+  const row = KYUCHI[p].find(r => r[0] === name), lv = row[1], g = row[2];
+  const fujo = calcKijun([a], lv, true, KIJUN, KEIKA).total;
+  const top = calcKijun([a], 0, true, KIJUN, KEIKA).total;
+  const t = toukiYear(p, 1), tMin = toukiYear('東京都', 1);
+  const k52 = key52(p, name), r = k52 ? R52[k52] : null;
+  const mr = allMuniRank(a, p + '|' + name);
+  const lim = jutakuLimit(p, p === '東京都' && name.endsWith('区') ? '東京都' : name, lv, 1);
+  const bag = BAG[name];
+  const gomiTxt = GOMI[g];
+
+  if (window.gcUse) gcUse('住む場所の暮らしやすさしらべ');
+
+  // 保護費の側
+  const fujoBox = lv === 0
+    ? `<div class="box good"><h3>生活扶助（月）<span class="v">${yen(fujo)}円</span></h3><p>全国で<b>いちばん高い区分</b>（${LV[0]}）です。<span class="tag good">高い方</span></p><p class="s">ひとり暮らし・${AGE_LABEL[a]}・2026年10月から。食費・光熱費など、暮らしの費用の分です</p></div>`
+    : `<div class="box ${lv >= 4 ? 'bad' : 'mid'}"><h3>生活扶助（月）<span class="v">${yen(fujo)}円</span></h3><p>${LV[lv]}。いちばん高い区分（${LV[0]}）より<b>月${yen(top - fujo)}円・年${yen((top - fujo) * 12)}円少ない</b>。${lv >= 4 ? '<span class="tag bad">低い方</span>' : ''}</p><p class="s">ひとり暮らし・${AGE_LABEL[a]}・2026年10月から。級地は「物価や暮らしの水準の差」で、全国を6つに分けたものです</p></div>`;
+  const toukiBox = `<div class="box ${t.area <= 2 ? 'good' : t.area >= 5 ? 'mid' : 'mid'}"><h3>冬季加算（冬の上乗せ・年）<span class="v">${yen(t.year)}円</span></h3><p>${AREA[t.area]}：月${yen(t.month)}円 × ${t.months}か月（${t.period}）。${t.area === 6 ? 'いちばん少ない区分です。' : `いちばん少ないⅥ区（年${yen(tMin.year)}円）より<b>年${yen(t.year - tMin.year)}円多い</b>。`}</p><p class="s">都道府県で決まり、級地は関係ありません。ひとり暮らしの額</p></div>`;
+  const rentBox = `<div class="box mid"><h3>家賃の上限（ひとり暮らし）<span class="v">${yen(lim)}円</span></h3><p class="s">この額までの家賃が住宅扶助で出ます。部屋の広さなどで変わることがあります</p></div>`;
+
+  // 出ていくお金の側
+  const pr = PRICE[p][0];
+  const priceBox = `<div class="box ${pr >= 101 ? 'bad' : pr <= 98.5 ? 'good' : 'mid'}"><h3>物価（家賃を除く）<span class="v">${pr.toFixed(1)}</span></h3><p>${esc(p)}の物価は、全国平均を100とすると <b>${pr.toFixed(1)}</b>。${pr >= 101 ? '<span class="tag bad">高い方</span>' : pr <= 98.5 ? '<span class="tag good">安い方</span>' : ''}</p><p>物価で割り戻すと、生活扶助は <b>月${yen(mr.val)}円ぶん</b>。全${yen(mr.n)}市区町村で<b>${fmtR(mr.rank)}</b>（高い順）。</p><p class="s">物価は都道府県の値（市区町村ごとの値は国が出していません）。総務省「消費者物価地域差指数 2025年」</p></div>`;
+  let gomiBody;
+  const ward = p === '東京都' && name.endsWith('区');
+  if (ward) {
+    gomiBody = `<p>東京23区の家庭の燃やすごみは、<b>基本的に無料</b>です（指定の有料袋はありません）。${g !== 1 ? `<br><span class="s">環境省の調査では、${esc(name)}は「${gomiTxt}」と答えています。たくさん出す場合などの扱いと考えられます。区のページで確かめてください。</span>` : ''}</p>`;
+  } else if (bag) {
+    const per45 = bag.yen / bag.liters * 45;
+    gomiBody = `<p>燃やすごみの袋 ${bag.liters}リットル1枚 <b>${bag.yen}円</b>${bag.liters !== 45 ? `（45リットルにすると約${Math.round(per45)}円）` : ''}。週2枚使うと <b>年${yen(bag.yen * 2 * 52)}円</b>。${bag.since ? `<br><span class="s">${esc(bag.since)}</span>` : ''}</p>` +
+      (bag.genmen ? `<p>生活保護の世帯への減免: <b>${esc(bag.genmen)}</b>${bag.genmen_src ? ` <span class="s">（<a href="${bag.genmen_src}" target="_blank" rel="noopener">市のページ</a>）</span>` : ''}</p>` : `<p>生活保護の世帯への減免: このツールでは<b>確かめられていません</b>。市の窓口（ごみの担当課）で「生活保護を受けていると、ごみ袋の減免はありますか」と聞いてみてください。</p>`) +
+      `<p class="s">値段: <a href="${bag.src}" target="_blank" rel="noopener">${bag.unofficial ? '民間の生活情報サイト（市の公式ページで確認できなかった）' : '市の公式ページ'}</a>${bag.note ? '。' + esc(bag.note) : ''}</p>`;
+  } else if (g === 0 || g === 2) {
+    gomiBody = `<p>燃やすごみは<b>${gomiTxt}</b>（市区町村の答え）。袋の値段は、このツールには入っていません。お住まいの市区町村のページで確かめてください。</p><p>市によっては、<b>生活保護の世帯にごみ袋を減免・無料で配っている</b>ところがあります（北見市・宮崎市など）。窓口で聞いてみる価値があります。</p>`;
+  } else {
+    gomiBody = `<p>燃やすごみは<b>${gomiTxt}</b>（市区町村の答え）。${g === 1 ? 'ごみ袋に処理の手数料はかかりません（市販の袋代だけ）。' : ''}</p>`;
+  }
+  const gomiBox = `<div class="box ${g === 1 || ward ? 'good' : bag && bag.yen / bag.liters * 45 >= 60 ? 'bad' : 'mid'}"><h3>ごみ袋<span class="v">${g === 1 || ward ? '無料' : bag ? bag.yen + '円' : gomiTxt}</span></h3>${gomiBody}<p class="s">有料か無料か: 環境省 一般廃棄物処理実態調査 令和5年度。その後に変わった市もあります</p></div>`;
+
+  // 52都市の中の順位
+  let rankBox;
+  if (r) {
+    const all = ranking52(MEAS.map(m => m.k));
+    const cells = MEAS.map(m => {
+      const rr = all.per[m.k][k52];
+      const v = m.k === 'm4' ? (r[m.k] ? r[m.k] + '円' : '0円（無料）') : yen(r[m.k]) + m.unit.replace('円', '円');
+      return `<tr><td class="c">${m.name}<br><small>${v}</small></td><td class="r">${fmtR(rr)}</td></tr>`;
+    }).join('');
+    const tr = all.total[k52];
+    rankBox = `<div class="box ${tr <= 13 ? 'good' : tr >= 40 ? 'bad' : 'mid'}"><h3>52都市の総合順位<span class="v">${fmtR(tr)}</span></h3>
+      <p>${k52 === '東京都区部' ? '東京23区は、国の家計調査で「東京都区部」としてまとめて数えられています。' : ''}6つの物差しの順位を足した順位です（1位がいちばん暮らしやすい）。${tr <= 13 ? '<span class="tag good">上位4分の1</span>' : tr >= 40 ? '<span class="tag bad">下位4分の1</span>' : ''}</p>
+      <div class="tbl-scroll"><table class="rk"><tbody>${cells}</tbody></table></div>
+      <p class="s">光熱費・ガソリン・水道代は二人以上の世帯の年額、光熱費から引く冬季加算も2人世帯の額です。物価で見た生活扶助は、この市の物価（${r.price.toFixed(1)}）で割っています</p></div>`;
+  } else {
+    const cap = capital52(p);
+    rankBox = `<div class="box mid"><h3>52都市の総合順位<span class="v">対象外</span></h3><p>光熱費・ガソリン・水道代は、国の家計調査が都道府県庁のある市などにしかありません。同じ${esc(p)}の<b>${esc(cap)}</b>は、52都市で<b>${fmtR(R52[cap].rank)}</b>でした。下の「52都市ランキング」で見られます。</p>${name === '北見市' ? '<p>北見市の1月の平均気温は−8.0℃で、札幌（−3.2℃）より4.8℃低い（気象庁の平年値）。暖房の灯油は、札幌よりかかると考えられます。</p>' : ''}</div>`;
+  }
+
+  out.innerHTML = `<div class="res">
+    <div class="verdict"><p class="place"><b>${esc(p)} ${esc(name)}</b>（${LV[lv]}・冬季加算${AREA[t.area]}）／ ひとり暮らし・${AGE_LABEL[a]}</p>
+      <p>生活扶助と冬の上乗せを1年で足すと</p><p class="big">年 ${yen(fujo * 12 + t.year)}円</p>
+      <p style="font-size:14.5px; font-weight:400; color:var(--sub)">いちばん多い組み合わせ（${LV[0]}・Ⅰ区）は年${yen(top * 12 + toukiYear('北海道', 1).year)}円、いちばん少ない組み合わせ（${LV[5]}・Ⅵ区）は年${yen(calcKijun([a], 5, true, KIJUN, KEIKA).total * 12 + tMin.year)}円</p></div>
+    <div class="side">受け取る側（保護費）</div>${fujoBox}${toukiBox}${rentBox}
+    <div class="side">出ていく側（地域で差が出る出費）</div>${priceBox}${gomiBox}${rankBox}
+    <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button>
+  </div>`;
+}
+
+function resetAll() {
+  pref.value = ''; age.value = '';
+  city.innerHTML = '<option value="">市区町村を選んでください</option>';
+  refresh();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// 52都市ランキング
+const boxes = () => [...document.querySelectorAll('#checks input')];
+boxes().forEach(b => b.addEventListener('change', () => { $('rankBtn').disabled = !boxes().some(x => x.checked); }));
+$('rankBtn').addEventListener('click', () => {
+  const sel = boxes().filter(b => b.checked).map(b => b.value);
+  if (!sel.length) return;
+  if (window.gcUse) gcUse('住む場所の暮らしやすさしらべ');
+  const {per, sum, total} = ranking52(sel);
+  const me = city.value ? key52(pref.value, city.value) : null;
+  const order = Object.keys(R52).sort((x, y) => total[x] - total[y] || x.localeCompare(y, 'ja'));
+  const ms = MEAS.filter(m => sel.includes(m.k));
+  const head = `<tr><th class="c">順位</th><th class="c">都市</th>${ms.map(m => `<th>${m.name}</th>`).join('')}</tr>`;
+  const body = order.map(c => {
+    const v = R52[c], tr = total[c];
+    return `<tr class="${c === me ? 'me' : ''} ${tr <= 5 ? 'top' : tr >= 48 ? 'low' : ''}"><td class="r c">${fmtR(tr)}</td><td class="c">${esc(c)}</td>${ms.map(m => `<td>${m.k === 'm4' ? (v.m4 ? v.m4 : 0) : yen(v[m.k])}<small>${fmtR(per[m.k][c])}</small></td>`).join('')}</tr>`;
+  }).join('');
+  $('rankOut').innerHTML = `<div class="res"><p class="s" style="font-size:13.5px; color:var(--sub); margin:6px 0">数字の右の小さい字は、その物差しでの順位。${me ? '色のついた行が、あなたの選んだ地域です。' : ''}左右にスクロールできます。</p>
+    <div class="tbl-scroll"><table class="rk"><thead>${head}</thead><tbody>${body}</tbody></table></div></div>`;
+});
+
+refresh();
+</script>
+<script src="hub-items.js"></script>
+<script src="related.js" defer></script>
+</body>
+</html>

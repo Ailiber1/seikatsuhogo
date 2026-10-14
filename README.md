@@ -41,7 +41,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `naiwake-quiz.html` | ツール | 生活保護イメージ当てクイズ（受けているのはどんな人か、5問に予想で答えて国の調査の数字と答え合わせ。高齢者世帯・20代30代・ひとり暮らし・その他の世帯で働いている割合・5年以上） | [/naiwake-quiz.html](https://ailiber1.github.io/seikatsuhogo/naiwake-quiz.html) |
 | `naiwake-setsumei.html` | 解説 | 生活保護は、怠け者ばかり？（受けている世帯の内訳55.2%・25.6%・3.4%・15.8%、押すと色がつく100世帯の図、年齢、ひとり暮らし84.7%・平均9年6か月、受け始めた理由） | [/naiwake-setsumei.html](https://ailiber1.github.io/seikatsuhogo/naiwake-setsumei.html) |
 | `chiiki.html` | ツール | 住む場所の暮らしやすさしらべ（市区町村を選ぶと、生活扶助・冬季加算・家賃の上限と、物価・ごみ袋・52都市の順位。物差しを選んで52都市を並べかえられる） | [/chiiki.html](https://ailiber1.github.io/seikatsuhogo/chiiki.html) |
-| `chiiki-setsumei.html` | 解説 | 同じ生活保護でも、住む場所でこんなに違う（北見市のごみ袋10枚1,350円（1枚135円）から。物価・光熱費−冬季加算・車・ごみ袋・家賃の上限・水道代の6つの物差しで52都市を比べたランキング） | [/chiiki-setsumei.html](https://ailiber1.github.io/seikatsuhogo/chiiki-setsumei.html) |
+| `chiiki-setsumei.html` | 解説 | 同じ生活保護でも、住む場所でこんなに違う（北見市のごみ袋10枚1,350円（1枚135円）から。物価・光熱費−冬季加算・車なしの暮らしにくさ・ごみ袋・家賃の上限・水道代の6つの物差しで52都市を比べたランキング） | [/chiiki-setsumei.html](https://ailiber1.github.io/seikatsuhogo/chiiki-setsumei.html) |
 | `database.rules.json` / `firebase.json` / `.firebaserc` | 設定 | 暇人スキャンの保存先（Firebase Realtime Database）の書き込みルール | — |
 | `data/` | データ | ページに埋め込む元データ（JSON） | — |
 | `scripts/` | スクリプト | 公的資料からデータを作り、ページを生成する | — |

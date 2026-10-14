@@ -164,13 +164,18 @@ table.t{width:100%; border-collapse:collapse; font-size:15px; background:#fff}
   </section>
 
   <section class="ch fade">
-    <h2><span class="b">5</span>車：生活保護では、原則持てない</h2>
+    <h2><span class="b">5</span>車なしの暮らしにくさ：生活保護では、車は原則持てない</h2>
     <blockquote>自動車は資産となりますので、原則として処分していただき、生活の維持のために活用していただくことになります。ただし、障害をお持ちの方の通勤、通院等に必要な場合等には自動車の保有を認められることがあります。</blockquote>
     <p class="src">出典: 厚労省「生活保護制度に関するＱ＆Ａ」Ｑ７</p>
-    <p>車がないと暮らしにくい地域ほど、生活保護では不便です。その目安として、家計調査のガソリン代を見ました。</p>
-    <div class="fig"><p class="cap">ガソリン代（1年・二人以上の世帯）。少ないほど、車なしでも暮らしやすい</p>%%SVG_GAS%%</div>
+    <p>この物差しは、「車を持てる地域」を探すものではありません。<b>生活保護では車を持てないので、車がないと暮らしにくい地域ほど、受給者には不便</b>です。買い物・通院・役所に、歩きやバスで行くことになるからです。</p>
+    <p>その「車がないと暮らしにくい度合い」の目安として、その都市に住む人が1年に使うガソリン代（家計調査）を見ました。ガソリン代が多い都市ほど、暮らしが車に頼っていて、車がない人には不便な地域です。</p>
+    <div class="fig"><p class="cap">ガソリン代（1年・二人以上の世帯）。<span style="color:var(--ng)">金額が高いほど、車がないと暮らしにくい</span>地域<br><small style="font-weight:400; color:var(--sub)">ランキングでは、ガソリン代が少ない都市ほど上の順位（1位＝東京都区部）</small></p>%%SVG_GAS%%</div>
     <p>いちばん多い<b>%%GAS_MAX_CITY%%は年%%GAS_MAX%%円</b>、いちばん少ない<b>%%GAS_MIN_CITY%%は年%%GAS_MIN%%円</b>。%%GAS_RATIO%%倍の差です。ガソリン代が多い地域は、それだけ車に頼った暮らしになっています。</p>
     <p class="note">ガソリン代そのものが生活保護の人の出費になるわけではありません（車を持てないため）。「車なしで通院・買い物ができるか」の目安として使っています。</p>
+    <p>なお、<b>病院に通う交通費は、医療扶助から出ることがあります</b>（移送費）。</p>
+    <blockquote>ア 医療機関に電車・バス等により受診する場合で、当該受診に係る交通費が必要な場合</blockquote>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8434&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">厚労省「生活保護法による医療扶助運営要領について」</a> の「9 移送の給付」(2)給付の範囲</p>
+    <div class="easy"><b>やさしく言うと：</b>通院のバス代・電車代は、福祉事務所に認められれば出ます。ただし<b>原則として前もって申請し、領収書などを出す</b>必要があります（同じ要領の(3)給付手続き）。買い物などの移動には使えません。</div>
   </section>
 
   <section class="ch fade" id="gomi">
@@ -198,8 +203,8 @@ table.t{width:100%; border-collapse:collapse; font-size:15px; background:#fff}
     </ol>
     <div class="one">%%RANK_EXAMPLE%%</div>
     <p class="lowgood">表の数字はすべて「順位」です。<b>数字が小さいほど暮らしやすい</b>（1位がいちばん楽、52位がいちばん大変）。</p>
-    <div class="tbl-scroll"><table class="t"><thead><tr><th class="c">順位</th><th class="c">都市</th><th>物価</th><th>光熱</th><th>車</th><th>ごみ</th><th>家賃</th><th>水道</th><th>合計<br><small>小さいほど楽</small></th></tr></thead><tbody>%%RANK_TABLE%%</tbody></table></div>
-    <p class="note">数字は物差しごとの順位（1位がいちばん楽）。物価＝物価で見た生活扶助、光熱＝光熱費−冬季加算、車＝ガソリン代、ごみ＝ごみ袋、家賃＝家賃の上限の余裕、水道＝水道代。真ん中の都市は省いています。全52都市と、物差しを選んで並べかえる表は、ツールにあります。</p>
+    <div class="tbl-scroll"><table class="t"><thead><tr><th class="c">順位</th><th class="c">都市</th><th>物価</th><th>光熱</th><th>車なし</th><th>ごみ</th><th>家賃</th><th>水道</th><th>合計<br><small>小さいほど楽</small></th></tr></thead><tbody>%%RANK_TABLE%%</tbody></table></div>
+    <p class="note">数字は物差しごとの順位（1位がいちばん楽）。物価＝物価で見た生活扶助、光熱＝光熱費−冬季加算、車なし＝車なしの暮らしにくさ（ガソリン代が少ないほど上位）、ごみ＝ごみ袋、家賃＝家賃の上限の余裕、水道＝水道代。真ん中の都市は省いています。全52都市と、物差しを選んで並べかえる表は、ツールにあります。</p>
     <div class="easy"><b>やさしく言うと：</b>暮らしやすいのは、<b>級地が高く、車がいらず、ごみ袋が無料の大都市</b>。大変なのは、<b>級地が低いのに、冬は寒く、車がないと動けず、水道代も高い地方の市</b>です。</div>
     <div class="caution"><b>ここは言いすぎないでおきます。</b>6つの物差しを同じ重さで足しています。どれを大事にするかで順位は変わります（ツールで試せます）。光熱費・ガソリン・水道代は二人以上の世帯の数字で、ひとり暮らしの生活保護の世帯とは金額がちがいます。順位は「どこが比べて重いか」の目安です。</div>
   </section>
@@ -209,6 +214,7 @@ table.t{width:100%; border-collapse:collapse; font-size:15px; background:#fff}
     <h2><span class="b">9</span>大変な地域に住んでいる人が、できること</h2>
     <ol class="todo">
       <li><b>ごみ袋の減免がないか、市の窓口で聞く</b><small>北見市・宮崎市・大分市のように、生活保護の世帯はごみ袋が減免・無料になる市があります。北見市・宮崎市は申請が必要です（大分市は申請しなくても配られます）</small></li>
+      <li><b>通院の交通費は、前もって福祉事務所に申請する</b><small>電車・バスで病院に通う交通費は、医療扶助の「移送」で出ることがあります。原則として事前の申請と、領収書などの提出が必要です</small></li>
       <li><b>車が必要な事情があれば、ケースワーカーに相談する</b><small>国のＱ＆Ａにも「障害をお持ちの方の通勤、通院等に必要な場合等には自動車の保有を認められることがあります」とあります</small></li>
       <li><b>冬季加算の月数と額を確かめる</b><small>Ⅰ区・Ⅱ区は10月から4月までの7か月です。保護費の明細に入っているか見てみてください</small></li>
       <li><b>引っ越しを考えるなら、行き先で比べる</b><small>級地・冬季加算・家賃の上限・ごみ袋が、市区町村ごとに変わります。ツールで行き先を選べば比べられます</small></li>
@@ -241,7 +247,7 @@ table.t{width:100%; border-collapse:collapse; font-size:15px; background:#fff}
       <li><a href="https://www.stat.go.jp/data/kakei/5.html" target="_blank" rel="noopener">総務省 家計調査（二人以上の世帯）品目別都道府県庁所在市及び政令指定都市ランキング（2023年〜2025年平均）</a>：電気代・都市ガス・プロパンガス・灯油・上下水道料・ガソリン</li>
       <li><a href="https://www.env.go.jp/recycle/waste_tech/ippan/r5/index.html" target="_blank" rel="noopener">環境省 一般廃棄物処理実態調査 令和5年度 市町村集計結果（ごみ処理体制）</a>：「手数料（生活系）」の可燃ごみ・混合ごみ</li>
       <li><a href="https://www.city.asahikawa.hokkaido.jp/kurashi/271/307/309/d083397_d/fil/genmen.pdf" target="_blank" rel="noopener">旭川市 資料3「減免制度の在り方の検討について」</a>：道内10市の生活保護世帯の減免</li>
-      <li>北見市「ごみに関する手数料一覧」「ごみに関する届出」、各市のごみ袋の公式ページ（6章の表）、気象庁 過去の気象データ（平年値）、厚労省「生活保護制度に関するＱ＆Ａ」</li>
+      <li>北見市「ごみに関する手数料一覧」「ごみに関する届出」、各市のごみ袋の公式ページ（6章の表）、気象庁 過去の気象データ（平年値）、厚労省「生活保護制度に関するＱ＆Ａ」、<a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8434&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">厚労省「生活保護法による医療扶助運営要領について」</a>（通院の交通費）</li>
     </ul>
     <h3>読むときの注意</h3>
     <ul>

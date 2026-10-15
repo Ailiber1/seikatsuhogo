@@ -249,6 +249,17 @@ function allMuniRank(a, target) {
   return {rank: rankOf(v, true)[target], n: Object.keys(v).length, val: v[target]};
 }
 
+// 全1,741市区町村で「生活扶助1年分＋冬季加算」の最大・最小（実在する組み合わせだけ）
+function yearRange(a) {
+  let max = -1, min = Infinity, maxN = [], minC = 0;
+  Object.entries(KYUCHI).forEach(([p, rows]) => rows.forEach(([n, lv]) => {
+    const v = calcKijun([a], lv, true, KIJUN, KEIKA).total * 12 + toukiYear(p, 1).year;
+    if (v > max) { max = v; maxN = [n]; } else if (v === max) maxN.push(n);
+    if (v < min) { min = v; minC = 1; } else if (v === min) minC++;
+  }));
+  return {max, min, maxNames: maxN.slice(0, 3).join('・') + (maxN.length > 3 ? 'など' : ''), minCount: minC};
+}
+
 function render() {
   const out = $('result');
   if (!city.value) { out.innerHTML = `<div class="guide">上の <b>1・2</b> を選ぶと、ここに<br><b>あなたの地域の保護費と、地域で差が出る出費</b>が出ます。</div>`; return; }
@@ -265,6 +276,7 @@ function render() {
   const gomiTxt = GOMI[g];
 
   if (window.gcUse) gcUse('住む場所の暮らしやすさしらべ');
+  const yr = yearRange(a);
 
   // 保護費の側
   const fujoBox = lv === 0
@@ -329,7 +341,7 @@ function render() {
   out.innerHTML = `<div class="res">
     <div class="verdict"><p class="place"><b>${esc(p)} ${esc(name)}</b>（${LV[lv]}・冬季加算${AREA[t.area]}）／ ひとり暮らし・${AGE_LABEL[a]}</p>
       <p>生活扶助と冬の上乗せを1年で足すと</p><p class="big">年 ${yen(fujo * 12 + t.year)}円</p>
-      <p style="font-size:14.5px; font-weight:400; color:var(--sub)">いちばん多い組み合わせ（${LV[0]}・Ⅰ区）は年${yen(top * 12 + toukiYear('北海道', 1).year)}円、いちばん少ない組み合わせ（${LV[5]}・Ⅵ区）は年${yen(calcKijun([a], 5, true, KIJUN, KEIKA).total * 12 + tMin.year)}円</p></div>
+      <p style="font-size:14.5px; font-weight:400; color:var(--sub)">全国で比べると、いちばん多いのは${yr.maxNames}（年${yen(yr.max)}円）、いちばん少ないのは${yr.minCount}の市町村（年${yen(yr.min)}円）。同じ年齢のひとり暮らしで、<b>年${yen(yr.max - yr.min)}円</b>の差があります。</p></div>
     <div class="side">受け取る側（保護費）</div>${fujoBox}${toukiBox}${rentBox}
     <div class="side">出ていく側（地域で差が出る出費）</div>${priceBox}${gomiBox}${rankBox}
     <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button>

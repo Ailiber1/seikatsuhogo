@@ -8,77 +8,123 @@
 <meta name="description" content="「頑張らなくて良い」生活保護3年目が悟った、人生が楽になる力の抜き方。頑張りすぎて体や心を壊した私の実体験から">
 <style>
 :root{
-  /* 常に白基調。ダークモードには切り替えない */
-  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
-  --navy:#2b5d8f; --navy-soft:#eef3f8;
-  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
-  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+  /* 白地のまま。ダークモードには切り替えない（配信者と視聴者で見え方を揃える） */
+  --paper:#ffffff;
+  --ink:#1f2a33;      /* 藍墨 */
+  --sub:#6b7680;      /* 薄墨 */
+  --ai:#2f4a6d;       /* 藍 */
+  --wakatake:#4a7a63; /* 若竹（力が抜けたあと） */
+  --rule:#d9dee2;
+  --rule-soft:#eef1f3;
+  --mincho:"Hiragino Mincho ProN","Yu Mincho","YuMincho","Noto Serif JP",serif;
+  --gothic:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
 }
 *{box-sizing:border-box}
 html{overflow-x:hidden}
-body{background:var(--ground); color:var(--ink); margin:0;
-  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
-  font-size:17px; line-height:1.8; -webkit-text-size-adjust:100%}
-.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--gothic);
+  font-size:17px; line-height:1.95; letter-spacing:.02em; -webkit-text-size-adjust:100%}
 .nb{display:inline-block}
-h1,.conclusion p,.ch h2,.for-who li,.end p{word-break:auto-phrase}
-.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
-h1{font-size:clamp(26px,6vw,36px); line-height:1.4; margin:0 0 12px; color:var(--navy); text-wrap:balance}
-h1 small{display:block; font-size:.55em; color:var(--sub); font-weight:600}
-.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:16px; font-size:15.5px}
-.for-who b{color:var(--navy)} .for-who ul{margin:4px 0 0; padding-left:1.2em}
-.conclusion{border:2px solid var(--navy); border-radius:14px; padding:16px; margin-bottom:10px; background:#fff}
-.conclusion .k{font-size:13px; font-weight:700; color:var(--sub)}
-.conclusion p{margin:4px 0 0; font-size:19px; font-weight:700; line-height:1.6}
-.conclusion b{color:var(--navy)}
-.conclusion .big{font-size:1.3em}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ai); outline-offset:3px}
 
-/* 落ちて、着地して、上へ（悟った答えの図） */
-.drop{display:flex; align-items:flex-end; justify-content:space-between; gap:6px; height:170px; margin:18px 0 6px; padding:0 4px; overflow:hidden; border-bottom:2px solid var(--line)}
-.drop .st{flex:1; text-align:center; font-size:13px; font-weight:700; color:var(--sub); display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:100%}
-.drop .dot{width:22px; height:22px; border-radius:50%; border:3px solid var(--navy); background:#fff; margin-bottom:6px; transition:transform 1s ease}
-.drop .st.low .dot{background:var(--navy)}
-.drop .st.up .dot{border-color:var(--ok)}
-.drop.in .st.s1 .dot{transform:translateY(-90px)}
-.drop.in .st.s2 .dot{transform:translateY(-40px)}
-.drop.in .st.s4 .dot{transform:translateY(-55px)}
-.drop.in .st.s5 .dot{transform:translateY(-100px)}
-.drop .st small{display:block; font-weight:400; font-size:12px}
+/* ───── 冒頭 ───── */
+.hero{max-width:1040px; margin:0 auto; padding:56px 20px 24px}
+.hero h1{font-family:var(--mincho); font-weight:600; color:var(--ink);
+  font-size:clamp(30px,8vw,40px); line-height:1.45; letter-spacing:.04em; margin:0; word-break:auto-phrase}
+.hero h1 .q{color:var(--ai)}
+.hero .by{font-family:var(--mincho); color:var(--sub); font-size:15px; margin:18px 0 0}
+.hero .lead{margin:28px 0 0; font-size:15.5px; color:var(--sub); line-height:2}
+.hero .lead li{list-style:none; padding-left:1.1em; text-indent:-1.1em}
+.hero .lead li::before{content:"・"}
+.hero .lead ul{margin:6px 0 0; padding:0}
 
-section.ch{margin:30px 0 8px}
-.ch h2{display:flex; align-items:center; gap:10px; font-size:clamp(19px,4.6vw,23px); line-height:1.45; margin:0 0 12px; color:var(--navy)}
-.ch h2 .b{flex:none; width:34px; height:34px; border-radius:50%; border:2px solid var(--navy); display:grid; place-items:center; font-size:15px; font-family:system-ui,sans-serif}
-.ch p{margin:0 0 12px}
+@media (min-width:820px){
+  .hero{display:grid; grid-template-columns:1fr auto; gap:56px; align-items:start; padding-top:72px}
+  .hero .vt{order:2; writing-mode:vertical-rl; text-orientation:mixed; height:min(560px,72vh)}
+  .hero h1{font-size:44px; line-height:1.7; letter-spacing:.12em}
+  .hero .by{margin:0 18px 0 0; font-size:16px}
+  .hero .side{order:1; padding-top:12px}
+}
 
-/* 頑張りすぎた → どうなった → 力の抜き方 */
-.steps{list-style:none; margin:0 0 10px; padding:0}
-.steps li{border:1px solid var(--line); border-left:5px solid var(--c); border-radius:0 12px 12px 0; padding:10px 14px; margin:0 0 8px; background:var(--bg)}
-.steps .t{display:block; font-size:13px; font-weight:800; color:var(--c)}
-.steps .before{--c:var(--warn); --bg:var(--warn-bg)}
-.steps .result{--c:var(--ng); --bg:var(--ng-bg)}
-.steps .after{--c:var(--ok); --bg:var(--ok-bg); display:none}
-.steps .after b{font-size:1.08em}
-.steps.open .after{display:block; animation:up .4s ease}
-.open-btn{font:inherit; font-size:15px; font-weight:700; color:var(--ok); background:#fff; border:1.5px solid var(--ok); border-radius:999px; padding:6px 18px; cursor:pointer; min-height:44px; margin:0 0 8px}
-.steps.open + .open-btn{display:none}
-.watch{display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:700; color:var(--navy); text-decoration:none; background:var(--navy-soft); border-radius:999px; padding:6px 14px; min-height:40px}
-.watch small{font-weight:400; color:var(--sub)}
-@keyframes up{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+/* 悟ったこと：落ちて、底について、上がる1本の線 */
+.satori{margin-top:36px}
+.satori .curve{display:block; width:100%; height:auto; overflow:visible}
+.satori .curve path{fill:none; stroke:var(--ai); stroke-width:1.6; stroke-linecap:round;
+  stroke-dasharray:var(--len); stroke-dashoffset:var(--len); transition:stroke-dashoffset 2.6s cubic-bezier(.45,.05,.25,1)}
+.satori .curve .rise{stroke:var(--wakatake)}
+.satori .curve circle{fill:var(--paper); stroke:var(--ai); stroke-width:1.6; opacity:0; transition:opacity .5s ease 1.3s}
+.satori .curve circle.now{stroke:var(--wakatake); transition-delay:2.6s}
+.satori.go .curve path{stroke-dashoffset:0}
+.satori.go .curve circle{opacity:1}
+.satori .marks{display:flex; justify-content:space-between; font-family:var(--mincho); font-size:13px; color:var(--sub); margin-top:4px}
+.satori blockquote{margin:26px 0 0; padding:0; font-family:var(--mincho); font-weight:600;
+  font-size:clamp(21px,5.4vw,27px); line-height:1.75; color:var(--ink); word-break:auto-phrase}
+.satori blockquote .up{color:var(--wakatake)}
+.satori p{margin:16px 0 0; font-size:15.5px; color:var(--sub)}
 
-/* 締め */
-.end{border:2px solid var(--ok); border-radius:14px; padding:16px; background:#fff; margin:30px 0 10px}
-.end .k{font-size:13px; font-weight:700; color:var(--sub)}
-.end p{margin:4px 0 0; font-size:19px; font-weight:700; line-height:1.6}
-.end b{color:var(--ok)}
-.ask{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin:12px 0; font-weight:700; color:var(--navy)}
+.watch{display:inline-flex; align-items:center; gap:8px; margin-top:14px; font-size:14px; color:var(--ai);
+  text-decoration:none; border-bottom:1px solid var(--rule); padding:8px 0 4px; min-height:40px}
+.watch:hover{border-bottom-color:var(--ai)}
+.watch .t{color:var(--sub); font-variant-numeric:tabular-nums}
+.watch svg{flex:none}
 
-.fade{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
-.fade.in{opacity:1; transform:none}
-.foot{margin-top:28px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
-.foot h3{font-size:14px; color:var(--ink); margin:12px 0 4px}
-.foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy); word-break:break-all}
-.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
-@media (prefers-reduced-motion:reduce){ .fade{opacity:1; transform:none; transition:none} .drop .dot{transition:none} .steps .after{animation:none} }
+/* ───── 本文 ───── */
+.body{max-width:720px; margin:0 auto; padding:0 20px 64px}
+.intro{margin:56px 0 0; padding-top:28px; border-top:1px solid var(--ink); font-size:16px}
+.intro b{font-weight:700}
+
+.ch{margin:72px 0 0}
+.ch header{display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:end;
+  padding-bottom:18px; border-bottom:1px solid var(--rule)}
+.ch .kan{font-family:var(--mincho); font-weight:600; font-size:clamp(56px,15vw,84px); line-height:1; color:var(--ai); display:flex; flex-direction:column; align-items:center; min-width:1.1em}
+.ch .kan small{font-size:13px; font-weight:400; color:var(--sub); letter-spacing:.2em; margin-bottom:6px}
+.tcy{text-combine-upright:all}
+.ch h2{font-family:var(--mincho); font-weight:600; font-size:clamp(21px,5.2vw,27px); line-height:1.5; margin:0 0 4px; word-break:auto-phrase}
+
+.story{margin:22px 0 0; display:grid; gap:18px}
+/* 頑張りすぎていた頃は、字間を詰めて少し窮屈に */
+.story div{padding-left:18px; border-left:1px solid var(--rule); letter-spacing:-.01em; line-height:1.8}
+.story .lbl{display:block; font-size:13px; color:var(--sub); letter-spacing:.06em; margin-bottom:2px}
+.story .result{border-left-color:var(--ink)}
+.story .result b{font-weight:700}
+
+.open{margin:26px 0 0; display:flex; align-items:center; gap:12px; width:100%;
+  font:inherit; font-size:15px; color:var(--wakatake); background:none; border:0; border-top:1px solid var(--rule);
+  padding:16px 0 0; cursor:pointer; text-align:left; min-height:48px}
+.open .plus{flex:none; width:30px; height:30px; border:1px solid var(--wakatake); border-radius:50%; position:relative; transition:transform .4s ease}
+.open .plus::before,.open .plus::after{content:""; position:absolute; left:50%; top:50%; background:var(--wakatake); transform:translate(-50%,-50%)}
+.open .plus::before{width:12px; height:1px} .open .plus::after{width:1px; height:12px}
+.open[aria-expanded=true] .plus{transform:rotate(45deg)}
+.answer{display:grid; grid-template-rows:0fr; transition:grid-template-rows .6s ease}
+.answer > div{overflow:hidden}
+.answer.on{grid-template-rows:1fr}
+.answer blockquote{margin:18px 0 0; padding:0 0 0 22px; border-left:2px solid var(--wakatake);
+  font-family:var(--mincho); font-weight:600; font-size:clamp(20px,5vw,24px); line-height:1.75; color:var(--wakatake); word-break:auto-phrase;
+  letter-spacing:-.04em; opacity:.3; transition:letter-spacing 1.4s cubic-bezier(.2,.7,.2,1) .15s, line-height 1.4s ease .15s, opacity .8s ease}
+/* 開くと、詰まっていた文字がほどけて広がる＝力が抜ける */
+.answer.on blockquote{letter-spacing:.1em; line-height:2; opacity:1}
+.answer p{margin:12px 0 0 24px; font-size:16px; line-height:2.05; letter-spacing:.05em}
+
+/* 最後に */
+.end{margin:96px 0 0; text-align:center}
+.end .rule{width:1px; height:64px; background:var(--ink); margin:0 auto 32px}
+.end p{font-family:var(--mincho); font-weight:600; font-size:clamp(22px,5.6vw,30px); line-height:1.85; margin:0; word-break:auto-phrase}
+.end p .soft{color:var(--sub); font-weight:400; font-size:.72em; display:block; margin-bottom:10px}
+.end p .key{color:var(--wakatake)}
+.ask{margin:40px auto 0; max-width:30em; text-align:center; font-size:15.5px; color:var(--sub)}
+.ask b{color:var(--ink); font-family:var(--mincho); font-size:18px; font-weight:600; display:block; margin-bottom:4px}
+
+.foot{margin-top:80px; padding-top:20px; border-top:1px solid var(--rule); font-size:13px; color:var(--sub); line-height:1.8}
+.foot h3{font-family:var(--mincho); font-size:14px; color:var(--ink); margin:16px 0 4px; font-weight:600}
+.foot ul{margin:0; padding-left:1.2em}
+.foot a{color:var(--ai); word-break:break-all}
+.foot .credit{margin-top:20px; padding-top:14px; border-top:1px solid var(--rule); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+
+@media (prefers-reduced-motion:reduce){
+  .satori .curve path{transition:none; stroke-dashoffset:0}
+  .satori .curve circle{transition:none; opacity:1}
+  .answer,.open .plus,.answer blockquote{transition:none}
+}
 </style>
 <script>
 /* URLの後ろの ?… は付けず、ページの場所だけで数える（同じページが別々に数えられないように） */
@@ -103,83 +149,105 @@ window.gcUse = function (name) {
 </script>
 </head>
 <body>
-<main class="wrap">
-  <h1 class="mincho"><span class="nb">「頑張らなくて良い」</span><span class="nb">生活保護3年目が悟った、</span><span class="nb">人生が楽になる</span><span class="nb">力の抜き方</span><small><span class="nb">頑張りすぎて、体も心も壊した</span><span class="nb">私の実体験から</span></small></h1>
-  <div class="for-who"><b>このページは、こういう方へ</b>
-    <ul><li>休むと悪いことをしている気がして、つい頑張りすぎてしまう方</li>
-    <li>お金や将来のことが不安で、気が休まらない方</li>
-    <li>頑張れない日に、自分を責めてしまう方</li></ul></div>
-
-  <div class="conclusion fade" id="satori"><div class="k">私が悟ったこと</div>
-    <p>一度、<b class="nb">落ちるところまで落ちたら</b>、<span class="nb">不安が消えました。</span><br>いちばん下が分かれば、<b class="big nb">あとは上に行くしかない。</b></p>
-    <div class="drop" id="drop" aria-hidden="true">
-      <div class="st s1"><span class="dot"></span>以前</div>
-      <div class="st s2"><span class="dot"></span>体を壊す</div>
-      <div class="st low"><span class="dot"></span>どん底</div>
-      <div class="st up s4"><span class="dot"></span>暮らせる</div>
-      <div class="st up s5"><span class="dot"></span>今</div>
-    </div>
-    <p style="font-size:14.5px; font-weight:400; color:var(--sub)">受給を始めて最初の1〜2か月は、お金の不安でいっぱいでした。でも、ここで暮らしていけると分かってから、不安は抜けて、だいぶ楽になりました。</p>
-    <a class="watch" href="https://www.youtube.com/watch?v=Xx2qfncbAMQ&amp;t=1321s" target="_blank" rel="noopener">▶ この話をした場面 <small>22:01〜</small></a>
+<header class="hero">
+  <div class="vt">
+    <h1><span class="q nb">「頑張らなくて良い」</span><span class="nb">生活保護<span class="tcy">3</span>年目が悟った、</span><span class="nb">人生が楽になる</span><span class="nb">力の抜き方</span></h1>
   </div>
+  <div class="side">
+    <p class="by">頑張りすぎて、体も心も壊した私の実体験から</p>
+    <div class="lead">このページは、こういう方へ
+      <ul><li>休むと悪いことをしている気がして、つい頑張りすぎてしまう方</li>
+      <li>お金や将来のことが不安で、気が休まらない方</li>
+      <li>頑張れない日に、自分を責めてしまう方</li></ul></div>
 
-  <p style="margin:26px 0 0">ここからは、私が<b>頑張りすぎて失敗したこと</b>と、そこから覚えた<b>力の抜き方</b>です。<br>「力の抜き方を見る」を押すと開きます。</p>
+    <section class="satori" id="satori" aria-label="私が悟ったこと">
+      <svg class="curve" viewBox="0 0 600 170" aria-hidden="true">
+        <path d="M8 28 C 120 30, 190 150, 300 152" style="--len:340"/>
+        <path class="rise" d="M300 152 C 410 154, 480 60, 592 10" style="--len:330"/>
+        <circle cx="8" cy="28" r="6"/>
+        <circle cx="300" cy="152" r="7" style="fill:var(--ai)"/>
+        <circle class="now" cx="592" cy="10" r="6"/>
+      </svg>
+      <div class="marks" aria-hidden="true"><span>以前</span><span>どん底</span><span>今</span></div>
+      <blockquote>一度、落ちるところまで落ちたら、<span class="nb">不安が消えました。</span><br>いちばん下が分かれば、<span class="up nb">あとは上に行くしかない。</span></blockquote>
+      <p>受給を始めて最初の1〜2か月は、お金の不安でいっぱいでした。でも、ここで暮らしていけると分かってから、不安は抜けて、だいぶ楽になりました。</p>
+      <a class="watch" href="https://www.youtube.com/watch?v=Xx2qfncbAMQ&amp;t=1321s" target="_blank" rel="noopener"><svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0 L10 6 L0 12 Z" fill="currentColor"/></svg>この話をした場面<span class="t">22:01〜</span></a>
+    </section>
+  </div>
+</header>
 
-  <section class="ch fade">
-    <h2><span class="b">1</span>休むのも、トレーニングのうち</h2>
-    <ul class="steps">
-      <li class="before"><span class="t">頑張りすぎていたこと</span>昔、プロのサッカー選手を目指していました。人よりうまくなりたくて、雨の日も休まず、坂道を何本も走り込んでいました。</li>
-      <li class="result"><span class="t">どうなったか</span>腰を痛めて病院へ。<b>ヘルニアの一歩手前</b>と言われ、原因は「練習のしすぎ」。それ以来、毎年のようにぎっくり腰になります。</li>
-      <li class="after"><span class="t">力の抜き方</span><b>休むのも、トレーニングのひとつ。</b>疲れが残っているうちは、無理に動かない。</li>
-    </ul>
-    <button class="open-btn" type="button">▼ 力の抜き方を見る</button><br>
-    <a class="watch" href="https://www.youtube.com/watch?v=MU4Go3nLKYQ&amp;t=629s" target="_blank" rel="noopener">▶ この話をした場面 <small>10:29〜</small></a>
+<main class="body">
+  <p class="intro">ここからは、私が<b>頑張りすぎて失敗したこと</b>と、そこから覚えた<b>力の抜き方</b>です。<br>「力の抜き方を読む」を押すと開きます。</p>
+
+  <section class="ch">
+    <header><span class="kan" aria-hidden="true"><small>その</small>一</span><h2>休むのも、<span class="nb">トレーニングのうち</span></h2></header>
+    <div class="story">
+      <div><span class="lbl">頑張りすぎていたこと</span>昔、プロのサッカー選手を目指していました。人よりうまくなりたくて、雨の日も休まず、坂道を何本も走り込んでいました。</div>
+      <div class="result"><span class="lbl">どうなったか</span>腰を痛めて病院へ。<b>ヘルニアの一歩手前</b>と言われ、原因は「練習のしすぎ」。それ以来、毎年のようにぎっくり腰になります。</div>
+    </div>
+    <button class="open" type="button" aria-expanded="false"><span class="plus" aria-hidden="true"></span>力の抜き方を読む</button>
+    <div class="answer"><div>
+      <blockquote>休むのも、トレーニングのひとつ。</blockquote>
+      <p>疲れが残っているうちは、無理に動かない。</p>
+    </div></div>
+    <a class="watch" href="https://www.youtube.com/watch?v=MU4Go3nLKYQ&amp;t=629s" target="_blank" rel="noopener"><svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0 L10 6 L0 12 Z" fill="currentColor"/></svg>この話をした場面<span class="t">10:29〜</span></a>
   </section>
 
-  <section class="ch fade">
-    <h2><span class="b">2</span>通知を切って、数字を見すぎない</h2>
-    <ul class="steps">
-      <li class="before"><span class="t">頑張りすぎていたこと</span>YouTubeを始めた頃、コメントが来たらすぐ届くように通知をオンにして、すぐ返していました。再生数の分析もずっとしていて、「週2本は出さないと」と自分にプレッシャーをかけていました。</li>
-      <li class="result"><span class="t">どうなったか</span>動画を編集していて、<b>頭皮が見えるほど髪が抜けている</b>のに気づきました。自分では、いちばんの原因はストレスだったと思っています。</li>
-      <li class="after"><span class="t">力の抜き方</span><b>通知を切って、コメントは自分のタイミングで読む。数字は見すぎない。</b>そうしてから3か月ほどで、抜け毛が収まり始めました。</li>
-    </ul>
-    <button class="open-btn" type="button">▼ 力の抜き方を見る</button><br>
-    <a class="watch" href="https://www.youtube.com/watch?v=g4k3K9cllt8&amp;t=702s" target="_blank" rel="noopener">▶ この話をした場面 <small>11:42〜</small></a>
+  <section class="ch">
+    <header><span class="kan" aria-hidden="true"><small>その</small>二</span><h2>通知を切って、<span class="nb">数字を見すぎない</span></h2></header>
+    <div class="story">
+      <div><span class="lbl">頑張りすぎていたこと</span>YouTubeを始めた頃、コメントが来たらすぐ届くように通知をオンにして、すぐ返していました。再生数の分析もずっとしていて、「週2本は出さないと」と自分にプレッシャーをかけていました。</div>
+      <div class="result"><span class="lbl">どうなったか</span>動画を編集していて、<b>頭皮が見えるほど髪が抜けている</b>のに気づきました。自分では、いちばんの原因はストレスだったと思っています。</div>
+    </div>
+    <button class="open" type="button" aria-expanded="false"><span class="plus" aria-hidden="true"></span>力の抜き方を読む</button>
+    <div class="answer"><div>
+      <blockquote>通知を切って、コメントは自分のタイミングで読む。数字は見すぎない。</blockquote>
+      <p>そうしてから3か月ほどで、抜け毛が収まり始めました。</p>
+    </div></div>
+    <a class="watch" href="https://www.youtube.com/watch?v=g4k3K9cllt8&amp;t=702s" target="_blank" rel="noopener"><svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0 L10 6 L0 12 Z" fill="currentColor"/></svg>この話をした場面<span class="t">11:42〜</span></a>
   </section>
 
-  <section class="ch fade">
-    <h2><span class="b">3</span><span><span class="nb">もう1人の自分に</span><span class="nb">「今、落ちてるぞ」と</span><span class="nb">言ってもらう</span></span></h2>
-    <ul class="steps">
-      <li class="before"><span class="t">頑張りすぎていたこと</span>体調が良くなってきたと思ったら、また急に崩れる。その波が来るたびに「なんでこんなに苦しまないといけないんだ」と、気持ちまで落ちていきました。</li>
-      <li class="result"><span class="t">どうなったか</span>カメラの前で、気づいたら愚痴ばかり言っていました。</li>
-      <li class="after"><span class="t">力の抜き方</span><b>上から自分を見ている「もう1人の自分」に、「おいおい、今落ちてるぞ」と気づいてもらう。</b>気づけたら、それ以上落ちずにすみます。いちばん大事なのは、無理しすぎないこと。</li>
-    </ul>
-    <button class="open-btn" type="button">▼ 力の抜き方を見る</button><br>
-    <a class="watch" href="https://www.youtube.com/watch?v=n0UjC2DbQXk&amp;t=495s" target="_blank" rel="noopener">▶ この話をした場面 <small>8:15〜</small></a>
+  <section class="ch">
+    <header><span class="kan" aria-hidden="true"><small>その</small>三</span><h2><span class="nb">もう1人の自分に</span><span class="nb">「今、落ちてるぞ」と</span><span class="nb">言ってもらう</span></h2></header>
+    <div class="story">
+      <div><span class="lbl">頑張りすぎていたこと</span>体調が良くなってきたと思ったら、また急に崩れる。その波が来るたびに「なんでこんなに苦しまないといけないんだ」と、気持ちまで落ちていきました。</div>
+      <div class="result"><span class="lbl">どうなったか</span>カメラの前で、気づいたら<b>愚痴ばかり</b>言っていました。</div>
+    </div>
+    <button class="open" type="button" aria-expanded="false"><span class="plus" aria-hidden="true"></span>力の抜き方を読む</button>
+    <div class="answer"><div>
+      <blockquote>上から見ている「もう1人の自分」に、「おいおい、今落ちてるぞ」と気づいてもらう。</blockquote>
+      <p>気づけたら、それ以上落ちずにすみます。いちばん大事なのは、無理しすぎないこと。</p>
+    </div></div>
+    <a class="watch" href="https://www.youtube.com/watch?v=n0UjC2DbQXk&amp;t=495s" target="_blank" rel="noopener"><svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0 L10 6 L0 12 Z" fill="currentColor"/></svg>この話をした場面<span class="t">8:15〜</span></a>
   </section>
 
-  <section class="ch fade">
-    <h2><span class="b">4</span>しんどい時は、途中で引き返していい</h2>
-    <ul class="steps">
-      <li class="before"><span class="t">頑張りすぎていたこと</span>いつもは往復2時間ほど散歩しています。その日も体がつらかったのに、「いや、行ける」と我慢して歩き続けました。</li>
-      <li class="result"><span class="t">どうなったか</span>街中で<b>意識が飛んで倒れそう</b>になりました。</li>
-      <li class="after"><span class="t">力の抜き方</span><b>決めた予定より、その日の体を優先する。</b>私は30分ほどで折り返しました。最後までやらなくていいんです。</li>
-    </ul>
-    <button class="open-btn" type="button">▼ 力の抜き方を見る</button><br>
-    <a class="watch" href="https://www.youtube.com/watch?v=n0UjC2DbQXk&amp;t=75s" target="_blank" rel="noopener">▶ この話をした場面 <small>1:15〜</small></a>
+  <section class="ch">
+    <header><span class="kan" aria-hidden="true"><small>その</small>四</span><h2>しんどい時は、<span class="nb">途中で引き返していい</span></h2></header>
+    <div class="story">
+      <div><span class="lbl">頑張りすぎていたこと</span>いつもは往復2時間ほど散歩しています。その日も体がつらかったのに、「いや、行ける」と我慢して歩き続けました。</div>
+      <div class="result"><span class="lbl">どうなったか</span>街中で<b>意識が飛んで倒れそう</b>になりました。</div>
+    </div>
+    <button class="open" type="button" aria-expanded="false"><span class="plus" aria-hidden="true"></span>力の抜き方を読む</button>
+    <div class="answer"><div>
+      <blockquote>決めた予定より、その日の体を優先する。</blockquote>
+      <p>私は30分ほどで折り返しました。最後までやらなくていいんです。</p>
+    </div></div>
+    <a class="watch" href="https://www.youtube.com/watch?v=n0UjC2DbQXk&amp;t=75s" target="_blank" rel="noopener"><svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0 L10 6 L0 12 Z" fill="currentColor"/></svg>この話をした場面<span class="t">1:15〜</span></a>
   </section>
 
-  <div class="end fade"><div class="k">最後に</div>
-    <p>「頑張らなくて良い」は、<span class="nb">何もしなくていい、</span><span class="nb">という意味ではありません。</span><br><b class="nb">頑張れない日に、</b><b class="nb">自分を責めなくて良い</b>、<span class="nb">ということです。</span></p></div>
-  <div class="ask fade">あなたの力の抜き方は、何ですか？<br>よかったらチャットやコメントで教えてください。</div>
+  <section class="end">
+    <div class="rule" aria-hidden="true"></div>
+    <p><span class="soft">「頑張らなくて良い」は、何もしなくていい、という意味ではありません。</span><span class="nb">頑張れない日に、</span><span class="key nb">自分を責めなくて良い、</span><span class="nb">ということです。</span></p>
+    <div class="ask"><b>あなたの力の抜き方は、何ですか？</b>よかったらチャットやコメントで教えてください。</div>
+  </section>
 
-  <div class="foot">
+  <footer class="foot">
     <h3>このページで使った話</h3>
     <ul>
       <li><a href="https://www.youtube.com/watch?v=Xx2qfncbAMQ" target="_blank" rel="noopener">【誤解だらけ】生活保護3年目、世間のイメージとは全然違う暮らしのリアルを公開！</a>（私が悟ったこと）</li>
-      <li><a href="https://www.youtube.com/watch?v=MU4Go3nLKYQ" target="_blank" rel="noopener">生活保護受給中にやらかしました・・・(自業自得)</a>（1）</li>
-      <li><a href="https://www.youtube.com/watch?v=g4k3K9cllt8" target="_blank" rel="noopener">【生活保護受給者の日常】実は隠してたことがあります...</a>（2）</li>
-      <li><a href="https://www.youtube.com/watch?v=n0UjC2DbQXk" target="_blank" rel="noopener">【生活保護受給者の日常】メンタルが病んでしまいました (雑談)</a>（3・4）</li>
+      <li><a href="https://www.youtube.com/watch?v=MU4Go3nLKYQ" target="_blank" rel="noopener">生活保護受給中にやらかしました・・・(自業自得)</a>（一）</li>
+      <li><a href="https://www.youtube.com/watch?v=g4k3K9cllt8" target="_blank" rel="noopener">【生活保護受給者の日常】実は隠してたことがあります...</a>（二）</li>
+      <li><a href="https://www.youtube.com/watch?v=n0UjC2DbQXk" target="_blank" rel="noopener">【生活保護受給者の日常】メンタルが病んでしまいました (雑談)</a>（三・四）</li>
     </ul>
     <h3>読むときの注意</h3>
     <ul>
@@ -188,22 +256,22 @@ window.gcUse = function (name) {
       <li>作成日: 2026年10月15日</li>
     </ul>
     <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
-  </div>
+  </footer>
 </main>
 
 <script>
-// スクロールで表示（スマホで縦に長い要素も出るように threshold:0）
-const io = new IntersectionObserver(es => es.forEach(e => {
-  if (!e.isIntersecting) return;
-  e.target.classList.add('in'); io.unobserve(e.target);
-  const d = e.target.querySelector('#drop');
-  if (d) setTimeout(() => d.classList.add('in'), 300);
-}), {threshold: 0, rootMargin: '0px 0px -12% 0px'});
-document.querySelectorAll('.fade').forEach(el => io.observe(el));
+// 冒頭の線：画面に入ったら1回だけ描く
+const s = document.getElementById('satori');
+new IntersectionObserver((es, o) => es.forEach(e => {
+  if (e.isIntersecting) { setTimeout(() => s.classList.add('go'), 250); o.disconnect(); }
+}), {threshold: 0}).observe(s);
 
-// 押すと「力の抜き方」が開く
-document.querySelectorAll('.open-btn').forEach(b => b.addEventListener('click', () => {
-  b.previousElementSibling.classList.add('open');
+// 押すと「力の抜き方」が開く／閉じる
+document.querySelectorAll('.open').forEach(b => b.addEventListener('click', () => {
+  const on = b.getAttribute('aria-expanded') !== 'true';
+  b.setAttribute('aria-expanded', on);
+  b.nextElementSibling.classList.toggle('on', on);
+  b.lastChild.textContent = on ? '閉じる' : '力の抜き方を読む';
 }));
 </script>
 <script src="hub-items.js"></script>

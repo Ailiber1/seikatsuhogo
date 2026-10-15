@@ -98,12 +98,14 @@ a{color:inherit}
 .answer{display:grid; grid-template-rows:0fr; transition:grid-template-rows .6s ease}
 .answer > div{overflow:hidden}
 .answer.on{grid-template-rows:1fr}
-.answer blockquote{margin:18px 0 0; padding:0 0 0 22px; border-left:2px solid var(--wakatake);
-  font-family:var(--mincho); font-weight:600; font-size:clamp(20px,5vw,24px); line-height:1.75; color:var(--wakatake); word-break:auto-phrase;
+/* 力の抜き方の一言は、本の一節のように縦書きで中央に置く */
+.answer blockquote{writing-mode:vertical-rl; text-orientation:mixed; block-size:auto; inline-size:min(12.5em,58vh);
+  width:fit-content; margin:34px auto 0; padding:6px 22px; border-right:1px solid var(--wakatake); border-left:1px solid var(--wakatake);
+  font-family:var(--mincho); font-weight:600; font-size:clamp(21px,5.6vw,26px); line-height:1.8; color:var(--wakatake); word-break:auto-phrase;
   letter-spacing:-.04em; opacity:.3; transition:letter-spacing 1.4s cubic-bezier(.2,.7,.2,1) .15s, line-height 1.4s ease .15s, opacity .8s ease}
 /* 開くと、詰まっていた文字がほどけて広がる＝力が抜ける */
-.answer.on blockquote{letter-spacing:.1em; line-height:2; opacity:1}
-.answer p{margin:12px 0 0 24px; font-size:16px; line-height:2.05; letter-spacing:.05em}
+.answer.on blockquote{letter-spacing:.14em; line-height:2.1; opacity:1}
+.answer p{margin:26px auto 0; max-width:30em; text-align:center; font-size:16px; line-height:2.05; letter-spacing:.05em}
 
 /* 最後に */
 .end{margin:96px 0 0; text-align:center}

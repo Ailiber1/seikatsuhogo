@@ -95,7 +95,7 @@ window.gcUse = function (name) {
   <div class="q"><label for="fam"><span class="b">2</span>世帯は</label>
     <select id="fam" disabled><option value="">選んでください</option><option value="1">ひとり暮らし</option><option value="2">家族と暮らしている</option></select></div>
 
-  <div class="guide" id="guide"><b>上の1と2を選ぶと、ここに結果が出ます</b>毎月引かれずに残る額と、半年働いて保護をやめるときにもらえる額を出します</div>
+  <div class="guide" id="guide"><b>上の1と2を選ぶと、ここに結果が出ます</b>毎月引かれずに残る額と、保護をやめるときに戻ってくる額を出します</div>
   <div class="res" id="res" hidden></div>
 
   <div class="warn"><b>読むときの注意：</b>この結果は、給料から基礎控除だけを引いた<b>試算</b>です。実際は通勤費・社会保険料なども引かれるので、残る額や給付金は変わります。世帯で1人目に働く人の計算です。</div>
@@ -150,14 +150,14 @@ function render() {
   $('fam').disabled = p === '';
   if (p === '' || f === '') { $('res').hidden = true; $('guide').hidden = false; return; }
   const single = f === '1', r = calc(+p, single);
-  let h = `<div class="verdict"><div class="k">給料${yen(+p)}で半年働くと、引かれずに残せるお金は合わせて</div>
-    <span class="big num">${yen(r.total)}</span>
-    <p>${r.juto === 0 ? 'この給料なら、毎月の給料が全額手元に残ります（保護費は減りません）。' : `毎月、給料のうち${yen(r.keep)}は引かれません。残りの${yen(r.juto)}は収入として数えられ、その分保護費が減ります。`}</p></div>`;
+  let h = `<div class="verdict"><div class="k">毎月の給料${yen(+p)}のうち、引かれずに残るのは</div>
+    <span class="big num">${yen(r.keep)}</span>
+    <p>${r.juto === 0 ? 'この給料なら、毎月の給料が全額手元に残ります（保護費は減りません）。' : `残りの${yen(r.juto)}は収入として数えられ、その分保護費が減ります。`}</p>
+</div>`;
   h += `<div class="rows">
     <div class="r"><span>毎月、引かれずに残る額<small>基礎控除</small></span><b class="num">${yen(r.keep)}</b></div>
-    <div class="r"><span>半年（6か月）で、引かれずに残る額</span><b class="num">${yen(r.keep6)}</b></div>
-    <div class="r"><span>引かれた分のうち、あとで戻ってくる額<small>就労自立給付金。安定した仕事で保護をやめるときに受け取る（${single ? '単身・上限10万円' : '複数世帯・上限15万円'}）</small></span><b class="num">${yen(r.kyu)}</b></div></div>`;
-  h += `<div class="one-liner">${r.juto === 0 ? '働いた分が、まるごと自分のお金になる範囲です。' : '働いても全部は引かれない。半年続ければ、これだけ残せます。'}</div>`;
+    <div class="r"><span>引かれた分のうち、あとで戻ってくる額<small>就労自立給付金。安定した仕事で保護をやめるときに受け取る。国の決まりで、やめる前6か月分の給料から計算（${single ? '単身・上限10万円' : '複数世帯・上限15万円'}）</small></span><b class="num">${yen(r.kyu)}</b></div></div>`;
+  h += `<div class="one-liner">${r.juto === 0 ? '働いた分が、まるごと自分のお金になる範囲です。' : '働いても全部は引かれない。毎月これだけは自分のお金として残せます。'}</div>`;
   h += `<div class="seido"><h3>もう1つの方法：自立のために使うお金</h3>
     <p>事業を始める・技能を身につけるなど、生活を立て直すために使うお金は、福祉事務所が認めれば、収入として数えないことがあります（自立更生）。臨時のお金の8,000円の上限とは別の決まりです。</p>
     <p>使えるかどうかは、自分のケースワーカーに相談してください。くわしくは → <a href="nokoseru-setsumei.html">生活保護でも、労働収入の一部は引かれずに貯められる</a></p>

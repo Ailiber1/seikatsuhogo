@@ -47,6 +47,8 @@ select:focus{outline:none; border-color:var(--navy)}
 .bal .tr{height:18px; border-radius:9px; background:var(--line-soft); overflow:hidden}
 .bal .tr i{display:block; height:100%; width:0; border-radius:9px; background:var(--navy); transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
 .bal .tr i.s{background:var(--c)}
+.bal .tr i.n{background:#9aa8b6}
+.bal .row > span{line-height:1.35; font-weight:700}
 .bal .v{font-size:14px; color:var(--sub)}
 .one-liner{border-left:5px solid var(--c); background:var(--panel); border-radius:0 11px 11px 0; padding:10px 14px; font-weight:800; font-size:17.5px; margin:0 0 12px}
 .cards{display:grid; gap:8px; margin-bottom:12px}
@@ -178,14 +180,15 @@ function render() {
   const r = judge(jobK, $('ind').value, $('edu').value, $('pref').value);
   let h = '';
   if (r.national) {
-    const s = side(r.national.n), max = Math.max(r.national.demand, r.national.supply);
+    const s = side(r.national.n), max = Math.max(r.national.demand, r.national.supply, r.national.now);
     h += `<div class="verdict" style="--c:${s.c}"><div class="k">${r.job.say}は、2040年に</div><span class="big">${s.long.replace(/(余る|足りない)$/, '<small>$1</small>')}</span>
       <p>全国で見た国の推計です。</p>
       <div class="bal">
-        <div class="row"><span>必要な人</span><div><div class="tr"><i data-w="${r.national.demand / max * 100}"></i></div><span class="v num">${man(r.national.demand)}</span></div></div>
-        <div class="row"><span>働きたい人</span><div><div class="tr"><i class="s" data-w="${r.national.supply / max * 100}"></i></div><span class="v num">${man(r.national.supply)}</span></div></div>
+        <div class="row"><span>2022年に<br>働いていた人</span><div><div class="tr"><i class="n" data-w="${r.national.now / max * 100}"></i></div><span class="v num">${man(r.national.now)}</span></div></div>
+        <div class="row"><span>2040年に<br>必要な人</span><div><div class="tr"><i data-w="${r.national.demand / max * 100}"></i></div><span class="v num">${man(r.national.demand)}</span></div></div>
+        <div class="row"><span>2040年に<br>働きたい人</span><div><div class="tr"><i class="s" data-w="${r.national.supply / max * 100}"></i></div><span class="v num">${man(r.national.supply)}</span></div></div>
       </div>
-      <p class="help">いま（2022年）この仕事をしている人：${man(r.national.now)}${r.job.note ? '<br>' + r.job.note : ''}</p></div>`;
+      <p class="help">2040年は「必要な人」と「働きたい人」の差が、余る・足りないの数です。<br>「2022年」は、国が5年に1度行う大きな調査（就業構造基本調査）のいちばん新しい年です。${r.job.note ? '<br>' + r.job.note : ''}</p></div>`;
     h += `<div class="one-liner" style="--c:${s.c}">${LINES[s.w]}</div>`;
   } else {
     h += `<div class="verdict" style="--c:var(--navy)"><div class="k">${r.job.say}は</div><span class="big" style="font-size:24px">国の表に、職種の数字が載っていません</span><p>推計の表に出ているのは、専門職・事務職・現場の仕事です。業界・学歴・地域を選ぶと、そちらの数字は出ます。</p></div>`;

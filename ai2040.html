@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>2040年、あなたの仕事は余る？足りない？</title>
-<meta name="description" content="仕事の種類・業界・最終学歴・住んでいる都道府県を選ぶと、経済産業省の2040年の就業構造推計（2026年3月改訂版）で、あなたの仕事が余る側か足りない側かを調べられます">
+<title>2040年、あなたの仕事は人手不足？仕事に就けない？</title>
+<meta name="description" content="仕事の種類・業界・最終学歴・住んでいる都道府県を選ぶと、経済産業省の2040年の就業構造推計（2026年3月改訂版）で、あなたの仕事が人手不足になるか、仕事に就けない人が出るかを調べられます">
 <style>
 :root{
   /* 常に白基調。ダークモードには切り替えない */
@@ -50,6 +50,7 @@ select:focus{outline:none; border-color:var(--navy)}
 .bal .tr i.n{background:#9aa8b6}
 .bal .row > span{line-height:1.35; font-weight:700}
 .bal .v{font-size:14px; color:var(--sub)}
+.legend{font-size:14.5px; color:var(--sub); border:1px solid var(--line); border-radius:10px; padding:8px 12px; margin:0 0 10px; background:var(--panel)}
 .one-liner{border-left:5px solid var(--c); background:var(--panel); border-radius:0 11px 11px 0; padding:10px 14px; font-weight:800; font-size:17.5px; margin:0 0 12px}
 .cards{display:grid; gap:8px; margin-bottom:12px}
 .card{border:1px solid var(--line); border-left:5px solid var(--c); border-radius:0 12px 12px 0; padding:10px 13px; background:#fff; animation:up .4s ease}
@@ -94,8 +95,8 @@ window.gcUse = function (name) {
 </head>
 <body>
 <main class="wrap">
-  <h1 class="mincho"><span class="nb">2040年、あなたの仕事は</span><span class="nb">余る？足りない？</span><small><span class="nb">国（経済産業省）の推計で</span><span class="nb">調べる</span></small></h1>
-  <p class="lead">AIやロボットで、仕事はどう変わるのか。国は2040年に<b>どの仕事の人が余り、どの仕事の人が足りなくなるか</b>を推計しています。あなたに近いものを選ぶと、その数字が出ます。</p>
+  <h1 class="mincho"><span class="nb">2040年、あなたの仕事は</span><span class="nb">人手不足？</span><span class="nb">仕事に就けない？</span><small><span class="nb">国（経済産業省）の推計で</span><span class="nb">調べる</span></small></h1>
+  <p class="lead">AIやロボットで、仕事はどう変わるのか。国は2040年に<b>どの仕事が人手不足になり、どの仕事で就けない人が出るか</b>を推計しています。あなたに近いものを選ぶと、その数字が出ます。</p>
 
   <div class="q"><label for="job"><span class="b">1</span>今の仕事の種類</label>
     <select id="job"><option value="">選んでください</option></select>
@@ -119,7 +120,7 @@ window.gcUse = function (name) {
     </ul>
     <h3>読むときの注意</h3>
     <ul>
-      <li>「余る」は2040年に働きたい人（供給）が必要な人（需要）より多い、「足りない」はその逆です。国の表のプラス・マイナスをそのまま言いかえています</li>
+      <li>「仕事に就けない」は、2040年に働きたい人（供給）が必要な人（需要）より多い分を言いかえたものです（国の資料の言葉では「余剰」）。<b>実際に失業する人の数ではありません</b>。「人手不足」はその逆で、働く人が足りない分です（同じく「不足」）。国の表のプラス・マイナスをそのまま言いかえています</li>
       <li>業界別・学歴別の数字は、国の表に載っている主な項目だけです。表にない業界・学歴・職種（販売など）は数字を出していません</li>
       <li>地域の数字は、その地域の全部の仕事を合わせた数字です。職種ごとの地域の数字は国の資料に数値で載っていないため出していません</li>
       <li>都道府県から地域への振り分けは、経済産業局の管轄区域によります（沖縄県は九州。国の資料の注のとおり）</li>
@@ -146,8 +147,8 @@ const IND_LABELS = {'卸売業、小売業': '卸売・小売業', '宿泊業、
 const colIdx = c => M.jobs.indexOf(c);
 const man = n => Math.abs(n).toLocaleString('ja-JP') + '万人';
 function side(n) {
-  if (n > 0) return {w: '余る', c: 'var(--ng)', long: '約' + man(n) + ' 余る'};
-  if (n < 0) return {w: '足りない', c: 'var(--ok)', long: '約' + man(n) + ' 足りない'};
+  if (n > 0) return {w: '仕事に就けない', c: 'var(--ng)', long: '約' + man(n) + 'が仕事に就けない'};
+  if (n < 0) return {w: '人手不足', c: 'var(--ok)', long: '約' + man(n) + 'の人手不足'};
   return {w: 'ほぼ釣り合う', c: 'var(--navy)', long: 'ほぼ釣り合う（0万人）'};
 }
 
@@ -189,9 +190,9 @@ function judge(jobK, ind, edu, pref) {
 }
 
 const LINES = {
-  '余る': '椅子取りゲームなら、椅子が先に減っていく側。',
-  '足りない': '2040年、あなたは取り合いになる側です。',
-  'ほぼ釣り合う': '余りも足りなくもしない、ちょうど真ん中です。'
+  '仕事に就けない': '椅子取りゲームなら、座れない人が出る側。',
+  '人手不足': '2040年、あなたは取り合いになる側です。',
+  'ほぼ釣り合う': '人手不足でも、就けない人が出るわけでもない。ちょうど真ん中です。'
 };
 
 function render() {
@@ -202,14 +203,14 @@ function render() {
   let h = '';
   if (r.national) {
     const s = side(r.national.n), max = Math.max(r.national.demand, r.national.supply, r.national.now);
-    h += `<div class="verdict" style="--c:${s.c}"><div class="k">${r.job.say}は、2040年に</div><span class="big">${s.long.replace(/(余る|足りない)$/, '<small>$1</small>')}</span>
+    h += `<div class="verdict" style="--c:${s.c}"><div class="k">${r.job.say}は、2040年に</div><span class="big">${s.long.replace(/(が仕事に就けない|の人手不足)$/, '<small>$1</small>')}</span>
       <p>全国で見た国の推計です。</p>
       <div class="bal">
         <div class="row"><span>2022年に<br>働いていた人</span><div><div class="tr"><i class="n" data-w="${r.national.now / max * 100}"></i></div><span class="v num">${man(r.national.now)}</span></div></div>
         <div class="row"><span>2040年に<br>必要な人</span><div><div class="tr"><i data-w="${r.national.demand / max * 100}"></i></div><span class="v num">${man(r.national.demand)}</span></div></div>
         <div class="row"><span>2040年に<br>働きたい人</span><div><div class="tr"><i class="s" data-w="${r.national.supply / max * 100}"></i></div><span class="v num">${man(r.national.supply)}</span></div></div>
       </div>
-      <p class="help">2040年は「必要な人」と「働きたい人」の差が、余る・足りないの数です。<br>「2022年」は、国が5年に1度行う大きな調査（就業構造基本調査）のいちばん新しい年です。${r.job.note ? '<br>' + r.job.note : ''}</p></div>`;
+      <p class="help">「働きたい人」が「必要な人」より多い分が<b>仕事に就けない人</b>、少ない分が<b>人手不足</b>の数です。<br>「2022年」は、国が5年に1度行う大きな調査（就業構造基本調査）のいちばん新しい年です。${r.job.note ? '<br>' + r.job.note : ''}</p></div>`;
     h += `<div class="one-liner" style="--c:${s.c}">${LINES[s.w]}</div>`;
   } else {
     h += `<div class="verdict" style="--c:var(--navy)"><div class="k">${r.job.say}は</div><span class="big" style="font-size:24px">国の表に、職種の数字が載っていません</span><p>推計の表に出ているのは、専門職・事務職・現場の仕事です。業界・学歴・地域を選ぶと、そちらの数字は出ます。</p></div>`;
@@ -231,6 +232,7 @@ function render() {
     <li>仕事を失ったとき、失業給付は何日・1日いくら？ → <a href="shitsugyo.html">失業・低収入チェック</a></li>
     <li>失業給付が終わっても仕事がないときの、最後の支え → <a href="shitsugyo-setsumei.html">仕事を失っても、生活保護を頼っていい</a></li>
     <li>このツールの数字の背景（コンサル倒産・海外のAI解雇） → <a href="ai-shitsugyo-setsumei.html">AI失業は日本でも？</a></li></ul></div>`;
+  h = `<p class="legend"><b style="color:var(--ok)">人手不足</b>＝働く人が足りない<br><b style="color:var(--ng)">仕事に就けない</b>＝働きたい人が多すぎて、席が足りない<br><small>（どちらも国の推計の「働きたい人と必要な人の差」。実際に失業する人の数ではありません）</small></p>` + h;
   $('res').innerHTML = h; $('res').hidden = false; $('guide').hidden = true;
   requestAnimationFrame(() => $('res').querySelectorAll('.tr i').forEach(i => { i.style.width = i.dataset.w + '%'; }));
   if (window.gcUse) gcUse('2040しごとしらべ');

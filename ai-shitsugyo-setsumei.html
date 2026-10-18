@@ -83,11 +83,12 @@ blockquote[lang=en]{font-size:15.5px}
 .big1.gone .val{color:var(--ng); font-size:clamp(48px,14vw,68px)}
 .big1 .sub2{font-size:15.5px; margin:4px 0 0; color:var(--ink)}
 .big1.gone .sub2 b{color:var(--ng); font-size:1.3em}
-/* 5章: 余る・足りないの左右の棒 */
+/* 5章: 人手不足・仕事に就けないの左右の棒 */
 .dv{border:1px solid var(--line); border-radius:13px; background:var(--panel); padding:12px 14px; margin:8px 0 12px}
 .dv .hd{display:grid; grid-template-columns:1fr 1fr; font-size:14px; font-weight:700; color:var(--sub); text-align:center; margin-bottom:6px}
 .dv .row{margin-bottom:12px} .dv .row:last-child{margin-bottom:0}
-.dv .t{display:flex; justify-content:space-between; gap:8px; font-size:15.5px; font-weight:700}
+.dv .t{display:flex; flex-wrap:wrap; justify-content:space-between; gap:0 8px; font-size:15.5px; font-weight:700}
+.dv .t span:last-child{white-space:nowrap; margin-left:auto}
 .dv .tr{display:grid; grid-template-columns:1fr 1fr; height:22px; margin-top:3px}
 .dv .tr .l{display:flex; justify-content:flex-end; background:var(--line-soft); border-radius:11px 0 0 11px; overflow:hidden; border-right:2px solid var(--ink)}
 .dv .tr .r{background:var(--line-soft); border-radius:0 11px 11px 0; overflow:hidden}
@@ -140,8 +141,8 @@ window.gcUse = function (name) {
     <li>就職・転職を考えている方、<span class="nb">子どもの就職が心配な方</span></li></ul></div>
 
   <div class="conclusion"><div class="k">結論</div>
-    <p>日本の失業率は <b class="num nb">2.5%</b>。「AIで失業が増えた」は、<span class="nb">まだ数字に出ていません。</span><br>でも、<b><span class="nb">コンサルの倒産は過去最多ペース</span></b>。国は2040年に<b><span class="nb">事務職が約437万人余る</span></b>と推計しています。<br>変化は「クビ」より先に、<b><span class="nb">会社の数と採用</span></b>に出始めています。</p></div>
-  <a class="cta" href="ai2040.html"><span>先に試す：2040年、あなたの仕事は余る？足りない？</span><span>→</span></a>
+    <p>日本の失業率は <b class="num nb">2.5%</b>。「AIで失業が増えた」は、<span class="nb">まだ数字に出ていません。</span><br>でも、<b><span class="nb">コンサルの倒産は過去最多ペース</span></b>。国は2040年に<b><span class="nb">事務職で約437万人が仕事に就けない</span></b>と推計しています。<br>変化は「クビ」より先に、<b><span class="nb">会社の数と採用</span></b>に出始めています。</p></div>
+  <a class="cta" href="ai2040.html"><span>先に試す：2040年、あなたの仕事は人手不足？仕事に就けない？</span><span>→</span></a>
 
   <section class="ch fade">
     <h2><span class="b">1</span>そもそも、何の話？</h2>
@@ -204,17 +205,17 @@ window.gcUse = function (name) {
   </section>
 
   <section class="ch fade">
-    <h2><span class="b">5</span>国の推計：2040年、事務職が約437万人余る</h2>
-    <p>では日本は。経済産業省が、2040年に<b>どの仕事の人が余り、どの仕事の人が足りなくなるか</b>を推計しています（2026年3月改訂）。</p>
+    <h2><span class="b">5</span>国の推計：2040年、事務職で約437万人が仕事に就けない</h2>
+    <p>では日本は。経済産業省が、2040年に<b>どの仕事が人手不足になり、どの仕事で就けない人が出るか</b>を推計しています（2026年3月改訂）。</p>
     <div class="dv" id="dv">
-      <div class="hd"><span class="ok">← 足りない</span><span class="ng">余る →</span></div>
-      <div class="row"><div class="t"><span>事務職</span><span class="num ng">約437万人 余る</span></div><div class="tr"><div class="l"><i data-w="0"></i></div><div class="r"><i data-w="100"></i></div></div></div>
-      <div class="row"><div class="t"><span>AI・ロボットを使いこなす人</span><span class="num ok">約339万人 足りない</span></div><div class="tr"><div class="l"><i data-w="77.6"></i></div><div class="r"><i data-w="0"></i></div></div></div>
-      <div class="row"><div class="t"><span>現場の人（工場・建設・介護など）</span><span class="num ok">約260万人 足りない</span></div><div class="tr"><div class="l"><i data-w="59.5"></i></div><div class="r"><i data-w="0"></i></div></div></div>
+      <div class="hd"><span class="ok">← 人手不足</span><span class="ng">仕事に就けない →</span></div>
+      <div class="row"><div class="t"><span>事務職</span><span class="num ng">約437万人が就けない</span></div><div class="tr"><div class="l"><i data-w="0"></i></div><div class="r"><i data-w="100"></i></div></div></div>
+      <div class="row"><div class="t"><span>AI・ロボットを使いこなす人</span><span class="num ok">約339万人の人手不足</span></div><div class="tr"><div class="l"><i data-w="77.6"></i></div><div class="r"><i data-w="0"></i></div></div></div>
+      <div class="row"><div class="t"><span>現場の人（工場・建設・介護など）</span><span class="num ok">約260万人の人手不足</span></div><div class="tr"><div class="l"><i data-w="59.5"></i></div><div class="r"><i data-w="0"></i></div></div></div>
     </div>
     <blockquote>事務職(約440万人)や文系人材(約80万人)が余剰、AI・ロボット等利活用人材(約340万人)を含む専門職や現場人材(約260万人)、理系人材(約120万人)が不足する可能性。</blockquote>
     <p class="src">出典: <a href="https://www.mhlw.go.jp/content/12602000/001670956.pdf" target="_blank" rel="noopener">経済産業省「2040年の就業構造推計（改訂版）について」（2026年3月）</a>（表の数字は437万人・339万人・260万人）</p>
-    <div class="easy"><b>やさしく言うと：</b>2040年、事務の仕事は、<b>やりたい人が1,476万人いるのに、必要なのは1,039万人</b>。437万人分の椅子が足りません。逆に、AIを使いこなす人と現場の人は足りなくなります。</div>
+    <div class="easy"><b>やさしく言うと：</b>国の言葉の「余剰」は<b>働きたい人が多すぎて、仕事に就けない人が出る</b>こと、「不足」は<b>人手不足</b>のことです。<br>2040年、事務の仕事は、<b>やりたい人が1,476万人いるのに、必要なのは1,039万人</b>。437万人が椅子に座れず、<b>仕事に就けません</b>。逆に、AIを使いこなす人と現場の人は<b>人手不足</b>になります。</div>
     <div class="caution"><b>この推計の前提：</b>国は「2040年に十分な国内投資や産業構造転換が実現する場合」として計算し、その場合は「全体で大きな不足は生じない」と書いています。<b>仕事の総数が消えるのではなく、仕事の中身が入れ替わる</b>、という見立てです。</div>
     <a class="cta" href="ai2040.html"><span>あなたの仕事・学歴・地域では？（2040年しごとしらべ）</span><span>→</span></a>
   </section>
@@ -237,12 +238,12 @@ window.gcUse = function (name) {
     <div class="card"><span class="mk y">✓</span><div><b>コンサルの倒産は、2025年が過去最多。2026年はそれを上回るペース</b><small>2025年167件、2026年1〜5月74件（帝国データバンク）</small></div></div>
     <div class="card"><span class="mk y">✓</span><div><b>AIを使う会社の16.1%が「働く人の数を減らす可能性」</b><small>何らかの影響があるは53.4%（東京商工リサーチ）</small></div></div>
     <div class="card"><span class="mk y">✓</span><div><b>アメリカでは、解雇の理由1位がAI。若い人の採用が先に減っている</b><small>12万136人・約21%（2026年1〜9月）。22〜25歳は19%少ない</small></div></div>
-    <div class="card"><span class="mk y">✓</span><div><b>国の推計では、2040年に事務職が約437万人余る</b><small>AI・ロボットを使いこなす人は約339万人、現場の人は約260万人足りない</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>国の推計では、2040年に事務職で約437万人が仕事に就けない</b><small>AI・ロボットを使いこなす人は約339万人、現場の人は約260万人の人手不足</small></div></div>
     <h3>まだ分からないこと</h3>
     <div class="card"><span class="mk q">？</span><div><b>日本で、AIが原因の失業がどれだけあるか</b><small>失業率は2.5%（2026年8月）。AIが直接の理由と確認された倒産も、まだない</small></div></div>
     <div class="card"><span class="mk q">？</span><div><b>2040年の推計どおりになるか</b><small>「十分な投資が実現した場合」の計算。予言ではない</small></div></div>
   </section>
-  <a class="cta" href="ai2040.html"><span>あなたの仕事は、2040年に余る側？足りない側？</span><span>→</span></a>
+  <a class="cta" href="ai2040.html"><span>あなたの仕事は、2040年に人手不足？仕事に就けない側？</span><span>→</span></a>
 
   <div class="foot">
     <h3>根拠資料</h3>
@@ -259,7 +260,7 @@ window.gcUse = function (name) {
     <ul>
       <li>「過去最多」は、帝国データバンクが集計を始めた2000年以降で、2025年の倒産167件が最多という意味です。2026年は5月までの途中経過です</li>
       <li>アメリカの数字は「発表」の集計で、実際に職を失った人の数とは違います。日本とアメリカでは、会社が人を減らすときの決まりも違います</li>
-      <li>経済産業省の推計は、一定の前提を置いた計算です。437万人などは「需給ミスマッチ」（働きたい人と必要な人の差）で、失業者の数ではありません</li>
+      <li>経済産業省の推計は、一定の前提を置いた計算です。437万人などは「需給ミスマッチ」（働きたい人と必要な人の差）です。「仕事に就けない」はその言いかえで、実際に失業する人の数ではありません</li>
       <li>英語の原文の訳は、私の言いかえです</li>
       <li>確認日: 2026年10月18日 ／ 個人が作ったもので、行政の公式資料ではありません。法律上の助言でもありません</li>
     </ul>

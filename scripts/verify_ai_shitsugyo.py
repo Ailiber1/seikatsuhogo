@@ -126,7 +126,7 @@ page_nums = [
     f"{t['tosan_2025']}件", f"{t['tosan_2026_1_5']}件", f"{t['tosan_2025_1_5']}件", f"{t['total_2026_1_5']}件",
     f"{d['tsr']['impact_pct']}%", f"{d['tsr']['yokusei_pct']}%", f"{d['tsr']['haichi_pct']}%", f"{d['tsr']['answered']:,}社",
     "12万136", f"約{d['challenger']['ai_share_pct']}%", "57万3,195人", f"{d['stanford']['young_gap_pct']}%少ない",
-    f"約{nat['jimu']}万人余る", f"約{-nat['ai']}万人足りない", f"約{-nat['genba']}万人足りない",
+    f"約{nat['jimu']}万人が仕事に就けない", f"約{-nat['ai']}万人の人手不足", f"約{-nat['genba']}万人の人手不足",
     f"{sup['jimu']:,}万人いるのに", f"{dem['jimu']:,}万人", f"{d['rodo']['rate_2026_08']}%",
     f"{t['tosan_2025_1_5'] + t['haigyo_2025_1_5']}件は、倒産{t['tosan_2025_1_5']}件＋休廃業・解散{t['haigyo_2025_1_5']}件の計算",
     f"毎週およそ{round(t['total_2026_1_5'] / (151 / 7))}社", f"{t['total_2026_1_5']}件÷約{151 / 7:.1f}週",

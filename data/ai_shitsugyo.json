@@ -1,0 +1,90 @@
+{
+  "note": "AIと失業の解説（ai-shitsugyo-setsumei.html）と、2040年しごとしらべ（ai2040.html）で使う数字と原文。数字は全部、写し（*_source.*）から scripts/verify_ai_shitsugyo.py で照合する",
+  "checked": "2026-10-18",
+  "sources": {
+    "tdb": {"name": "帝国データバンク「『経営コンサルティング業界』の倒産・休廃業解散動向（2026年1-5月）」（2026年6月5日）", "url": "https://www.tdb.co.jp/report/industry/20260605-consulting26y1-5/", "copy": "tdb_consulting_2026_1-5_source.pdf"},
+    "tsr": {"name": "東京商工リサーチ「『生成AI』大企業の約6割が組織で活用推進 将来的に人員配置・抑制の見直し検討 53.4％」（2026年4月27日）", "url": "https://www.tsr-net.co.jp/data/detail/1202766_1527.html", "copy": "tsr_ai_2026_04_source.html"},
+    "challenger": {"name": "Challenger, Gray & Christmas「Job Cuts Report September 2026」", "url": "https://www.challengergray.com/wp-content/uploads/2026/10/Challenger-Report-September-2026.pdf", "copy": "challenger_2026_09_source.pdf"},
+    "stanford": {"name": "Brynjolfsson, Chandar, Chen「Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence」（スタンフォード大学 デジタルエコノミー研究所・2026年8月改訂）", "url": "https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine/", "copy": "stanford_canaries_2026_08_source.pdf"},
+    "meti": {"name": "経済産業省「2040年の就業構造推計（改訂版）について」（2026年3月）", "url": "https://www.mhlw.go.jp/content/12602000/001670956.pdf", "copy": "meti_shugyo2040_kaitei_source.pdf"},
+    "rodo": {"name": "総務省統計局「労働力調査（基本集計）2026年8月分 結果の概要」（2026年10月2日公表）", "url": "https://www.stat.go.jp/data/roudou/sokuhou/tsuki/index.html", "copy": "rodo_2026_08_gaiyou_source.pdf"}
+  },
+  "tdb": {
+    "total_2026_1_5": 242, "tosan_2026_1_5": 74, "haigyo_2026_1_5": 168,
+    "tosan_2025": 167, "tosan_2025_1_5": 69, "total_2025": 568, "haigyo_2025_1_5": 149,
+    "quote_record": "2026 年に発生した経営コンサルティング業の倒産は 74 件となり、集計を開始した 2000 年以降で最多だった前年（167 件、1-5 月：69）を上回るペースで推移した。",
+    "quote_ai": "「生成 AI による業務代替」を直接の倒産理由とするケースはまだ確認できないものの、",
+    "quote_why": "生成 AI の性能進化でデータ収集・分析や資料作成などのコモディティ化が進むなか、専門性で差別化できない事業者の行き詰まりが表面化しており、"
+  },
+  "tsr": {
+    "answered": 6327, "impact_pct": 53.4, "impact_n": 1117, "haichi_pct": 28.9, "yokusei_pct": 16.1, "none_pct": 46.5, "kibo_taishoku_pct": 3.6,
+    "quote_yokusei": "「既存業務の効率化で、総従業員数を抑制する可能性がある」16.1％（337社）",
+    "quote_calm": "生成AIが直ちに大規模な人員削減につながる状況にはない。"
+  },
+  "challenger": {
+    "ytd_cuts": 573195, "ai_ytd": 120136, "ai_share_pct": 21, "ai_sep": 3961,
+    "quote": "So far this year, AI has been cited in 120,136 job cut announcements, approximately 21% of all cuts, and it remains the leading reason year-to-date."
+  },
+  "stanford": {
+    "young_gap_pct": 19,
+    "quote_gap": "employment of young workers (ages 22–25) in AI-exposed occupations now stands 19% below where it would be had it kept pace with that of their less-exposed peers; experienced workers show no comparable gap.",
+    "quote_hiring": "It operates primarily through reduced hiring of young workers rather than increased separations.",
+    "quote_nowide": "We find no evidence of widespread, economy-wide job displacement."
+  },
+  "rodo": {"rate_2026_08": 2.5, "unemployed_2026_08_man": 180},
+  "meti": {
+    "quote_summary": "事務職(約440万人)や文系人材(約80万人)が余剰、AI・ロボット等利活用人材(約340万人)を含む専門職や現場人材(約260万人)、理系人材(約120万人)が不足する可能性。",
+    "quote_premise": "2040年に十分な国内投資や産業構造転換が実現する場合(注)、人口減少により就業者数は約6700万人(2022年)から約6300万人となるが、AI・ロボット等の利活用やリスキリング等により労働需要が効率化され、全体で大きな不足は生じない。",
+    "jobs": ["senmon", "ai", "jimu", "genba", "seisan", "sonota"],
+    "job_names": {"senmon": "専門職", "ai": "うちAI・ロボット等の利活用を担う人材", "jimu": "事務職", "genba": "現場人材", "seisan": "うち生産工程従事者", "sonota": "うちその他現場人材"},
+    "national": {
+      "mismatch": [-181, -339, 437, -260, -206, -54],
+      "demand_2040": [1867, 782, 1039, 3283, 731, 2552],
+      "supply_2040": [1686, 443, 1476, 3023, 525, 2498],
+      "workers_2022": [1288, 236, 1455, 3637, 835, 2803]
+    },
+    "industries": [
+      {"name": "農林水産業", "mismatch": [-9, -7, -1, -110, -3, -107]},
+      {"name": "製造業", "mismatch": [-149, -125, -40, -256, -198, -58]},
+      {"name": "情報通信業", "mismatch": [116, 102, 50, 13, 2, 11]},
+      {"name": "卸売業、小売業", "mismatch": [-81, -77, 26, -20, -4, -16]},
+      {"name": "建設業", "mismatch": [-33, -26, 20, -31, -2, -30]},
+      {"name": "宿泊業、飲食サービス業", "mismatch": [-21, -21, 2, 12, 0, 12]},
+      {"name": "運輸業、郵便業", "mismatch": [-25, -26, 27, 26, 0, 25]}
+    ],
+    "edus": ["高卒(普通科)", "高卒(工業科)", "高専卒", "大卒理系", "院卒理系", "大卒文系", "院卒文系"],
+    "edu_total": {
+      "mismatch": [32, -91, -15, -96, -27, 61, 15],
+      "demand_2040": [778, 538, 77, 683, 217, 1439, 110],
+      "supply_2040": [810, 448, 62, 586, 189, 1500, 125],
+      "workers_2022": [899, 534, 64, 525, 164, 1556, 122]
+    },
+    "edu_by_job": {
+      "senmon": [4, -54, -14, -87, -24, -69, 4],
+      "ai": [1, -60, -15, -108, -33, -135, -7],
+      "jimu": [41, 8, 3, 20, 6, 163, 14],
+      "genba": [-24, -47, -5, -29, -9, -27, -2],
+      "seisan": [-22, -42, -5, -26, -8, -41, -2],
+      "sonota": [-1, -5, 0, -4, 0, 14, 0]
+    },
+    "regions": [
+      {"name": "関東(一都三県)", "mismatch": 193, "prefs": ["埼玉県", "千葉県", "東京都", "神奈川県"]},
+      {"name": "近畿", "mismatch": 7, "prefs": ["福井県", "滋賀県", "京都府", "大阪府", "兵庫県", "奈良県", "和歌山県"]},
+      {"name": "中部", "mismatch": 16, "prefs": ["富山県", "石川県", "岐阜県", "愛知県", "三重県"]},
+      {"name": "中国", "mismatch": 3, "prefs": ["鳥取県", "島根県", "岡山県", "広島県", "山口県"]},
+      {"name": "四国", "mismatch": -6, "prefs": ["徳島県", "香川県", "愛媛県", "高知県"]},
+      {"name": "北海道", "mismatch": -41, "prefs": ["北海道"]},
+      {"name": "東北", "mismatch": -53, "prefs": ["青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県"]},
+      {"name": "九州", "mismatch": -31, "prefs": ["福岡県", "佐賀県", "長崎県", "熊本県", "大分県", "宮崎県", "鹿児島県", "沖縄県"]},
+      {"name": "関東(一都三県以外)", "mismatch": -89, "prefs": ["茨城県", "栃木県", "群馬県", "新潟県", "山梨県", "長野県", "静岡県"]}
+    ],
+    "region_note": "地域ブロックは経済産業局の管轄区域に沿ったもの（原文の注）。都道府県の振り分けは各経済産業局の管轄区域による。沖縄県は九州に含む（原文の注）"
+  },
+  "self": {
+    "note": "配信者本人の発言（過去の配信・動画の字幕から）",
+    "items": [
+      "2024年、コロナの後遺症が重くなって働けなくなり、退職した（動画「もう限界が来たので、生活保護の申請を出しに行って来ました」2024年5月 4:07〜）",
+      "受けて時間がある間にAIをやり続け、それがいま在宅の仕事になっている（2026年10月13日の配信 28:47〜）"
+    ]
+  }
+}

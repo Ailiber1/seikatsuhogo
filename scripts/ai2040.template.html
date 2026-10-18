@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2040年、あなたの仕事は余る？足りない？</title>
+<meta name="description" content="仕事の種類・業界・最終学歴・住んでいる都道府県を選ぶと、経済産業省の2040年の就業構造推計（2026年3月改訂版）で、あなたの仕事が余る側か足りない側かを調べられます">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:17px; line-height:1.8; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+.nb{display:inline-block}
+h1,.lead,.res h2,.verdict,.one-liner{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
+h1{font-size:clamp(25px,6vw,34px); line-height:1.4; margin:0 0 10px; color:var(--navy); text-wrap:balance}
+h1 small{display:block; font-size:.52em; color:var(--sub); font-weight:600; margin-top:4px}
+.lead{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:11px 15px; margin:0 0 18px; font-size:16.5px}
+.q{border:1px solid var(--line); border-radius:13px; background:var(--panel); padding:12px 14px; margin-bottom:10px}
+.q label{display:flex; align-items:center; gap:9px; font-weight:800; font-size:17px; margin-bottom:6px}
+.q label .b{flex:none; width:28px; height:28px; border-radius:50%; border:2px solid var(--navy); color:var(--navy); display:grid; place-items:center; font-size:14.5px; font-family:system-ui,sans-serif}
+.q label .opt{font-size:13.5px; font-weight:700; color:var(--sub); border:1px solid var(--line); border-radius:6px; padding:0 6px; background:#fff}
+select{width:100%; font:inherit; font-size:17px; min-height:48px; border:2px solid var(--line); border-radius:11px; padding:6px 10px; background:#fff; color:var(--ink)}
+select:disabled{background:var(--line-soft); color:#9aa4ae}
+select:focus{outline:none; border-color:var(--navy)}
+.help{font-size:14.5px; color:var(--sub); margin:6px 0 0; line-height:1.6}
+.guide{border:2px dashed var(--line); border-radius:14px; padding:18px 16px; text-align:center; color:var(--sub); margin:16px 0}
+.guide b{display:block; color:var(--navy); font-size:18px; margin-bottom:4px}
+.res{margin-top:16px}
+.verdict{border:2px solid var(--c); border-radius:15px; padding:16px; background:#fff; margin-bottom:12px; animation:up .4s ease}
+.verdict .k{font-size:15px; font-weight:700; color:var(--sub)}
+.verdict .big{display:block; font-size:clamp(30px,8.5vw,42px); font-weight:800; color:var(--c); line-height:1.3; margin:2px 0}
+.verdict .big small{font-size:.45em; color:var(--ink)}
+.verdict p{margin:4px 0 0; font-size:16.5px}
+.bal{margin:10px 0 2px}
+.bal .row{display:grid; grid-template-columns:7.5em 1fr; gap:8px; align-items:center; margin-bottom:6px; font-size:15px}
+.bal .tr{height:18px; border-radius:9px; background:var(--line-soft); overflow:hidden}
+.bal .tr i{display:block; height:100%; width:0; border-radius:9px; background:var(--navy); transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+.bal .tr i.s{background:var(--c)}
+.bal .v{font-size:14px; color:var(--sub)}
+.one-liner{border-left:5px solid var(--c); background:var(--panel); border-radius:0 11px 11px 0; padding:10px 14px; font-weight:800; font-size:17.5px; margin:0 0 12px}
+.cards{display:grid; gap:8px; margin-bottom:12px}
+.card{border:1px solid var(--line); border-left:5px solid var(--c); border-radius:0 12px 12px 0; padding:10px 13px; background:#fff; animation:up .4s ease}
+.card .t{font-size:14.5px; font-weight:700; color:var(--sub)}
+.card .v{font-size:19px; font-weight:800; color:var(--c)}
+.card small{display:block; font-size:14.5px; color:var(--sub); line-height:1.6}
+.card.none{--c:var(--line)} .card.none .v{color:var(--sub); font-size:16px}
+.next{border:1px solid var(--line); border-radius:13px; padding:12px 14px; background:var(--panel); margin:0 0 12px}
+.next h3{margin:0 0 6px; font-size:16.5px; color:var(--navy)}
+.next ul{margin:0; padding-left:1.2em; font-size:16px} .next li{margin-bottom:4px}
+.next a{color:var(--navy); font-weight:700}
+.warn{background:var(--warn-bg); border-left:5px solid var(--warn); border-radius:0 11px 11px 0; padding:10px 14px; margin:8px 0 12px; font-size:15.5px}
+.warn b{color:var(--warn)}
+@keyframes up{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+.foot{margin-top:24px; font-size:14.5px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot h3{font-size:15px; color:var(--ink); margin:12px 0 4px}
+.foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .verdict,.card{animation:none} .bal .tr i{transition:none} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho"><span class="nb">2040年、あなたの仕事は</span><span class="nb">余る？足りない？</span><small><span class="nb">国（経済産業省）の推計で</span><span class="nb">調べる</span></small></h1>
+  <p class="lead">AIやロボットで、仕事はどう変わるのか。国は2040年に<b>どの仕事の人が余り、どの仕事の人が足りなくなるか</b>を推計しています。あなたに近いものを選ぶと、その数字が出ます。</p>
+
+  <div class="q"><label for="job"><span class="b">1</span>今の仕事の種類</label>
+    <select id="job"><option value="">選んでください</option></select>
+    <p class="help">働いていない方は、前の仕事か、これから探したい仕事を選んでください。<br>事務＝一般事務・経理・受付・営業事務など／専門職＝医師・看護師・教師・研究者・デザイナーなど／ものづくり＝工場の製造・組立・検査など／現場＝建設・介護・飲食・清掃・接客など</p></div>
+  <div class="q"><label for="ind"><span class="b">2</span>働いている業界<span class="opt">わかれば</span></label>
+    <select id="ind" disabled><option value="">選んでください</option></select></div>
+  <div class="q"><label for="edu"><span class="b">3</span>最後に出た学校<span class="opt">わかれば</span></label>
+    <select id="edu" disabled><option value="">選んでください</option></select></div>
+  <div class="q"><label for="pref"><span class="b">4</span>住んでいる都道府県<span class="opt">わかれば</span></label>
+    <select id="pref" disabled><option value="">選んでください</option></select></div>
+
+  <div class="guide" id="guide"><b>上の1で仕事の種類を選ぶと、ここに結果が出ます</b>2〜4も選ぶと、業界・学歴・地域ごとの数字も出ます</div>
+  <div class="res" id="res" hidden></div>
+
+  <div class="warn"><b>読むときの注意：</b>この数字は、国が「2040年に十分な投資や産業の転換が実現した場合」として計算した<b>推計</b>です。予言ではありません。あなた個人が仕事を失うかどうかを決めるものでもありません。</div>
+
+  <div class="foot">
+    <h3>根拠資料</h3>
+    <ul>
+      <li><a href="/*METI_URL*/" target="_blank" rel="noopener">経済産業省「2040年の就業構造推計（改訂版）について」（2026年3月）</a>：全国の職種別・業界別・学歴別、地域別の需給ミスマッチ</li>
+    </ul>
+    <h3>読むときの注意</h3>
+    <ul>
+      <li>「余る」は2040年に働きたい人（供給）が必要な人（需要）より多い、「足りない」はその逆です。国の表のプラス・マイナスをそのまま言いかえています</li>
+      <li>業界別・学歴別の数字は、国の表に載っている主な項目だけです。表にない業界・学歴・職種（販売など）は数字を出していません</li>
+      <li>地域の数字は、その地域の全部の仕事を合わせた数字です。職種ごとの地域の数字は国の資料に数値で載っていないため出していません</li>
+      <li>都道府県から地域への振り分けは、経済産業局の管轄区域によります（沖縄県は九州。国の資料の注のとおり）</li>
+      <li>選んだ内容はブラウザの中だけで使い、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</li>
+      <li>確認日: /*CHECKED*/ ／ 個人が作ったもので、行政の公式資料ではありません</li>
+    </ul>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+const M = /*METI*/;
+// 仕事の選択肢 → 国の表の列（専門職・AI人材・事務・現場・生産工程・その他現場）。販売は国の表に職種の数字がない
+const JOBS = [
+  {k: 'jimu',   label: '事務の仕事',               col: 'jimu',   say: '事務の仕事'},
+  {k: 'ai',     label: 'IT・AI・機械の技術者',      col: 'ai',     say: 'IT・AI・機械の技術者（AI・ロボットを使いこなす人材）'},
+  {k: 'senmon', label: '医療・教育などの専門職',    col: 'senmon', say: '専門職', note: '国の表の「専門職」には、IT・AI・機械の技術者も含まれます'},
+  {k: 'seisan', label: '工場などのものづくり',      col: 'seisan', say: 'ものづくり（生産工程）の仕事'},
+  {k: 'genba',  label: '建設・介護・飲食などの現場', col: 'sonota', say: '建設・介護・飲食などの現場の仕事', note: '国の表の「現場人材」のうち、生産工程以外（その他現場人材）の数字です'},
+  {k: 'hanbai', label: '販売・営業',               col: null,     say: '販売・営業の仕事'}
+];
+const EDU_LABELS = ['高校（普通科）', '高校（工業科）', '高専', '大学（理系）', '大学院（理系）', '大学（文系）', '大学院（文系）'];
+const IND_LABELS = {'卸売業、小売業': '卸売・小売業', '宿泊業、飲食サービス業': '宿泊・飲食サービス業', '運輸業、郵便業': '運輸・郵便業'};
+const colIdx = c => M.jobs.indexOf(c);
+const man = n => Math.abs(n).toLocaleString('ja-JP') + '万人';
+function side(n) {
+  if (n > 0) return {w: '余る', c: 'var(--ng)', long: '約' + man(n) + ' 余る'};
+  if (n < 0) return {w: '足りない', c: 'var(--ok)', long: '約' + man(n) + ' 足りない'};
+  return {w: 'ほぼ釣り合う', c: 'var(--navy)', long: 'ほぼ釣り合う（0万人）'};
+}
+
+const $ = id => document.getElementById(id);
+const fill = (sel, items) => items.forEach(([v, t]) => { const o = document.createElement('option'); o.value = v; o.textContent = t; sel.appendChild(o); });
+fill($('job'), JOBS.map(j => [j.k, j.label]));
+fill($('ind'), M.industries.map((x, i) => [i, IND_LABELS[x.name] || x.name]).concat([['other', 'それ以外の業界']]));
+fill($('edu'), [[5, EDU_LABELS[5]], [3, EDU_LABELS[3]], [0, EDU_LABELS[0]], [1, EDU_LABELS[1]], [2, EDU_LABELS[2]], [6, EDU_LABELS[6]], [4, EDU_LABELS[4]], ['other', 'それ以外（中学・短大・専門学校など）']]);
+const PREFS = [];
+M.regions.forEach((r, ri) => r.prefs.forEach(p => PREFS.push([p, ri])));
+const ORDER = ['北海道','青森県','岩手県','宮城県','秋田県','山形県','福島県','茨城県','栃木県','群馬県','埼玉県','千葉県','東京都','神奈川県','新潟県','富山県','石川県','福井県','山梨県','長野県','岐阜県','静岡県','愛知県','三重県','滋賀県','京都府','大阪府','兵庫県','奈良県','和歌山県','鳥取県','島根県','岡山県','広島県','山口県','徳島県','香川県','愛媛県','高知県','福岡県','佐賀県','長崎県','熊本県','大分県','宮崎県','鹿児島県','沖縄県'];
+fill($('pref'), ORDER.map(p => [p, p]));
+const regionOf = p => { const hit = PREFS.find(x => x[0] === p); return hit ? M.regions[hit[1]] : null; };
+
+// 判定（検算スクリプトからも呼ぶ）
+function judge(jobK, ind, edu, pref) {
+  const job = JOBS.find(j => j.k === jobK);
+  if (!job) return null;
+  const out = {job, cards: []};
+  if (job.col) {
+    const i = colIdx(job.col);
+    out.national = {n: M.national.mismatch[i], demand: M.national.demand_2040[i], supply: M.national.supply_2040[i], now: M.national.workers_2022[i]};
+  }
+  if (ind !== '' && ind != null) {
+    if (ind === 'other') out.cards.push({kind: 'ind', none: '国の表に、この業界の数字は載っていません'});
+    else if (!job.col) out.cards.push({kind: 'ind', none: '国の表に、販売・営業の職種の数字は載っていません'});
+    else { const x = M.industries[+ind]; out.cards.push({kind: 'ind', name: IND_LABELS[x.name] || x.name, n: x.mismatch[colIdx(job.col)]}); }
+  }
+  if (edu !== '' && edu != null) {
+    if (edu === 'other') out.cards.push({kind: 'edu', none: '国の表に、この学歴の数字は載っていません'});
+    else {
+      const e = +edu, c = {kind: 'edu', name: EDU_LABELS[e], total: M.edu_total.mismatch[e]};
+      if (job.col) c.n = M.edu_by_job[job.col][e];
+      out.cards.push(c);
+    }
+  }
+  if (pref) { const r = regionOf(pref); if (r) out.cards.push({kind: 'region', name: r.name, pref, n: r.mismatch}); }
+  return out;
+}
+
+const LINES = {
+  '余る': '椅子取りゲームなら、椅子が先に減っていく側。',
+  '足りない': '2040年、あなたは取り合いになる側です。',
+  'ほぼ釣り合う': '余りも足りなくもしない、ちょうど真ん中です。'
+};
+
+function render() {
+  const jobK = $('job').value;
+  ['ind', 'edu', 'pref'].forEach(id => { $(id).disabled = !jobK; });
+  if (!jobK) { $('res').hidden = true; $('guide').hidden = false; return; }
+  const r = judge(jobK, $('ind').value, $('edu').value, $('pref').value);
+  let h = '';
+  if (r.national) {
+    const s = side(r.national.n), max = Math.max(r.national.demand, r.national.supply);
+    h += `<div class="verdict" style="--c:${s.c}"><div class="k">${r.job.say}は、2040年に</div><span class="big">${s.long.replace(/(余る|足りない)$/, '<small>$1</small>')}</span>
+      <p>全国で見た国の推計です。</p>
+      <div class="bal">
+        <div class="row"><span>必要な人</span><div><div class="tr"><i data-w="${r.national.demand / max * 100}"></i></div><span class="v num">${man(r.national.demand)}</span></div></div>
+        <div class="row"><span>働きたい人</span><div><div class="tr"><i class="s" data-w="${r.national.supply / max * 100}"></i></div><span class="v num">${man(r.national.supply)}</span></div></div>
+      </div>
+      <p class="help">いま（2022年）この仕事をしている人：${man(r.national.now)}${r.job.note ? '<br>' + r.job.note : ''}</p></div>`;
+    h += `<div class="one-liner" style="--c:${s.c}">${LINES[s.w]}</div>`;
+  } else {
+    h += `<div class="verdict" style="--c:var(--navy)"><div class="k">${r.job.say}は</div><span class="big" style="font-size:24px">国の表に、職種の数字が載っていません</span><p>推計の表に出ているのは、専門職・事務職・現場の仕事です。業界・学歴・地域を選ぶと、そちらの数字は出ます。</p></div>`;
+  }
+  const cards = r.cards.map(c => {
+    if (c.none) return `<div class="card none"><div class="t">${c.kind === 'ind' ? 'あなたの業界では' : c.kind === 'edu' ? 'あなたの学歴では' : 'あなたの地域では'}</div><div class="v">${c.none}</div></div>`;
+    if (c.kind === 'ind') { const s = side(c.n); return `<div class="card" style="--c:${s.c}"><div class="t">${c.name}の${r.job.say}は</div><div class="v num">${s.long}</div><small>業界の中で見た、2040年の国の推計</small></div>`; }
+    if (c.kind === 'edu') {
+      const t = side(c.total);
+      if (c.n == null) return `<div class="card" style="--c:${t.c}"><div class="t">${c.name}を出た人全体では</div><div class="v num">${t.long}</div></div>`;
+      const s = side(c.n);
+      return `<div class="card" style="--c:${s.c}"><div class="t">${c.name}を出て${r.job.say}をする人は</div><div class="v num">${s.long}</div><small>${c.name}を出た人全体では${t.long}</small></div>`;
+    }
+    const s = side(c.n);
+    return `<div class="card" style="--c:${s.c}"><div class="t">${c.pref}をふくむ「${c.name}」では</div><div class="v num">${s.long}</div><small>地域の全部の仕事を合わせた数字です</small></div>`;
+  }).join('');
+  if (cards) h += `<div class="cards">${cards}</div>`;
+  h += `<div class="next"><h3>もしものときに、知っておくこと</h3><ul>
+    <li>仕事を失ったとき、失業給付は何日・1日いくら？ → <a href="shitsugyo.html">失業・低収入チェック</a></li>
+    <li>失業給付が終わっても仕事がないときの、最後の支え → <a href="shitsugyo-setsumei.html">仕事を失っても、生活保護を頼っていい</a></li>
+    <li>このツールの数字の背景（コンサル倒産・海外のAI解雇） → <a href="ai-shitsugyo-setsumei.html">AI失業は日本でも？</a></li></ul></div>`;
+  $('res').innerHTML = h; $('res').hidden = false; $('guide').hidden = true;
+  requestAnimationFrame(() => $('res').querySelectorAll('.tr i').forEach(i => { i.style.width = i.dataset.w + '%'; }));
+  if (window.gcUse) gcUse('2040しごとしらべ');
+}
+['job', 'ind', 'edu', 'pref'].forEach(id => $(id).addEventListener('change', render));
+</script>
+</body>
+</html>

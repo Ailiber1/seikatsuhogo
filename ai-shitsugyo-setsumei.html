@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>コンサル倒産が過去最多！AI失業は、日本でも？</title>
+<meta name="description" content="経営コンサルの倒産が過去最多。AIで失業は日本でも起きるのか。帝国データバンク・東京商工リサーチ・アメリカの解雇調査・スタンフォード大学・経済産業省の2040年推計のデータで説明します">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:17px; line-height:1.8; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+/* 言葉の途中で改行しない。対応ブラウザは文節で折り返す */
+.nb{display:inline-block}
+h1,.conclusion p,.ch h2,.for-who li,.cta,.card b,.steps b{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
+h1{font-size:clamp(26px,6vw,36px); line-height:1.4; margin:0 0 12px; color:var(--navy); text-wrap:balance}
+h1 small{display:block; font-size:.55em; color:var(--sub); font-weight:600; margin-top:4px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:16px; font-size:16.5px}
+.for-who b{color:var(--navy)} .for-who ul{margin:4px 0 0; padding-left:1.2em}
+.conclusion{border:2px solid var(--navy); border-radius:14px; padding:16px; margin-bottom:10px; background:#fff}
+.conclusion .k{font-size:14.5px; font-weight:700; color:var(--sub)}
+.conclusion p{margin:4px 0 0; font-size:18px; font-weight:700; line-height:1.65}
+.conclusion b{color:var(--navy)}
+.cta{display:flex; align-items:center; justify-content:space-between; gap:10px; text-decoration:none; color:var(--navy); background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:11px 14px; margin:12px 0 22px; font-weight:700; font-size:16.5px; min-height:48px}
+.cta span:last-child{flex:none}
+section.ch{margin:30px 0 8px}
+.ch h2{display:flex; align-items:center; gap:10px; font-size:clamp(19px,4.6vw,23px); line-height:1.45; margin:0 0 12px; color:var(--navy)}
+.ch h2 .b{flex:none; width:34px; height:34px; border-radius:50%; border:2px solid var(--navy); display:grid; place-items:center; font-size:16.5px; font-family:system-ui,sans-serif}
+.ch p{margin:0 0 12px}
+.ch a{color:var(--navy); font-weight:700}
+blockquote{margin:10px 0 4px; padding:10px 14px; background:var(--panel); border-left:4px solid var(--line); font-size:16px; border-radius:0 10px 10px 0}
+blockquote[lang=en]{font-size:15.5px}
+.src{font-size:14.5px; color:var(--sub); margin:0 0 8px} .src a{color:var(--navy); font-weight:400}
+.easy{background:var(--ok-bg); border-left:4px solid var(--ok); border-radius:0 10px 10px 0; padding:9px 14px; font-size:16.5px; margin:6px 0 12px}
+.easy b{color:var(--ok)}
+.note{font-size:14.5px; color:var(--sub); margin:4px 0 12px}
+.caution{background:var(--warn-bg); border-left:5px solid var(--warn); border-radius:0 11px 11px 0; padding:10px 14px; margin:8px 0 12px}
+.caution b{color:var(--warn)}
+.steps{list-style:none; margin:6px 0 12px; padding:0; counter-reset:s}
+.steps li{position:relative; border:1px solid var(--line); border-radius:12px; background:var(--panel); padding:10px 12px 10px 48px; margin-bottom:8px}
+.steps li::before{counter-increment:s; content:counter(s); position:absolute; left:12px; top:11px; width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; display:grid; place-items:center; font-size:14px; font-weight:700}
+.steps b{display:block}
+.steps small{display:block; color:var(--sub); font-size:15px; line-height:1.6}
+.one{border-left:5px solid var(--navy); background:var(--navy-soft); border-radius:0 11px 11px 0; padding:10px 14px; font-weight:700; margin:8px 0 12px}
+.one small{display:block; font-weight:600; color:var(--sub); font-size:14.5px}
+.stats{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:8px 0 12px; text-align:center}
+.stats.two{grid-template-columns:repeat(2,1fr)}
+@media (max-width:520px){ .stats,.stats.two{grid-template-columns:1fr} }
+.stats div{border:1px solid var(--line); border-radius:12px; padding:10px; background:var(--panel)}
+.stats small{display:block; font-size:14.5px; color:var(--sub); line-height:1.5}
+.stats b{display:block; font-size:clamp(28px,7.5vw,36px); color:var(--navy); line-height:1.3}
+.stats b.ng{color:var(--ng)}
+.stats .hl{border:2px solid var(--ng); background:var(--ng-bg)}
+.big1{border:1.5px solid var(--navy); border-radius:14px; padding:14px 16px; background:#fff; margin:8px 0 12px}
+.big1 .cap{font-size:15px; font-weight:700; color:var(--sub); margin:0}
+.big1 .val{font-size:clamp(36px,10vw,50px); font-weight:800; color:var(--navy); line-height:1.25}
+.big1 .val small{font-size:.4em; color:var(--ink); font-weight:700}
+/* 5章: 余る・足りないの左右の棒 */
+.dv{border:1px solid var(--line); border-radius:13px; background:var(--panel); padding:12px 14px; margin:8px 0 12px}
+.dv .hd{display:grid; grid-template-columns:1fr 1fr; font-size:14px; font-weight:700; color:var(--sub); text-align:center; margin-bottom:6px}
+.dv .row{margin-bottom:12px} .dv .row:last-child{margin-bottom:0}
+.dv .t{display:flex; justify-content:space-between; gap:8px; font-size:15.5px; font-weight:700}
+.dv .tr{display:grid; grid-template-columns:1fr 1fr; height:22px; margin-top:3px}
+.dv .tr .l{display:flex; justify-content:flex-end; background:var(--line-soft); border-radius:11px 0 0 11px; overflow:hidden; border-right:2px solid var(--ink)}
+.dv .tr .r{background:var(--line-soft); border-radius:0 11px 11px 0; overflow:hidden}
+.dv .tr i{display:block; height:100%; width:0; transition:width 1.3s cubic-bezier(.2,.8,.2,1)}
+.dv .tr .l i{background:var(--ok)} .dv .tr .r i{background:var(--ng)}
+.dv .ok{color:var(--ok)} .dv .ng{color:var(--ng)}
+.links{font-size:15.5px; margin:0 0 12px; padding-left:1.2em}
+.links li{margin-bottom:3px}
+.sum h3{font-size:16px; margin:14px 0 6px; color:var(--navy)}
+.card{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px; background:#fff}
+.card .mk{flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:14px}
+.card .mk.y{background:var(--ok-bg); color:var(--ok)} .card .mk.q{background:var(--warn-bg); color:var(--warn)}
+.card b{display:block; font-size:16.5px} .card small{color:var(--sub); font-size:14.5px; line-height:1.55; display:block}
+.fade{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+.fade.in{opacity:1; transform:none}
+.foot{margin-top:28px; font-size:14.5px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot h3{font-size:15px; color:var(--ink); margin:12px 0 4px}
+.foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .fade{opacity:1; transform:none; transition:none} .dv .tr i{transition:none} }
+</style>
+<script>
+/* URLの後ろの ?… は付けず、ページの場所だけで数える（同じページが別々に数えられないように） */
+window.goatcounter = {path: function () { return location.pathname; }};
+</script>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho"><span class="nb">コンサル倒産が過去最多！</span><span class="nb">AI失業は、日本でも？</span><small><span class="nb">国内外のデータで見る</span></small></h1>
+  <div class="for-who"><b>このページは、こういう方へ</b>
+    <ul><li>事務など、パソコンで働く仕事を<span class="nb">している方</span></li>
+    <li>AIで自分の仕事がなくなるのか、<span class="nb">不安な方</span></li>
+    <li>就職・転職を考えている方、<span class="nb">子どもの就職が心配な方</span></li></ul></div>
+
+  <div class="conclusion"><div class="k">結論</div>
+    <p>日本の失業率は <b class="num nb">2.5%</b>。「AIで失業が増えた」は、<span class="nb">まだ数字に出ていません。</span><br>でも、<b><span class="nb">コンサルの倒産は過去最多ペース</span></b>。国は2040年に<b><span class="nb">事務職が約437万人余る</span></b>と推計しています。<br>変化は「クビ」より先に、<b><span class="nb">会社の数と採用</span></b>に出始めています。</p></div>
+  <a class="cta" href="ai2040.html"><span>先に試す：2040年、あなたの仕事は余る？足りない？</span><span>→</span></a>
+
+  <section class="ch fade">
+    <h2><span class="b">1</span>そもそも、何の話？</h2>
+    <ol class="steps">
+      <li><b>前回の失業の配信では「推測」で止めました</b><small>「日本でも、AIで少ない人数で回る会社が増えるかもしれない。でも裏付けるデータはない」と書きました</small></li>
+      <li><b>今回は、データで確かめます</b><small>倒産の件数、会社へのアンケート、アメリカの解雇の理由、国の2040年の推計</small></li>
+      <li><b>入口は、いま起きているニュースから</b><small>AIの影響を最初に受けると言われてきた「経営コンサル」で、倒産が増えています</small></li>
+    </ol>
+    <div class="one">ひとことで言うと：「AIで仕事がなくなる」は、気分の話ではなく、数字ではどこまで本当なのか、という話です。<small>前回の資料 → <a href="shitsugyo-setsumei.html">仕事を失っても、生活保護を頼っていい</a></small></div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">2</span>コンサルの倒産、過去最多ペース</h2>
+    <div class="stats">
+      <div><small>2025年の倒産<br>（2000年以降で最多）</small><b class="num">167件</b></div>
+      <div class="hl"><small>2026年1〜5月の倒産<br>（前の年の同じ時期は69件）</small><b class="num ng">74件</b></div>
+      <div><small>2026年1〜5月<br>倒産＋休廃業・解散</small><b class="num">242件</b></div>
+    </div>
+    <blockquote>2026 年に発生した経営コンサルティング業の倒産は 74 件となり、集計を開始した 2000 年以降で最多だった前年（167 件、1-5 月：69）を上回るペースで推移した。</blockquote>
+    <p class="src">出典: <a href="https://www.tdb.co.jp/report/industry/20260605-consulting26y1-5/" target="_blank" rel="noopener">帝国データバンク「『経営コンサルティング業界』の倒産・休廃業解散動向（2026年1-5月）」（2026年6月5日）</a></p>
+    <div class="easy"><b>やさしく言うと：</b>去年（2025年）のコンサルの倒産は、26年間でいちばん多い167件でした。今年はそれよりさらに速いペースです。倒産せずに自分でやめた会社も入れると、5か月で242社がなくなりました。</div>
+    <p>なぜか。帝国データバンクはこう書いています。</p>
+    <blockquote>生成 AI の性能進化でデータ収集・分析や資料作成などのコモディティ化が進むなか、専門性で差別化できない事業者の行き詰まりが表面化しており、</blockquote>
+    <div class="easy"><b>やさしく言うと：</b>調べものや資料づくりは、AIで誰でもできるようになりました。それしか売り物がない会社から、仕事が減っています。</div>
+    <div class="caution"><b>ここは言いすぎないでおきます。</b>同じ資料には、こうも書かれています。
+      <blockquote>「生成 AI による業務代替」を直接の倒産理由とするケースはまだ確認できないものの、</blockquote>
+      補助金の申請代行に頼っていた会社が、補助金の審査が厳しくなって行き詰まった、という理由も大きいです。<b>「AIだけのせい」ではありません。</b></div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">3</span>AIを使う会社の半分が「人の数に影響」</h2>
+    <p>会社全体や部門で生成AIの活用を進めている会社に、「これからの人の数に影響はあるか」を聞いた調査です（2026年4月・全体で6,327社が回答）。</p>
+    <div class="stats two">
+      <div><small>何らかの影響がある</small><b class="num">53.4%</b></div>
+      <div class="hl"><small>働く人の数を<br>減らす可能性がある</small><b class="num ng">16.1%</b></div>
+    </div>
+    <blockquote>「既存業務の効率化で、総従業員数を抑制する可能性がある」16.1％（337社）</blockquote>
+    <p class="src">出典: <a href="https://www.tsr-net.co.jp/data/detail/1202766_1527.html" target="_blank" rel="noopener">東京商工リサーチ「『生成AI』大企業の約6割が組織で活用推進 将来的に人員配置・抑制の見直し検討 53.4％」（2026年4月27日）</a></p>
+    <div class="easy"><b>やさしく言うと：</b>AIを使い始めた会社の6社に1社が、「これからは人を増やさない・減らすかもしれない」と答えています。いちばん多い答えは「別の部署に移す」（28.9%）でした。</div>
+    <p class="note">同じ調査は「生成AIが直ちに大規模な人員削減につながる状況にはない」とも書いています。いますぐクビが増える、という話ではありません。</p>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">4</span>アメリカでは、解雇の理由1位がAI</h2>
+    <div class="big1"><p class="cap">2026年1〜9月、アメリカの会社が発表した解雇のうち、理由が「AI」だったのは</p>
+      <div class="val num">12万136<small>人（全体の約21%・理由別で1位）</small></div></div>
+    <blockquote lang="en">So far this year, AI has been cited in 120,136 job cut announcements, approximately 21% of all cuts, and it remains the leading reason year-to-date.</blockquote>
+    <p class="src">出典: <a href="https://www.challengergray.com/wp-content/uploads/2026/10/Challenger-Report-September-2026.pdf" target="_blank" rel="noopener">Challenger, Gray &amp; Christmas「Job Cuts Report September 2026」</a>（アメリカの再就職支援会社が毎月出している、解雇の発表の集計）</p>
+    <div class="easy"><b>やさしく言うと：</b>今年アメリカで「人を減らします」と発表された約57万人のうち、5人に1人は「AIのため」が理由でした。理由の中でいちばん多いです。</div>
+    <p>しかも、先に減っているのは<b>若い人の入口</b>です。スタンフォード大学の研究です。</p>
+    <blockquote lang="en">employment of young workers (ages 22–25) in AI-exposed occupations now stands 19% below where it would be had it kept pace with that of their less-exposed peers; experienced workers show no comparable gap.</blockquote>
+    <blockquote lang="en">It operates primarily through reduced hiring of young workers rather than increased separations.</blockquote>
+    <p class="src">出典: <a href="https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine/" target="_blank" rel="noopener">Brynjolfsson ほか「Canaries in the Coal Mine?」（スタンフォード大学・2026年8月改訂）</a></p>
+    <div class="easy"><b>やさしく言うと：</b>AIに置き換えやすい仕事では、22〜25歳の働く人が、本来より<b>19%少ない</b>。ベテランには、そこまでの差はない。理由は「クビ」より<b>「新しく採らなくなった」</b>から。</div>
+    <div class="caution"><b>数字を読むときの注意：</b>アメリカの12万人は、会社が「減らします」と<b>発表した</b>人数で、実際に失業した人の数ではありません。スタンフォード大学の研究も「経済全体で仕事が大きく奪われている証拠はない」（We find no evidence of widespread, economy-wide job displacement.）と書いています。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">5</span>国の推計：2040年、事務職が約437万人余る</h2>
+    <p>では日本は。経済産業省が、2040年に<b>どの仕事の人が余り、どの仕事の人が足りなくなるか</b>を推計しています（2026年3月改訂）。</p>
+    <div class="dv" id="dv">
+      <div class="hd"><span class="ok">← 足りない</span><span class="ng">余る →</span></div>
+      <div class="row"><div class="t"><span>事務職</span><span class="num ng">約437万人 余る</span></div><div class="tr"><div class="l"><i data-w="0"></i></div><div class="r"><i data-w="100"></i></div></div></div>
+      <div class="row"><div class="t"><span>AI・ロボットを使いこなす人</span><span class="num ok">約339万人 足りない</span></div><div class="tr"><div class="l"><i data-w="77.6"></i></div><div class="r"><i data-w="0"></i></div></div></div>
+      <div class="row"><div class="t"><span>現場の人（工場・建設・介護など）</span><span class="num ok">約260万人 足りない</span></div><div class="tr"><div class="l"><i data-w="59.5"></i></div><div class="r"><i data-w="0"></i></div></div></div>
+    </div>
+    <blockquote>事務職(約440万人)や文系人材(約80万人)が余剰、AI・ロボット等利活用人材(約340万人)を含む専門職や現場人材(約260万人)、理系人材(約120万人)が不足する可能性。</blockquote>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/content/12602000/001670956.pdf" target="_blank" rel="noopener">経済産業省「2040年の就業構造推計（改訂版）について」（2026年3月）</a>（表の数字は437万人・339万人・260万人）</p>
+    <div class="easy"><b>やさしく言うと：</b>2040年、事務の仕事は、<b>やりたい人が1,476万人いるのに、必要なのは1,039万人</b>。437万人分の椅子が足りません。逆に、AIを使いこなす人と現場の人は足りなくなります。</div>
+    <div class="caution"><b>この推計の前提：</b>国は「2040年に十分な国内投資や産業構造転換が実現する場合」として計算し、その場合は「全体で大きな不足は生じない」と書いています。<b>仕事の総数が消えるのではなく、仕事の中身が入れ替わる</b>、という見立てです。</div>
+    <a class="cta" href="ai2040.html"><span>あなたの仕事・学歴・地域では？（2040年しごとしらべ）</span><span>→</span></a>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">6</span>じゃあ、どうする？</h2>
+    <p><b>1つめ：AIを「使う側」に回る。</b>国の推計で足りなくなるのは、AIを使いこなす人です。</p>
+    <p>私は2024年に体を壊して働けなくなり、仕事を辞めました。生活保護を受けて時間ができた間に、AIをずっと触り続けました。それがいま、在宅の仕事になっています。</p>
+    <p><b>2つめ：もしものときの支えを、先に知っておく。</b>失業したときに使える国の支えは、上から順に3段あります。いちばん下の段が生活保護です。</p>
+    <ul class="links">
+      <li>失業給付は何日・1日いくら？ → <a href="shitsugyo.html">失業・低収入チェック</a></li>
+      <li>3段の支えと、働いていても受けられる理由 → <a href="shitsugyo-setsumei.html">仕事を失っても、生活保護を頼っていい</a></li>
+      <li>住んでいる場所で、生活保護費は毎月いくら？ → <a href="hogohi.html">保護費しらべ</a></li>
+    </ul>
+  </section>
+
+  <section class="ch sum fade">
+    <h2><span class="b">✓</span>まとめ</h2>
+    <h3>分かっていること</h3>
+    <div class="card"><span class="mk y">✓</span><div><b>コンサルの倒産は、2025年が過去最多。2026年はそれを上回るペース</b><small>2025年167件、2026年1〜5月74件（帝国データバンク）</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>AIを使う会社の16.1%が「働く人の数を減らす可能性」</b><small>何らかの影響があるは53.4%（東京商工リサーチ）</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>アメリカでは、解雇の理由1位がAI。若い人の採用が先に減っている</b><small>12万136人・約21%（2026年1〜9月）。22〜25歳は19%少ない</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>国の推計では、2040年に事務職が約437万人余る</b><small>AI・ロボットを使いこなす人は約339万人、現場の人は約260万人足りない</small></div></div>
+    <h3>まだ分からないこと</h3>
+    <div class="card"><span class="mk q">？</span><div><b>日本で、AIが原因の失業がどれだけあるか</b><small>失業率は2.5%（2026年8月）。AIが直接の理由と確認された倒産も、まだない</small></div></div>
+    <div class="card"><span class="mk q">？</span><div><b>2040年の推計どおりになるか</b><small>「十分な投資が実現した場合」の計算。予言ではない</small></div></div>
+  </section>
+  <a class="cta" href="ai2040.html"><span>あなたの仕事は、2040年に余る側？足りない側？</span><span>→</span></a>
+
+  <div class="foot">
+    <h3>根拠資料</h3>
+    <ul>
+      <li><a href="https://www.tdb.co.jp/report/industry/20260605-consulting26y1-5/" target="_blank" rel="noopener">帝国データバンク「『経営コンサルティング業界』の倒産・休廃業解散動向（2026年1-5月）」（2026年6月5日）</a>：倒産は負債1,000万円以上・法的整理のもの</li>
+      <li><a href="https://www.tsr-net.co.jp/data/detail/1202766_1527.html" target="_blank" rel="noopener">東京商工リサーチ「『生成AI』大企業の約6割が組織で活用推進 将来的に人員配置・抑制の見直し検討 53.4％」（2026年4月27日）</a>：2026年3月31日〜4月7日、インターネット調査、有効回答6,327社。53.4%・16.1%は生成AIの活用を推進している会社の中での割合</li>
+      <li><a href="https://www.challengergray.com/wp-content/uploads/2026/10/Challenger-Report-September-2026.pdf" target="_blank" rel="noopener">Challenger, Gray &amp; Christmas「Job Cuts Report September 2026」</a>：2026年1〜9月の解雇の発表は57万3,195人</li>
+      <li><a href="https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine/" target="_blank" rel="noopener">Brynjolfsson, Chandar, Chen「Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence」（2026年8月改訂）</a>：アメリカの給与計算会社ADPのデータ（2026年6月まで）</li>
+      <li><a href="https://www.mhlw.go.jp/content/12602000/001670956.pdf" target="_blank" rel="noopener">経済産業省「2040年の就業構造推計（改訂版）について」（2026年3月）</a>（厚生労働省のサイトに掲載された資料）</li>
+      <li><a href="https://www.stat.go.jp/data/roudou/sokuhou/tsuki/index.html" target="_blank" rel="noopener">総務省統計局「労働力調査（基本集計）2026年8月分」（2026年10月2日公表）</a>：完全失業率2.5%</li>
+      <li>私の話: 動画「もう限界が来たので、生活保護の申請を出しに行って来ました」（2024年5月）、2026年10月13日の配信</li>
+    </ul>
+    <h3>読むときの注意</h3>
+    <ul>
+      <li>「過去最多」は、帝国データバンクが集計を始めた2000年以降で、2025年の倒産167件が最多という意味です。2026年は5月までの途中経過です</li>
+      <li>アメリカの数字は「発表」の集計で、実際に職を失った人の数とは違います。日本とアメリカでは、会社が人を減らすときの決まりも違います</li>
+      <li>経済産業省の推計は、一定の前提を置いた計算です。437万人などは「需給ミスマッチ」（働きたい人と必要な人の差）で、失業者の数ではありません</li>
+      <li>英語の原文の訳は、私の言いかえです</li>
+      <li>確認日: 2026年10月18日 ／ 個人が作ったもので、行政の公式資料ではありません。法律上の助言でもありません</li>
+    </ul>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+// スクロールで表示（スマホで縦に長い要素も出るように threshold:0）
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in'); io.unobserve(e.target);
+  e.target.querySelectorAll('.dv i').forEach(i => requestAnimationFrame(() => { i.style.width = i.dataset.w + '%'; }));
+}), {threshold: 0, rootMargin: '0px 0px -12% 0px'});
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
+</script>
+<script src="hub-items.js"></script>
+<script src="related.js" defer></script>
+</body>
+</html>

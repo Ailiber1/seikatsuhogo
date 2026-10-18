@@ -40,6 +40,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `hosoku-setsumei.html` | 解説 | 生活保護を使えている人は、2割だけ？（国が国会で答えた22.6%・43.7%、数字が古いこと、申請した人の多くは通っていること、使わない5つの理由と国の文書の答え） | [/hosoku-setsumei.html](https://ailiber1.github.io/seikatsuhogo/hosoku-setsumei.html) |
 | `naiwake-quiz.html` | ツール | 生活保護イメージ当てクイズ（受けているのはどんな人か、5問に予想で答えて国の調査の数字と答え合わせ。高齢者世帯・20代30代・ひとり暮らし・その他の世帯で働いている割合・5年以上） | [/naiwake-quiz.html](https://ailiber1.github.io/seikatsuhogo/naiwake-quiz.html) |
 | `naiwake-setsumei.html` | 解説 | 生活保護は、怠け者ばかり？（受けている世帯の内訳55.2%・25.6%・3.4%・15.8%、押すと色がつく100世帯の図、年齢、ひとり暮らし84.7%・平均9年6か月、受け始めた理由） | [/naiwake-setsumei.html](https://ailiber1.github.io/seikatsuhogo/naiwake-setsumei.html) |
+| `ai-shitsugyo-setsumei.html` | 解説 | コンサル倒産が過去最多！AI失業は、日本でも？（経営コンサルの倒産167件・2026年1〜5月74件、生成AIを活用する会社の16.1%が人員抑制の可能性、アメリカの解雇理由1位はAI 12万136人、22〜25歳19%、2040年に事務職約437万人余る推計） | [/ai-shitsugyo-setsumei.html](https://ailiber1.github.io/seikatsuhogo/ai-shitsugyo-setsumei.html) |
+| `ai2040.html` | ツール | 2040年しごとしらべ（仕事の種類・業界・学歴・都道府県から、経産省の推計で2040年に余る側か足りない側か） | [/ai2040.html](https://ailiber1.github.io/seikatsuhogo/ai2040.html) |
 | `chiiki.html` | ツール | 住む場所の暮らしやすさしらべ（市区町村を選ぶと、生活扶助・冬季加算・家賃の上限と、物価・ごみ袋・52都市の順位。物差しを選んで52都市を並べかえられる） | [/chiiki.html](https://ailiber1.github.io/seikatsuhogo/chiiki.html) |
 | `chiiki-setsumei.html` | 解説 | 同じ生活保護でも、住む場所でこんなに違う（北見市のごみ袋10枚1,350円（1枚135円）から。物価・光熱費−冬季加算・車なしの暮らしにくさ・ごみ袋・家賃の上限・水道代の6つの物差しで52都市を比べたランキング） | [/chiiki-setsumei.html](https://ailiber1.github.io/seikatsuhogo/chiiki-setsumei.html) |
 | `database.rules.json` / `firebase.json` / `.firebaserc` | 設定 | 暇人スキャンの保存先（Firebase Realtime Database）の書き込みルール | — |
@@ -63,6 +65,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `shitsugyo.json` | 失業給付（基本手当）の日数の表・受ける条件・給付制限・1日の額の計算式（令和8年8月1日から）、求職者支援制度・住居確保給付金・生活保護の原文、労働力調査・解雇・希望退職・倒産の数字 | ハローワーク（写し `hellowork_benefitdays_source.html`）、厚労省「基本手当日額の計算式及び金額」（写し `kihon_nichigaku_r8_source.pdf`）、総務省 労働力調査 2026年8月分（写し `rodo_2026_08_gaiyou_source.pdf`）、東京商工リサーチ、e-Gov |
 | `hosoku.json` | 基準より収入が少ない世帯のうち生活保護を使っている割合（国の推計と国会答弁の原文）、被保護者調査 2026年7月分の件数、ためらう理由9つの答えと原文、配信者本人の体験 | 国会会議録（2018〜2025年）、厚労省「生活保護基準未満の低所得世帯数の推計について」（写し `teishotoku_suikei_h22_source.pdf`）、被保護者調査 令和8年7月分概数（写し `hihogosha_2026_07_source.pdf`）、厚労省「生活保護制度に関するＱ＆Ａ」（写し `seiho_qa_source.pdf`）、「生活保護を申請したい方へ」、次官通知 |
 | `naiwake.json` | 受けている世帯・人の内訳（世帯の種類・働いているか・年齢・ひとり暮らし・受けている期間・受け始めた理由）の件数と割合、クイズ5問 | 厚労省 被保護者調査 令和8年7月分概数（写し `hihogosha_2026_07_source.pdf`）、令和6年度 年次調査（確定値）結果の概要（写し `hihogosha_nenji_r6_gaiyou_source.pdf`）、令和5年度 月次調査（確定値）結果の概要（写し `hihogosha_r5_kakutei_gaiyou_source.pdf`） |
+| `ai_shitsugyo.json` | AIと失業の解説の数字と原文（コンサルの倒産・休廃業、生成AIと人員、アメリカの解雇理由、若い人の雇用、失業率）、経済産業省の2040年推計の表（職種・業界×職種・学歴×職種・地域）、配信者本人の発言 | 帝国データバンク（写し `tdb_consulting_2026_1-5_source.pdf`）、東京商工リサーチ（写し `tsr_ai_2026_04_source.html`）、Challenger, Gray & Christmas（写し `challenger_2026_09_source.pdf`）、スタンフォード大学（写し `stanford_canaries_2026_08_source.pdf`）、経済産業省「2040年の就業構造推計（改訂版）」（写し `meti_shugyo2040_kaitei_source.pdf`）、労働力調査（写し `rodo_2026_08_gaiyou_source.pdf`） |
 | `research_keywords.json` | 他のチャンネルの伸びているタイトルを調べるときの検索語と参考チャンネル（`/seiho-week` の下調べ用） | ユーザーが挙げた参考チャンネルと、2026年10月12日に使った検索語 |
 | `kijun_r8.json` | 生活扶助の第1類・第2類・逓減率・特例加算と、照合用のモデル世帯9類型 | 厚労省「生活扶助基準額の算出方法（令和8年4月）」＋第55回生活保護基準部会 資料4 |
 | `chiiki.json` | 地域で差が出る負担: 消費者物価地域差指数（都道府県・都市）、家計調査の電気・ガス・灯油・上下水道・ガソリン（52都市）、冬季加算の額と地区（告示）、全1,741市区町村の燃やすごみが有料か | 総務省「消費者物価地域差指数 2025年」（写し `chiikisa_2025_source.pdf`）、家計調査 品目別ランキング 2023〜2025年平均（写し `kakei_rank14_2023-2025_source.xlsx`）、保護の基準（昭和38年厚生省告示第158号・2026年10月1日適用）、環境省 一般廃棄物処理実態調査 令和5年度（66MBのため写しは置かず、URLは `scripts/extract_chiiki.py`） |
@@ -94,6 +97,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `verify_tamerai.py` | `tamerai.html` の生活扶助の計算が `hogohi.html` と同じでモデル世帯54通りと一致するか、線より下かどうかの分け方の境目、資料とツールに書いた数字・引用が `data/hosoku.json` と合っているかを確かめる |
 | `gen_naiwake_quiz.py` | `data/naiwake.json` のクイズを `naiwake-quiz.template.html` に埋め込んで `naiwake-quiz.html` を生成する |
 | `verify_naiwake.py` | 解説とクイズの数字を、国の表の件数から計算し直して確かめる（原本の割合・自分で計算した割合・100世帯の図の合計・引用・クイズの正解が1つに決まるか） |
+| `gen_ai2040_tool.py` | `data/ai_shitsugyo.json` の経産省の表を `ai2040.template.html` に埋め込んで `ai2040.html` を生成する（列の数・47都道府県がそろっているかも確かめる） |
+| `verify_ai_shitsugyo.py` | 引用と件数が写しの本文にそのまま入っているか、経産省の表を写しのPDFから読み直して data と全部一致するか、解説の数字とツールに埋め込んだ表が data と合うかを確かめる |
 | `research_titles.py` | `data/research_keywords.json` の検索語と参考チャンネルで、他のチャンネルの動画を集めて再生数の多い順に並べる（yt-dlpだけ使う。ショートと自分のチャンネルは除く。ニュース番組は別枠） |
 | `verify_hogohi.py` | `hogohi.html` の計算式を node で動かし、資料4のモデル世帯54通りと1円単位で一致するか確かめる |
 | `xlsx_read.py` | openpyxl なしで xlsx を読む（ふりがなは除く） |

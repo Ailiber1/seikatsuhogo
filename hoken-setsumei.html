@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>失業保険をもらえるのは、4人に1人だけ？</title>
+<meta name="description" content="失業した人のうち、失業保険（雇用保険の基本手当）を受けているのはどれくらいか。雇用保険事業年報と労働力調査の数字で、もらえない4つの理由と、もらえなかったときの支えを説明します">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:17px; line-height:1.8; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+/* 言葉の途中で改行しない。対応ブラウザは文節で折り返す */
+.nb{display:inline-block}
+h1,.conclusion p,.ch h2,.for-who li,.cta,.card b,.steps b,.reason b{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
+h1{font-size:clamp(26px,6vw,36px); line-height:1.4; margin:0 0 12px; color:var(--navy); text-wrap:balance}
+h1 small{display:block; font-size:.55em; color:var(--sub); font-weight:600; margin-top:4px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:16px; font-size:16.5px}
+.for-who b{color:var(--navy)} .for-who ul{margin:4px 0 0; padding-left:1.2em}
+.conclusion{border:2px solid var(--navy); border-radius:14px; padding:16px; margin-bottom:10px; background:#fff}
+.conclusion .k{font-size:14.5px; font-weight:700; color:var(--sub)}
+.conclusion p{margin:4px 0 0; font-size:18px; font-weight:700; line-height:1.65}
+.conclusion b{color:var(--navy)} .conclusion b.r{color:var(--ng)}
+.cta{display:flex; align-items:center; justify-content:space-between; gap:10px; text-decoration:none; color:var(--navy); background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:11px 14px; margin:12px 0 22px; font-weight:700; font-size:16.5px; min-height:48px}
+.cta span:last-child{flex:none}
+section.ch{margin:30px 0 8px}
+.ch h2{display:flex; align-items:center; gap:10px; font-size:clamp(19px,4.6vw,23px); line-height:1.45; margin:0 0 12px; color:var(--navy)}
+.ch h2 .b{flex:none; width:34px; height:34px; border-radius:50%; border:2px solid var(--navy); display:grid; place-items:center; font-size:16.5px; font-family:system-ui,sans-serif}
+.ch p{margin:0 0 12px}
+.ch a{color:var(--navy); font-weight:700}
+blockquote{margin:10px 0 4px; padding:10px 14px; background:var(--panel); border-left:4px solid var(--line); font-size:16px; border-radius:0 10px 10px 0}
+.src{font-size:14.5px; color:var(--sub); margin:0 0 8px} .src a{color:var(--navy); font-weight:400}
+.easy{background:var(--ok-bg); border-left:4px solid var(--ok); border-radius:0 10px 10px 0; padding:9px 14px; font-size:16.5px; margin:6px 0 12px}
+.easy b{color:var(--ok)}
+.note{font-size:14.5px; color:var(--sub); margin:4px 0 12px}
+.caution{background:var(--warn-bg); border-left:5px solid var(--warn); border-radius:0 11px 11px 0; padding:10px 14px; margin:8px 0 12px}
+.caution b{color:var(--warn)}
+.steps{list-style:none; margin:6px 0 12px; padding:0; counter-reset:s}
+.steps li{position:relative; border:1px solid var(--line); border-radius:12px; background:var(--panel); padding:10px 12px 10px 48px; margin-bottom:8px}
+.steps li::before{counter-increment:s; content:counter(s); position:absolute; left:12px; top:11px; width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; display:grid; place-items:center; font-size:14px; font-weight:700}
+.steps b{display:block}
+.steps small{display:block; color:var(--sub); font-size:15px; line-height:1.6}
+.one{border-left:5px solid var(--navy); background:var(--navy-soft); border-radius:0 11px 11px 0; padding:10px 14px; font-weight:700; margin:8px 0 12px}
+.one small{display:block; font-weight:600; color:var(--sub); font-size:14.5px}
+.big1{border:1.5px solid var(--navy); border-radius:14px; padding:14px 16px; background:#fff; margin:8px 0 12px}
+.big1 .cap{font-size:15px; font-weight:700; color:var(--sub); margin:0}
+.big1 .val{font-size:clamp(40px,11vw,56px); font-weight:800; color:var(--navy); line-height:1.25}
+.big1 .val small{font-size:.4em; color:var(--ink); font-weight:700}
+.big1 .sub2{font-size:15.5px; margin:4px 0 0}
+.big1.gone{border:2px solid var(--ng); background:var(--ng-bg)}
+.big1.gone .val{color:var(--ng); font-size:clamp(48px,14vw,68px)}
+.big1.gone .sub2 b{color:var(--ng); font-size:1.25em}
+.bars{border:1px solid var(--line); border-radius:13px; background:var(--panel); padding:12px 14px; margin:8px 0 12px}
+.bar-row{margin-bottom:10px} .bar-row:last-child{margin-bottom:0}
+.bar-row .t{display:flex; flex-wrap:wrap; justify-content:space-between; gap:0 8px; font-size:15.5px; font-weight:700}
+.bar-row .t span:last-child{white-space:nowrap; margin-left:auto; color:var(--navy)}
+.bar-row .tr{height:20px; border-radius:10px; background:var(--line-soft); overflow:hidden; margin-top:3px}
+.bar-row .tr i{display:block; height:100%; width:0; border-radius:10px; background:var(--navy); transition:width 1.3s cubic-bezier(.2,.8,.2,1)}
+.bar-row .tr i.r{background:var(--ng)} .bar-row .tr i.g{background:#9aa8b6}
+.reason{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin:0 0 8px; background:#fff}
+.reason .n{flex:none; width:28px; height:28px; border-radius:50%; background:var(--ng-bg); color:var(--ng); display:grid; place-items:center; font-weight:800; font-size:14.5px}
+.reason b{display:block; font-size:16.5px} .reason small{display:block; color:var(--sub); font-size:14.5px; line-height:1.55}
+.links{font-size:15.5px; margin:0 0 12px; padding-left:1.2em}
+.links li{margin-bottom:3px}
+.sum h3{font-size:16px; margin:14px 0 6px; color:var(--navy)}
+.card{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px; background:#fff}
+.card .mk{flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:14px}
+.card .mk.y{background:var(--ok-bg); color:var(--ok)} .card .mk.q{background:var(--warn-bg); color:var(--warn)}
+.card b{display:block; font-size:16.5px} .card small{color:var(--sub); font-size:14.5px; line-height:1.55; display:block}
+.fade{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+.fade.in{opacity:1; transform:none}
+.foot{margin-top:28px; font-size:14.5px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot h3{font-size:15px; color:var(--ink); margin:12px 0 4px}
+.foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .fade{opacity:1; transform:none; transition:none} .bar-row .tr i{transition:none} }
+</style>
+<script>
+/* URLの後ろの ?… は付けず、ページの場所だけで数える（同じページが別々に数えられないように） */
+window.goatcounter = {path: function () { return location.pathname; }};
+</script>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho"><span class="nb">失業保険をもらえるのは、</span><span class="nb">4人に1人だけ？</span><small><span class="nb">国のデータで見る、</span><span class="nb">もらえない4つの理由</span></small></h1>
+  <div class="for-who"><b>このページは、こういう方へ</b>
+    <ul><li>「失業しても、失業保険があるから大丈夫」と<span class="nb">思っている方</span></li>
+    <li>パート・アルバイトで<span class="nb">働いている方</span></li>
+    <li>仕事を辞めようか、<span class="nb">迷っている方</span></li></ul></div>
+
+  <div class="conclusion"><div class="k">結論</div>
+    <p>失業している人は<b class="num nb">175万人</b>。失業保険を受けているのは<b class="num nb">42.7万人</b>で、<b class="r"><span class="nb">およそ4人に1人</span></b>です。<br>残りの<b class="r num nb">約132万人</b>は、<span class="nb">受けていません。</span><br>理由は、<b><span class="nb">働いていなかった・</span><span class="nb">入れない働き方・</span><span class="nb">期間が終わった・</span><span class="nb">病気で働けない</span></b>の4つです。</p></div>
+  <a class="cta" href="motsu.html"><span>先に試す：失業したら、あなたのお金は何か月もつ？</span><span>→</span></a>
+
+  <section class="ch fade">
+    <h2><span class="b">1</span>そもそも、何の話？</h2>
+    <ol class="steps">
+      <li><b>「失業保険」は、雇用保険の「基本手当」のこと</b><small>会社などで雇用保険に入っていた人が、仕事を失ったときに受け取れるお金です</small></li>
+      <li><b>国は「受けている人の数」を毎年まとめている</b><small>厚生労働省の「雇用保険事業年報」。いちばん新しいのは2024年度です</small></li>
+      <li><b>失業している人の数も、国が数えている</b><small>総務省の「労働力調査」。この2つを並べると、何割が受けているかが分かります</small></li>
+    </ol>
+    <div class="one">ひとことで言うと：「失業したら失業保険」は、本当にみんなに当てはまるのか、という話です。<small>失業保険の日数や1日の額は → <a href="shitsugyo.html">失業・低収入チェック</a></small></div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">2</span>失業している175万人のうち、受けているのは42.7万人</h2>
+    <div class="big1 gone"><p class="cap">失業しているのに、失業保険を受けていない人</p>
+      <div class="val num">約132<small>万人</small></div>
+      <p class="sub2"><b>4人のうち3人</b>が受けていない計算です（2024年度。175万人−42.7万人の計算）。</p></div>
+    <div class="bars">
+      <div class="bar-row"><div class="t"><span>失業している人（2024年度平均）</span><span class="num">175万人</span></div><div class="tr"><i class="g" data-w="100"></i></div></div>
+      <div class="bar-row"><div class="t"><span>失業保険を受けている人（同）</span><span class="num">42.7万人</span></div><div class="tr"><i data-w="24.4"></i></div></div>
+    </div>
+    <blockquote>同受給者実人員が 427 千人（年度平均）で同 1.0％の増となり、</blockquote>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/bunya/koyou/koyouhoken02/pdf/all_r06.pdf" target="_blank" rel="noopener">厚生労働省「雇用保険事業年報（令和6年度）」</a></p>
+    <blockquote>2025年度平均の完全失業者数は180万人と、前年度に比べ５万人の増加</blockquote>
+    <p class="src">出典: <a href="https://www.stat.go.jp/data/roudou/sokuhou/nendo/pdf/gaiyou.pdf" target="_blank" rel="noopener">総務省統計局「労働力調査（基本集計）2025年度平均 結果の概要」</a>（2024年度は、180万人から5万人を引いた175万人）</p>
+    <div class="easy"><b>やさしく言うと：</b>2024年度、仕事を探している失業者は175万人。そのうち失業保険を受けていたのは42.7万人で、<b>24.4%</b>。およそ4人に1人です。</div>
+    <div class="caution"><b>この数字の読み方：</b>2つの別々の調査を割った計算（試算）です。65歳以上で辞めた人がもらう別のお金（高年齢求職者給付金。2024年度に40.8万人）は、42.7万人に入っていません。それを考えても、「失業した人の多くは失業保険を受けていない」ことは変わりません。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">3</span>理由1：もともと働いていなかった</h2>
+    <div class="bars">
+      <div class="bar-row"><div class="t"><span>仕事を辞めて探している人</span><span class="num">118万人</span></div><div class="tr"><i class="g" data-w="100"></i></div></div>
+      <div class="bar-row"><div class="t"><span>新しく仕事を探し始めた人</span><span class="num">50万人</span></div><div class="tr"><i class="r" data-w="42.4"></i></div></div>
+    </div>
+    <p class="src">出典: <a href="https://www.stat.go.jp/data/roudou/sokuhou/nendo/pdf/gaiyou.pdf" target="_blank" rel="noopener">総務省統計局「労働力調査 2025年度平均 結果の概要」</a>（主な求職理由別。失業者180万人のうち）</p>
+    <div class="easy"><b>やさしく言うと：</b>失業者の中には、<b>辞めたのではなく、これから働き始めようとしている人が50万人</b>います。学校を出たばかりの人（6万人）、生活のために収入が必要になった人（27万人）などです。働いていなかったので、失業保険はありません。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">4</span>理由2：雇用保険に入れない働き方だった</h2>
+    <p>雇用保険に入れるのは、いまは<b>週20時間以上</b>働く人です。そして、もらうには原則、辞める前の2年間に12か月以上入っていることが必要です。</p>
+    <blockquote>離職の日以前2年間に、被保険者期間（※補足2）が通算して12か月以上</blockquote>
+    <p class="src">出典: <a href="https://www.hellowork.mhlw.go.jp/insurance/insurance_basicbenefit.html" target="_blank" rel="noopener">ハローワーク「基本手当について」</a></p>
+    <div class="big1"><p class="cap">週10〜19時間働いていて、いまは雇用保険に入れない人</p>
+      <div class="val num">約506<small>万人</small></div>
+      <p class="sub2">国の資料のグラフ（2023年）にある数字です。2028年10月から、この人たちも入れるようになります。</p></div>
+    <blockquote>雇用保険の被保険者の要件のうち、週所定労働時間を「20時間以上」から「10時間以上」に変更し、適用対象を拡大。</blockquote>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/content/11600000/001255172.pdf" target="_blank" rel="noopener">厚生労働省「令和6年雇用保険制度の改正内容について」</a>（施行は2028年10月1日）</p>
+    <div class="easy"><b>やさしく言うと：</b>パートやアルバイトで短い時間だけ働いていた人は、仕事を失っても失業保険がありません。2028年10月までは、週20時間未満は対象外です。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">5</span>理由3：もらえる期間が終わった</h2>
+    <p>失業保険がもらえる日数は、辞め方・年齢・入っていた期間で<b>90日〜330日</b>です。でも、仕事探しはそれより長くかかることがあります。</p>
+    <div class="big1 gone"><p class="cap">いま失業している人のうち、もう1年以上仕事を探している人</p>
+      <div class="val num">58<small>万人（28.3%）</small></div>
+      <p class="sub2"><b>3か月以上</b>探している人は、半分以上（51.2%）です。</p></div>
+    <blockquote>このうち「１年以上」は58万人と、１万人の増加</blockquote>
+    <p class="src">出典: <a href="https://www.stat.go.jp/data/roudou/sokuhou/4hanki/dt/pdf/gaiyou.pdf" target="_blank" rel="noopener">総務省統計局「労働力調査（詳細集計）2026年4～6月期平均」</a>（失業者208万人。この調査の「失業者」は、上の175万人より少し広い数え方です） ／ 日数は<a href="https://www.hellowork.mhlw.go.jp/insurance/insurance_benefitdays.html" target="_blank" rel="noopener">ハローワーク「基本手当の所定給付日数」</a></p>
+    <div class="easy"><b>やさしく言うと：</b>失業している人の<b>4人に1人以上は、もう1年以上</b>仕事を探しています。失業保険は長くても330日なので、その途中で終わってしまいます。</div>
+    <p class="note">自分の都合で辞めた場合は、もらい始めるまでに原則1か月待つ期間（給付制限）もあります（2025年4月から2か月→1か月）。</p>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">6</span>理由4：病気で、すぐには働けない</h2>
+    <blockquote>次のような状態にあるときは、基本手当を受けることができません。 病気やけがのため、すぐには就職できないとき</blockquote>
+    <p class="src">出典: <a href="https://www.hellowork.mhlw.go.jp/insurance/insurance_basicbenefit.html" target="_blank" rel="noopener">ハローワーク「基本手当について」</a></p>
+    <div class="easy"><b>やさしく言うと：</b>失業保険は「すぐ働ける人が、仕事を探している間」のお金です。病気やけがで働けないときは、受けられません（受け取れる期間を延ばす手続きはあります）。</div>
+    <p>私がそうでした。2024年、コロナの後遺症で働けなくなって仕事を辞め、ハローワークに行くと「健康な状態の人じゃないと受けられない」と言われました。</p>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">7</span>もらえなかったら、どうする？</h2>
+    <div class="reason"><span class="n">1</span><div><b>雇用保険がない人の職業訓練＋月10万円</b><small>求職者支援制度。条件があります</small></div></div>
+    <div class="reason"><span class="n">2</span><div><b>家賃の支え</b><small>住居確保給付金。仕事を探していることが条件です</small></div></div>
+    <div class="reason"><span class="n">3</span><div><b>最後の支えが、生活保護</b><small>病気で働けなくても、働いていても、基準より収入が少なければ受けられます</small></div></div>
+    <ul class="links">
+      <li>3つの支えの中身と、働いていても受けられる理由 → <a href="shitsugyo-setsumei.html">仕事を失っても、生活保護を頼っていい</a></li>
+      <li>申請のとき、貯金はいくらまで残せる？ → <a href="chokin.html">貯金の境目しらべ</a></li>
+      <li>AIで仕事はどう変わる？ → <a href="ai-shitsugyo-setsumei.html">コンサル倒産が過去最多！AI失業は、日本でも？</a></li>
+    </ul>
+  </section>
+  <a class="cta" href="motsu.html"><span>失業したら、あなたのお金は何か月もつ？（しらべる）</span><span>→</span></a>
+
+  <section class="ch sum fade">
+    <h2><span class="b">✓</span>まとめ</h2>
+    <h3>分かっていること</h3>
+    <div class="card"><span class="mk y">✓</span><div><b>失業保険を受けているのは、失業者のおよそ4人に1人</b><small>2024年度、失業者175万人・受けている人42.7万人（24.4%の計算）</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>失業者のうち50万人は、これから働き始める人</b><small>辞めたのではないので、失業保険はない（2025年度）</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>週20時間未満は、いまは雇用保険の対象外</b><small>週10〜19時間で働く約506万人は、2028年10月から対象</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>失業者の28.3%は、1年以上探している</b><small>失業保険は長くても330日（2026年4～6月）</small></div></div>
+    <h3>まだ分からないこと</h3>
+    <div class="card"><span class="mk q">？</span><div><b>受けていない132万人の、本当の内訳</b><small>国の調査は「受けていない理由」を直接は数えていない。4つの理由は、別々の数字から説明したもの</small></div></div>
+  </section>
+
+  <div class="foot">
+    <h3>根拠資料</h3>
+    <ul>
+      <li><a href="https://www.mhlw.go.jp/bunya/koyou/koyouhoken02/pdf/all_r06.pdf" target="_blank" rel="noopener">厚生労働省「雇用保険事業年報（令和6年度）」</a>：基本手当の受給者実人員（所定給付日数分・年度平均）427千人、高年齢求職者給付金の受給者数408千人</li>
+      <li><a href="https://www.stat.go.jp/data/roudou/sokuhou/nendo/pdf/gaiyou.pdf" target="_blank" rel="noopener">総務省統計局「労働力調査（基本集計）2025年度平均 結果の概要」</a>：完全失業者数、主な求職理由別</li>
+      <li><a href="https://www.stat.go.jp/data/roudou/sokuhou/4hanki/dt/pdf/gaiyou.pdf" target="_blank" rel="noopener">総務省統計局「労働力調査（詳細集計）2026年4～6月期平均」</a>：失業期間別の失業者</li>
+      <li><a href="https://www.mhlw.go.jp/stf/newpage_40264.html" target="_blank" rel="noopener">厚生労働省「令和6年雇用保険制度の改正内容について」</a>：週10時間以上への拡大（2028年10月1日）、給付制限の短縮</li>
+      <li><a href="https://www.hellowork.mhlw.go.jp/insurance/insurance_basicbenefit.html" target="_blank" rel="noopener">ハローワーク「基本手当について」</a> ／ <a href="https://www.hellowork.mhlw.go.jp/insurance/insurance_benefitdays.html" target="_blank" rel="noopener">「基本手当の所定給付日数」</a></li>
+      <li>私の話: 動画「もう限界が来たので、生活保護の申請を出しに行って来ました」（2024年5月）</li>
+    </ul>
+    <h3>読むときの注意</h3>
+    <ul>
+      <li>「4人に1人」「約132万人」は、雇用保険の受給者（厚生労働省）と完全失業者（総務省）という別々の調査の数字を、同じ2024年度で並べた計算です。数え方が違うので、目安として見てください</li>
+      <li>雇用保険の年報は2024年度がいちばん新しい年度まとめです。労働力調査の2024年度の完全失業者175万人は、2025年度の概要にある「180万人、前年度に比べ5万人の増加」から計算しました</li>
+      <li>週10〜19時間の約506万人は、厚生労働省の資料のグラフにある2023年の数字です</li>
+      <li>5章の失業者208万人は、詳細集計の「失業者」（仕事を探していて、すぐ働ける人に加え、少し広い範囲を含む）の数で、完全失業者とは数え方が違います</li>
+      <li>確認日: 2026年10月18日 ／ 個人が作ったもので、行政の公式資料ではありません。法律上の助言でもありません</li>
+    </ul>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+// スクロールで表示（スマホで縦に長い要素も出るように threshold:0）
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in'); io.unobserve(e.target);
+  e.target.querySelectorAll('.bars i').forEach(i => requestAnimationFrame(() => { i.style.width = i.dataset.w + '%'; }));
+}), {threshold: 0, rootMargin: '0px 0px -12% 0px'});
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
+</script>
+<script src="hub-items.js"></script>
+<script src="related.js" defer></script>
+</body>
+</html>

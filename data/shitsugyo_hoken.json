@@ -1,0 +1,97 @@
+{
+  "note": "失業保険の受給の解説（hoken-setsumei.html）と、何か月もつ？しらべ（motsu.html）で使う数字と原文。scripts/verify_hoken.py で写し（*_source.*）と照合する",
+  "checked": "2026-10-18",
+  "sources": {
+    "nenpo": {
+      "name": "厚生労働省「雇用保険事業年報（令和6年度）」",
+      "url": "https://www.mhlw.go.jp/bunya/koyou/koyouhoken02/pdf/all_r06.pdf",
+      "copy": "koyouhoken_nenpo_r06_source.pdf"
+    },
+    "nendo": {
+      "name": "総務省統計局「労働力調査（基本集計）2025年度（令和7年度）平均 結果の概要」",
+      "url": "https://www.stat.go.jp/data/roudou/sokuhou/nendo/pdf/gaiyou.pdf",
+      "copy": "rodo_nendo2025_gaiyou_source.pdf"
+    },
+    "shosai": {
+      "name": "総務省統計局「労働力調査（詳細集計）2026年（令和8年）4～6月期平均」",
+      "url": "https://www.stat.go.jp/data/roudou/sokuhou/4hanki/dt/pdf/gaiyou.pdf",
+      "copy": "rodo_shosai_2026q2_gaiyou_source.pdf"
+    },
+    "kaisei": {
+      "name": "厚生労働省「令和6年雇用保険制度の改正内容について」",
+      "url": "https://www.mhlw.go.jp/content/11600000/001255172.pdf",
+      "page": "https://www.mhlw.go.jp/stf/newpage_40264.html",
+      "copy": "koyouhoken_kaisei_r6_source.pdf"
+    },
+    "hw": {
+      "name": "ハローワーク インターネットサービス「基本手当について」",
+      "url": "https://www.hellowork.mhlw.go.jp/insurance/insurance_basicbenefit.html",
+      "copy": "hellowork_basicbenefit_source.html"
+    },
+    "days": {
+      "name": "ハローワーク インターネットサービス「基本手当の所定給付日数」",
+      "url": "https://www.hellowork.mhlw.go.jp/insurance/insurance_benefitdays.html",
+      "copy": "hellowork_benefitdays_source.html"
+    },
+    "hw_proc": {
+      "name": "ハローワーク インターネットサービス「基本手当の受給の手続き」",
+      "url": "https://www.hellowork.mhlw.go.jp/insurance/insurance_procedure.html",
+      "copy": "hellowork_procedure_source.html"
+    }
+  },
+  "nenpo": {
+    "jukyu_2024_sen": 427,
+    "jukyu_2023_sen": 423,
+    "kotoshi_kyufu_2024_sen": 408,
+    "quote": "同受給者実人員が 427 千人（年度平均）で同 1.0％の増となり、",
+    "quote_kounen": "高年齢求職者給付（高年齢求職者給付金）は、受給者数が 408 千人で"
+  },
+  "nendo": {
+    "shitsugyo_2025_man": 180,
+    "zou_man": 5,
+    "shitsugyo_2024_man": 175,
+    "yameta_man": 118,
+    "hijihatsu_man": 42,
+    "jihatsu_man": 76,
+    "arata_man": 50,
+    "gakusotsu_man": 6,
+    "shunyu_man": 27,
+    "sonota_man": 17,
+    "quote_total": "2025年度平均の完全失業者数は180万人と、前年度に比べ５万人の増加",
+    "quote_arata": "新たに求職 ・・・・・・・・・・・・・・・・ 50万人と、 ３万人の増加"
+  },
+  "shosai": {
+    "shitsugyosha_man": 208,
+    "m3_man": 100,
+    "over3_man": 105,
+    "m3_6_man": 25,
+    "m6_12_man": 21,
+    "y1_man": 58,
+    "pct": {
+      "m3": 48.8,
+      "over3": 51.2,
+      "m3_6": 12.2,
+      "m6_12": 10.2,
+      "y1": 28.3
+    },
+    "quote": "このうち「１年以上」は58万人と、１万人の増加"
+  },
+  "kaisei": {
+    "man_10_19h": 506,
+    "quote_kakudai": "雇用保険の被保険者の要件のうち、週所定労働時間を「20時間以上」から「10時間以上」に変更し、適用対象を拡大。",
+    "quote_seigen": "原則の給付制限期間を２ヶ月から１ヶ月へ短縮する。",
+    "sekou": "2028（令和10）年10月１日",
+    "seigen_days": 30
+  },
+  "hw": {
+    "quote_jouken": "離職の日以前2年間に、被保険者期間（※補足2）が通算して12か月以",
+    "quote_byouki": "次のような状態にあるときは、基本手当を受けることができません。 病気やけがのため、すぐには就職できないとき",
+    "quote_taiki": "求職の申込み後の、失業の状態にある7日間は、基本手当は支給されません。 これを「待期」といいます。",
+    "taiki_days": 7
+  },
+  "days": {
+    "min": 90,
+    "max": 330
+  },
+  "self": "2024年、コロナの後遺症で働けなくなり退職。ハローワークで「健康な状態の人じゃないと受けられない」と言われ、失業保険は受けられなかった（動画「もう限界が来たので、生活保護の申請を出しに行って来ました」2024年5月 10:07〜）"
+}

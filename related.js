@@ -12,6 +12,8 @@
 */
 (function () {
   var RELATED = {
+    "hoken-setsumei.html":     ["motsu.html", "shitsugyo.html", "shitsugyo-setsumei.html", "chokin.html"],
+    "motsu.html":              ["hoken-setsumei.html", "shitsugyo.html", "chokin.html", "shitsugyo-setsumei.html"],
     "ai-shitsugyo-setsumei.html": ["ai2040.html", "shitsugyo.html", "shitsugyo-setsumei.html", "basic-income.html"],
     "ai2040.html":             ["ai-shitsugyo-setsumei.html", "shitsugyo.html", "shitsugyo-setsumei.html", "hogohi.html"],
     "chiiki-setsumei.html":   ["chiiki.html", "hogohi.html", "kyuryo.html", "sodan.html"],

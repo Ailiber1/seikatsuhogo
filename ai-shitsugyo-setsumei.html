@@ -77,7 +77,12 @@ blockquote[lang=en]{font-size:15.5px}
 .cmp .tr i{display:block; height:100%; width:0; border-radius:11px; background:var(--navy); transition:width 1.3s cubic-bezier(.2,.8,.2,1)}
 .cmp .up .tr i{background:var(--ng)}
 .cmp .cap2{font-size:16px; margin:4px 0 0; padding-top:10px; border-top:1px solid var(--line)}
+.cmp .cap2 small{display:block; font-size:13.5px; color:var(--sub); margin-top:4px}
 .cmp .cap2 b{color:var(--navy)}
+.big1.gone{border:2px solid var(--ng); background:var(--ng-bg)}
+.big1.gone .val{color:var(--ng); font-size:clamp(48px,14vw,68px)}
+.big1 .sub2{font-size:15.5px; margin:4px 0 0; color:var(--ink)}
+.big1.gone .sub2 b{color:var(--ng); font-size:1.3em}
 /* 5章: 余る・足りないの左右の棒 */
 .dv{border:1px solid var(--line); border-radius:13px; background:var(--panel); padding:12px 14px; margin:8px 0 12px}
 .dv .hd{display:grid; grid-template-columns:1fr 1fr; font-size:14px; font-weight:700; color:var(--sub); text-align:center; margin-bottom:6px}
@@ -150,16 +155,18 @@ window.gcUse = function (name) {
 
   <section class="ch fade">
     <h2><span class="b">2</span>コンサルの倒産、過去最多ペース</h2>
+    <div class="big1 gone"><p class="cap">2026年1〜5月のたった5か月で、倒産・休廃業・解散で消えたコンサル会社</p>
+      <div class="val num">242<small>社</small></div>
+      <p class="sub2"><b>毎週およそ11社</b>が消えているペースです（242件÷約21.6週の計算）。</p></div>
     <div class="cmp" id="cmp">
-      <p class="cap">同じ「1〜5月」の倒産で比べると</p>
-      <div class="row"><div class="t"><span>2025年 1〜5月</span><span class="num">69件</span></div><div class="tr"><i data-w="93.2"></i></div></div>
-      <div class="row up"><div class="t"><span>2026年 1〜5月</span><span class="num">74件 ↑</span></div><div class="tr"><i data-w="100"></i></div></div>
-      <p class="cap2">今年のほうが多い。去年は1年間で<b class="num">167件</b>になり、<b>2000年以降で最多</b>でした。今年はその記録を上回るペースです。</p>
+      <p class="cap">同じ「1〜5月」で比べると</p>
+      <div class="row"><div class="t"><span>2025年 1〜5月</span><span class="num">218件</span></div><div class="tr"><i data-w="90.1"></i></div></div>
+      <div class="row up"><div class="t"><span>2026年 1〜5月</span><span class="num">242件 ↑</span></div><div class="tr"><i data-w="100"></i></div></div>
+      <p class="cap2">去年より<b class="num">24件</b>多いペース。このままだと1年で<b class="num">600件超</b>になり、<b>2000年以降で最多</b>になる見込みです。<br><small>2025年1〜5月の218件は、倒産69件＋休廃業・解散149件の計算</small></p>
     </div>
-    <p class="note">倒産せずに自分でやめた会社（休廃業・解散）も入れると、2026年1〜5月で<b class="num">242件</b>です。</p>
-    <blockquote>2026 年に発生した経営コンサルティング業の倒産は 74 件となり、集計を開始した 2000 年以降で最多だった前年（167 件、1-5 月：69）を上回るペースで推移した。</blockquote>
+    <blockquote>2026 年 1-5 月に発生した「経営コンサルティング業」の倒産・休廃業解散の累計は 242 件判明した。前年（計 568 件）を約 1 割上回るペースで推移しており、年間では 2000 年以降で最多となる 600 件超のコンサル事業者が市場から退出する可能性がある。</blockquote>
     <p class="src">出典: <a href="https://www.tdb.co.jp/report/industry/20260605-consulting26y1-5/" target="_blank" rel="noopener">帝国データバンク「『経営コンサルティング業界』の倒産・休廃業解散動向（2026年1-5月）」（2026年6月5日）</a></p>
-    <div class="easy"><b>やさしく言うと：</b>去年（2025年）のコンサルの倒産は、26年間でいちばん多い167件でした。今年はそれよりさらに速いペースです。倒産せずに自分でやめた会社も入れると、5か月で242社がなくなりました。</div>
+    <div class="easy"><b>やさしく言うと：</b>コンサルの会社が、今年は1年で<b>600社以上</b>なくなりそうです。倒産だけで見ても、去年（2025年）の<b>167件は26年間でいちばん多い記録</b>で、今年はそれをさらに上回るペースです（1〜5月で74件。去年の同じ時期は69件）。</div>
     <p>なぜか。帝国データバンクはこう書いています。</p>
     <blockquote>生成 AI の性能進化でデータ収集・分析や資料作成などのコモディティ化が進むなか、専門性で差別化できない事業者の行き詰まりが表面化しており、</blockquote>
     <div class="easy"><b>やさしく言うと：</b>調べものや資料づくりは、AIで誰でもできるようになりました。それしか売り物がない会社から、仕事が減っています。</div>

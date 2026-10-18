@@ -38,7 +38,7 @@ squash = lambda s: re.sub(r"\s+", "", s)
 src = {k: squash(pdf_text(v["copy"]) if v["copy"].endswith(".pdf") else html_text(DATA / v["copy"])) for k, v in d["sources"].items()}
 
 # 1. 引用が写しにそのまま入っているか
-quotes = [("tdb", d["tdb"][k]) for k in ("quote_record", "quote_ai", "quote_why")]
+quotes = [("tdb", d["tdb"][k]) for k in ("quote_total", "quote_record", "quote_ai", "quote_why")]
 quotes += [("tsr", d["tsr"][k]) for k in ("quote_yokusei", "quote_calm")]
 quotes += [("challenger", d["challenger"]["quote"])]
 quotes += [("stanford", d["stanford"][k]) for k in ("quote_gap", "quote_hiring", "quote_nowide")]
@@ -115,8 +115,8 @@ if len(prefs) != 47 or len(set(prefs)) != 47:
 page = (ROOT / "ai-shitsugyo-setsumei.html").read_text(encoding="utf-8")
 ptxt = squash(html_text(ROOT / "ai-shitsugyo-setsumei.html"))
 for k, q in quotes:
-    if q == m["quote_premise"]:
-        continue  # 前提は一部だけ「」で引用している
+    if q in (m["quote_premise"], t["quote_record"]):
+        continue  # 前提は一部だけ「」で引用している。倒産だけの原文はやさしく言うとの中で数字だけ使う
     if squash(q).rstrip("。、") not in ptxt:
         fail(f"解説ページに引用がない: {q[:40]}…")
 nat = dict(zip(m["jobs"], m["national"]["mismatch"]))
@@ -128,14 +128,19 @@ page_nums = [
     "12万136", f"約{d['challenger']['ai_share_pct']}%", "57万3,195人", f"{d['stanford']['young_gap_pct']}%少ない",
     f"約{nat['jimu']}万人余る", f"約{-nat['ai']}万人足りない", f"約{-nat['genba']}万人足りない",
     f"{sup['jimu']:,}万人いるのに", f"{dem['jimu']:,}万人", f"{d['rodo']['rate_2026_08']}%",
+    f"{t['tosan_2025_1_5'] + t['haigyo_2025_1_5']}件は、倒産{t['tosan_2025_1_5']}件＋休廃業・解散{t['haigyo_2025_1_5']}件の計算",
+    f"毎週およそ{round(t['total_2026_1_5'] / (151 / 7))}社", f"{t['total_2026_1_5']}件÷約{151 / 7:.1f}週",
+    f"去年より{t['total_2026_1_5'] - t['tosan_2025_1_5'] - t['haigyo_2025_1_5']}件", "600件超", f"{t['total_2026_1_5']}社",
 ]
+if t["tosan_2026_1_5"] + t["haigyo_2026_1_5"] != t["total_2026_1_5"]:
+    fail("2026年1〜5月の倒産＋休廃業が242件にならない")
 for s in page_nums:
     if squash(s) not in ptxt:
         fail(f"解説ページに数字がない（または違う）: {s}")
 if d["challenger"]["ai_ytd"] != 120136:
     fail("12万136 の表記が data と合わない")
 for w, want in [("77.6", -nat["ai"] / nat["jimu"] * 100), ("59.5", -nat["genba"] / nat["jimu"] * 100),
-                ("93.2", t["tosan_2025_1_5"] / t["tosan_2026_1_5"] * 100)]:
+                ("90.1", (t["tosan_2025_1_5"] + t["haigyo_2025_1_5"]) / t["total_2026_1_5"] * 100)]:
     if abs(float(w) - want) > 0.05 or f'data-w="{w}"' not in page:
         fail(f"棒の長さが合わない: {w} / {want:.1f}")
 

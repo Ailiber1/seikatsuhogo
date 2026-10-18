@@ -12,6 +12,8 @@
 */
 (function () {
   var RELATED = {
+    "nokoseru-setsumei.html":  ["nokoseru.html", "kyuryo.html", "chokin-setsumei.html", "hogohi.html"],
+    "nokoseru.html":           ["nokoseru-setsumei.html", "kyuryo.html", "hogohi.html", "chokin.html"],
     "hoken-setsumei.html":     ["motsu.html", "shitsugyo.html", "shitsugyo-setsumei.html", "chokin.html"],
     "motsu.html":              ["hoken-setsumei.html", "shitsugyo.html", "chokin.html", "shitsugyo-setsumei.html"],
     "ai-shitsugyo-setsumei.html": ["ai2040.html", "shitsugyo.html", "shitsugyo-setsumei.html", "basic-income.html"],

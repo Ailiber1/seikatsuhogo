@@ -41,6 +41,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `naiwake-quiz.html` | ツール | 生活保護イメージ当てクイズ（受けているのはどんな人か、5問に予想で答えて国の調査の数字と答え合わせ。高齢者世帯・20代30代・ひとり暮らし・その他の世帯で働いている割合・5年以上） | [/naiwake-quiz.html](https://ailiber1.github.io/seikatsuhogo/naiwake-quiz.html) |
 | `naiwake-setsumei.html` | 解説 | 生活保護は、怠け者ばかり？（受けている世帯の内訳55.2%・25.6%・3.4%・15.8%、押すと色がつく100世帯の図、年齢、ひとり暮らし84.7%・平均9年6か月、受け始めた理由） | [/naiwake-setsumei.html](https://ailiber1.github.io/seikatsuhogo/naiwake-setsumei.html) |
 | `ai-shitsugyo-setsumei.html` | 解説 | コンサル倒産が過去最多！AI失業は、日本でも？（経営コンサルの倒産167件・2026年1〜5月74件、生成AIを活用する会社の16.1%が人員抑制の可能性、アメリカの解雇理由1位はAI 12万136人、22〜25歳19%、2040年に事務職約437万人余る推計） | [/ai-shitsugyo-setsumei.html](https://ailiber1.github.io/seikatsuhogo/ai-shitsugyo-setsumei.html) |
+| `nokoseru-setsumei.html` | 解説 | 生活保護でも、労働収入の一部は引かれずに貯められる（基礎控除・就労自立給付金・自立更生。配信者がケースワーカーに言われたことは体験として分けて記載） | [/nokoseru-setsumei.html](https://ailiber1.github.io/seikatsuhogo/nokoseru-setsumei.html) |
+| `nokoseru.html` | ツール | 生活保護で働いたら、いくら残せる？（給料と世帯から、毎月引かれない額・半年の合計・就労自立給付金の見込み） | [/nokoseru.html](https://ailiber1.github.io/seikatsuhogo/nokoseru.html) |
 | `hoken-setsumei.html` | 解説 | 失業保険をもらえるのは、4人に1人だけ？（2024年度 失業者175万人・受給者42.7万人＝24.4%の試算、もらえない4つの理由：新たに求職50万人・週20時間未満・1年以上の失業58万人・病気） | [/hoken-setsumei.html](https://ailiber1.github.io/seikatsuhogo/hoken-setsumei.html) |
 | `motsu.html` | ツール | 失業したら、お金は何か月もつ？（貯金・生活費・失業保険から貯金が尽きる月を試算し、失業期間別の割合と比べる） | [/motsu.html](https://ailiber1.github.io/seikatsuhogo/motsu.html) |
 | `ai2040.html` | ツール | 2040年しごとしらべ（仕事の種類・業界・学歴・都道府県から、経産省の推計で2040年に余る側か足りない側か） | [/ai2040.html](https://ailiber1.github.io/seikatsuhogo/ai2040.html) |
@@ -67,6 +69,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `shitsugyo.json` | 失業給付（基本手当）の日数の表・受ける条件・給付制限・1日の額の計算式（令和8年8月1日から）、求職者支援制度・住居確保給付金・生活保護の原文、労働力調査・解雇・希望退職・倒産の数字 | ハローワーク（写し `hellowork_benefitdays_source.html`）、厚労省「基本手当日額の計算式及び金額」（写し `kihon_nichigaku_r8_source.pdf`）、総務省 労働力調査 2026年8月分（写し `rodo_2026_08_gaiyou_source.pdf`）、東京商工リサーチ、e-Gov |
 | `hosoku.json` | 基準より収入が少ない世帯のうち生活保護を使っている割合（国の推計と国会答弁の原文）、被保護者調査 2026年7月分の件数、ためらう理由9つの答えと原文、配信者本人の体験 | 国会会議録（2018〜2025年）、厚労省「生活保護基準未満の低所得世帯数の推計について」（写し `teishotoku_suikei_h22_source.pdf`）、被保護者調査 令和8年7月分概数（写し `hihogosha_2026_07_source.pdf`）、厚労省「生活保護制度に関するＱ＆Ａ」（写し `seiho_qa_source.pdf`）、「生活保護を申請したい方へ」、次官通知 |
 | `naiwake.json` | 受けている世帯・人の内訳（世帯の種類・働いているか・年齢・ひとり暮らし・受けている期間・受け始めた理由）の件数と割合、クイズ5問 | 厚労省 被保護者調査 令和8年7月分概数（写し `hihogosha_2026_07_source.pdf`）、令和6年度 年次調査（確定値）結果の概要（写し `hihogosha_nenji_r6_gaiyou_source.pdf`）、令和5年度 月次調査（確定値）結果の概要（写し `hihogosha_r5_kakutei_gaiyou_source.pdf`） |
+| `nokoseru.json` | 臨時的収入の8,000円・収入として認定しないもの（自立更生）・自立更生の用途と計画・就労自立給付金の算定方法の原文と数字、配信者本人の話 | 次官通知・局長通知・課長通知の第8（写し `jikan_tsuchi_dai8_source.html`・`kyokucho_tsuchi_dai8_source.html`・`kacho_tsuchi_dai8_source.html`）、就労自立給付金の支給について（写し `shuro_jiritsu_kyufukin_source.html`） |
 | `shitsugyo_hoken.json` | 失業保険の受給者数（年報）・完全失業者数と求職理由（労働力調査 年度平均）・失業期間別（詳細集計）・週10時間への拡大・受給の条件・待期・給付制限の原文と数字 | 雇用保険事業年報 令和6年度（写し `koyouhoken_nenpo_r06_source.pdf`）、労働力調査 2025年度平均（写し `rodo_nendo2025_gaiyou_source.pdf`）・詳細集計 2026年4～6月期（写し `rodo_shosai_2026q2_gaiyou_source.pdf`）、労働力調査 用語の解説（写し `rodo_definit_source.pdf`）、厚労省 令和6年雇用保険制度の改正（写し `koyouhoken_kaisei_r6_source.pdf`）、ハローワーク（写し `hellowork_basicbenefit_source.html`・`hellowork_procedure_source.html`・`hellowork_benefitdays_source.html`） |
 | `ai_shitsugyo.json` | AIと失業の解説の数字と原文（コンサルの倒産・休廃業、生成AIと人員、アメリカの解雇理由、若い人の雇用、失業率）、経済産業省の2040年推計の表（職種・業界×職種・学歴×職種・地域）、配信者本人の発言 | 帝国データバンク（写し `tdb_consulting_2026_1-5_source.pdf`）、東京商工リサーチ（写し `tsr_ai_2026_04_source.html`）、Challenger, Gray & Christmas（写し `challenger_2026_09_source.pdf`）、スタンフォード大学（写し `stanford_canaries_2026_08_source.pdf`）、経済産業省「2040年の就業構造推計（改訂版）」（写し `meti_shugyo2040_kaitei_source.pdf`）、労働力調査（写し `rodo_2026_08_gaiyou_source.pdf`） |
 | `research_keywords.json` | 他のチャンネルの伸びているタイトルを調べるときの検索語と参考チャンネル（`/seiho-week` の下調べ用） | ユーザーが挙げた参考チャンネルと、2026年10月12日に使った検索語 |
@@ -100,6 +103,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `verify_tamerai.py` | `tamerai.html` の生活扶助の計算が `hogohi.html` と同じでモデル世帯54通りと一致するか、線より下かどうかの分け方の境目、資料とツールに書いた数字・引用が `data/hosoku.json` と合っているかを確かめる |
 | `gen_naiwake_quiz.py` | `data/naiwake.json` のクイズを `naiwake-quiz.template.html` に埋め込んで `naiwake-quiz.html` を生成する |
 | `verify_naiwake.py` | 解説とクイズの数字を、国の表の件数から計算し直して確かめる（原本の割合・自分で計算した割合・100世帯の図の合計・引用・クイズの正解が1つに決まるか） |
+| `gen_nokoseru_tool.py` | `data/kiso_kojo.json` の基礎控除額表と `data/nokoseru.json` の就労自立給付金の決まりを `nokoseru.template.html` に埋め込んで `nokoseru.html` を生成する |
+| `verify_nokoseru.py` | 引用が通知の写しに入っているか、解説の引用と数字、ツールの表が data と同じかを確かめ、基礎控除と就労自立給付金の答えの表を出す（Playwright で突き合わせる） |
 | `gen_motsu_tool.py` | `data/shitsugyo_hoken.json` の失業期間別の割合・待期・給付制限を `motsu.template.html` に埋め込んで `motsu.html` を生成する |
 | `verify_hoken.py` | 引用と件数が写しに入っているか、計算した数字（175万人・24.4%・約132万人）、解説の数字とツールの埋め込みが data と合うかを確かめ、試算の答えの表を出す（Playwright で突き合わせる） |
 | `gen_ai2040_tool.py` | `data/ai_shitsugyo.json` の経産省の表を `ai2040.template.html` に埋め込んで `ai2040.html` を生成する（列の数・47都道府県がそろっているかも確かめる） |

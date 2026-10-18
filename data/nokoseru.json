@@ -1,0 +1,30 @@
+{
+  "note": "「労働収入の一部を引かれずに貯められる」解説（nokoseru-setsumei.html）と、働いたら残せるお金しらべ（nokoseru.html）で使う原文と数字。基礎控除の表は data/kiso_kojo.json を使う。scripts/verify_nokoseru.py で写しと照合する",
+  "checked": "2026-10-18",
+  "sources": {
+    "jikan": {"name": "厚生労働省「生活保護法による保護の実施要領について」（昭和36年4月1日 発社第123号 次官通知）第8 収入の認定", "url": "https://www.mhlw.go.jp/web/t_doc?dataId=00ta8431&dataType=1&pageNo=1", "copy": "jikan_tsuchi_dai8_source.html"},
+    "kyokucho": {"name": "厚生労働省「生活保護法による保護の実施要領について」（昭和38年4月1日 社発第246号 局長通知）第8 収入の認定", "url": "https://www.mhlw.go.jp/web/t_doc?dataId=00ta8432&dataType=1&pageNo=2", "copy": "kyokucho_tsuchi_dai8_source.html"},
+    "kacho": {"name": "厚生労働省「生活保護法による保護の実施要領の取扱いについて」（昭和38年4月1日 社保第34号 課長通知）第8 問40", "url": "https://www.mhlw.go.jp/web/t_doc?dataId=00ta8433&dataType=1&pageNo=2", "copy": "kacho_tsuchi_dai8_source.html"},
+    "shuro": {"name": "厚生労働省「生活保護法による就労自立給付金の支給について」（平成26年4月25日 社援発0425第3号 局長通知）", "url": "https://www.mhlw.go.jp/web/t_doc?dataId=00tc0131&dataType=1&pageNo=1", "copy": "shuro_jiritsu_kyufukin_source.html"}
+  },
+  "rinji": {
+    "limit_yen": 8000,
+    "quote": "世帯合算額8,000円(月額)をこえる場合、そのこえる額を収入として認定すること。"
+  },
+  "jiritsu": {
+    "quote_head": "次に掲げるものは、収入として認定しないこと。",
+    "quote_kashitsuke": "ウ 他法、他施策等により貸し付けられる資金のうち当該被保護世帯の自立更生のために当てられる額",
+    "quote_keiyo": "エ 自立更生を目的として恵与される金銭のうち当該被保護世帯の自立更生のためにあてられる額",
+    "quote_yoto": "直ちに生業、医療、家屋補修等自立更生のための用途に供されるものに限ること。ただし、直ちに生業、医療、家屋補修、就学等にあてられない場合であっても、将来それらにあてることを目的として適当な者に預託されたときは、その預託されている間、これを収入として認定しないものとすること。",
+    "quote_keikaku": "当該世帯の自立更生に役立つか否かを審査するため必要があるときは、自立更生計画を徴すること。",
+    "quote_seigyo": "当該経費が事業の開始又は継続、技能習得等生業にあてられる場合は、生活福祉資金の福祉資金の貸付限度額に相当する額"
+  },
+  "shuro": {
+    "rate_pct": 10, "add_tanshin": 20000, "add_fukusu": 30000, "max_tanshin": 100000, "max_fukusu": 150000, "months": 6,
+    "quote_santei": "給付金の支給額は、算定対象期間((1))における各月の就労収入額((2))に対し、10％を乗じて算定した額(1円未満の端数を切り捨て。以下同じ。)に単身世帯は2万円、複数世帯は3万円を加えた額と、上限額((3))とのいずれか低い額とすること。",
+    "quote_kikan": "前6月",
+    "quote_jogen": "単身世帯は10万円、複数世帯は15万円とすること。",
+    "quote_shushi": "安定した職業に就いたこと等により、保護を必要としなくなった者に対して、就労自立給付金を支給する制度"
+  },
+  "self": "2026年10月、ケースワーカーと直接会ったとき「自立更生を使うと、働いた分を通常より貯金できる。臨時収入の8,000円の上限も関係なく、超えても貯金できる」と言われた（本人の話。10/16に事業を始めたと伝えた流れ）"
+}

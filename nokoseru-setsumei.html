@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>生活保護でも、労働収入の一部は引かれずに貯められる</title>
+<meta name="description" content="生活保護を受けながら働くと保護費が減る。でも、給料の一部は引かれずに残り、保護をやめるときにもらえるお金もある。基礎控除・就労自立給付金・自立更生を、国の通知の原文で説明します">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:17px; line-height:1.8; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+/* 言葉の途中で改行しない。対応ブラウザは文節で折り返す */
+.nb{display:inline-block}
+h1,.conclusion p,.ch h2,.for-who li,.cta,.card b,.steps b,.reason b{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
+h1{font-size:clamp(26px,6vw,36px); line-height:1.4; margin:0 0 12px; color:var(--navy); text-wrap:balance}
+h1 small{display:block; font-size:.55em; color:var(--sub); font-weight:600; margin-top:4px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:16px; font-size:16.5px}
+.for-who b{color:var(--navy)} .for-who ul{margin:4px 0 0; padding-left:1.2em}
+.conclusion{border:2px solid var(--navy); border-radius:14px; padding:16px; margin-bottom:10px; background:#fff}
+.conclusion .k{font-size:14.5px; font-weight:700; color:var(--sub)}
+.conclusion p{margin:4px 0 0; font-size:18px; font-weight:700; line-height:1.65}
+.conclusion b{color:var(--navy)} .conclusion b.r{color:var(--ng)}
+.cta{display:flex; align-items:center; justify-content:space-between; gap:10px; text-decoration:none; color:var(--navy); background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:11px 14px; margin:12px 0 22px; font-weight:700; font-size:16.5px; min-height:48px}
+.cta span:last-child{flex:none}
+section.ch{margin:30px 0 8px}
+.ch h2{display:flex; align-items:center; gap:10px; font-size:clamp(19px,4.6vw,23px); line-height:1.45; margin:0 0 12px; color:var(--navy)}
+.ch h2 .b{flex:none; width:34px; height:34px; border-radius:50%; border:2px solid var(--navy); display:grid; place-items:center; font-size:16.5px; font-family:system-ui,sans-serif}
+.ch p{margin:0 0 12px}
+.ch a{color:var(--navy); font-weight:700}
+blockquote{margin:10px 0 4px; padding:10px 14px; background:var(--panel); border-left:4px solid var(--line); font-size:16px; border-radius:0 10px 10px 0}
+.src{font-size:14.5px; color:var(--sub); margin:0 0 8px} .src a{color:var(--navy); font-weight:400}
+.easy{background:var(--ok-bg); border-left:4px solid var(--ok); border-radius:0 10px 10px 0; padding:9px 14px; font-size:16.5px; margin:6px 0 12px}
+.easy b{color:var(--ok)}
+.note{font-size:14.5px; color:var(--sub); margin:4px 0 12px}
+.caution{background:var(--warn-bg); border-left:5px solid var(--warn); border-radius:0 11px 11px 0; padding:10px 14px; margin:8px 0 12px}
+.caution b{color:var(--warn)}
+.steps{list-style:none; margin:6px 0 12px; padding:0; counter-reset:s}
+.steps li{position:relative; border:1px solid var(--line); border-radius:12px; background:var(--panel); padding:10px 12px 10px 48px; margin-bottom:8px}
+.steps li::before{counter-increment:s; content:counter(s); position:absolute; left:12px; top:11px; width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; display:grid; place-items:center; font-size:14px; font-weight:700}
+.steps b{display:block}
+.steps small{display:block; color:var(--sub); font-size:15px; line-height:1.6}
+.one{border-left:5px solid var(--navy); background:var(--navy-soft); border-radius:0 11px 11px 0; padding:10px 14px; font-weight:700; margin:8px 0 12px}
+.one small{display:block; font-weight:600; color:var(--sub); font-size:14.5px}
+.big1{border:1.5px solid var(--navy); border-radius:14px; padding:14px 16px; background:#fff; margin:8px 0 12px}
+.big1 .cap{font-size:15px; font-weight:700; color:var(--sub); margin:0}
+.big1 .val{font-size:clamp(40px,11vw,56px); font-weight:800; color:var(--navy); line-height:1.25}
+.big1 .val small{font-size:.4em; color:var(--ink); font-weight:700}
+.big1 .sub2{font-size:15.5px; margin:4px 0 0}
+.big1.gone{border:2px solid var(--ng); background:var(--ng-bg)}
+.big1.gone .val{color:var(--ng); font-size:clamp(48px,14vw,68px)}
+.big1.gone .sub2 b{color:var(--ng); font-size:1.25em}
+.bars{border:1px solid var(--line); border-radius:13px; background:var(--panel); padding:12px 14px; margin:8px 0 12px}
+.bar-row{margin-bottom:10px} .bar-row:last-child{margin-bottom:0}
+.bar-row .t{display:flex; flex-wrap:wrap; justify-content:space-between; gap:0 8px; font-size:15.5px; font-weight:700}
+.bar-row .t span:last-child{white-space:nowrap; margin-left:auto; color:var(--navy)}
+.bar-row .tr{height:20px; border-radius:10px; background:var(--line-soft); overflow:hidden; margin-top:3px}
+.bar-row .tr i{display:block; height:100%; width:0; border-radius:10px; background:var(--navy); transition:width 1.3s cubic-bezier(.2,.8,.2,1)}
+.bar-row .tr i.r{background:var(--ng)} .bar-row .tr i.g{background:#9aa8b6}
+.reason{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin:0 0 8px; background:#fff}
+.reason .n{flex:none; width:28px; height:28px; border-radius:50%; background:var(--ng-bg); color:var(--ng); display:grid; place-items:center; font-weight:800; font-size:14.5px}
+.reason b{display:block; font-size:16.5px} .reason small{display:block; color:var(--sub); font-size:14.5px; line-height:1.55}
+.links{font-size:15.5px; margin:0 0 12px; padding-left:1.2em}
+.links li{margin-bottom:3px}
+.sum h3{font-size:16px; margin:14px 0 6px; color:var(--navy)}
+.card{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px; background:#fff}
+.card .mk{flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:14px}
+.card .mk.y{background:var(--ok-bg); color:var(--ok)} .card .mk.q{background:var(--warn-bg); color:var(--warn)}
+.card b{display:block; font-size:16.5px} .card small{color:var(--sub); font-size:14.5px; line-height:1.55; display:block}
+.fade{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+.fade.in{opacity:1; transform:none}
+.foot{margin-top:28px; font-size:14.5px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot h3{font-size:15px; color:var(--ink); margin:12px 0 4px}
+.foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .fade{opacity:1; transform:none; transition:none} .bar-row .tr i{transition:none} }
+</style>
+<script>
+/* URLの後ろの ?… は付けず、ページの場所だけで数える（同じページが別々に数えられないように） */
+window.goatcounter = {path: function () { return location.pathname; }};
+</script>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho"><span class="nb">生活保護でも、</span><span class="nb">労働収入の一部は</span><span class="nb">引かれずに貯められる</span><small><span class="nb">3つの方法を、</span><span class="nb">国の決まりで</span></small></h1>
+  <div class="for-who"><b>このページは、こういう方へ</b>
+    <ul><li>生活保護を受けながら、<span class="nb">働いている方・働きたい方</span></li>
+    <li>「働いても全部引かれるだけ」と<span class="nb">思っている方</span></li>
+    <li>いつか生活保護をやめたい、と<span class="nb">考えている方</span></li></ul></div>
+
+  <div class="conclusion"><div class="k">結論</div>
+    <p>働いた収入は、全部が引かれるわけではありません。<br>①<b>給料の一部は、最初から引かれない</b>（基礎控除）<br>②<b>保護をやめるときに、最大10万円</b>（就労自立給付金・単身）<br>③<b>自立のために使うお金は、収入にならないことがある</b>（自立更生）</p></div>
+  <a class="cta" href="nokoseru.html"><span>先に試す：あなたの給料だと、いくら残せる？</span><span>→</span></a>
+
+  <section class="ch fade">
+    <h2><span class="b">1</span>そもそも、働くと保護費が減る</h2>
+    <ol class="steps">
+      <li><b>働いた給料は「収入」として届け出る</b><small>生活保護を受けている人が働くと、その給料は申告します</small></li>
+      <li><b>収入の分だけ、保護費が減る</b><small>国の基準より足りない分を出すのが生活保護なので、収入が増えると保護費は減ります</small></li>
+      <li><b>でも、全部が減るわけではない</b><small>引かれない分、あとで戻ってくる分、使い道しだいで収入にならない分があります。それがこのページの3つです</small></li>
+    </ol>
+    <div class="one">ひとことで言うと：「働いても引かれるだけ」は、半分だけ本当です。残せる部分があります。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">2</span>方法1：給料の一部は、最初から引かれない</h2>
+    <div class="big1"><p class="cap">1か月の給料が、この額までなら全部手元に残る</p>
+      <div class="val num">15,200<small>円</small></div>
+      <p class="sub2">それより多いときも、全部は引かれません。給料に応じて、最低15,200円以上が手元に残ります（基礎控除）。</p></div>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8431&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">厚生労働省「生活保護法による保護の実施要領について」（次官通知）別表 基礎控除額表</a>（世帯で1人目の働く人の場合）</p>
+    <div class="easy"><b>やさしく言うと：</b>たとえば給料が10万円なら、23,600円は引かれずに手元に残ります。働いた分の一部は、ちゃんと自分のお金になります。</div>
+    <p class="note">くわしい計算は → <a href="kyuryo.html">給料いくら残るしらべ</a>（9月29日の配信で紹介したツール）</p>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">3</span>方法2：保護をやめるとき、まとめてもらえるお金</h2>
+    <div class="big1 gone"><p class="cap">働いて生活保護をやめるときに、もらえる額の上限（単身）</p>
+      <div class="val num">10<small>万円</small></div>
+      <p class="sub2">家族がいる世帯は<b>15万円</b>まで。「就労自立給付金」といいます。</p></div>
+    <blockquote>安定した職業に就いたこと等により、保護を必要としなくなった者に対して、就労自立給付金を支給する制度</blockquote>
+    <blockquote>給付金の支給額は、算定対象期間((1))における各月の就労収入額((2))に対し、10％を乗じて算定した額(1円未満の端数を切り捨て。以下同じ。)に単身世帯は2万円、複数世帯は3万円を加えた額と、上限額((3))とのいずれか低い額とすること。</blockquote>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00tc0131&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">厚生労働省「生活保護法による就労自立給付金の支給について」</a>（上限は「単身世帯は10万円、複数世帯は15万円とすること。」、期間はやめる前6か月）</p>
+    <div class="easy"><b>やさしく言うと：</b>保護をやめる前の<b>6か月間</b>、収入として数えられた給料の<b>10%</b>を国が積み立てておくイメージです。そこに単身なら<b>2万円</b>が足されて、やめるときにまとめて受け取れます。<br>例：収入として数えられた額が毎月76,400円（給料10万円の場合）なら、76,400円×10%×6か月＋2万円＝<b>65,840円</b>（計算）。</div>
+    <p class="note">「収入として数えられた額」は、給料から基礎控除などを引いた額です。自分で申し込む必要があります。</p>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">4</span>方法3：自立のために使うお金は、収入にならないことがある</h2>
+    <p>生活保護では、臨時に入ったお金は、月8,000円を超えた分が収入として数えられます。</p>
+    <blockquote>世帯合算額8,000円(月額)をこえる場合、そのこえる額を収入として認定すること。</blockquote>
+    <p>でも国の通知には、「収入として数えない」お金の一覧があり、その中に<b>自立更生</b>（自分の力で生活を立て直すこと）のために使うお金が入っています。</p>
+    <blockquote>エ 自立更生を目的として恵与される金銭のうち当該被保護世帯の自立更生のためにあてられる額</blockquote>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8431&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">厚生労働省「生活保護法による保護の実施要領について」（次官通知）第8の3(3)</a>（ほかに、借りたお金や補償金・保険金などのうち自立更生に使う分も）</p>
+    <p>使い道には決まりがあります。事業を始める、技能を身につける、医療、家の修理などです。すぐに使わなくても、将来のために預けておく間は、収入として数えません。</p>
+    <blockquote>直ちに生業、医療、家屋補修等自立更生のための用途に供されるものに限ること。ただし、直ちに生業、医療、家屋補修、就学等にあてられない場合であっても、将来それらにあてることを目的として適当な者に預託されたときは、その預託されている間、これを収入として認定しないものとすること。</blockquote>
+    <blockquote>当該経費が事業の開始又は継続、技能習得等生業にあてられる場合は、生活福祉資金の福祉資金の貸付限度額に相当する額</blockquote>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8432&amp;dataType=1&amp;pageNo=2" target="_blank" rel="noopener">局長通知 第8の2(4)</a> ／ <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8433&amp;dataType=1&amp;pageNo=2" target="_blank" rel="noopener">課長通知 第8 問40</a></p>
+    <div class="easy"><b>やさしく言うと：</b>「生活を立て直すために使う」と福祉事務所が認めたお金は、<b>8,000円を超えても収入として数えない</b>ことがあります。そのためには、何にいくら使うかを書いた<b>自立更生計画</b>を出して、認めてもらいます。</div>
+    <blockquote>当該世帯の自立更生に役立つか否かを審査するため必要があるときは、自立更生計画を徴すること。</blockquote>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">5</span>私がケースワーカーに言われたこと</h2>
+    <p>私は2026年10月、事業を始めたことをケースワーカーに伝えました。そのとき直接会って、「<b>自立更生を使うと、働いた分も通常より貯金できる。臨時収入の8,000円の上限も関係なく、超えても貯金できる</b>」と言われました。</p>
+    <div class="caution"><b>ここは分けて書いておきます。</b>上の国の通知で確かめられたのは、もらったお金・借りたお金・補償金などを、自立のために使う場合です。<b>給料そのものを自立更生で外せる、という決まりは、通知の中で見つけられていません。</b>自治体や事情で取り扱いが違うことがあります。使えるかどうかは、<b>必ず自分のケースワーカーに確認</b>してください。</div>
+    <p class="note">どの方法でも、収入は必ず申告してください。申告しないと、不正受給になってしまいます。</p>
+  </section>
+  <a class="cta" href="nokoseru.html"><span>あなたの給料だと、毎月いくら残せる？やめるときはいくら？</span><span>→</span></a>
+
+  <section class="ch sum fade">
+    <h2><span class="b">✓</span>まとめ</h2>
+    <h3>分かっていること</h3>
+    <div class="card"><span class="mk y">✓</span><div><b>給料の一部は、最初から引かれない</b><small>月15,200円までは全額。それ以上も一部が残る（基礎控除）</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>保護をやめるとき、最大10万円（家族がいれば15万円）</b><small>やめる前6か月の認定された給料の10%＋2万円（単身）</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>自立のために使うお金は、8,000円を超えても収入にならないことがある</b><small>事業を始める・技能を身につけるなど。自立更生計画を出して認めてもらう</small></div></div>
+    <h3>まだ分からないこと</h3>
+    <div class="card"><span class="mk q">？</span><div><b>給料そのものを、自立更生で外せるか</b><small>国の通知では見つけられていない。自分のケースワーカーに確認を</small></div></div>
+  </section>
+
+  <div class="foot">
+    <h3>根拠資料</h3>
+    <ul>
+      <li><a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8431&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">厚生労働省「生活保護法による保護の実施要領について」（昭和36年4月1日 次官通知）</a>：第8 収入の認定（臨時的収入の8,000円、収入として認定しないもの）、別表 基礎控除額表</li>
+      <li><a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8432&amp;dataType=1&amp;pageNo=2" target="_blank" rel="noopener">同（昭和38年4月1日 局長通知）</a>：第8の2(4)(5) 自立更生のための用途・自立更生計画</li>
+      <li><a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8433&amp;dataType=1&amp;pageNo=2" target="_blank" rel="noopener">「生活保護法による保護の実施要領の取扱いについて」（課長通知）</a>：第8 問40 自立更生のための用途の基準</li>
+      <li><a href="https://www.mhlw.go.jp/web/t_doc?dataId=00tc0131&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">厚生労働省「生活保護法による就労自立給付金の支給について」（平成26年4月25日 局長通知）</a></li>
+      <li>私の話: 2026年10月、ケースワーカーとの面談で直接聞いたこと</li>
+    </ul>
+    <h3>読むときの注意</h3>
+    <ul>
+      <li>基礎控除は、世帯で1人目の働く人の額です。2人目以降は額が少し違います</li>
+      <li>就労自立給付金の例（65,840円）は、給料から基礎控除だけを引いた計算です。実際は通勤費や社会保険料なども引かれるので、変わります</li>
+      <li>自立更生として認められるかは、福祉事務所が一つずつ判断します。このページは「使えるかもしれない」ことを伝えるもので、使えることを約束するものではありません</li>
+      <li>確認日: 2026年10月18日 ／ 個人が作ったもので、行政の公式資料ではありません。法律上の助言でもありません</li>
+    </ul>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+// スクロールで表示（スマホで縦に長い要素も出るように threshold:0）
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in'); io.unobserve(e.target);
+}), {threshold: 0, rootMargin: '0px 0px -12% 0px'});
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
+</script>
+<script src="hub-items.js"></script>
+<script src="related.js" defer></script>
+</body>
+</html>

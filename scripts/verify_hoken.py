@@ -40,6 +40,7 @@ quotes = [("nenpo", d["nenpo"]["quote"]), ("nenpo", d["nenpo"]["quote_kounen"]),
           ("nendo", d["nendo"]["quote_total"]), ("nendo", d["nendo"]["quote_arata"]),
           ("shosai", d["shosai"]["quote"]),
           ("kaisei", d["kaisei"]["quote_kakudai"]), ("kaisei", d["kaisei"]["quote_seigen"]), ("kaisei", d["kaisei"]["sekou"]),
+          ("definit", d["definit"]["quote"]),
           ("hw", d["hw"]["quote_jouken"]), ("hw", d["hw"]["quote_byouki"]), ("hw_proc", d["hw"]["quote_taiki"])]
 for k, q in quotes:
     if squash(q) not in src[k]:
@@ -75,7 +76,7 @@ over6 = round(s["pct"]["m6_12"] + s["pct"]["y1"], 1)
 page_raw = (ROOT / "hoken-setsumei.html").read_text(encoding="utf-8")
 page = squash(re.sub(r"<[^>]+>", " ", re.sub(r"<script.*?</script>|<style.*?</style>", "", page_raw, flags=re.S)))
 page_quotes = [d["nenpo"]["quote"], d["nendo"]["quote_total"], d["shosai"]["quote"], d["kaisei"]["quote_kakudai"],
-               d["hw"]["quote_byouki"], "離職の日以前2年間に、被保険者期間（※補足2）が通算して12か月以上"]
+               d["hw"]["quote_byouki"], d["definit"]["quote"], "離職の日以前2年間に、被保険者期間（※補足2）が通算して12か月以上"]
 for q in page_quotes:
     if squash(q) not in page:
         fail(f"解説ページに引用がない: {q[:40]}…")

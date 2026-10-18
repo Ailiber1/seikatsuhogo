@@ -134,9 +134,10 @@ for s in page_nums:
         fail(f"解説ページに数字がない（または違う）: {s}")
 if d["challenger"]["ai_ytd"] != 120136:
     fail("12万136 の表記が data と合わない")
-for w, want in [("77.6", -nat["ai"] / nat["jimu"] * 100), ("59.5", -nat["genba"] / nat["jimu"] * 100)]:
+for w, want in [("77.6", -nat["ai"] / nat["jimu"] * 100), ("59.5", -nat["genba"] / nat["jimu"] * 100),
+                ("93.2", t["tosan_2025_1_5"] / t["tosan_2026_1_5"] * 100)]:
     if abs(float(w) - want) > 0.05 or f'data-w="{w}"' not in page:
-        fail(f"5章の棒の長さが合わない: {w} / {want:.1f}")
+        fail(f"棒の長さが合わない: {w} / {want:.1f}")
 
 # 5. ツールに埋め込んだ表が data と同じか
 tool = (ROOT / "ai2040.html").read_text(encoding="utf-8")

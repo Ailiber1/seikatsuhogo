@@ -66,6 +66,18 @@ blockquote[lang=en]{font-size:15.5px}
 .big1 .cap{font-size:15px; font-weight:700; color:var(--sub); margin:0}
 .big1 .val{font-size:clamp(36px,10vw,50px); font-weight:800; color:var(--navy); line-height:1.25}
 .big1 .val small{font-size:.4em; color:var(--ink); font-weight:700}
+/* 2章: 同じ1〜5月どうしの比べ */
+.cmp{border:1.5px solid var(--navy); border-radius:14px; padding:14px 16px; background:#fff; margin:8px 0 10px}
+.cmp .cap{font-size:15px; font-weight:700; color:var(--sub); margin:0 0 8px}
+.cmp .row{margin-bottom:10px}
+.cmp .t{display:flex; justify-content:space-between; gap:8px; font-size:16.5px; font-weight:700}
+.cmp .t .num{font-size:1.5em; line-height:1.2; color:var(--navy)}
+.cmp .up .t .num{color:var(--ng)}
+.cmp .tr{height:22px; border-radius:11px; background:var(--line-soft); overflow:hidden; margin-top:3px}
+.cmp .tr i{display:block; height:100%; width:0; border-radius:11px; background:var(--navy); transition:width 1.3s cubic-bezier(.2,.8,.2,1)}
+.cmp .up .tr i{background:var(--ng)}
+.cmp .cap2{font-size:16px; margin:4px 0 0; padding-top:10px; border-top:1px solid var(--line)}
+.cmp .cap2 b{color:var(--navy)}
 /* 5章: 余る・足りないの左右の棒 */
 .dv{border:1px solid var(--line); border-radius:13px; background:var(--panel); padding:12px 14px; margin:8px 0 12px}
 .dv .hd{display:grid; grid-template-columns:1fr 1fr; font-size:14px; font-weight:700; color:var(--sub); text-align:center; margin-bottom:6px}
@@ -90,7 +102,7 @@ blockquote[lang=en]{font-size:15.5px}
 .foot h3{font-size:15px; color:var(--ink); margin:12px 0 4px}
 .foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy); word-break:break-all}
 .foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
-@media (prefers-reduced-motion:reduce){ .fade{opacity:1; transform:none; transition:none} .dv .tr i{transition:none} }
+@media (prefers-reduced-motion:reduce){ .fade{opacity:1; transform:none; transition:none} .dv .tr i,.cmp .tr i{transition:none} }
 </style>
 <script>
 /* URLの後ろの ?… は付けず、ページの場所だけで数える（同じページが別々に数えられないように） */
@@ -138,11 +150,13 @@ window.gcUse = function (name) {
 
   <section class="ch fade">
     <h2><span class="b">2</span>コンサルの倒産、過去最多ペース</h2>
-    <div class="stats">
-      <div><small>2025年の倒産<br>（2000年以降で最多）</small><b class="num">167件</b></div>
-      <div class="hl"><small>2026年1〜5月の倒産<br>（前の年の同じ時期は69件）</small><b class="num ng">74件</b></div>
-      <div><small>2026年1〜5月<br>倒産＋休廃業・解散</small><b class="num">242件</b></div>
+    <div class="cmp" id="cmp">
+      <p class="cap">同じ「1〜5月」の倒産で比べると</p>
+      <div class="row"><div class="t"><span>2025年 1〜5月</span><span class="num">69件</span></div><div class="tr"><i data-w="93.2"></i></div></div>
+      <div class="row up"><div class="t"><span>2026年 1〜5月</span><span class="num">74件 ↑</span></div><div class="tr"><i data-w="100"></i></div></div>
+      <p class="cap2">今年のほうが多い。去年は1年間で<b class="num">167件</b>になり、<b>2000年以降で最多</b>でした。今年はその記録を上回るペースです。</p>
     </div>
+    <p class="note">倒産せずに自分でやめた会社（休廃業・解散）も入れると、2026年1〜5月で<b class="num">242件</b>です。</p>
     <blockquote>2026 年に発生した経営コンサルティング業の倒産は 74 件となり、集計を開始した 2000 年以降で最多だった前年（167 件、1-5 月：69）を上回るペースで推移した。</blockquote>
     <p class="src">出典: <a href="https://www.tdb.co.jp/report/industry/20260605-consulting26y1-5/" target="_blank" rel="noopener">帝国データバンク「『経営コンサルティング業界』の倒産・休廃業解散動向（2026年1-5月）」（2026年6月5日）</a></p>
     <div class="easy"><b>やさしく言うと：</b>去年（2025年）のコンサルの倒産は、26年間でいちばん多い167件でした。今年はそれよりさらに速いペースです。倒産せずに自分でやめた会社も入れると、5か月で242社がなくなりました。</div>
@@ -251,7 +265,7 @@ window.gcUse = function (name) {
 const io = new IntersectionObserver(es => es.forEach(e => {
   if (!e.isIntersecting) return;
   e.target.classList.add('in'); io.unobserve(e.target);
-  e.target.querySelectorAll('.dv i').forEach(i => requestAnimationFrame(() => { i.style.width = i.dataset.w + '%'; }));
+  e.target.querySelectorAll('.dv i, .cmp i').forEach(i => requestAnimationFrame(() => { i.style.width = i.dataset.w + '%'; }));
 }), {threshold: 0, rootMargin: '0px 0px -12% 0px'});
 document.querySelectorAll('.fade').forEach(el => io.observe(el));
 </script>

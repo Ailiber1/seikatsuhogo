@@ -83,7 +83,7 @@ if page_p.exists():
             continue
         if squash(q) not in page:
             fail(f"解説ページに引用がない: {q[:40]}…")
-    for x in ["15,200円", "10万円", "15万円", "2万円", "6か月", "8,000円", "65,840円"]:
+    for x in ["15,200円", "10万円", "15万円", "2万円", "6か月", "8,000円", "18,400円", "31,600円", "38,960円"]:
         if squash(x) not in page:
             fail(f"解説ページに数字がない: {x}")
 tool_p = ROOT / "nokoseru.html"

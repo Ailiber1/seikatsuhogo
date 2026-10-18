@@ -42,6 +42,11 @@
       "name": "総務省統計局「労働力調査 用語の解説」",
       "url": "https://www.stat.go.jp/data/roudou/pdf/definit.pdf",
       "copy": "rodo_definit_source.pdf"
+    },
+    "seiho_qa": {
+      "name": "厚生労働省「生活保護制度に関するＱ＆Ａ」",
+      "url": "https://www.mhlw.go.jp/content/001106332.pdf",
+      "copy": "seiho_qa_source.pdf"
     }
   },
   "nenpo": {
@@ -115,6 +120,7 @@
       "url": "https://www.mhlw.go.jp/content/12600000/001436774.pdf",
       "quote": "家賃額を支給します（上限があります）。 支給期間は原則３か月です（最長９か月）。",
       "chokin_max_man": 100
-    }
+    },
+    "fukushi_quote": "お住まいの地域を所管する福祉事務所の生活保護担当までお越し下さい。なお、福祉事務所を設置していない町村にお住まいの方は、お住まいの町村役場でも申請の手続を行うことができます。"
   }
 }

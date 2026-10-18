@@ -87,7 +87,7 @@ window.gcUse = function (name) {
 <body>
 <main class="wrap">
   <h1 class="mincho"><span class="nb">生活保護で働いたら、</span><span class="nb">いくら残せる？</span><small><span class="nb">毎月引かれない額と、</span><span class="nb">やめるときにもらえる額</span></small></h1>
-  <p class="lead">生活保護を受けながら働くと、保護費は減ります。でも<b>全部は引かれません</b>。給料を選ぶと、手元に残る額を国の決まりで計算します。</p>
+  <p class="lead">生活保護を受けながら働くと、保護費は減ります。でも<b>全部は引かれず、引かれた分の一部はあとで戻ってきます</b>。給料を選ぶと、国の決まりで計算します。</p>
 
   <div class="q"><label for="pay"><span class="b">1</span>1か月の給料（額面）</label>
     <select id="pay"><option value="">選んでください</option></select>
@@ -156,7 +156,7 @@ function render() {
   h += `<div class="rows">
     <div class="r"><span>毎月、引かれずに残る額<small>基礎控除</small></span><b class="num">${yen(r.keep)}</b></div>
     <div class="r"><span>半年（6か月）で、引かれずに残る額</span><b class="num">${yen(r.keep6)}</b></div>
-    <div class="r"><span>安定した仕事で保護をやめるとき、もらえる額<small>就労自立給付金（${single ? '単身・上限10万円' : '複数世帯・上限15万円'}）</small></span><b class="num">${yen(r.kyu)}</b></div></div>`;
+    <div class="r"><span>引かれた分のうち、あとで戻ってくる額<small>就労自立給付金。安定した仕事で保護をやめるときに受け取る（${single ? '単身・上限10万円' : '複数世帯・上限15万円'}）</small></span><b class="num">${yen(r.kyu)}</b></div></div>`;
   h += `<div class="one-liner">${r.juto === 0 ? '働いた分が、まるごと自分のお金になる範囲です。' : '働いても全部は引かれない。半年続ければ、これだけ残せます。'}</div>`;
   h += `<div class="seido"><h3>もう1つの方法：自立のために使うお金</h3>
     <p>事業を始める・技能を身につけるなど、生活を立て直すために使うお金は、福祉事務所が認めれば、収入として数えないことがあります（自立更生）。臨時のお金の8,000円の上限とは別の決まりです。</p>

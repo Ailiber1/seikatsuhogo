@@ -22,6 +22,9 @@ if abs(pct["m3"] + pct["over3"] - 100) > 0.05 or abs(pct["m3_6"] + pct["m6_12"] 
 src = d["sources"]
 html = (ROOT / "scripts" / "motsu.template.html").read_text(encoding="utf-8")
 for k, v in {
+    "/*SEIDO*/": json.dumps({"hw_url": src["hw"]["url"], "kaisei_url": src["kaisei"]["page"],
+                             "kyushokusha_url": d["seido"]["kyushokusha"]["url"], "kyushokusha_max": d["seido"]["kyushokusha"]["shisan_man"],
+                             "jukyo_url": d["seido"]["jukyo"]["url"], "jukyo_max": d["seido"]["jukyo"]["chokin_max_man"]}, ensure_ascii=False),
     "/*PERIOD*/": json.dumps(period), "/*TAIKI*/": str(d["hw"]["taiki_days"]), "/*SEIGEN*/": str(d["kaisei"]["seigen_days"]),
     "/*SHOSAI_URL*/": src["shosai"]["url"], "/*HW_PROC_URL*/": src["hw_proc"]["url"], "/*KAISEI_URL*/": src["kaisei"]["page"],
     "/*M3*/": str(s["m3_man"]), "/*M3_6*/": str(s["m3_6_man"]), "/*M6_12*/": str(s["m6_12_man"]), "/*Y1*/": str(s["y1_man"]),

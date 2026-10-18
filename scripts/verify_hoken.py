@@ -41,6 +41,7 @@ quotes = [("nenpo", d["nenpo"]["quote"]), ("nenpo", d["nenpo"]["quote_kounen"]),
           ("shosai", d["shosai"]["quote"]),
           ("kaisei", d["kaisei"]["quote_kakudai"]), ("kaisei", d["kaisei"]["quote_seigen"]), ("kaisei", d["kaisei"]["sekou"]),
           ("definit", d["definit"]["quote"]),
+          ("hw", d["hw"]["quote_kunren"]), ("kaisei", d["kaisei"]["quote_kyoiku"]),
           ("hw", d["hw"]["quote_jouken"]), ("hw", d["hw"]["quote_byouki"]), ("hw_proc", d["hw"]["quote_taiki"])]
 for k, q in quotes:
     if squash(q) not in src[k]:
@@ -102,6 +103,12 @@ if emb != {"over3": s["pct"]["over3"], "over6": over6, "y1": s["pct"]["y1"]}:
 m = re.search(r"const TAIKI = (\d+), SEIGEN = (\d+);", tool)
 if not m or (int(m.group(1)), int(m.group(2))) != (d["hw"]["taiki_days"], d["kaisei"]["seigen_days"]):
     fail("ツールの待期・給付制限が data と違う")
+old = json.loads((DATA / "shitsugyo.json").read_text(encoding="utf-8"))["other_support"]
+if "300万円以下" not in "".join(old["kyushokusha"]["conditions"]) or "100万円" not in "".join(old["jukyo"]["conditions"]) or "月額10万円" not in old["kyushokusha"]["amount"]:
+    fail("求職者支援制度・住居確保給付金の条件が 10/10 のデータと合わない")
+sd = json.loads(re.search(r"const S = (\{.*?\});", tool).group(1))
+if (sd["kyushokusha_max"], sd["jukyo_max"]) != (300, 100) or "原則3か月（最長9か月）" not in tool or "原則３か月です（最長９か月）" not in old["jukyo"]["quote"]:
+    fail("ツールの制度の条件が data と違う")
 if "gcUse('何か月もつしらべ')" not in tool:
     fail("ツールに利用回数の計測がない")
 

@@ -51,6 +51,13 @@ select:focus{outline:none; border-color:var(--navy)}
 .tl .bar i.ben{background:var(--ok)}
 .tl .ticks{position:relative; height:20px; font-size:13px; color:var(--sub)}
 .tl .ticks span{position:absolute; transform:translateX(-50%); white-space:nowrap}
+.tl .ticks span.end{transform:translateX(-100%)}
+.seido{border:2px solid var(--ok); border-radius:14px; background:var(--ok-bg); padding:12px 14px; margin:0 0 12px; animation:up .4s ease}
+.seido h3{margin:0 0 4px; font-size:17.5px; color:var(--ok)}
+.sd{background:#fff; border:1px solid var(--line); border-left:5px solid var(--ok); border-radius:0 11px 11px 0; padding:10px 12px; margin-top:8px}
+.sd b{display:block; font-size:17px} .sd span{display:block; font-size:15.5px; margin-top:2px}
+.sd small{display:block; font-size:14px; color:var(--sub); margin-top:4px; line-height:1.55}
+.sd a{display:inline-block; margin-top:6px; color:var(--navy); font-weight:700; font-size:15px}
 .tl .lg{display:flex; flex-wrap:wrap; gap:4px 14px; font-size:14px; color:var(--sub); margin-top:4px}
 .tl .lg span::before{content:""; display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:5px; vertical-align:-1px; background:var(--c)}
 .data{border:1px solid var(--line); border-radius:13px; background:#fff; padding:12px 14px; margin-bottom:12px; animation:up .4s ease}
@@ -155,6 +162,28 @@ function bucket(m) {
   return {k: 'y1', line: '1年はもつ。それでも、失業者の4人に1人以上は1年以上探しています。'};
 }
 
+// いざという時に試してみる制度（検算スクリプトからも呼ぶ）。原文は data/shitsugyo_hoken.json と data/shitsugyo.json
+const S = /*SEIDO*/;
+function seido(ins, saveMan, how, endMonth) {
+  const out = [];
+  if (ins === 'yes') {
+    out.push({k: 'kunren', name: '公共職業訓練', what: 'ハローワークの指示で受けると、訓練が終わるまで失業保険が続き、受講手当なども出ます。',
+      why: '失業保険をもらえる人向け。もらえる日数が終わりそうなときの延長の道です。', href: S.hw_url, link: 'ハローワーク「基本手当について」'});
+    if (how === 'jibun') out.push({k: 'kyoiku', name: '教育訓練で、待つ期間をなくす', what: '辞める前の1年以内や辞めたあとに、対象の教育訓練を自分で受けると、自己都合で辞めたときの給付制限（原則1か月）がなくなります。',
+      why: '自分の都合で辞めた、と選んだため。', href: S.kaisei_url, link: '厚生労働省「令和6年雇用保険制度の改正内容について」'});
+  } else {
+    if (saveMan <= S.kyushokusha_max) out.push({k: 'kyushokusha', name: '求職者支援制度', what: '失業保険がない人が、職業訓練を受けながら月10万円（＋交通費）を受け取れる制度です。',
+      why: `条件の1つ「世帯の金融資産${S.kyushokusha_max}万円以下」に、入力した貯金（${saveMan}万円）は当てはまります。ほかに本人の収入が月8万円以下などの条件があります。`, href: S.kyushokusha_url, link: '厚生労働省「職業支援・給付金などについて知る」'});
+    if (saveMan <= S.jukyo_max) out.push({k: 'jukyo', name: '住居確保給付金', what: '仕事を辞めて2年以内の人の家賃を、原則3か月（最長9か月）支える制度です。',
+      why: `預貯金の上限は住む地域で違い、最大でも${S.jukyo_max}万円です。入力した貯金（${saveMan}万円）はその範囲です。`, href: S.jukyo_url, link: '厚生労働省「住居確保給付金のご案内」'});
+  }
+  if (endMonth != null && endMonth <= 12) out.push({k: 'hogo', name: '生活保護の相談', what: '貯金が尽きる前でも相談できます。申請のときは、貯金を全部使い切る必要はありません。',
+    why: `貯金が${endMonth}か月目に尽きる計算のため。いくらまで残して申請できるかは、住む場所と人数で変わります。`, href: 'chokin.html', link: '貯金の境目しらべ'});
+  out.push({k: 'madoguchi', name: 'どれが使えるか分からないときは、相談窓口へ', what: '各市区町村の「自立相談支援機関」で、生活や仕事の困りごとをまとめて相談できます。住居確保給付金の窓口もここです。',
+    why: '全国1,370か所。電話番号と住所を調べられます。', href: 'sodan.html', link: '相談窓口をさがす'});
+  return out;
+}
+
 function render() {
   const s = $('save').value, c = $('cost').value, i = $('ins').value;
   $('cost').disabled = s === '';
@@ -173,7 +202,7 @@ function render() {
     : `<span class="big num">${r.endMonth}か月目<small> に尽きる</small></span>`;
   h += `<p>${i === 'yes' ? `失業保険は合わせて約${r.benMan}万円（${$('days').value}日分）として計算しました。` : '失業保険なしで計算しました。'}</p>`;
   h += `<div class="tl"><div class="bar"><i class="save" data-w="${pct(shown)}"></i>${i === 'yes' ? `<i class="ben" style="left:${pct(r.benStartM)}%" data-w="${pct(r.benEndM) - pct(r.benStartM)}"></i>` : ''}</div>
-    <div class="ticks">${[3, 6, 12, 24, 36].filter(m => m <= scale).map(m => `<span style="left:${pct(m)}%">${m}か月</span>`).join('')}</div>
+    <div class="ticks">${[3, 6, 12, 24, 36].filter(m => m <= scale).map(m => `<span${pct(m) >= 95 ? ' class="end"' : ''} style="left:${pct(m)}%">${m}か月</span>`).join('')}</div>
     <div class="lg"><span style="--c:var(--navy)">貯金でしのぐ期間</span>${i === 'yes' ? '<span style="--c:var(--ok)">失業保険がある期間</span>' : ''}</div></div></div>`;
   const b = bucket(r.endMonth);
   h += `<div class="one-liner" style="--c:${col}">${b.line}</div>`;
@@ -181,10 +210,13 @@ function render() {
   h += `<div class="data"><h3>いま失業している人のうち、もう◯か月以上探している人</h3>
     ${rows.map(([k, t, v]) => `<div class="row${k === b.k ? ' hit' : ''}"><span>${t}</span><div class="tr"><i data-w="${v}"></i></div><b class="num">${v}%</b></div>`).join('')}
     <small>総務省「労働力調査（詳細集計）2026年4～6月期平均」。失業者208万人の、探している期間の割合です（あなたが見つかる確率ではありません）</small></div>`;
-  h += `<div class="next"><h3>貯金が尽きる前に、知っておくこと</h3><ul>
-    <li>失業保険がない人の職業訓練＋月10万円、家賃の支え、最後の生活保護 → <a href="shitsugyo-setsumei.html">仕事を失っても、生活保護を頼っていい</a></li>
-    <li>生活保護を申請するとき、貯金はいくらまで残せる？ → <a href="chokin.html">貯金の境目しらべ</a></li>
-    <li>なぜ失業保険は4人に1人なのか → <a href="hoken-setsumei.html">失業保険をもらえるのは、4人に1人だけ？</a></li></ul></div>`;
+  const sd = seido(i, +s, $('how').value, r.endMonth);
+  h += `<div class="seido"><h3>いざという時に、試してみる制度</h3>
+    <p class="help" style="margin:0 0 8px">入力した内容から、使えるかもしれない国の制度を出しています。本当に使えるかは、収入や世帯などの条件で決まります。</p>
+    ${sd.map(x => `<div class="sd"><b>${x.name}</b><span>${x.what}</span><small>${x.why}</small><a href="${x.href}"${/^https?:/.test(x.href) ? ' target="_blank" rel="noopener"' : ''}>${x.link} →</a></div>`).join('')}</div>`;
+  h += `<div class="next"><h3>あわせて読む</h3><ul>
+    <li>なぜ失業保険は4人に1人なのか → <a href="hoken-setsumei.html">失業保険をもらえるのは、4人に1人だけ？</a></li>
+    <li>失業したときの3段の支え → <a href="shitsugyo-setsumei.html">仕事を失っても、生活保護を頼っていい</a></li></ul></div>`;
   $('res').innerHTML = h; $('res').hidden = false; $('guide').hidden = true;
   requestAnimationFrame(() => $('res').querySelectorAll('[data-w]').forEach(x => { x.style.width = x.dataset.w + '%'; }));
   if (window.gcUse) gcUse('何か月もつしらべ');

@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>これは申告がいる？収入チェック</title>
+<meta name="description" content="生活保護を受けていて、お金が入ったとき。収入の種類と金額を選ぶと、申告が必要か、収入として数えられる額の目安、国の決まりの原文を出します">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:17px; line-height:1.8; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+.nb{display:inline-block}
+h1,.lead,.verdict,.one-liner{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
+h1{font-size:clamp(25px,6vw,34px); line-height:1.4; margin:0 0 10px; color:var(--navy); text-wrap:balance}
+h1 small{display:block; font-size:.52em; color:var(--sub); font-weight:600; margin-top:4px}
+.lead{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:11px 15px; margin:0 0 18px; font-size:16.5px}
+.q{border:1px solid var(--line); border-radius:13px; background:var(--panel); padding:12px 14px; margin-bottom:10px}
+.q label{display:flex; align-items:center; gap:9px; font-weight:800; font-size:17px; margin-bottom:6px}
+.q label .b{flex:none; width:28px; height:28px; border-radius:50%; border:2px solid var(--navy); color:var(--navy); display:grid; place-items:center; font-size:14.5px; font-family:system-ui,sans-serif}
+select{width:100%; font:inherit; font-size:17px; min-height:48px; border:2px solid var(--line); border-radius:11px; padding:6px 10px; background:#fff; color:var(--ink)}
+select:disabled{background:var(--line-soft); color:#9aa4ae}
+select:focus{outline:none; border-color:var(--navy)}
+.help{font-size:14.5px; color:var(--sub); margin:6px 0 0; line-height:1.6}
+.help a{color:var(--navy); font-weight:700}
+.guide{border:2px dashed var(--line); border-radius:14px; padding:18px 16px; text-align:center; color:var(--sub); margin:16px 0}
+.guide b{display:block; color:var(--navy); font-size:18px; margin-bottom:4px}
+.res{margin-top:16px}
+.verdict{border:2px solid var(--navy); border-radius:15px; padding:16px; background:#fff; margin-bottom:12px; animation:up .4s ease}
+.verdict .k{font-size:15px; font-weight:700; color:var(--sub)}
+.verdict .big{display:block; font-size:clamp(30px,9vw,42px); font-weight:800; color:var(--navy); line-height:1.3; margin:2px 0}
+.verdict p{margin:4px 0 0; font-size:16px}
+.rows{border:1px solid var(--line); border-radius:13px; background:#fff; padding:6px 14px; margin-bottom:12px; animation:up .4s ease}
+.rows .r{display:flex; justify-content:space-between; align-items:baseline; gap:10px; padding:9px 0; border-bottom:1px solid var(--line-soft)}
+.rows .r:last-child{border-bottom:0}
+.rows .r span{font-size:15.5px} .rows .r small{display:block; font-size:13.5px; color:var(--sub)}
+.rows .r b{font-size:20px; white-space:nowrap; color:var(--navy)}
+.rows .r.total b{color:var(--ok); font-size:24px}
+.one-liner{border-left:5px solid var(--ok); background:var(--ok-bg); border-radius:0 11px 11px 0; padding:10px 14px; font-weight:700; font-size:16.5px; margin:0 0 12px}
+blockquote{margin:8px 0 4px; padding:10px 14px; background:var(--panel); border-left:4px solid var(--line); font-size:15.5px; border-radius:0 10px 10px 0}
+.src{font-size:14px; color:var(--sub); margin:0 0 12px} .src a{color:var(--navy)}
+.seido{border:2px solid var(--navy); border-radius:14px; background:var(--navy-soft); padding:12px 14px; margin:0 0 12px}
+.seido p{margin:4px 0 0; font-size:15.5px}
+.seido a{color:var(--navy); font-weight:700}
+.warn{background:var(--warn-bg); border-left:5px solid var(--warn); border-radius:0 11px 11px 0; padding:10px 14px; margin:8px 0 12px; font-size:15.5px}
+.warn b{color:var(--warn)}
+@keyframes up{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+.foot{margin-top:24px; font-size:14.5px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot h3{font-size:15px; color:var(--ink); margin:12px 0 4px}
+.foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .verdict,.rows{animation:none} }
+</style>
+<script>
+/* URLの後ろの ?… は付けず、ページの場所だけで数える（同じページが別々に数えられないように） */
+window.goatcounter = {path: function () { return location.pathname; }};
+</script>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho"><span class="nb">これは</span><span class="nb">申告がいる？</span><small><span class="nb">お金が入ったとき、</span><span class="nb">国の決まりで確かめる</span></small></h1>
+  <p class="lead">生活保護を受けていて、お金が入ったとき。<b>どんなお金か</b>と<b>いくらか</b>を選ぶと、申告が必要か、収入として数えられる額の目安、国の決まりの原文を出します。</p>
+
+  <div class="q"><label for="kind"><span class="b">1</span>入ったお金は</label>
+    <select id="kind"><option value="">選んでください</option></select>
+    <p class="help" id="kind-help">この一覧にないお金は、福祉事務所に聞いてください。</p></div>
+  <div class="q"><label for="amt"><span class="b">2</span>1か月に入った額は</label>
+    <select id="amt" disabled><option value="">選んでください</option></select>
+    <p class="help" id="amt-help">1で選ぶと、必要なときだけ選べます。</p></div>
+
+  <div class="guide" id="guide"><b>上の1と2を選ぶと、ここに結果が出ます</b>申告が必要か、収入として数えられる額の目安、原文を出します</div>
+  <div class="res" id="res" hidden></div>
+
+  <div class="warn"><b>読むときの注意：</b>これは国の通知の原文に基づく<b>目安</b>です。収入として数えるかどうかを決めるのは、福祉事務所です。<b>金額が小さくても、お金が入ったら、まず福祉事務所に伝えて確認してください。</b>伝え方や書類は自治体で違うことがあります。</div>
+
+  <div class="foot">
+    <h3>根拠資料</h3>
+    <ul>
+      <li><a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8431&dataType=1&pageNo=1" target="_blank" rel="noopener">厚生労働省「生活保護法による保護の実施要領について」（次官通知）</a>：第8 収入の認定（1 申告及び調査、3 認定指針）</li>
+      <li><a href="https://laws.e-gov.go.jp/law/325AC0000000144" target="_blank" rel="noopener">生活保護法 第61条（届出の義務）</a>：収入・支出その他生計の状況に変動があったときは、すみやかに届け出る</li>
+    </ul>
+    <h3>読むときの注意</h3>
+    <ul>
+      <li>8,000円・15,000円は、1か月の額です。8,000円は世帯の合計です</li>
+      <li>「収入として数えられる額」は、そのお金を受け取るためにかかった交通費などを引く前の目安です</li>
+      <li>選んだ内容はブラウザの中だけで使い、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</li>
+      <li>確認日: 2026年10月25日 ／ 個人が作ったもので、行政の公式資料ではありません。法律上の助言でもありません</li>
+    </ul>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+const D = {"items":[{"id":"wage","label":"給料（会社・アルバイト）","calc":"none","title":"給料は、毎月申告します","counted":"収入の総額から、社会保険料・所得税・通勤費などの実費と、基礎控除を引いた額が、収入として数えられます","easy":"給料は全額が引かれるわけではありません。基礎控除（月15,200円以上）が手元に残ります。くわしい額は、下のしらべで出せます。","quote":"官公署、会社、工場、商店等に常用で勤務し、又は日雇その他により勤労収入を得ている者については、基本給、勤務地手当、家族手当及び超過勤務手当等の収入総額を認定すること。","where":"次官通知 第8の3(1)ア(ア)","link":{"href":"kyuryo.html","text":"給料いくら残るしらべ"},"hint":"会社、アルバイト、パートなどの給料です。"},{"id":"sidejob","label":"副業・事業の収入","calc":"none","title":"副業・事業の収入も、申告します","counted":"実際の収入額から、その事業に必要な経費を引いた額を、福祉事務所が認定します","easy":"どの種類の収入として数えるかは、福祉事務所が決めます。入ったら、金額が小さくても、まず伝えてください。","quote":"農業以外の事業(いわゆる固定的な内職を含む。)により収入を得ている者については、その事業の種類に応じて、実際の収入額を認定し、","where":"次官通知 第8の3(1)ウ(ア)","link":null,"hint":"物販・YouTube・内職など、自分で稼いだお金です。"},{"id":"small","label":"知人からの少額の謝礼","calc":"excess","threshold":15000,"title":"少額の報酬も、申告します","counted":"月15,000円までは、収入として数えられません。超えた分が、収入として数えられます","easy":"知り合いから頼まれた小さな仕事のお礼のような、少額で続かない収入の決まりです。","quote":"知己、近隣等よりの臨時的な報酬の性質を有する少額の金銭その他少額かつ不安定な稼働収入がある場合で、その額(受領するために交通費等を必要とする場合はその必要経費の額を控除した額とする。)が月額15,000円をこえるときは、そのこえる額を収入として認定すること。","where":"次官通知 第8の3(1)エ","link":null,"hint":"知り合いや近所の人から頼まれた小さな仕事の、お礼や報酬です。"},{"id":"rinji","label":"保険金・物を売ったお金","calc":"excess","threshold":8000,"title":"臨時のお金も、申告します","counted":"月（世帯の合計）8,000円までは、収入として数えられません。超えた分が、収入として数えられます","easy":"不用品や持ち物を売ったお金、保険金などが当てはまります。物販の売上がどの区分になるかは、福祉事務所が判断します。","quote":"不動産又は動産の処分による収入、保険金その他の臨時的収入((3)のオ、カ又はキに該当する額を除く。)については、その額(受領するために交通費等を必要とする場合は、その必要経費の額を控除した額とする。)が、世帯合算額8,000円(月額)をこえる場合、そのこえる額を収入として認定すること。","where":"次官通知 第8の3(2)エ(イ)","link":null,"hint":"保険金、不用品や持ち物を売ったお金など、臨時に入ったお金です。"},{"id":"pension","label":"年金・失業保険など","calc":"full","title":"年金や給付も、申告します","counted":"実際に受け取る額が、収入として数えられます","easy":"年金（障害年金・老齢年金など）や失業保険は、もらい始めた時と、額が変わった時に伝えます。もらえる権利があるのに申請していない場合は、他の制度を使うよう言われます。","quote":"恩給、年金、失業保険金その他の公の給付(地方公共団体又はその長が条例又は予算措置により定期的に支給する金銭を含む。)については、その実際の受給額を認定すること。","where":"次官通知 第8の3(2)ア(ア)","link":null,"hint":"障害年金・老齢年金・失業保険など、国や自治体からの給付です。"},{"id":"gift","label":"仕送り・お金の贈与","calc":"full","title":"仕送りや贈与も、申告します","counted":"実際にもらった額が、原則として全額、収入として数えられます","easy":"家族や知人からもらったお金は、原則として収入です。例外は、社会通念上、収入にするのが適当でないものとされたものです。","quote":"他からの仕送り、贈与等による金銭であって社会通念上収入として認定することを適当としないもののほかは、すべて認定すること。","where":"次官通知 第8の3(2)イ(ア)","link":null,"hint":"家族や知人からもらった仕送りや、お金のプレゼントです。"},{"id":"gift_event","label":"お祝いやお香典","calc":"none","title":"お祝いやお香典も、まず伝えます","counted":"社会通念上、収入として数えるのが適当でないとされたものは、収入として数えません。数えるかどうかは福祉事務所が判断します","easy":"お祝いやお香典は、収入にならないことがあります。ただし、「ならないはず」と自分で決めず、先に伝えて判断してもらってください。","quote":"出産、就職、結婚、葬祭等に際して贈与される金銭であって、社会通念上収入として認定することが適当でないもの","where":"次官通知 第8の3(3)イ","link":null,"hint":"出産・就職・結婚・葬式の際に、お祝いやお香典としてもらったお金です。"},{"id":"rent","label":"家賃・地代の収入","calc":"full","title":"貸して得たお金も、申告します","counted":"実際の収入額が、収入として数えられます","easy":"部屋や駐車場などを貸して得たお金です。生活保護を受けるときは、貸している物があること自体も伝えます。","quote":"田畑、家屋、機械器具等を他に利用させて得られる地代、小作料、家賃、間代、使用料等の収入については、その実際の収入額を認定すること。","where":"次官通知 第8の3(2)ウ(ア)","link":null,"hint":"家や土地、駐車場などを貸して得た家賃・地代です。"},{"id":"loan","label":"公的な貸付金","calc":"none","title":"借りたお金は、先に相談します","counted":"公的な貸付金のうち、自立更生のために使う分は、収入として数えません。数えるかどうかは福祉事務所が判断します","easy":"借りる前に福祉事務所に相談しておくことが大切です。生活費の穴埋めのための借金について、「保護費で返してよい」とは、原文で確かめられていません。","quote":"他法、他施策等により貸し付けられる資金のうち当該被保護世帯の自立更生のために当てられる額","where":"次官通知 第8の3(3)ウ","link":null,"hint":"自立のために借りる、公的な貸付金です。"},{"id":"disaster","label":"災害の見舞金・補償金","calc":"none","title":"見舞金や補償金も、まず伝えます","counted":"災害で受けた補償金・保険金・見舞金のうち、自立更生のために使う分は、収入として数えません。数えるかどうかは福祉事務所が判断します","easy":"使い道が決まっていて、自立更生のためだと認められた分だけです。受け取ったら、使う前に伝えてください。","quote":"災害等によって損害を受けたことにより臨時的に受ける補償金、保険金又は見舞金のうち当該被保護世帯の自立更生のためにあてられる額","where":"次官通知 第8の3(3)オ","link":null,"hint":"災害にあって受け取った、見舞金・補償金・保険金です。"}],"sources":{"jikan":{"title":"厚生労働省「生活保護法による保護の実施要領について」（昭和36年4月1日 次官通知）","url":"https://www.mhlw.go.jp/web/t_doc?dataId=00ta8431&dataType=1&pageNo=1"},"law":{"title":"生活保護法 第61条（届出の義務）","url":"https://laws.e-gov.go.jp/law/325AC0000000144"}},"common_quote":{"text":"収入に変動があるときの申告については、あらかじめ被保護者に申告の要領、手続等を十分理解させ、つとめて自主的な申告を励行させること。","where":"次官通知 第8の1(2)"}};
+const AMOUNTS = [1000, 3000, 5000, 8000, 10000, 15000, 20000, 30000, 50000, 100000];
+const $ = id => document.getElementById(id);
+const yen = n => Math.round(n).toLocaleString('ja-JP') + '円';
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+D.items.forEach(it => { const o = document.createElement('option'); o.value = it.id; o.textContent = it.label; $('kind').appendChild(o); });
+AMOUNTS.forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v.toLocaleString('ja-JP') + '円'; $('amt').appendChild(o); });
+
+// 収入として数えられる額の目安（月額）。excess は しきい値を超えた分、full は全額、none は計算しない（検算スクリプトからも呼ぶ）
+function counted(it, amt) {
+  if (it.calc === 'excess') return Math.max(0, amt - it.threshold);
+  if (it.calc === 'full') return amt;
+  return null;
+}
+const needsAmt = it => it.calc !== 'none';
+const item = () => D.items.find(x => x.id === $('kind').value);
+
+function onKind() {
+  const it = item();
+  $('amt').disabled = !it || !needsAmt(it);
+  if (!it || !needsAmt(it)) $('amt').value = '';
+  $('kind-help').textContent = it ? it.hint : 'この一覧にないお金は、福祉事務所に聞いてください。';
+  $('amt-help').textContent = !it ? '1で選ぶと、必要なときだけ選べます。' : (needsAmt(it) ? '税金などを引く前の、受け取った額で選んでください。' : 'この種類は、額によらず福祉事務所の判断になるので、選ばなくて大丈夫です。');
+  render();
+}
+function render() {
+  const it = item();
+  if (!it || (needsAmt(it) && $('amt').value === '')) { $('res').hidden = true; $('guide').hidden = false; return; }
+  const judge = it.calc === 'none' && ['gift_event', 'loan', 'disaster'].includes(it.id);
+  let h = `<div class="verdict"><div class="k">${esc(it.label)}</div>
+    <span class="big">${judge ? 'まず伝えて、判断してもらう' : '申告：必要です'}</span>
+    <p>${esc(it.title)}。入ったら、福祉事務所に伝えます（生活保護法 第61条）。</p></div>`;
+  if (needsAmt(it)) {
+    const amt = +$('amt').value, c = counted(it, amt);
+    h += `<div class="rows">
+      <div class="r"><span>入った額（1か月）</span><b class="num">${yen(amt)}</b></div>
+      <div class="r total"><span>収入として数えられる額の目安<small>${esc(it.counted)}</small></span><b class="num">${yen(c)}</b></div></div>`;
+    h += `<div class="one-liner">${c === 0 ? 'この額なら、収入として数えられる額は0円の目安です。それでも、入ったことは伝えます。' : (it.calc === 'full' ? '原則そのまま収入として数えられ、その分、その月の保護費が減ります。' : `${yen(it.threshold)}を超えた分だけ、その月の保護費が減ります。`)}</div>`;
+  } else {
+    h += `<div class="rows"><div class="r"><span>収入として数えられるか<small>${esc(it.counted)}</small></span></div></div>`;
+  }
+  h += `<div class="seido"><p><b>やさしく言うと：</b>${esc(it.easy)}</p>${it.link ? `<p>→ <a href="${esc(it.link.href)}">${esc(it.link.text)}</a></p>` : ''}</div>`;
+  h += `<blockquote>${esc(it.quote)}</blockquote><p class="src">出典: <a href="${esc(D.sources.jikan.url)}" target="_blank" rel="noopener">${esc(D.sources.jikan.title)}</a> ${esc(it.where)}</p>`;
+  h += `<blockquote>${esc(D.common_quote.text)}</blockquote><p class="src">出典: 同 ${esc(D.common_quote.where)}</p>`;
+  $('res').innerHTML = h; $('res').hidden = false; $('guide').hidden = true;
+  if (window.gcUse) gcUse('申告チェック');
+}
+$('kind').addEventListener('change', onKind);
+$('amt').addEventListener('change', render);
+</script>
+<script src="hub-items.js"></script>
+<script src="related.js" defer></script>
+</body>
+</html>

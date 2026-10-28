@@ -48,7 +48,9 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `ai2040.html` | ツール | 2040年しごとしらべ（仕事の種類・業界・学歴・都道府県から、経産省の推計で2040年に余る側か足りない側か） | [/ai2040.html](https://ailiber1.github.io/seikatsuhogo/ai2040.html) |
 | `chiiki.html` | ツール | 住む場所の暮らしやすさしらべ（市区町村を選ぶと、生活扶助・冬季加算・家賃の上限と、物価・ごみ袋・52都市の順位。物差しを選んで52都市を並べかえられる） | [/chiiki.html](https://ailiber1.github.io/seikatsuhogo/chiiki.html) |
 | `chiiki-setsumei.html` | 解説 | 同じ生活保護でも、住む場所でこんなに違う（北見市のごみ袋10枚1,350円（1枚135円）から。物価・光熱費−冬季加算・車なしの暮らしにくさ・ごみ袋・家賃の上限・水道代の6つの物差しで52都市を比べたランキング） | [/chiiki-setsumei.html](https://ailiber1.github.io/seikatsuhogo/chiiki-setsumei.html) |
-| `database.rules.json` / `firebase.json` / `.firebaserc` | 設定 | 暇人スキャンの保存先（Firebase Realtime Database）の書き込みルール | — |
+| `nukedasenai-setsumei.html` | 解説 | 生活保護から抜け出せない理由5つ（やめた世帯の49.5%は死亡・働いてやめたのは15.1%・病気が治ってやめたのは0.4%、年齢別の働いてやめた割合、基礎控除、抜けた後の国保・年金、また受け始めた42,958世帯・1年以内44.8%、3年目の本音） | [/nukedasenai-setsumei.html](https://ailiber1.github.io/seikatsuhogo/nukedasenai-setsumei.html) |
+| `nukedasenai.html` | ツール | 抜け出せない理由アンケート（受けている／受けていた／受けていないと、いちばんの理由を選ぶと、答えた人の割合がリアルタイムで出る）。**リスナーの答えを名前なしで保存する2つ目のツール**（下の「リスナーの結果の保存」） | [/nukedasenai.html](https://ailiber1.github.io/seikatsuhogo/nukedasenai.html) |
+| `database.rules.json` / `firebase.json` / `.firebaserc` | 設定 | 暇人スキャンと抜け出せない理由アンケートの保存先（Firebase Realtime Database）の書き込みルール | — |
 | `data/` | データ | ページに埋め込む元データ（JSON） | — |
 | `scripts/` | スクリプト | 公的資料からデータを作り、ページを生成する | — |
 
@@ -76,6 +78,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `kijun_r8.json` | 生活扶助の第1類・第2類・逓減率・特例加算と、照合用のモデル世帯9類型 | 厚労省「生活扶助基準額の算出方法（令和8年4月）」＋第55回生活保護基準部会 資料4 |
 | `chiiki.json` | 地域で差が出る負担: 消費者物価地域差指数（都道府県・都市）、家計調査の電気・ガス・灯油・上下水道・ガソリン（52都市）、冬季加算の額と地区（告示）、全1,741市区町村の燃やすごみが有料か | 総務省「消費者物価地域差指数 2025年」（写し `chiikisa_2025_source.pdf`）、家計調査 品目別ランキング 2023〜2025年平均（写し `kakei_rank14_2023-2025_source.xlsx`）、保護の基準（昭和38年厚生省告示第158号・2026年10月1日適用）、環境省 一般廃棄物処理実態調査 令和5年度（66MBのため写しは置かず、URLは `scripts/extract_chiiki.py`） |
 | `gomi_bag.json` | 燃やすごみが有料の22都市と北見市の、指定袋1枚の値段と、生活保護の世帯の減免（公式ページで確かめられたものだけ） | 各市の公式ページ（那覇市だけは民間サイト）、旭川市 資料3（写し `asahikawa_genmen_2025_source.pdf`） |
+| `nukedasenai.json` | 保護をやめた理由（世帯類型別・世帯主の年齢別）、また受け始めた世帯（前にやめてからの期間×理由）、年間の保護開始世帯数と、解説で使った計算（`scripts/extract_nukedasenai.py` が作る） | 厚労省 被保護者調査 令和6年度 月次調査 確定値 第34表・第37表・第30表・第6表（写し `hihogosha_r6_t34_haishi_source.xlsx`・`hihogosha_r6_t37_haishi_age_source.xlsx`・`hihogosha_r6_t30_saijukyu_source.xlsx`・`hihogosha_n6_kaishi_source.xlsx`）、報道発表資料（写し `hihogosha_r6_kakutei_houdou_source.pdf`） |
 | `chiiki_rank.json` | 52都市の6つの物差しの値・順位・総合順位（`scripts/rank_chiiki.py` が作る） | 上の2つと級地・基準額・住宅扶助の上限 |
 
 ## scripts/ の中身
@@ -112,6 +115,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `research_titles.py` | `data/research_keywords.json` の検索語と参考チャンネルで、他のチャンネルの動画を集めて再生数の多い順に並べる（yt-dlpだけ使う。ショートと自分のチャンネルは除く。ニュース番組は別枠） |
 | `verify_hogohi.py` | `hogohi.html` の計算式を node で動かし、資料4のモデル世帯54通りと1円単位で一致するか確かめる |
 | `xlsx_read.py` | openpyxl なしで xlsx を読む（ふりがなは除く） |
+| `extract_nukedasenai.py` | 被保護者調査の表の写しから `data/nukedasenai.json` を作る（見出しの並び、理由の和と総数、年齢・期間の和が合うかを確かめる） |
+| `verify_nukedasenai.py` | `nukedasenai-setsumei.html` の数字が `data/nukedasenai.json`・基礎控除額表と合うか、引用が国保法・国民年金法の条文（e-Govの法令JSON）と同じかを確かめる |
 | `extract_chiiki.py` | 物価・家計調査・冬季加算・環境省のごみの表から `data/chiiki.json` を作る（市区町村名が級地の表と1,741件すべて一致するか、都道府県ごとの件数が表の合計と合うかを確かめる） |
 | `rank_chiiki.py` | `data/chiiki_rank.json` を作る（6つの物差しと順位） |
 | `gen_chiiki.py` | `chiiki.template.html`・`chiiki-setsumei.template.html` から `chiiki.html` と `chiiki-setsumei.html` を生成する。資料の数字は全部データから差し込む |
@@ -214,6 +219,7 @@ https://ailiber1.github.io/seikatsuhogo/◯◯.html
 - 保存先: Firebase Realtime Database（プロジェクト `seikatsuhogo`、無料のSparkプラン・課金なし）`/jikan/r`
 - ルール（`database.rules.json`）: 新しい記録の追加だけ可（書き換え・削除は不可）、項目と値の範囲を検査、6項目の合計がちょうど1440分、全体で1秒に1件まで。記録の一覧は誰でも読める（集計をブラウザで計算するため）
 - ルールを変えたら `firebase deploy --only database`。テストで書いた記録は `firebase database:remove /jikan/r/<id>` で消す
+- **抜け出せない理由アンケート（`nukedasenai.html`・2026年10月28日にユーザーが依頼）**も同じ考え方で保存する。保存するのは「あなたは（受けている j／前に受けていた m／受けていない n）」と「いちばんの理由（1〜6）」と保存時刻だけ。保存先は `/nukedasenai/r`、同じブラウザからは最初の1回だけ、ルールは暇人スキャンと同じ形（追加だけ・項目と値の検査・全体で1秒に1件まで・一覧は誰でも読める）
 - ほかのツールは今までどおり「入力は外部に送信しない」
 
 ### 事実の扱い

@@ -26,6 +26,23 @@
         ".write": "newData.val() === now && (!data.exists() || data.val() <= now - 1000)",
         ".validate": "newData.isNumber()"
       }
+    },
+    "nukedasenai": {
+      "r": {
+        ".read": true,
+        "$id": {
+          ".write": "!data.exists() && newData.exists()",
+          ".validate": "$id.matches(/^[a-z0-9]{16}$/) && newData.hasChildren(['st','w','t']) && newData.parent().parent().child('last').val() === now",
+          "st": { ".validate": "newData.isString() && newData.val().matches(/^(j|m|n)$/)" },
+          "w": { ".validate": "newData.isString() && newData.val().matches(/^[1-6]$/)" },
+          "t": { ".validate": "newData.val() === now" },
+          "$other": { ".validate": false }
+        }
+      },
+      "last": {
+        ".write": "newData.val() === now && (!data.exists() || data.val() <= now - 1000)",
+        ".validate": "newData.isNumber()"
+      }
     }
   }
 }

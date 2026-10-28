@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>抜け出せない理由アンケート</title>
+<meta name="description" content="生活保護から抜け出せない、いちばんの理由は？ 受けている人・受けていた人・受けていない人の答えを、名前なしで集めて、リアルタイムで割合を出します">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+  --c-j:#2b5d8f; --c-m:#8a6420; --c-n:#2a7355;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:16px; line-height:1.75; -webkit-text-size-adjust:100%}
+.num{font-variant-numeric:tabular-nums}
+.nb{display:inline-block}
+h1,.q,.opt b{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
+.tag{display:inline-flex; align-items:center; gap:7px; font-size:12px; letter-spacing:.14em; font-weight:800; color:#c23d33; margin-bottom:6px}
+.dot{width:9px; height:9px; border-radius:50%; background:#e0463c; box-shadow:0 0 0 0 rgba(224,70,60,.4); animation:rec 1.6s infinite}
+@keyframes rec{0%{box-shadow:0 0 0 0 rgba(224,70,60,.45)} 70%{box-shadow:0 0 0 8px rgba(224,70,60,0)} 100%{box-shadow:0 0 0 0 rgba(224,70,60,0)}}
+h1{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif; font-size:clamp(26px,6vw,36px); line-height:1.4; margin:0 0 8px; color:var(--navy); text-wrap:balance}
+.lead{color:var(--sub); font-size:15px; margin:0 0 16px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:18px; font-size:15px}
+.for-who b{color:var(--navy)} .for-who ul{margin:4px 0 0; padding-left:1.2em}
+.card{background:#fff; border:1.5px solid var(--line); border-radius:16px; padding:16px; margin-bottom:14px; transition:border-color .3s, box-shadow .3s, opacity .3s}
+.card.on{border-color:var(--navy); box-shadow:0 0 0 4px var(--navy-soft)}
+.card.off{opacity:.5}
+.card h2{font-size:16.5px; margin:0 0 10px; display:flex; gap:9px; align-items:center}
+.card h2 .n{flex:none; width:28px; height:28px; border-radius:8px; border:1.5px solid var(--navy); color:var(--navy); display:grid; place-items:center; font-size:13px; font-weight:800}
+.q{font-weight:700; margin:0 0 10px}
+.opts{display:grid; gap:8px}
+.opt{display:flex; gap:10px; align-items:center; width:100%; text-align:left; font:inherit; color:var(--ink); background:#fff; border:1.5px solid var(--line); border-radius:12px; padding:10px 12px; min-height:52px; cursor:pointer}
+.opt .mk{flex:none; width:22px; height:22px; border-radius:50%; border:2px solid var(--line); display:grid; place-items:center}
+.opt.sel{border-color:var(--navy); background:var(--navy-soft)}
+.opt.sel .mk{border-color:var(--navy); background:var(--navy); box-shadow:inset 0 0 0 3px #fff}
+.opt b{display:block; font-size:16px} .opt small{display:block; color:var(--sub); font-size:13px; line-height:1.5}
+.opt:disabled{cursor:default}
+.st{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+@media (max-width:480px){ .st{grid-template-columns:1fr} }
+.go{display:block; width:100%; margin:6px 0 4px; min-height:56px; font:inherit; font-size:18px; font-weight:800; letter-spacing:.06em; color:#fff; border:none; border-radius:14px; cursor:pointer; background:var(--navy)}
+.go:disabled{background:var(--line); color:var(--sub); cursor:default}
+.peek{display:block; margin:8px auto 0; font:inherit; font-size:14px; color:var(--navy); background:none; border:none; text-decoration:underline; cursor:pointer; min-height:40px}
+.privacy{font-size:12.5px; color:var(--sub); text-align:center; margin:4px 0 0}
+#result{margin-top:18px}
+.guide{border:2px dashed var(--line); border-radius:16px; padding:20px 16px; text-align:center; color:var(--sub)}
+.guide b{color:var(--navy)}
+.live{display:flex; align-items:center; justify-content:center; gap:7px; flex-wrap:wrap; font-size:15px; font-weight:700; color:var(--navy); margin:0 0 12px}
+.live b{font-size:22px}
+.bump{animation:bump .9s ease}
+@keyframes bump{0%{transform:scale(1)} 30%{transform:scale(1.06)} 100%{transform:scale(1)}}
+.plus{display:inline-block; font-size:12px; font-weight:800; color:#fff; background:#c23d33; border-radius:99px; padding:0 8px; animation:plus 2.4s ease forwards}
+@keyframes plus{0%{opacity:0; transform:translateY(6px)} 15%{opacity:1; transform:none} 80%{opacity:1} 100%{opacity:0}}
+.tabs{display:flex; gap:6px; flex-wrap:wrap; margin:0 0 10px}
+.tabs button{font:inherit; font-size:14px; font-weight:700; border:1.5px solid var(--line); background:#fff; color:var(--sub); border-radius:99px; padding:6px 12px; min-height:40px; cursor:pointer}
+.tabs button.on{border-color:var(--navy); background:var(--navy-soft); color:var(--navy)}
+.box{background:#fff; border:1.5px solid var(--line); border-radius:16px; padding:14px 16px; margin-bottom:14px}
+.box h3{font-size:16px; margin:0 0 4px; color:var(--navy)}
+.box .cap{font-size:13px; color:var(--sub); margin:0 0 10px}
+.row{margin:0 0 12px} .row:last-child{margin-bottom:0}
+.row .t{display:flex; justify-content:space-between; gap:8px; font-size:15px; font-weight:700}
+.row .t span:last-child{white-space:nowrap; color:var(--navy)}
+.row .t small{font-weight:400; color:var(--sub); font-size:13px}
+.row .tr{height:18px; border-radius:9px; background:var(--line-soft); overflow:hidden; margin-top:3px}
+.row .tr i{display:block; height:100%; width:0; border-radius:9px; background:var(--c,var(--navy)); transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.row.mine .t span:first-child::after{content:"（あなた）"; color:#c23d33}
+.row.mine .tr{box-shadow:0 0 0 2px #c23d33}
+.top1{border-left:5px solid var(--navy); background:var(--navy-soft); border-radius:0 11px 11px 0; padding:10px 14px; font-weight:700; margin:0 0 12px}
+.cmp{width:100%; border-collapse:collapse; font-size:14px}
+.cmp th,.cmp td{padding:7px 4px; border-bottom:1px solid var(--line-soft); text-align:right; white-space:nowrap}
+.cmp th:first-child,.cmp td:first-child{text-align:left; white-space:normal}
+.cmp thead th{font-size:12px; color:var(--sub)}
+.cmp td.hi{font-weight:800; color:var(--navy)}
+.note{font-size:12.5px; color:var(--sub); margin:6px 0 0}
+.back{display:flex; justify-content:space-between; align-items:center; gap:10px; text-decoration:none; color:var(--navy); background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:11px 14px; margin:14px 0 0; font-weight:700; min-height:48px}
+.foot{margin-top:24px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ *{animation:none!important; transition:none!important} }
+</style>
+<script>
+/* URLの後ろの ?… は付けず、ページの場所だけで数える（同じページが別々に数えられないように） */
+window.goatcounter = {path: function () { return location.pathname; }};
+</script>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
+</head>
+<body>
+<main class="wrap">
+  <div class="tag"><span class="dot"></span>LIVE アンケート</div>
+  <h1><span class="nb">生活保護から</span><span class="nb">抜け出せない、</span><span class="nb">いちばんの理由は？</span></h1>
+  <p class="lead">答えると、<b>これまでに答えた人の割合</b>がすぐに出ます。誰かが答えるたびに、数字が動きます。</p>
+  <div class="for-who"><b>このアンケートは、こういう方へ</b>
+    <ul><li>生活保護を<span class="nb">受けている方・受けていた方</span></li>
+    <li>「受けている人は、なぜ抜けないのか」が<span class="nb">気になる方</span></li></ul></div>
+
+  <section class="card on" id="c1">
+    <h2><span class="n">01</span>あなたは</h2>
+    <div class="st" id="st"></div>
+  </section>
+
+  <section class="card off" id="c2">
+    <h2><span class="n">02</span>いちばんの理由を1つ</h2>
+    <p class="q" id="qText">上の 01 を選ぶと、ここに質問が出ます。</p>
+    <div class="opts" id="why"></div>
+  </section>
+
+  <button class="go" id="go" type="button" disabled>答えて、みんなの結果を見る</button>
+  <button class="peek" id="peek" type="button">答えずに、みんなの結果だけ見る</button>
+  <p class="privacy">名前・住んでいる場所・IPアドレスなど、あなたを特定できる情報は集めていません。</p>
+
+  <div id="result" aria-live="polite"></div>
+  <a class="back" href="nukedasenai-setsumei.html"><span>国の数字で見る：生活保護から抜け出せない理由5つ</span><span>→</span></a>
+
+  <div class="foot">
+    <p><b>集め方</b>：「答えて、みんなの結果を見る」を押したときに、選んだ2つ（あなたは／いちばんの理由）と、答えた時刻だけを名前なしで保存し、集計に使っています。名前・住んでいる場所・IPアドレス・端末の情報は保存していません。同じブラウザからは最初の1回だけ保存します（2回目からは、前の答えで結果を出します）。ページが開かれた回数と結果が出た回数も、Cookieを使わず、個人を特定しない方法で数えています。</p>
+    <p><b>読むときの注意</b>：誰でも答えられるアンケートです。本当に受けている人かどうかは確かめられないので、<b>受けている人全体の本当の割合ではありません</b>。人数が少ないうちは、数字が大きく動きます。選んだ理由の並びは、解説ページの5つの順です。</p>
+    <p>確認日: 2026年10月28日 ／ 個人が作ったもので、行政の公式ツールではありません。</p>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+const DB = 'https://seikatsuhogo-default-rtdb.asia-southeast1.firebasedatabase.app';
+const SAVED = 'nukedasenai-saved';
+const ST = [
+  {k:'j', label:'生活保護を受けている', short:'受けている人', q:'あなたが生活保護から抜け出せない、いちばんの理由は？'},
+  {k:'m', label:'前に受けていた', short:'前に受けていた人', q:'受けていたとき、抜け出しにくかった、いちばんの理由は？'},
+  {k:'n', label:'受けていない', short:'受けていない人', q:'受けている人が抜け出せない、いちばんの理由は何だと思う？'}
+];
+const WHY = [
+  {k:'1', b:'病気・けがが治らない', s:'体や心の病気、障害で、働けない・続かない'},
+  {k:'2', b:'雇ってもらえない', s:'年齢・働いていない期間・AIで仕事が減る など'},
+  {k:'3', b:'働いても、手元にあまり残らない', s:'給料の分、保護費が減る'},
+  {k:'4', b:'抜けた後の負担が心配', s:'保険料・医療費・家賃を自分で払う'},
+  {k:'5', b:'今の暮らしで足りてしまう', s:'時間がある・働く気持ちがわかない'},
+  {k:'6', b:'その他', s:''}
+];
+const $ = id => document.getElementById(id);
+const pick = {st:'', w:''};
+let prev = null; try { prev = JSON.parse(localStorage.getItem(SAVED) || 'null'); } catch (e) {}
+
+$('st').innerHTML = ST.map(o => `<button type="button" class="opt" data-st="${o.k}"><span class="mk"></span><b>${o.label}</b></button>`).join('');
+$('why').innerHTML = WHY.map(o => `<button type="button" class="opt" data-w="${o.k}" disabled><span class="mk"></span><span><b>${o.b}</b>${o.s ? `<small>${o.s}</small>` : ''}</span></button>`).join('');
+document.querySelectorAll('[data-st]').forEach(b => b.addEventListener('click', () => { pick.st = b.dataset.st; refresh(); }));
+document.querySelectorAll('[data-w]').forEach(b => b.addEventListener('click', () => { pick.w = b.dataset.w; refresh(); }));
+
+function refresh() {
+  document.querySelectorAll('[data-st]').forEach(b => b.classList.toggle('sel', b.dataset.st === pick.st));
+  document.querySelectorAll('[data-w]').forEach(b => { b.disabled = !pick.st; b.classList.toggle('sel', b.dataset.w === pick.w); });
+  const s = ST.find(o => o.k === pick.st);
+  $('qText').textContent = s ? s.q : '上の 01 を選ぶと、ここに質問が出ます。';
+  $('c1').classList.toggle('on', !pick.st);
+  $('c2').classList.toggle('off', !pick.st);
+  $('c2').classList.toggle('on', !!pick.st);
+  $('go').disabled = !(pick.st && pick.w);
+}
+function guide() {
+  $('result').innerHTML = `<div class="guide">上の <b>01 と 02</b> を選んで押すと、ここに<br><b>これまでに答えた人の、理由ごとの割合</b>が出ます。</div>`;
+}
+
+// ── 保存と読み込み（Firebase Realtime Database・REST） ──
+function rid() { const a = new Uint8Array(16); crypto.getRandomValues(a); return Array.from(a, b => 'abcdefghijklmnopqrstuvwxyz0123456789'[b % 36]).join(''); }
+async function save(m) {
+  if (prev) return 'skip'; // 同じブラウザからは最初の1回だけ保存する（1人＝1件に近づけるため）
+  const rec = {st: m.st, w: m.w, t: {'.sv': 'timestamp'}};
+  for (let i = 0; i < 4; i++) {
+    const res = await fetch(DB + '/nukedasenai.json', {method: 'PATCH', body: JSON.stringify({['r/' + rid()]: rec, last: {'.sv': 'timestamp'}})}).catch(() => null);
+    if (res && res.ok) { prev = {st: m.st, w: m.w}; try { localStorage.setItem(SAVED, JSON.stringify(prev)); } catch (e) {} return 'ok'; }
+    await new Promise(r => setTimeout(r, 700 + Math.random() * 900)); // ほかの人と同時に押したときは少し待ってやり直す
+  }
+  return 'fail';
+}
+async function loadAll() {
+  const res = await fetch(DB + '/nukedasenai/r.json').catch(() => null);
+  if (!res || !res.ok) return null;
+  const d = await res.json(); return d || {};
+}
+// リアルタイム更新（Firebase の REST ストリーミング）。誰かが答えるたびに STORE が増える
+let STORE = null, prevN = null, shown = null, tab = 'all';
+function startLive() {
+  if (!window.EventSource) return;
+  const es = new EventSource(DB + '/nukedasenai/r.json');
+  const apply = (ev, merge) => {
+    let msg; try { msg = JSON.parse(ev.data); } catch (e) { return; }
+    if (!msg) return;
+    const {path, data} = msg;
+    if (path === '/') STORE = merge ? Object.assign(STORE || {}, data || {}) : (data || {});
+    else { STORE = STORE || {}; const id = path.slice(1).split('/')[0]; if (data === null) delete STORE[id]; else STORE[id] = data; }
+    if (shown) paint(false);
+  };
+  es.addEventListener('put', e => apply(e, false));
+  es.addEventListener('patch', e => apply(e, true));
+}
+
+function count(list) {
+  const c = {}; WHY.forEach(o => c[o.k] = 0);
+  list.forEach(r => { if (c[r.w] !== undefined) c[r.w]++; });
+  return c;
+}
+function paint(first) {
+  const all = Object.values(STORE || {}).filter(r => r && r.st && r.w);
+  const grew = prevN !== null && all.length > prevN ? all.length - prevN : 0;
+  prevN = all.length;
+  const groups = {all: all, j: all.filter(r => r.st === 'j'), m: all.filter(r => r.st === 'm'), n: all.filter(r => r.st === 'n')};
+  const label = {all: '全体', j: '受けている人', m: '前に受けていた人', n: '受けていない人'};
+  const color = {all: 'var(--navy)', j: 'var(--c-j)', m: 'var(--c-m)', n: 'var(--c-n)'};
+  const list = groups[tab], c = count(list), tot = list.length;
+  const old = [...$('result').querySelectorAll('.row .tr i')].map(i => i.style.width);
+  const mineW = shown.mine ? shown.mine.w : null;
+  const top = tot ? WHY.slice().sort((a, b) => c[b.k] - c[a.k])[0] : null;
+  const cj = count(groups.j), cn = count(groups.n);
+  const p = (x, n) => n ? Math.round(x / n * 100) : 0;
+  $('result').innerHTML = `
+    <p class="live" id="liveTop"><span class="dot"></span>LIVE ｜ これまで <b class="num">${all.length.toLocaleString()}</b> 人が答えました ${grew ? `<span class="plus">＋${grew}人</span>` : ''}</p>
+    ${shown.msg ? `<p class="note" style="text-align:center;margin:-6px 0 10px">${shown.msg}</p>` : ''}
+    <div class="tabs">${Object.keys(label).map(k => `<button type="button" data-tab="${k}" class="${k === tab ? 'on' : ''}">${label[k]}（${groups[k].length}）</button>`).join('')}</div>
+    <div class="box"><h3>${label[tab]}の答え</h3><p class="cap">${tot ? `${tot.toLocaleString()}人の答え` : 'まだ答えた人がいません'}</p>
+      ${top && c[top.k] ? `<div class="top1">いちばん多いのは「${top.b}」（${p(c[top.k], tot)}%）</div>` : ''}
+      ${WHY.map(o => `<div class="row ${o.k === mineW ? 'mine' : ''}"><div class="t"><span>${o.b}</span><span class="num">${p(c[o.k], tot)}% <small>${c[o.k]}人</small></span></div><div class="tr"><i style="--c:${color[tab]}" data-w="${tot ? c[o.k] / tot * 100 : 0}"></i></div></div>`).join('')}
+    </div>
+    <div class="box"><h3>受けている人と、受けていない人の見方のちがい</h3>
+      <table class="cmp"><thead><tr><th></th><th>受けている人<br>（${groups.j.length}人）</th><th>受けていない人<br>（${groups.n.length}人）</th></tr></thead><tbody>
+      ${WHY.map(o => { const a = p(cj[o.k], groups.j.length), b = p(cn[o.k], groups.n.length); return `<tr><td>${o.b}</td><td class="num ${a > b && groups.j.length ? 'hi' : ''}">${groups.j.length ? a + '%' : '—'}</td><td class="num ${b > a && groups.n.length ? 'hi' : ''}">${groups.n.length ? b + '%' : '—'}</td></tr>`; }).join('')}
+      </tbody></table>
+      <p class="note">太字は、2つをくらべて多い方です。</p></div>
+    <p class="note">名前なしで集めた、このアンケートに答えた人の結果です。誰でも答えられるので、受けている人全体の本当の割合ではありません。人数が少ないうちは、数字が大きく動きます。</p>`;
+  if (grew) { const lt = $('liveTop'); lt.classList.add('bump'); }
+  document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => { tab = b.dataset.tab; prevN = null; paint(true); }));
+  const bars = [...$('result').querySelectorAll('.row .tr i')];
+  if (!first) bars.forEach((i, n) => { if (old[n]) i.style.width = old[n]; });
+  requestAnimationFrame(() => requestAnimationFrame(() => bars.forEach(i => i.style.width = i.dataset.w + '%')));
+}
+
+async function show(mine, msg) {
+  if (window.gcUse) gcUse('抜け出せない理由アンケート');
+  $('result').innerHTML = `<div class="guide">集計を読み込んでいます…</div>`;
+  $('result').scrollIntoView({behavior: 'smooth', block: 'start'});
+  if (!STORE) {
+    const d = await loadAll();
+    if (d === null && !STORE) { $('result').innerHTML = `<div class="guide">いま集計を読み込めませんでした。少し時間をおいて、もう一度押してください。</div>`; return; }
+    if (!STORE) STORE = d;
+  }
+  shown = {mine, msg}; prevN = null; paint(true);
+}
+
+$('go').addEventListener('click', async () => {
+  $('go').disabled = true;
+  const m = {st: pick.st, w: pick.w};
+  const r = await save(m);
+  if (r === 'fail') { $('go').disabled = false; $('result').innerHTML = `<div class="guide">いま答えを保存できませんでした。少し時間をおいて、もう一度押してください。</div>`; return; }
+  if (r === 'skip') { await show(prev, 'このブラウザからは、もう答えています。前の答えで表示しています（人数は増えません）。'); return; }
+  await show(m, '');
+});
+$('peek').addEventListener('click', () => show(prev, prev ? '' : '答えていないので、あなたの印は出ません。'));
+
+startLive();
+guide();
+refresh();
+</script>
+<script src="hub-items.js"></script>
+<script src="related.js" defer></script>
+</body>
+</html>

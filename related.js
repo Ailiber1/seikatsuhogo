@@ -12,6 +12,8 @@
 */
 (function () {
   var RELATED = {
+    "muryo-setsumei.html":     ["muryo.html", "jikohasan-setsumei.html", "nokoseru-setsumei.html", "yatte-setsumei.html"],
+    "muryo.html":              ["muryo-setsumei.html", "shinkoku.html", "hogohi.html", "chiiki-setsumei.html"],
     "nukedasenai-setsumei.html": ["nukedasenai.html", "kyuryo.html", "nokoseru-setsumei.html", "naiwake-setsumei.html"],
     "nukedasenai.html":        ["nukedasenai-setsumei.html", "kyuryo.html", "hima-setsumei.html", "nokoseru-setsumei.html"],
     "nokoseru-setsumei.html":  ["nokoseru.html", "kyuryo.html", "chokin-setsumei.html", "hogohi.html"],

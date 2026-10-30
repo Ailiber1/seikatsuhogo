@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>これは無料？出る？しらべ</title>
+<meta name="description" content="生活保護を受けていて、これは無料になる？お金が出る？を確かめるツール。場面と項目を選ぶと、出る額の上限・条件・申し出かた・国の基準の場所を出します">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:17px; line-height:1.8; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+.nb{display:inline-block}
+h1,.lead,.verdict,.one-liner{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
+h1{font-size:clamp(25px,6vw,34px); line-height:1.4; margin:0 0 10px; color:var(--navy); text-wrap:balance}
+h1 small{display:block; font-size:.52em; color:var(--sub); font-weight:600; margin-top:4px}
+.lead{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:11px 15px; margin:0 0 18px; font-size:16.5px}
+.q{border:1px solid var(--line); border-radius:13px; background:var(--panel); padding:12px 14px; margin-bottom:10px}
+.q label{display:flex; align-items:center; gap:9px; font-weight:800; font-size:17px; margin-bottom:6px}
+.q label .b{flex:none; width:28px; height:28px; border-radius:50%; border:2px solid var(--navy); color:var(--navy); display:grid; place-items:center; font-size:14.5px; font-family:system-ui,sans-serif}
+select{width:100%; font:inherit; font-size:17px; min-height:48px; border:2px solid var(--line); border-radius:11px; padding:6px 10px; background:#fff; color:var(--ink)}
+select:disabled{background:var(--line-soft); color:#9aa4ae}
+select:focus{outline:none; border-color:var(--navy)}
+.help{font-size:14.5px; color:var(--sub); margin:6px 0 0; line-height:1.6}
+.go{display:block; width:100%; min-height:54px; margin:6px 0 0; border:2px solid var(--navy); border-radius:13px; background:#fff; color:var(--navy); font:inherit; font-size:18px; font-weight:800; cursor:pointer}
+.go:hover:not(:disabled){background:var(--navy-soft)}
+.go:disabled{border-color:var(--line); color:#9aa4ae; cursor:default}
+.guide{border:2px dashed var(--line); border-radius:14px; padding:18px 16px; text-align:center; color:var(--sub); margin:16px 0}
+.guide b{display:block; color:var(--navy); font-size:18px; margin-bottom:4px}
+.res{margin-top:16px}
+.verdict{border:2px solid var(--ok); border-radius:15px; padding:16px; background:#fff; margin-bottom:12px; animation:up .4s ease}
+.verdict.local{border-color:var(--warn)}
+.verdict .k{font-size:15px; font-weight:700; color:var(--sub)}
+.verdict .tag{display:inline-block; font-size:14px; font-weight:800; color:var(--ok); border:1.5px solid var(--ok); border-radius:999px; padding:0 10px; margin-left:6px; vertical-align:2px}
+.verdict.local .tag{color:var(--warn); border-color:var(--warn)}
+.verdict .big{display:block; font-size:clamp(28px,8.5vw,40px); font-weight:800; color:var(--ok); line-height:1.3; margin:2px 0}
+.verdict.local .big{color:var(--warn)}
+.verdict p{margin:4px 0 0; font-size:16px}
+.box{border:1px solid var(--line); border-radius:13px; background:#fff; padding:10px 14px; margin-bottom:10px; animation:up .4s ease}
+.box h3{font-size:15px; color:var(--navy); margin:0 0 2px}
+.box p{margin:0; font-size:16px}
+.mine{border-left:5px solid var(--ok); background:var(--ok-bg); border-radius:0 11px 11px 0; padding:10px 14px; font-size:16px; margin:0 0 10px}
+.src{font-size:14px; color:var(--sub); margin:0 0 12px} .src a,.box a{color:var(--navy); font-weight:700}
+.warn{background:var(--warn-bg); border-left:5px solid var(--warn); border-radius:0 11px 11px 0; padding:10px 14px; margin:8px 0 12px; font-size:15.5px}
+.warn b{color:var(--warn)}
+.back{display:block; text-align:center; border:1.5px solid var(--navy); border-radius:12px; padding:10px; color:var(--navy); font-weight:800; text-decoration:none; margin:14px 0}
+@keyframes up{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+.foot{margin-top:24px; font-size:14.5px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot h3{font-size:15px; color:var(--ink); margin:12px 0 4px}
+.foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .verdict,.box{animation:none} }
+</style>
+<script>
+/* URLの後ろの ?… は付けず、ページの場所だけで数える（同じページが別々に数えられないように） */
+window.goatcounter = {path: function () { return location.pathname; }};
+</script>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho"><span class="nb">これは無料？</span><span class="nb">出る？しらべ</span><small><span class="nb">生活保護で出るもの・免除されるものを、</span><span class="nb">国の基準で確かめる</span></small></h1>
+  <p class="lead">生活保護を受けていて「これって出るの？」と思ったとき。<b>場面</b>と<b>項目</b>を選んでボタンを押すと、出る額の上限・条件・申し出かた・国の基準のどこに書いてあるかを出します。</p>
+
+  <div class="q"><label for="cat"><span class="b">1</span>どんな場面？</label>
+    <select id="cat"><option value="">選んでください</option></select></div>
+  <div class="q"><label for="item"><span class="b">2</span>調べたいもの</label>
+    <select id="item" disabled><option value="">先に1を選んでください</option></select>
+    <p class="help" id="item-help">★は、とくに知られていないものです。</p></div>
+  <button class="go" id="go" type="button" disabled>しらべる</button>
+
+  <div class="guide" id="guide"><b>1と2を選んで「しらべる」を押すと、ここに結果が出ます</b>出る額の上限・条件・申し出かた・根拠を出します</div>
+  <div class="res" id="res" hidden></div>
+
+  <a class="back" href="muryo-setsumei.html">解説：<span class="nb">生活保護で</span><span class="nb">無料・免除になるもの5つ →</span></a>
+
+  <div class="warn"><b>読むときの注意：</b>金額は「ここまでなら出せる」という<b>上限</b>です。実際に出るか、いくら出るかは、福祉事務所が一人ひとりの事情で決めます。<b>買う前・直す前に、ケースワーカーに相談してください。</b></div>
+
+  <div class="foot">
+    <h3>根拠資料</h3>
+    <ul>
+      <li><a href="https://www.mhlw.go.jp/content/001677054.pdf" target="_blank" rel="noopener">厚生労働省「2026（令和8）年4月1日施行 生活保護実施要領等」</a>：保護の基準（告示）、局長通知、課長通知（問答）をまとめたもの。※資料に「未定稿」の注記あり</li>
+      <li>e-Gov法令検索：<a href="https://laws.e-gov.go.jp/law/325AC0000000144" target="_blank" rel="noopener">生活保護法</a>、<a href="https://laws.e-gov.go.jp/law/333AC0000000192" target="_blank" rel="noopener">国民健康保険法</a>、<a href="https://laws.e-gov.go.jp/law/334AC0000000141" target="_blank" rel="noopener">国民年金法</a>、<a href="https://laws.e-gov.go.jp/law/325AC0000000226" target="_blank" rel="noopener">地方税法</a></li>
+      <li>NHK・日本年金機構・法テラス・横浜市・福ナビ・新宿区の公式ページ（各結果にリンク）</li>
+    </ul>
+    <h3>読むときの注意</h3>
+    <ul>
+      <li>条件はわかりやすく短くしています。細かい条件は、根拠の原文か、担当のケースワーカーに確かめてください</li>
+      <li>選んだ内容はブラウザの中だけで使い、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</li>
+      <li>確認日: 2026年10月30日 ／ 個人が作ったもので、行政の公式資料ではありません。法律上の助言でもありません</li>
+    </ul>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+// type: zero=0円・免除 / up=上限まで出る / jippi=実費が出る / local=住む場所による
+// link: 根拠や手続きの公式ページ、more: このサイトの関連ページ
+const YORYO = 'https://www.mhlw.go.jp/content/001677054.pdf';
+const LAW = 'https://laws.e-gov.go.jp/law/325AC0000000144';
+const MURYO_CATS = [
+  {id:'kotei', label:'毎月の保険料・税金・受信料'},
+  {id:'kurashi', label:'暮らしを始める・立て直す'},
+  {id:'sumai', label:'住まい'},
+  {id:'karada', label:'体・医療'},
+  {id:'kazoku', label:'家族（葬式・出産など）'},
+  {id:'shigoto', label:'仕事'},
+  {id:'okane', label:'借金・法律の手続き'},
+  {id:'chiiki', label:'住んでいる地域による'}
+];
+const MURYO_ITEMS = [
+  {cat:'kotei', id:'iryo', label:'病院の医療費', type:'zero', big:'0円',
+    when:'保護を受けていれば、診察・薬・入院・移送が医療扶助で出ます。通院の交通費も出ることがあります',
+    how:'受診する前に福祉事務所で医療券（または資格の確認）の手続きをします',
+    law:'生活保護法 第15条（医療扶助）', link:{href:LAW, text:'e-Gov 生活保護法'}},
+  {cat:'kotei', id:'kokuho', label:'国民健康保険の保険料', type:'zero', big:'0円',
+    when:'保護を受けている間は、国民健康保険に入りません。そのため保険料もかかりません',
+    how:'保護が決まると、国民健康保険をやめる手続きをします（窓口で案内されます）',
+    law:'国民健康保険法 第6条第9号', link:{href:'https://laws.e-gov.go.jp/law/333AC0000000192', text:'e-Gov 国民健康保険法'}},
+  {cat:'kotei', id:'nenkin', label:'国民年金の保険料（月17,920円）', type:'zero', big:'0円（免除）',
+    when:'生活扶助を受けていると、届け出で免除されます（法定免除）。免除の期間も、将来の年金に半分は反映されます',
+    how:'市区町村の国民年金の窓口に届け出ます',
+    law:'国民年金法 第89条', link:{href:'https://www.nenkin.go.jp/service/kokunen/menjo/20140710.html', text:'日本年金機構「法定免除」'}},
+  {cat:'kotei', id:'juminzei', label:'住民税', type:'zero', big:'0円',
+    when:'生活扶助を受けている人には、住民税（個人の均等割・所得割）がかけられません',
+    how:'手続きはふつう不要です。通知が届いたら市区町村の税の窓口へ',
+    law:'地方税法 第24条の5・第295条', link:{href:'https://laws.e-gov.go.jp/law/325AC0000000226', text:'e-Gov 地方税法'}},
+  {cat:'kotei', id:'nhk', label:'NHK受信料（年12,276円）', type:'zero', big:'0円（全額免除）', star:true,
+    when:'生活保護を受けている世帯は全額免除の対象です',
+    how:'<b>申請しないと免除されません。</b>福祉事務所で証明をもらって、NHKに免除の申請をします',
+    law:'NHK 受信料免除の対象', link:{href:'https://www.nhk-cs.jp/jushinryo/exemption_list.html', text:'NHK「受信料免除の対象となる方」'}},
+  {cat:'kotei', id:'kaigo', label:'介護保険料（65歳以上）', type:'zero', big:'保護費に上乗せ',
+    when:'65歳以上で払う介護保険料の分が「介護保険料加算」として保護費に足されます',
+    how:'ふつうは福祉事務所が手続きします。わからなければケースワーカーへ',
+    law:'保護の基準 別表第1 第2章の7（介護保険料加算）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+
+  {cat:'kurashi', id:'aircon', label:'エアコン（冷房器具）', type:'up', big:'78,000円まで', star:true,
+    when:'次の場面でエアコンを持っていない。かつ、高齢者・障害のある人・小さな子ども・難病の人など、熱中症の予防が特に必要な人がいる：保護が始まったとき／長い入院や入所から一人暮らしに戻るとき／災害にあったとき／転居で今の物が使えないとき／暴力から逃れるために転居するとき',
+    how:'買う前にケースワーカーに相談します。ずっと受けていて、ずっと持っていない人は対象外です',
+    law:'局長通知 第7の2の(6)のウ／課長通知 問（第7の99）（第7の100）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}, more:{href:'muryo-setsumei.html', text:'解説：意外な5つの①'}},
+  {cat:'kurashi', id:'futon', label:'布団', type:'up', big:'1組22,500円まで',
+    when:'保護が始まったとき・退院退所したとき・暴力から逃れて転居するときに、使える布団がない。再生できるなら15,300円まで',
+    how:'買う前にケースワーカーに相談します',
+    law:'局長通知 第7の2の(5)（被服費）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+  {cat:'kurashi', id:'fuku', label:'ふだん着る服', type:'up', big:'1人15,800円まで',
+    when:'保護が始まったとき・退院退所したときに、着る服がない',
+    how:'買う前にケースワーカーに相談します',
+    law:'局長通知 第7の2の(5)（被服費）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+  {cat:'kurashi', id:'kagu', label:'家具・炊事用具・食器', type:'up', big:'36,700円まで',
+    when:'保護が始まったとき・転居で今の物が使えないときなど。やむを得ないときは58,400円まで',
+    how:'買う前にケースワーカーに相談します',
+    law:'局長通知 第7の2の(6)（家具什器費）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+  {cat:'kurashi', id:'danbo', label:'暖房器具', type:'up', big:'31,000円まで',
+    when:'上の家具と同じ場面で、初めての冬に持っていないとき。FF式など高い物が必要なら、もっと認められることがある',
+    how:'買う前にケースワーカーに相談します',
+    law:'局長通知 第7の2の(6)（家具什器費）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+
+  {cat:'sumai', id:'shuri', label:'家の修理（畳・建具・水道・電気・網戸など）', type:'up', big:'1年に136,000円まで', star:true,
+    when:'今の家に住み続けるために修理が必要なとき（規模は最低限度の生活にふさわしい程度まで）。網戸の取り付けや、近くに銭湯がない家の風呂おけの修理も、認めてよいと国が答えています',
+    how:'<b>直す前に</b>ケースワーカーに相談し、見積書を出します。リフォームのような工事は出ません',
+    law:'保護の基準 別表第3／局長通知 第7の4の(2)／課長通知 問（第7の62）網戸・問（第7の14）風呂おけ', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}, more:{href:'muryo-setsumei.html', text:'解説：意外な5つの③'}},
+  {cat:'sumai', id:'hikkoshi', label:'引っ越しの荷造り・運搬費', type:'jippi', big:'必要最小限の実費', star:true,
+    when:'転居が必要と認められて引っ越すとき、住まいを失って家財を預けるとき・引き取るときで、本当にやむを得ないとき。金額の上限は決まっておらず、福祉事務所が<b>前もって認めた</b>必要最小限の額が出ます',
+    how:'<b>引っ越し業者に頼む前に</b>、見積書を持ってケースワーカーに相談し、承認をもらいます。先に頼むと出ないことがあります',
+    law:'局長通知 第7の2の(7)のアの(ｻ)（移送費）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+  {cat:'sumai', id:'shikikin', label:'敷金・礼金・仲介手数料・火災保険料・保証料', type:'up', big:'家賃上限の3倍まで（敷金等）',
+    when:'転居が必要と認められたときや、住まいがない人が保護開始時に家を借りるとき',
+    how:'契約する前にケースワーカーに相談します',
+    law:'局長通知 第7の4の(1)（家賃・敷金等）／課長通知 問（第7の35）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+  {cat:'sumai', id:'koshin', label:'更新料・更新時の火災保険料・保証料', type:'up', big:'家賃上限の範囲で', star:true,
+    when:'今の部屋の契約を更新するとき',
+    how:'更新の案内が届いたら、ケースワーカーに見せて相談します',
+    law:'局長通知 第7の4の(1)のク／課長通知 問（第7の88）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+  {cat:'sumai', id:'yuki', label:'雪下ろし・雪囲い', type:'up', big:'一冬136,000円まで', star:true,
+    when:'豪雪地帯で、しないと家が壊れるおそれがあるとき',
+    how:'頼む前にケースワーカーに相談します',
+    law:'局長通知 第7の4の(2)のエ', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+  {cat:'sumai', id:'furo', label:'入浴設備', type:'up', big:'住宅維持費の範囲で',
+    when:'重い障害や歩けない高齢者など、自宅で入浴が本当に必要なとき・ほかに入浴の方法がないとき',
+    how:'工事の前にケースワーカーに相談します',
+    law:'課長通知 問（第7の14）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+
+  {cat:'karada', id:'megane', label:'メガネ', type:'up', big:'25,000円以内', star:true,
+    when:'眼科で必要と言われたとき（治療材料として）',
+    how:'眼科で診てもらい、メガネ店に「給付要否意見書」を書いてもらって、福祉事務所に出します（横浜市の例）',
+    law:'保護の基準 別表第4（治療材料 25,000円以内）', link:{href:'https://www.city.yokohama.lg.jp/kenko-iryo-fukushi/fukushi-kaigo/seikatsu/seikatsuhogo/iryohujo.html', text:'横浜市「医療扶助」'}},
+  {cat:'karada', id:'omutsu', label:'紙おむつ', type:'up', big:'月26,400円まで',
+    when:'病気などで常に失禁状態にある人',
+    how:'ケースワーカーに相談します',
+    law:'局長通知 第7の2の(5)（被服費）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+  {cat:'karada', id:'nemaki', label:'入院のときの寝巻', type:'up', big:'4,900円まで',
+    when:'入院するのに寝巻が全くない・使えないとき',
+    how:'買う前にケースワーカーに相談します',
+    law:'局長通知 第7の2の(5)（被服費）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+  {cat:'karada', id:'kenshin', label:'健診に行く交通費', type:'jippi', big:'実費',
+    when:'福祉事務所にすすめられた健康診査・保健指導のための通院',
+    how:'行く前にケースワーカーに確認し、領収書などを残します',
+    law:'局長通知 第7の2の(7)（移送費）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+
+  {cat:'kazoku', id:'sosai', label:'家族の葬式代', type:'up', big:'222,000円まで', star:true,
+    when:'葬式を出す人がお金に困っていて、葬式代を払えないとき（大人・1級地と2級地の額。3級地は194,300円まで、子どもは177,600円まで）',
+    how:'<b>お葬式の前に</b>福祉事務所へ相談します',
+    law:'生活保護法 第18条／保護の基準 別表第8', link:{href:LAW, text:'e-Gov 生活保護法'}, more:{href:'muryo-setsumei.html', text:'解説：意外な5つの④'}},
+  {cat:'kazoku', id:'kitoku', label:'親族の危篤・お葬式に行く交通費', type:'jippi', big:'実費', star:true,
+    when:'配偶者・3親等以内の血族・2親等以内の姻族が危篤のとき、そのお葬式に出るとき（福祉事務所がやむを得ないと認めたとき）',
+    how:'行く前に福祉事務所に連絡します',
+    law:'局長通知 第7の2の(7)（移送費）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+  {cat:'kazoku', id:'iko', label:'引き取り手のいない遺体・遺骨の交通費', type:'jippi', big:'実費', star:true,
+    when:'引き取り手のいない遺体・遺骨を迎えに行く・納めに行くとき。遺体の運搬費も実費で認められる',
+    how:'行く前に福祉事務所に連絡します',
+    law:'局長通知 第7の2の(7)（移送費）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+  {cat:'kazoku', id:'shussan', label:'出産費用', type:'up', big:'336,000円まで',
+    when:'出産するとき。衛生材料が必要なら6,300円まで追加。妊婦健診に行く交通費も出る',
+    how:'妊娠がわかったら、早めにケースワーカーに伝えます',
+    law:'保護の基準 別表第6', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+  {cat:'kazoku', id:'baby', label:'赤ちゃんの寝具・産着・おむつ', type:'up', big:'58,400円まで',
+    when:'出産を控えて用意が必要なとき',
+    how:'買う前にケースワーカーに相談します',
+    law:'局長通知 第7の2の(5)（被服費）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+  {cat:'kazoku', id:'yoiku', label:'養育費の調停に行く交通費', type:'jippi', big:'実費',
+    when:'子の養育費を求める調停・審判で家庭裁判所に行くとき',
+    how:'行く前にケースワーカーに確認します',
+    law:'局長通知 第7の2の(7)（移送費）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+
+  {cat:'shigoto', id:'menkyo', label:'運転免許', type:'up', big:'380,000円まで', star:true,
+    when:'免許を取ることが雇用の条件になっているなど、確実に働くために必要な場合だけ',
+    how:'求人や内定先の条件など、<b>働くために必要だと示せるもの</b>を持って相談します',
+    law:'局長通知 第7の8の(2)のア', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}, more:{href:'muryo-setsumei.html', text:'解説：意外な5つの②'}},
+  {cat:'shigoto', id:'gino', label:'資格・技能を身につける費用', type:'up', big:'1年92,000円まで',
+    when:'仕事に就くための講座など',
+    how:'申し込む前にケースワーカーに相談します',
+    law:'保護の基準 別表第7（技能修得費）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+  {cat:'shigoto', id:'shitaku', label:'仕事用・面接用の服や靴', type:'up', big:'35,000円まで', star:true,
+    when:'就職が決まって仕事に必要な服・靴をそろえるとき。仕事探しの面接用の服・靴も、必要と認められれば出る',
+    how:'買う前にケースワーカーに相談します',
+    law:'局長通知 第7の8の(3)のア・イ（就職支度費）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+  {cat:'shigoto', id:'tsukin', label:'最初の給料までの通勤交通費', type:'jippi', big:'実費',
+    when:'当座のお金がない場合',
+    how:'定期券の写しの提出を求められます',
+    law:'局長通知 第7の8の(3)のア／課長通知 問（第7の18の2）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+  {cat:'shigoto', id:'kyushoku', label:'求職活動の交通費', type:'jippi', big:'実費',
+    when:'福祉事務所の指示を受けて、熱心に仕事を探したとき',
+    how:'ケースワーカーに相談します',
+    law:'局長通知 第7の2の(7)のアの(ｷ)（移送費）', link:{href:YORYO, text:'厚労省 生活保護実施要領等'}},
+  {cat:'shigoto', id:'jiritsu', label:'保護をやめるときにもらえるお金', type:'up', big:'単身10万円まで', star:true,
+    when:'働いて保護をやめるとき（就労自立給付金）',
+    how:'保護をやめる前にケースワーカーに伝えます',
+    law:'生活保護法 第55条の4（就労自立給付金）', link:{href:LAW, text:'e-Gov 生活保護法'}, more:{href:'nokoseru-setsumei.html', text:'働いた分の一部は貯められる'}},
+
+  {cat:'okane', id:'houterasu', label:'自己破産などの弁護士費用（法テラス）', type:'zero', big:'返すのを免除（申請）', star:true,
+    when:'法テラスが立て替えた弁護士費用は、生活保護を受けている間は返済が猶予され、事件が終わった後も受けていれば、返済の免除を申請できます',
+    how:'<b>自分で申請しないと免除されません。</b>必ず免除されるわけでもありません',
+    law:'法テラス「立替制度に関するよくあるご質問」', link:{href:'https://www.houterasu.or.jp/site/soudan-tatekae/tatekaeqa.html', text:'法テラス よくあるご質問'},
+    mine:'自己破産が終わったあと、法テラスから<b>約37万円</b>の請求が届きました。免除の申請書と生活保護の受給証明書を送り、<b>払わずに済みました</b>。',
+    more:{href:'jikohasan-setsumei.html', text:'自己破産は人生の終わりじゃなかった'}},
+
+  {cat:'chiiki', id:'toei', label:'都営交通（東京都）', type:'local', big:'無料乗車券', star:true,
+    when:'都営バス・都営地下鉄・都電・日暮里舎人ライナー。生活保護の世帯に1人分',
+    how:'区市町村の生活保護の窓口で申請します',
+    law:'東京都の制度', link:{href:'https://www.fukunavi.or.jp/fukunavi/eip/20kuwashiku/20k_fukusu_service/waribiki/03_toeikotu.html', text:'福ナビ「都営交通の無料乗車券等」'}},
+  {cat:'chiiki', id:'suido', label:'水道・下水道の基本料金（東京都の例）', type:'local', big:'減免',
+    when:'生活扶助を受ける世帯に、基本料金と月10㎥分などを免除する措置。案内上の期間は令和8年3月31日まで',
+    how:'今の扱いは、水道局か福祉事務所に確認してください',
+    law:'東京都の制度', link:{href:'https://www.fukunavi.or.jp/fukunavi/eip/20kuwashiku/20k_fukusu_service/kokyo/01_suidogesuido.html', text:'福ナビ「水道・下水道料金の減免等」'}},
+  {cat:'chiiki', id:'gomi', label:'指定ごみ袋', type:'local', big:'市による',
+    when:'無料で配る市もあれば、ない市もあります',
+    how:'お住まいの市区町村のごみの窓口か、福祉事務所に聞いてください',
+    law:'市区町村ごとの制度', link:null, more:{href:'chiiki-setsumei.html', text:'住む場所でこんなに違う'}}
+];
+const TYPE = {zero:'0円・免除', up:'出る（上限まで）', jippi:'実費が出る', local:'住む場所による'};
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+const a = l => `<a href="${esc(l.href)}"${l.href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${esc(l.text)}</a>`;
+
+MURYO_CATS.forEach(c => { const o = document.createElement('option'); o.value = c.id; o.textContent = c.label; $('cat').appendChild(o); });
+
+function onCat() {
+  const list = MURYO_ITEMS.filter(x => x.cat === $('cat').value);
+  $('item').innerHTML = '<option value="">' + (list.length ? '選んでください' : '先に1を選んでください') + '</option>';
+  list.forEach(x => { const o = document.createElement('option'); o.value = x.id; o.textContent = (x.star ? '★ ' : '') + x.label; $('item').appendChild(o); });
+  $('item').disabled = !list.length;
+  onItem();
+}
+function onItem() {
+  $('go').disabled = !$('item').value;
+  $('res').hidden = true; $('guide').hidden = false;
+}
+function show() {
+  const it = MURYO_ITEMS.find(x => x.id === $('item').value);
+  if (!it) return;
+  // when・how・mine は自分で書いた固定の文（<b>を含む）なのでそのまま出す
+  let h = `<div class="verdict${it.type === 'local' ? ' local' : ''}"><div class="k">${esc(it.label)}<span class="tag">${TYPE[it.type]}</span></div>
+    <span class="big num">${esc(it.big)}</span></div>`;
+  h += `<div class="box"><h3>出る条件</h3><p>${it.when}</p></div>`;
+  h += `<div class="box"><h3>申し出かた</h3><p>${it.how}</p></div>`;
+  if (it.mine) h += `<div class="mine"><b>3年目の私の場合：</b>${it.mine}</div>`;
+  h += `<p class="src">根拠：${esc(it.law)}${it.link ? '（' + a(it.link) + '）' : ''}${it.more ? '<br>→ ' + a(it.more) : ''}</p>`;
+  $('res').innerHTML = h; $('res').hidden = false; $('guide').hidden = true;
+  $('res').scrollIntoView({behavior: 'smooth', block: 'start'});
+  if (window.gcUse) gcUse('無料しらべ');
+}
+$('cat').addEventListener('change', onCat);
+$('item').addEventListener('change', onItem);
+$('go').addEventListener('click', show);
+</script>
+<script src="hub-items.js"></script>
+<script src="related.js" defer></script>
+</body>
+</html>

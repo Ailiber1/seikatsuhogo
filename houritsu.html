@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>こんなとき、法律では？しらべ</title>
+<meta name="description" content="窓口で「家族に相談してから」「書類がそろってから」と言われた、結果に納得できない、保護費が減らされた。そんなとき、生活保護法や国の通知ではどうなっているかを、原文つきで確かめられます">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:17px; line-height:1.75; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+h1,.lead,.for-who li,.ans h3,.ans p,.box h3,.guide,.item b.t{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:24px 16px 44px}
+h1{font-size:clamp(24px,5.2vw,32px); line-height:1.4; margin:0 0 8px; color:var(--navy); text-wrap:balance}
+.lead{color:var(--sub); font-size:16px; margin:0 0 16px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:18px; font-size:16px}
+.for-who b{color:var(--navy)}
+.for-who ul{margin:4px 0 0; padding-left:1.2em}
+
+.step{background:var(--panel); border:2px solid var(--line); border-radius:13px; padding:14px 16px; margin-bottom:12px; transition:border-color .3s, opacity .3s}
+.step.off{opacity:.5}
+.step.done{border-color:var(--navy)}
+.step h2{font-size:17px; margin:0 0 8px; display:flex; gap:9px; align-items:center; line-height:1.45}
+.step h2 .n{flex:none; width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; display:grid; place-items:center; font-size:13px}
+.step .hint{font-size:14px; color:var(--sub); margin:6px 0 0}
+select,input[type=number]{font:inherit; font-size:16px; width:100%; min-height:44px; padding:8px 10px; border:2px solid var(--line); border-radius:9px; background:#fff; color:var(--ink)}
+select:focus,input:focus{outline:3px solid var(--navy-soft); border-color:var(--navy)}
+select:disabled,input:disabled{background:var(--line-soft); color:var(--sub)}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.ages{display:grid; gap:8px}
+.ages label,.lab{font-size:14px; font-weight:700; color:var(--sub); display:block; margin-bottom:2px}
+.yen-in{display:flex; align-items:center; gap:8px}
+.yen-in span{flex:none; font-weight:700}
+
+.chips{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 2px}
+.chip{font:inherit; font-size:15.5px; font-weight:700; color:var(--navy); background:#fff; border:2px solid var(--line); border-radius:22px; padding:7px 14px; min-height:44px; cursor:pointer; text-align:left; line-height:1.4}
+.chip[aria-pressed=true]{border-color:var(--navy); background:var(--navy-soft)}
+
+#result,#result2{margin-top:14px}
+.guide{border:2px dashed var(--line); border-radius:13px; padding:18px; text-align:center; color:var(--sub); font-size:16px}
+.guide b{color:var(--navy)}
+.res{animation:pop .45s ease}
+@keyframes pop{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+.verdict{border-left:6px solid var(--navy); background:var(--navy-soft); border-radius:0 13px 13px 0; padding:14px 16px; margin-bottom:12px}
+.verdict .k{font-size:14px; font-weight:700; color:var(--sub)}
+.verdict .place{font-size:14.5px; color:var(--sub); margin:0 0 2px}
+.amount{font-size:18px; font-weight:700; margin:2px 0; line-height:1.5}
+.amount b{font-size:clamp(36px,9vw,50px); color:var(--navy); font-variant-numeric:tabular-nums; letter-spacing:.01em}
+.calc{font-size:14.5px; margin:2px 0 0; color:var(--sub)}
+.calc b{color:var(--ink)}
+
+.item{border:1px solid var(--line); border-left:5px solid var(--c); border-radius:0 11px 11px 0; padding:11px 14px; margin-bottom:8px; background:#fff; animation:pop .35s ease}
+.item .tag{display:inline-block; font-size:14px; font-weight:800; color:var(--c); margin-bottom:2px}
+.item b.t{display:block; font-size:17px; line-height:1.5}
+.item p{margin:4px 0 0; font-size:16px}
+.item .q{font-size:14.5px; color:var(--sub); background:var(--panel); border-left:3px solid var(--line); padding:6px 10px; margin-top:7px}
+.item .q a{color:var(--navy)}
+.item .go{display:inline-block; margin-top:7px; font-size:15.5px; font-weight:700; color:var(--navy)}
+.item.ok{--c:var(--ok)} .item.mid{--c:var(--warn)}
+
+.ans{border-radius:0 13px 13px 0; padding:13px 16px; margin-bottom:12px; border-left:6px solid}
+.ans.ok{background:var(--ok-bg); border-color:var(--ok)} .ans.ok h3{color:var(--ok)}
+.ans.cut{background:var(--warn-bg); border-color:var(--warn)} .ans.cut h3{color:var(--warn)}
+.ans.over{background:var(--ng-bg); border-color:var(--ng)} .ans.over h3{color:var(--ng)}
+.ans h3{font-size:clamp(18px,4.6vw,21px); margin:0 0 4px; line-height:1.45}
+.ans p{margin:0 0 6px; font-size:16px} .ans p:last-child{margin:0}
+.ans a{color:var(--navy); font-weight:700}
+
+.box{background:var(--panel); border:2px solid var(--line); border-radius:12px; padding:12px 15px; margin-bottom:10px}
+.box h3{font-size:16.5px; margin:0 0 6px; color:var(--navy)}
+.box p{margin:0 0 6px; font-size:16px} .box p:last-child{margin:0}
+.box ul{margin:0; padding-left:1.2em; font-size:15.5px}
+.box a{color:var(--navy); font-weight:700}
+.box.warn{background:var(--warn-bg); border-color:var(--warn)} .box.warn h3{color:var(--warn)}
+.part{font-size:clamp(19px,4.6vw,22px); color:var(--navy); margin:30px 0 4px; line-height:1.45}
+.part-lead{font-size:15.5px; color:var(--sub); margin:0 0 12px}
+
+.reset{font:inherit; font-size:15px; font-weight:700; color:var(--navy); background:var(--navy-soft); border:none; border-radius:8px; padding:8px 14px; min-height:44px; cursor:pointer; margin-top:4px}
+.foot{margin-top:24px; font-size:14.5px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (max-width:480px){ .row2{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){ .res,.item{animation:none} }
+</style>
+<script>
+/* URLの後ろの ?… は付けず、ページの場所だけで数える（同じページが別々に数えられないように） */
+window.goatcounter = {path: function () { return location.pathname; }};
+</script>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho">こんなとき、法律では？しらべ</h1>
+  <p class="lead">窓口や担当の方に言われたこと、起きたことを選ぶと、<b>生活保護法や国の通知にどう書いてあるか</b>を、原文つきで確かめられます。</p>
+  <div class="for-who"><b>このツールは、こういう方へ</b>
+    <ul><li>申請の窓口で言われたことが、本当に決まりなのか知りたい方</li>
+    <li>結果や保護費の変更に、納得できない方</li>
+    <li>受けている間に言われたことが、気になっている方</li></ul></div>
+
+  <div class="step" id="s1">
+    <h2><span class="n">1</span>いつの話ですか</h2>
+    <select id="grp" aria-label="いつの話か"><option value="">選んでください</option></select>
+  </div>
+  <div class="step off" id="s2">
+    <h2><span class="n">2</span>どんなことがありましたか</h2>
+    <select id="sit" disabled aria-label="どんなことがあったか"><option value="">選んでください</option></select>
+  </div>
+  <div id="result" aria-live="polite"><div class="guide">上で<b>いつの話か</b>と<b>どんなことか</b>を選ぶと、ここに<br><b>法律や通知の答え</b>と<b>原文</b>が出ます。</div></div>
+
+  <div class="foot">
+    <p>この結果は、生活保護法・行政不服審査法・厚生労働省の通知から、該当する部分をそのまま引用して並べたものです。実際にどうなるかは、自治体や個別の事情によって違います。納得できないときは、福祉事務所や法律相談で確かめてください。選んだ内容はこの画面の中だけで処理していて、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</p>
+    <p>引用は「（中略）」のところ以外、原文のままです。窓口の対応は人によって違い、このツールは窓口を責めるものではありません。</p>
+    <p>根拠: <a href="https://laws.e-gov.go.jp/law/325AC0000000144" target="_blank" rel="noopener">生活保護法（e-Gov）</a> ／ <a href="https://laws.e-gov.go.jp/law/426AC0000000068" target="_blank" rel="noopener">行政不服審査法（e-Gov）</a> ／ <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8431&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">厚労省 次官通知 第9</a> ／ <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8433&amp;dataType=1&amp;pageNo=2" target="_blank" rel="noopener">厚労省 課長通知 第9</a> ／ <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/seikatsuhogopage.html" target="_blank" rel="noopener">厚労省「生活保護を申請したい方へ」</a></p>
+    <p>確認日: 2026年11月2日 ／ 個人が作ったもので、行政の公式ツールではありません。法律上の助言でもありません。</p>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+const DATA = {"groups":[{"k":"a","name":"申請するとき"},{"k":"b","name":"結果が出たとき"},{"k":"c","name":"受けている間"}],"situations":[{"k":"a1","g":"a","name":"「まず親族に相談してから」と言われた","cls":"ok","tag":"それだけでは、申請を止められない","say":"「家族と相談してからでないと受け付けない」という対応は、国の通知で、申請権の侵害に当たるおそれがあるとされています。ただし、窓口が家族の状況を聞くこと自体は、禁止されていません。","quotes":[{"s":"kacho","c":"課長通知 第9 問2","t":"「扶養義務者と相談してからではないと申請を受け付けない」などの対応は申請権の侵害に当たるおそれがある。"},{"s":"mhlw","c":"厚労省「生活保護を申請したい方へ」","t":"扶養義務者の扶養は保護に優先しますが、例えば、同居していない親族に相談してからでないと申請できない、ということはありません。"}],"note":"家族に連絡が行くかどうかは別の話です（扶養照会）。行かない場合もあります。","go":["家族に通知が行かない条件を見る","fuyo.html"]},{"k":"a2","g":"a","name":"「書類がそろってから来て」と言われた","cls":"ok","tag":"それだけでは、申請を止められない","say":"書類が提出されてからでないと申請を受け付けない、という対応は、国の通知で「適切ではない」とされています。書類がそろっていなくても、申請はできます。","quotes":[{"s":"kacho","c":"課長通知 第9 問3","t":"「資料が提出されてからでないと申請を受け付けない」などの対応は適切ではない。"},{"s":"mhlw","c":"厚労省「生活保護を申請したい方へ」","t":"必要な書類が揃っていなくても申請はできます。"}],"note":"申請のあとは、できるだけ早く必要な資料を出すよう求められることがあります。書類を出すのは、申請から決定までの間でも差し支えない、と通知にあります。","go":["申請の前にやっておくと楽なことを見る","chokin-setsumei.html"]},{"k":"a3","g":"a","name":"「あなたは対象外だから」と申請書をもらえない","cls":"ok","tag":"申請の意思を伝えれば、申請書を交付する決まり","say":"「保護に該当しないことが明らか」と窓口が考えた場合でも、申請できる人が申請の意思を伝えたら、申請書を渡す決まりです。受け付けることと、受けられるかどうかの審査は別です。","quotes":[{"s":"kacho","c":"課長通知 第9 問1","t":"なお、保護に該当しないことが明らかな場合であっても、申請権を有する者から申請の意思が表明された場合には申請書を交付すること。"},{"s":"law","c":"生活保護法 第7条","t":"保護は、要保護者、その扶養義務者又はその他の同居の親族の申請に基いて開始するものとする。"}],"note":"申請できるのは、本人・扶養義務者・同居の親族です。知人は申請できません（課長通知 問1）。申請書を渡されても、審査の結果、受けられないことはあります。","go":["近くの相談窓口をさがす","sodan.html"]},{"k":"a4","g":"a","name":"「今日は相談だけで」と、申請させてもらえない","cls":"ok","tag":"窓口は、申請を止めてはいけない決まり","say":"生活保護は、申請があって始まるのが原則です。国の通知は、窓口が申請権を侵害しないこと、侵害していると疑われる行為もしないことを求めています。「申請します」とはっきり伝えるのが確実です。","quotes":[{"s":"jikan","c":"次官通知 第9 保護の開始申請等","t":"生活保護は申請に基づき開始することを原則としており、保護の相談に当たっては、相談者の申請権を侵害しないことはもとより、申請権を侵害していると疑われるような行為も現に慎むこと。"},{"s":"law","c":"生活保護法 第2条","t":"すべて国民は、この法律の定める要件を満たす限り、この法律による保護（以下「保護」という。）を、無差別平等に受けることができる。"}],"note":"窓口の対応は自治体や担当の方によって違います。ひとりで行くのが不安なときは、先に相談窓口で話を聞いてもらえます。","go":["近くの相談窓口をさがす","sodan.html"]},{"k":"a5","g":"a","name":"申請して2週間たったのに、連絡がない","cls":"mid","tag":"14日以内が原則。延ばせるのは30日まで","say":"結果の通知は、申請の日から14日以内が決まりです。ただし、扶養義務者の調査に日数がかかる場合などは30日まで延ばせます。延ばしたときは、書面にその理由を書く決まりです。30日たっても通知がなければ、申請者は却下されたものとみなせます。","quotes":[{"s":"law","c":"生活保護法 第24条第5項","t":"第三項の通知は、申請のあつた日から十四日以内にしなければならない。 ただし、扶養義務者の資産及び収入の状況の調査に日時を要する場合その他特別な理由がある場合には、これを三十日まで延ばすことができる。"},{"s":"law","c":"生活保護法 第24条第6項","t":"保護の実施機関は、前項ただし書の規定により同項本文に規定する期間内に第三項の通知をしなかつたときは、同項の書面にその理由を明示しなければならない。"},{"s":"law","c":"生活保護法 第24条第7項","t":"保護の申請をしてから三十日以内に第三項の通知がないときは、申請者は、保護の実施機関が申請を却下したものとみなすことができる。"}],"note":"日数の数え方や、実際にいつ決まるかは、自治体と事情によって違います。まずは窓口に、いつ頃になるかを聞いてみてください。","go":["近くの相談窓口をさがす","sodan.html"]},{"k":"b1","g":"b","name":"却下された。納得できない","cls":"mid","tag":"理由つきの書面がもらえる。不服は3か月以内に","say":"決定は書面で、理由をつけて通知する決まりです。納得できないときは、審査請求ができます。期限は、処分を知った日の翌日から3か月です。裁判を起こす前に、審査請求をしておく必要があります。","quotes":[{"s":"law","c":"生活保護法 第24条第3項","t":"保護の実施機関は、保護の開始の申請があつたときは、保護の要否、種類、程度及び方法を決定し、申請者に対して書面をもつて、これを通知しなければならない。"},{"s":"law","c":"生活保護法 第24条第4項","t":"前項の書面には、決定の理由を付さなければならない。"},{"s":"gyoshin","c":"行政不服審査法 第18条第1項","t":"処分についての審査請求は、処分があったことを知った日の翌日から起算して三月（中略）を経過したときは、することができない。 ただし、正当な理由があるときは、この限りでない。"},{"s":"law","c":"生活保護法 第69条","t":"この法律の規定に基づき保護の実施機関又は支給機関がした処分の取消しの訴えは、当該処分についての審査請求に対する裁決を経た後でなければ、提起することができない。"}],"note":"どこに審査請求を出すかは、処分をした機関によって違います（市町村長が福祉事務所長などに事務を任せている場合の処分は、都道府県知事に審査請求する、という決まりが第64条にあります）。通知書に書かれている案内を見てください。","go":["近くの相談窓口をさがす","sodan.html"]},{"k":"b2","g":"b","name":"結果を口頭で言われただけで、書面がない","cls":"mid","tag":"申請への決定は、書面で通知する決まり","say":"申請に対する保護の要否などの決定は、書面で通知する決まりで、その書面には理由をつける決まりです。書面がない場合は、書面で出してもらうよう伝えられます。","quotes":[{"s":"law","c":"生活保護法 第24条第3項","t":"保護の実施機関は、保護の開始の申請があつたときは、保護の要否、種類、程度及び方法を決定し、申請者に対して書面をもつて、これを通知しなければならない。"},{"s":"law","c":"生活保護法 第24条第4項","t":"前項の書面には、決定の理由を付さなければならない。"}],"note":"不服申立てができる処分のときは、不服申立てができることなどを書面で教える決まりがあります。ただし、処分を口頭でする場合は、この決まりの対象外です（行政不服審査法 第82条）。","go":null},{"k":"c1","g":"c","name":"ケースワーカーから「仕事を探して」と指導された","cls":"mid","tag":"強制はできない。でも従う義務はある","say":"指導・指示は、あなたの自由を尊重して、必要最小限にする決まりで、意に反して強制するものと解釈してはならない、と法律にあります。一方で、指導・指示に従う義務もあり、従わないと保護が変更・停止・廃止されることがあります。その前に、弁明の機会が与えられます。","quotes":[{"s":"law","c":"生活保護法 第27条第2項","t":"前項の指導又は指示は、被保護者の自由を尊重し、必要の最少限度に止めなければならない。"},{"s":"law","c":"生活保護法 第27条第3項","t":"第一項の規定は、被保護者の意に反して、指導又は指示を強制し得るものと解釈してはならない。"},{"s":"law","c":"生活保護法 第62条第1項","t":"被保護者は、（中略）第二十七条の規定により、被保護者に対し、必要な指導又は指示をしたときは、これに従わなければならない。"},{"s":"law","c":"生活保護法 第62条第3項","t":"保護の実施機関は、被保護者が前二項の規定による義務に違反したときは、保護の変更、停止又は廃止をすることができる。"},{"s":"law","c":"生活保護法 第62条第4項","t":"保護の実施機関は、前項の規定により保護の変更、停止又は廃止の処分をする場合には、当該被保護者に対して弁明の機会を与えなければならない。"}],"note":"「強制ではない」は「従わなくてよい」という意味ではありません。納得できない指示は、無視せず、理由を聞いて話し合うのが安全です。","go":["やってはいけないこと5つを見る","yatte-setsumei.html"]},{"k":"c2","g":"c","name":"保護費が、急に減らされた","cls":"mid","tag":"正当な理由がなければ、減らされない","say":"すでに決まった保護を、正当な理由なく不利益に変更することは、法律で禁じられています。収入が増えたなど、正当な理由があるときは変わります。納得できない変更は、審査請求ができます。","quotes":[{"s":"law","c":"生活保護法 第56条","t":"被保護者は、正当な理由がなければ、既に決定された保護を、不利益に変更されることがない。"},{"s":"gyoshin","c":"行政不服審査法 第18条第1項","t":"処分についての審査請求は、処分があったことを知った日の翌日から起算して三月（中略）を経過したときは、することができない。 ただし、正当な理由があるときは、この限りでない。"}],"note":"変更の理由は、福祉事務所に聞けます。働いて収入が増えた場合の仕組みは別のページにあります。","go":["働いたらいくら残せるかを計算する","nokoseru.html"]},{"k":"c3","g":"c","name":"借金の取り立てで、保護費を差し押さえると言われた","cls":"mid","tag":"保護金品は、差し押さえられない","say":"すでに受けた保護金品や、それを受ける権利は、差し押さえられないと法律にあります。","quotes":[{"s":"law","c":"生活保護法 第58条","t":"被保護者は、既に給与を受けた保護金品及び進学・就職準備給付金又はこれらを受ける権利を差し押さえられることがない。"}],"note":"銀行口座に入ったあとの扱いは、このツールでは断定しません。実際に差し押さえの連絡が来たときは、すぐ福祉事務所に伝えて、法テラスや弁護士会などの法律相談で確かめてください。","go":["自己破産のことを見る","jikohasan-setsumei.html"]},{"k":"c4","g":"c","name":"保護費に税金がかかると言われた","cls":"mid","tag":"保護金品を基準に、税金や公課はかけられない","say":"保護金品を標準として、税金その他の公課をかけられることはない、と法律にあります。","quotes":[{"s":"law","c":"生活保護法 第57条","t":"被保護者は、保護金品及び進学・就職準備給付金を標準として租税その他の公課を課せられることがない。"}],"note":"働いて得た給料など、保護費以外のお金にかかる税金や保険料がどうなるかは、この条文だけでは分かりません。市区町村や税務署、福祉事務所に確認してください。","go":["働いたらいくら残せるかを計算する","nokoseru.html"]}],"sources":{"law":{"name":"生活保護法（e-Gov法令検索）","url":"https://laws.e-gov.go.jp/law/325AC0000000144"},"gyoshin":{"name":"行政不服審査法（e-Gov法令検索）","url":"https://laws.e-gov.go.jp/law/426AC0000000068"},"jikan":{"name":"厚労省 次官通知「生活保護法による保護の実施要領について」第9","url":"https://www.mhlw.go.jp/web/t_doc?dataId=00ta8431&dataType=1&pageNo=1"},"kacho":{"name":"厚労省 課長通知「生活保護法による保護の実施要領の取扱いについて」第9 保護の開始申請等","url":"https://www.mhlw.go.jp/web/t_doc?dataId=00ta8433&dataType=1&pageNo=2"},"mhlw":{"name":"厚労省「生活保護を申請したい方へ」","url":"https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/seikatsuhogopage.html"}}};
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const grp = $('grp'), sit = $('sit');
+DATA.groups.forEach(g => grp.add(new Option(g.name, g.k)));
+
+grp.addEventListener('change', () => {
+  sit.innerHTML = '<option value="">選んでください</option>';
+  DATA.situations.filter(s => s.g === grp.value).forEach(s => sit.add(new Option(s.name, s.k)));
+  sit.disabled = !grp.value;
+  $('s2').classList.toggle('off', !grp.value);
+  $('s1').classList.toggle('done', !!grp.value);
+  paint();
+});
+sit.addEventListener('change', paint);
+
+function paint() {
+  const out = $('result');
+  const s = DATA.situations.find(x => x.k === sit.value);
+  if (!s || sit.disabled) {
+    out.innerHTML = '<div class="guide">上で<b>いつの話か</b>と<b>どんなことか</b>を選ぶと、ここに<br><b>法律や通知の答え</b>と<b>原文</b>が出ます。</div>';
+    return;
+  }
+  if (window.gcUse) gcUse('こんなとき法律では');
+  $('s2').classList.add('done');
+  out.innerHTML = `<div class="res">
+    <div class="verdict">
+      <div class="k">選んだ場面</div>
+      <p class="amount" style="font-size:19px">${esc(s.name)}</p>
+      <p class="calc"><b>${esc(s.tag)}</b></p>
+    </div>
+    <div class="box"><h3>やさしく言うと</h3><p>${esc(s.say)}</p></div>
+    ${s.quotes.map(q => `<div class="item ${s.cls}">
+      <span class="tag">${esc(q.c)}</span>
+      <p>${q.t.startsWith('「') ? esc(q.t) : '「' + esc(q.t) + '」'}</p>
+      <div class="q"><a href="${esc(DATA.sources[q.s].url)}" target="_blank" rel="noopener">${esc(DATA.sources[q.s].name)}</a></div></div>`).join('')}
+    <div class="box warn"><h3>この結果を見るときの注意</h3><ul>
+      <li>${esc(s.note)}</li>
+      <li>決まりがあることと、実際に思いどおりになることは別です。迷ったときは、福祉事務所に聞くか、先に相談窓口で話を聞いてもらえます → <a href="sodan.html">相談窓口をさがす</a></li></ul></div>
+    ${s.go ? `<a class="go" href="${esc(s.go[1])}" style="display:inline-block;font-weight:700;color:var(--navy);margin:2px 0 10px">→ ${esc(s.go[0])}</a>` : ''}
+    <div><button class="reset" type="button" id="reset">最初からやり直す</button></div>
+  </div>`;
+  $('reset').addEventListener('click', () => {
+    grp.value = ''; sit.innerHTML = '<option value="">選んでください</option>'; sit.disabled = true;
+    $('s2').classList.add('off'); $('s1').classList.remove('done'); $('s2').classList.remove('done');
+    paint(); window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+}
+</script>
+<script src="hub-items.js"></script>
+<script src="related.js" defer></script>
+</body>
+</html>

@@ -50,6 +50,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `chiiki-setsumei.html` | 解説 | 同じ生活保護でも、住む場所でこんなに違う（北見市のごみ袋10枚1,350円（1枚135円）から。物価・光熱費−冬季加算・車なしの暮らしにくさ・ごみ袋・家賃の上限・水道代の6つの物差しで52都市を比べたランキング） | [/chiiki-setsumei.html](https://ailiber1.github.io/seikatsuhogo/chiiki-setsumei.html) |
 | `nukedasenai-setsumei.html` | 解説 | 生活保護から抜け出せない理由5つ（やめた世帯の49.5%は死亡・働いてやめたのは15.1%・病気が治ってやめたのは0.4%、年齢別の働いてやめた割合、基礎控除、抜けた後の国保・年金、また受け始めた42,958世帯・1年以内44.8%、3年目の本音） | [/nukedasenai-setsumei.html](https://ailiber1.github.io/seikatsuhogo/nukedasenai-setsumei.html) |
 | `nukedasenai.html` | ツール | 抜け出せない理由アンケート（受けている／受けていた／受けていないと、いちばんの理由を選ぶと、答えた人の割合がリアルタイムで出る）。**リスナーの答えを名前なしで保存する2つ目のツール**（下の「リスナーの結果の保存」） | [/nukedasenai.html](https://ailiber1.github.io/seikatsuhogo/nukedasenai.html) |
+| `houritsu-setsumei.html` | 解説 | 【窓口では教えてくれない】生活保護で知っておくと役立つ法律5つ（申請は止められない・結果は書面で理由つき14日以内と審査請求・不利益変更の禁止・差押えと公課の禁止・指導の自由の尊重と従う義務。引用は原文のまま、「言いすぎないでおきます」の注記つき） | [/houritsu-setsumei.html](https://ailiber1.github.io/seikatsuhogo/houritsu-setsumei.html) |
+| `houritsu.html` | ツール | こんなとき、法律では？しらべ（「家族に相談してから」「書類がそろってから」「結果に納得できない」「保護費が減らされた」など11の場面を選ぶと、生活保護法・通知の原文が出る） | [/houritsu.html](https://ailiber1.github.io/seikatsuhogo/houritsu.html) |
 | `database.rules.json` / `firebase.json` / `.firebaserc` | 設定 | 暇人スキャンと抜け出せない理由アンケートの保存先（Firebase Realtime Database）の書き込みルール | — |
 | `data/` | データ | ページに埋め込む元データ（JSON） | — |
 | `scripts/` | スクリプト | 公的資料からデータを作り、ページを生成する | — |
@@ -74,6 +76,9 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `nokoseru.json` | 臨時的収入の8,000円・収入として認定しないもの（自立更生）・自立更生の用途と計画・就労自立給付金の算定方法の原文と数字、配信者本人の話 | 次官通知・局長通知・課長通知の第8（写し `jikan_tsuchi_dai8_source.html`・`kyokucho_tsuchi_dai8_source.html`・`kacho_tsuchi_dai8_source.html`）、就労自立給付金の支給について（写し `shuro_jiritsu_kyufukin_source.html`） |
 | `shitsugyo_hoken.json` | 失業保険の受給者数（年報）・完全失業者数と求職理由（労働力調査 年度平均）・失業期間別（詳細集計）・週10時間への拡大・受給の条件・待期・給付制限の原文と数字 | 雇用保険事業年報 令和6年度（写し `koyouhoken_nenpo_r06_source.pdf`）、労働力調査 2025年度平均（写し `rodo_nendo2025_gaiyou_source.pdf`）・詳細集計 2026年4～6月期（写し `rodo_shosai_2026q2_gaiyou_source.pdf`）、労働力調査 用語の解説（写し `rodo_definit_source.pdf`）、厚労省 令和6年雇用保険制度の改正（写し `koyouhoken_kaisei_r6_source.pdf`）、ハローワーク（写し `hellowork_basicbenefit_source.html`・`hellowork_procedure_source.html`・`hellowork_benefitdays_source.html`） |
 | `ai_shitsugyo.json` | AIと失業の解説の数字と原文（コンサルの倒産・休廃業、生成AIと人員、アメリカの解雇理由、若い人の雇用、失業率）、経済産業省の2040年推計の表（職種・業界×職種・学歴×職種・地域）、配信者本人の発言 | 帝国データバンク（写し `tdb_consulting_2026_1-5_source.pdf`）、東京商工リサーチ（写し `tsr_ai_2026_04_source.html`）、Challenger, Gray & Christmas（写し `challenger_2026_09_source.pdf`）、スタンフォード大学（写し `stanford_canaries_2026_08_source.pdf`）、経済産業省「2040年の就業構造推計（改訂版）」（写し `meti_shugyo2040_kaitei_source.pdf`）、労働力調査（写し `rodo_2026_08_gaiyou_source.pdf`） |
+| `houritsu.json` | 「こんなとき、法律では？しらべ」の11場面（答え・原文の引用・出典）と出典の一覧 | 下の2つと次の写し |
+| `houritsu_law.json` | 生活保護法 第2・7・24・27・56・57・58・62・64・65・69条、行政不服審査法 第18・82条の原文（`scripts/extract_houritsu_law.py` がe-Govから取得） | e-Gov法令検索 |
+| `jikan_tsuchi_dai9_source.html` / `kacho_tsuchi_dai9_source.html` / `seikatsuhogo_page_source.html` | 次官通知 第9、課長通知 第9（問1〜問3）、厚労省「生活保護を申請したい方へ」の写し（2026年11月2日取得） | 厚労省 |
 | `research_keywords.json` | 他のチャンネルの伸びているタイトルを調べるときの検索語と参考チャンネル（`/seiho-week` の下調べ用） | ユーザーが挙げた参考チャンネルと、2026年10月12日に使った検索語 |
 | `kijun_r8.json` | 生活扶助の第1類・第2類・逓減率・特例加算と、照合用のモデル世帯9類型 | 厚労省「生活扶助基準額の算出方法（令和8年4月）」＋第55回生活保護基準部会 資料4 |
 | `chiiki.json` | 地域で差が出る負担: 消費者物価地域差指数（都道府県・都市）、家計調査の電気・ガス・灯油・上下水道・ガソリン（52都市）、冬季加算の額と地区（告示）、全1,741市区町村の燃やすごみが有料か | 総務省「消費者物価地域差指数 2025年」（写し `chiikisa_2025_source.pdf`）、家計調査 品目別ランキング 2023〜2025年平均（写し `kakei_rank14_2023-2025_source.xlsx`）、保護の基準（昭和38年厚生省告示第158号・2026年10月1日適用）、環境省 一般廃棄物処理実態調査 令和5年度（66MBのため写しは置かず、URLは `scripts/extract_chiiki.py`） |
@@ -113,6 +118,10 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `gen_ai2040_tool.py` | `data/ai_shitsugyo.json` の経産省の表を `ai2040.template.html` に埋め込んで `ai2040.html` を生成する（列の数・47都道府県がそろっているかも確かめる） |
 | `verify_ai_shitsugyo.py` | 引用と件数が写しの本文にそのまま入っているか、経産省の表を写しのPDFから読み直して data と全部一致するか、解説の数字とツールに埋め込んだ表が data と合うかを確かめる |
 | `research_titles.py` | `data/research_keywords.json` の検索語と参考チャンネルで、他のチャンネルの動画を集めて再生数の多い順に並べる（yt-dlpだけ使う。ショートと自分のチャンネルは除く。ニュース番組は別枠） |
+| `extract_houritsu_law.py` | e-Govから生活保護法・行政不服審査法の条文を取得して `data/houritsu_law.json` を作る |
+| `gen_houritsu_tool.py` | `data/houritsu.json` を `houritsu.template.html` に埋め込んで `houritsu.html` を生成する |
+| `gen_houritsu_setsumei.py` | `houritsu-base-head.html`（見た目）と `houritsu-setsumei.body.html`（本文）から `houritsu-setsumei.html` を生成する |
+| `verify_houritsu.py` | 資料とツールの引用（資料19件・ツール26件）が、条文の取得結果・通知の写しに（中略）以外そのまま入っているか、埋め込みデータ・リンク・計測を確かめる |
 | `verify_hogohi.py` | `hogohi.html` の計算式を node で動かし、資料4のモデル世帯54通りと1円単位で一致するか確かめる |
 | `xlsx_read.py` | openpyxl なしで xlsx を読む（ふりがなは除く） |
 | `extract_nukedasenai.py` | 被保護者調査の表の写しから `data/nukedasenai.json` を作る（見出しの並び、理由の和と総数、年齢・期間の和が合うかを確かめる） |

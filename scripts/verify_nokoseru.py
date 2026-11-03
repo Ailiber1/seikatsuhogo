@@ -37,7 +37,10 @@ src = {k: squash(html_text(DATA / v["copy"])) for k, v in d["sources"].items()}
 quotes = [("jikan", d["rinji"]["quote"]), ("jikan", d["jiritsu"]["quote_head"]), ("jikan", d["jiritsu"]["quote_kashitsuke"]),
           ("jikan", d["jiritsu"]["quote_keiyo"]), ("kyokucho", d["jiritsu"]["quote_yoto"]), ("kyokucho", d["jiritsu"]["quote_keikaku"]),
           ("kacho", d["jiritsu"]["quote_seigyo"]), ("shuro", d["shuro"]["quote_santei"]), ("shuro", d["shuro"]["quote_kikan"]),
-          ("shuro", d["shuro"]["quote_jogen"]), ("shuro", d["shuro"]["quote_shushi"])]
+          ("shuro", d["shuro"]["quote_jogen"]), ("shuro", d["shuro"]["quote_shushi"]),
+          # 2026-11-03 訂正で追加（8,000円の対象・仕送り贈与・保険金・高校生の例外・預貯金）
+          ("jikan", d["rinji"]["quote_kind"]), ("jikan", d["rinji"]["quote_zoyo"]), ("jikan", d["jiritsu"]["quote_hoken"]),
+          ("jikan", d["jiritsu"]["quote_koukou"]), ("kacho3", d["yokin"]["quote_yoto"])]
 for k, q in quotes:
     if squash(q) not in src[k]:
         fail(f"引用が写しにない（{k}）: {q[:40]}…")
@@ -86,6 +89,13 @@ if page_p.exists():
     for x in ["15,200円", "10万円", "15万円", "2万円", "6か月", "8,000円", "18,400円", "31,600円", "38,960円"]:
         if squash(x) not in page:
             fail(f"解説ページに数字がない: {x}")
+    # 訂正前の誤った言い方が残っていないか（2026-11-03）
+    for ng in ["2つの方法", "方法2：自立のために使うお金", "8,000円を超えても収入にならないことがある"]:
+        if squash(ng) in page:
+            fail(f"訂正前の言い方が残っている: {ng}")
+    for must in ["自立更生を使っても、給料から引かれる額は変わりません", "配信での解説の訂正"]:
+        if squash(must) not in page:
+            fail(f"訂正の文がない: {must}")
 tool_p = ROOT / "nokoseru.html"
 if tool_p.exists():
     tool = tool_p.read_text(encoding="utf-8")

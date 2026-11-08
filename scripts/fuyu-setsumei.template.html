@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>冬の生活保護費はいくら増える？11月と12月の上乗せ</title>
+<meta name="description" content="生活保護費は冬に2つ上乗せされます。毎月の冬季加算と、12月に1回の期末一時扶助。いくら・いつからを国の告示の表で、11月5日の国の見直しの会議の中身とあわせて、生活保護3年目が説明します">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:17px; line-height:1.8; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+.nb{display:inline-block}
+h1,.conclusion p,.ch h2,.for-who li,.cta,.card b{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
+h1{font-size:clamp(26px,6vw,36px); line-height:1.4; margin:0 0 12px; color:var(--navy); text-wrap:balance}
+h1 small{display:block; font-size:.55em; color:var(--sub); font-weight:600; margin-top:4px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:16px; font-size:16.5px}
+.for-who b{color:var(--navy)} .for-who ul{margin:4px 0 0; padding-left:1.2em}
+.conclusion{border:2px solid var(--navy); border-radius:14px; padding:16px; margin-bottom:10px; background:#fff}
+.conclusion .k{font-size:14.5px; font-weight:700; color:var(--sub)}
+.conclusion p{margin:4px 0 0; font-size:18px; font-weight:700; line-height:1.6}
+.conclusion b{color:var(--navy)}
+.cta{display:flex; align-items:center; justify-content:space-between; gap:10px; text-decoration:none; color:var(--navy); background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:11px 14px; margin:12px 0 22px; font-weight:700; font-size:16.5px; min-height:48px}
+.cta span:last-child{flex:none}
+section.ch{margin:30px 0 8px}
+.ch h2{display:flex; align-items:center; gap:10px; font-size:clamp(19px,4.6vw,23px); line-height:1.45; margin:0 0 12px; color:var(--navy)}
+.ch h2 .b{flex:none; width:34px; height:34px; border-radius:50%; border:2px solid var(--navy); display:grid; place-items:center; font-size:16.5px; font-family:system-ui,sans-serif}
+.ch p{margin:0 0 12px}
+.ch a{color:var(--navy); font-weight:700}
+blockquote{margin:10px 0 4px; padding:10px 14px; background:var(--panel); border-left:4px solid var(--line); font-size:16px; border-radius:0 10px 10px 0}
+.src{font-size:14.5px; color:var(--sub); margin:0 0 8px} .src a{color:var(--navy); font-weight:400}
+.easy{background:var(--ok-bg); border-left:4px solid var(--ok); border-radius:0 10px 10px 0; padding:9px 14px; font-size:16.5px; margin:6px 0 12px}
+.easy b{color:var(--ok)}
+.note{font-size:14.5px; color:var(--sub); margin:4px 0 12px}
+.caution{background:var(--warn-bg); border-left:5px solid var(--warn); border-radius:0 11px 11px 0; padding:10px 14px; margin:8px 0 12px}
+.caution b{color:var(--warn)}
+
+/* 1章: 月ごとの棒 */
+.fig{border:1.5px solid var(--navy); border-radius:14px; padding:14px 14px 12px; background:#fff; margin:8px 0 12px}
+.seg{display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-bottom:10px}
+.seg button{font:inherit; font-size:15px; font-weight:700; min-height:48px; border:2px solid var(--line); border-radius:11px; background:#fff; color:var(--sub); cursor:pointer; padding:4px 4px; line-height:1.35}
+.seg button[aria-pressed=true]{border-color:var(--navy); background:var(--navy-soft); color:var(--navy)}
+.fig .cap{font-size:15px; font-weight:700; color:var(--sub); margin:0}
+.fig .val{font-size:clamp(34px,9vw,46px); font-weight:800; color:var(--navy); line-height:1.25}
+.fig .val small{font-size:.42em; color:var(--ink); font-weight:700}
+.fig .calc{font-size:14.5px; color:var(--sub); margin:2px 0 8px}
+.months{display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:2px; align-items:end; height:190px; border-bottom:2px solid var(--line); padding-top:22px}
+.mo{display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:100%; position:relative; min-width:0}
+.mo .amt{font-size:10px; font-weight:700; color:var(--ink); white-space:nowrap; margin-bottom:2px; font-variant-numeric:tabular-nums; letter-spacing:-.03em}
+.mo .bar{width:78%; display:flex; flex-direction:column-reverse; border-radius:6px 6px 0 0; overflow:hidden}
+.mo .t{background:var(--navy); height:0; transition:height .8s cubic-bezier(.2,.8,.2,1)}
+.mo .k{background:var(--ok); height:0; transition:height .8s cubic-bezier(.2,.8,.2,1) .2s}
+.mlab{display:grid; grid-template-columns:repeat(7,1fr); gap:4px; text-align:center; font-size:13px; font-weight:700; color:var(--sub); margin-top:4px}
+.lg{display:flex; flex-wrap:wrap; gap:4px 16px; font-size:14px; color:var(--sub); margin-top:6px}
+.lg span::before{content:""; display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-1px; background:var(--c)}
+
+table.t6{width:100%; border-collapse:collapse; font-size:15px; margin:6px 0 12px; background:#fff}
+.t6 th,.t6 td{padding:7px 6px; border-bottom:1px solid var(--line); text-align:left}
+.t6 td.r{text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums}
+.t6 thead th{font-size:13px; color:var(--sub)}
+.t6 tr.me td{background:var(--navy-soft); font-weight:700}
+
+/* 4章: 支出の棒 */
+.bars{border:1px solid var(--line); border-radius:13px; background:var(--panel); padding:12px 14px; margin:8px 0 12px}
+.bar-row{margin-bottom:10px} .bar-row:last-child{margin-bottom:0}
+.bar-row .tt{display:flex; justify-content:space-between; gap:8px; font-size:15.5px; font-weight:700}
+.bar-row .tt span:last-child{color:var(--navy)}
+.bar-row .tr{height:20px; border-radius:10px; background:var(--line-soft); overflow:hidden; margin-top:3px}
+.bar-row .tr i{display:block; height:100%; width:0; border-radius:10px; background:var(--navy); transition:width 1.3s cubic-bezier(.2,.8,.2,1)}
+.bar-row .tr i.g{background:var(--ok)}
+
+.card{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px; background:#fff}
+.card .mk{flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:14px}
+.card .mk.y{background:var(--ok-bg); color:var(--ok)} .card .mk.q{background:var(--warn-bg); color:var(--warn)}
+.card b{display:block; font-size:16.5px} .card small{color:var(--sub); font-size:14.5px; line-height:1.55; display:block}
+.sum h3{font-size:16px; margin:14px 0 6px; color:var(--navy)}
+.fade{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+.fade.in{opacity:1; transform:none}
+.foot{margin-top:28px; font-size:14.5px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot h3{font-size:15px; color:var(--ink); margin:12px 0 4px}
+.foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .fade{opacity:1; transform:none; transition:none} .mo .t,.mo .k,.bar-row .tr i{transition:none} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho"><span class="nb">冬の生活保護費は、</span><span class="nb">いくら増える？</span><small><span class="nb">11月と12月の上乗せを、</span><span class="nb">国の表で</span></small></h1>
+  <div class="for-who"><b>このページは、こういう方へ</b>
+    <ul><li>11月の保護費が、<span class="nb">いつもと違う額だった方</span></li>
+    <li>12月にいくら増えるか、<span class="nb">先に知っておきたい方</span></li>
+    <li>国が冬の上乗せを見直していると聞いて、<span class="nb">気になっている方</span></li></ul></div>
+
+  <div class="conclusion"><div class="k">結論</div>
+    <p>冬の保護費には、<b>2つの上乗せ</b>があります。<br>① <b>冬季加算</b>：寒い時期に、毎月（地域によって10月か11月から）<br>② <b>期末一時扶助</b>：12月に1回だけ<br>ひとり暮らしの冬の合計は、<span class="nb">札幌市で<b class="num">103,310円</b>、</span><span class="nb">長崎市で<b class="num">26,340円</b>。</span></p></div>
+  <a class="cta" href="fuyu.html"><span>住んでいる所と人数を選ぶと、月ごとにいくら増えるかが分かる（冬の上乗せしらべ）</span><span>→</span></a>
+
+  <section class="ch fade">
+    <h2><span class="b">1</span>冬の上乗せは、2つ</h2>
+    <p>ひとり暮らしで、月ごとにいくら上乗せされるかを並べました。<b>12月だけ、2つが重なります。</b></p>
+    <div class="fig">
+      <div class="seg" role="group" aria-label="例を切りかえる">
+        <button type="button" data-ex="0" aria-pressed="true">札幌市</button>
+        <button type="button" data-ex="1" aria-pressed="false">長崎市</button>
+        <button type="button" data-ex="2" aria-pressed="false">東京23区</button>
+      </div>
+      <p class="cap">ひとり暮らし・冬の間の上乗せの合計</p>
+      <div class="val num"><span id="exVal">103,310</span><small> 円</small></div>
+      <p class="calc" id="exCalc"></p>
+      <div class="months" id="months"></div>
+      <div class="mlab"><span>10月</span><span>11月</span><span>12月</span><span>1月</span><span>2月</span><span>3月</span><span>4月</span></div>
+      <div class="lg"><span style="--c:var(--navy)">冬季加算（毎月）</span><span style="--c:var(--ok)">期末一時扶助（12月だけ）</span></div>
+    </div>
+    <p class="note">額は国の告示の表です。働いた収入などがあると、その分は差し引かれます。</p>
+    <div class="easy"><b>やさしく言うと：</b>寒い地域ほど、冬季加算が多く・長くつく。12月は、どこに住んでいても期末一時扶助が足される。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">2</span>冬季加算：寒い地域ほど、多く・長く</h2>
+    <p>国は、全国を<b>Ⅰ区〜Ⅵ区</b>の6つに分けています。ひとり暮らしの額は、こうです。</p>
+    <table class="t6"><thead><tr><th>地区</th><th>おもな地域</th><th>期間</th><th class="r">毎月</th></tr></thead><tbody id="t6"></tbody></table>
+    <blockquote>Ⅵ区(11月から3月まで) 2,630 3,730 4,240 4,580 4,710</blockquote>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/web/t_doc?dataId=82051000&amp;dataType=0&amp;pageNo=4" target="_blank" rel="noopener">生活保護法による保護の基準（告示）別表第1 第1章 第2類「地区別冬季加算額」</a>（左から1人〜5人）</p>
+    <p>体のことで家から出にくい人や、赤ちゃんがいる世帯は、<b>1.3倍</b>になることがあります。</p>
+    <blockquote>傷病、障害等による療養のため外出が著しく困難であり、常時在宅せざるを得ない者又は乳児が世帯員にいることが確認できれば、冬季に増加する光熱費が地区別冬季加算額で賄える特段の事情がない限り、地区別冬季加算額の1.3倍の額を認定して差し支えない。</blockquote>
+    <p class="src">出典: 課長通知 問（第7の29の2）の答え（<a href="https://www.mhlw.go.jp/content/001677054.pdf" target="_blank" rel="noopener">厚労省 生活保護実施要領等 2026年4月施行</a>）</p>
+    <div class="easy"><b>やさしく言うと：</b>冬に増える電気・ガス・灯油の代わり。北海道・青森・秋田は月12,780円が7か月、九州や関東などのⅥ区は月2,630円が5か月。地域ごとの暮らしやすさの比べ合いは → <a href="chiiki-setsumei.html">暮らしやすい街ランキング</a></div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">3</span>期末一時扶助：12月に1回だけ</h2>
+    <blockquote>また、12月の基準生活費の額は、次の算式により算定した額に以下の期末一時扶助費の表に定める額を加えた額とする。</blockquote>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/web/t_doc?dataId=82051000&amp;dataType=0&amp;pageNo=4" target="_blank" rel="noopener">生活保護法による保護の基準（告示）別表第1 第1章 1 (2) ア</a></p>
+    <p>ひとり暮らしの額は、住んでいる地域の区分（級地）で決まり、<b>11,240円〜14,500円</b>です。2026年4月から、少し上がりました（例：1級地-1 14,160円→14,500円、2級地-1 12,880円→13,190円）。</p>
+    <p>年を越すためのお金なので、12月の途中で受け始めた人は全額、12月中にやめる人は出ません。</p>
+    <blockquote>期末一時扶助費は12月から翌年１月にかけて引き続き保護を受ける者に対して越年資金として支給されるものである。従って、12月中に保護を開始される者については日割計算を行うことなく支給するものである。また、12月中に保護を停止又は廃止される者については支給しないものである。</blockquote>
+    <p class="src">出典: 課長通知 問（第7の37）の答え（同じ資料）</p>
+    <div class="easy"><b>やさしく言うと：</b>年末年始の「越年資金」。12月に受けていて、1月も続けて受ける人に出る。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">4</span>なぜ12月？ 国のデータでは、12月は出費が増える</h2>
+    <p>11月5日の国の会議（生活保護基準部会）の資料に、収入の低い世帯の家計で、<b>12月に支出がどれだけ増えるか</b>が出ています。</p>
+    <div class="bars">
+      <div class="bar-row"><div class="tt"><span>12月に増える支出（全体）</span><span class="num">28,201円</span></div><div class="tr"><i data-w="100"></i></div></div>
+      <div class="bar-row"><div class="tt"><span>光熱費を除くと</span><span class="num">24,769円</span></div><div class="tr"><i data-w="87.8"></i></div></div>
+      <div class="bar-row"><div class="tt"><span>そのうち食料</span><span class="num">17,318円</span></div><div class="tr"><i class="g" data-w="61.4"></i></div></div>
+    </div>
+    <p class="note">2人以上の世帯のうち、年収が低いほうから1割の世帯。10〜11月の平均と12月の差で、家計調査（2021〜2025年）の特別集計。ひとり暮らしの数字ではありません。</p>
+    <blockquote>２人以上世帯の年収階級第１・十分位を対象として、12月の生活扶助相当支出（光熱費を除く）について10～11月平均との差の寄与度を10大費目別にみると、 増加額全体に対して「食料」で約７割、「その他の消費支出」で約２割を占めている。</blockquote>
+    <blockquote>このような12月と10～11月平均の差については、生活扶助基準本体でカバーする水準を超える季節需要と考えられることから、期末一時扶助で対応すべき需要として位置づけることが適当ではないか。</blockquote>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/content/12002000/001766052.pdf" target="_blank" rel="noopener">第63回 社会保障審議会生活保護基準部会（2026年11月5日）資料1</a></p>
+    <div class="easy"><b>やさしく言うと：</b>年末は、ごちそうや年越しの食べ物で出費が増える。国は、その増えた分を期末一時扶助で手当てする、という考え方を示しています。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">5</span>国の見直し：冬季加算が1か月短くなる地域も？</h2>
+    <p>同じ11月5日の会議では、<b>児童養育加算・母子加算・冬季加算・期末一時扶助</b>の4つの検証が議題でした。冬季加算については、光熱費がふだんより多い月を数え直した結果、こう書かれています。</p>
+    <blockquote>この場合、 ・Ⅵ区において冬季の加算対象月は１ヶ月短縮する ・夏季において加算対象月が発生する地区は確認されない こととなるが、こうした結果についてどのように考えるか。</blockquote>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/content/12002000/001766052.pdf" target="_blank" rel="noopener">第63回 生活保護基準部会 資料1</a>（冬季加算の検証結果）</p>
+    <div class="caution"><b>まだ決まっていません。</b>これは「数え直すとこうなるが、どう考えるか」と委員に問いかけている段階です。もし決まれば、Ⅵ区（東京・大阪・九州など、2章の表の「その他の都府県」）では、ひとり暮らしで冬の合計が<b>2,630円少なくなる</b>計算です（月2,630円×1か月）。また、夏の暑さで加算が必要な月がある地区は、この集計では見つからなかった、という結果も示されています。</div>
+    <div class="easy"><b>やさしく言うと：</b>今年の冬の額は、もう決まっている表のとおり。変わるとしても、国の会議で話がまとまってから。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">6</span>私の場合（長崎市・ひとり暮らし）</h2>
+    <p>長崎市は<b>Ⅵ区</b>で、地域の区分は<b>2級地-1</b>です。国の表で計算すると、こうなります。</p>
+    <div class="card"><span class="mk y">1</span><div><b>冬季加算：月2,630円 × 11月〜3月の5か月 ＝ 13,150円</b><small>11月から、もう上乗せされている分</small></div></div>
+    <div class="card"><span class="mk y">2</span><div><b>期末一時扶助：12月に 13,190円</b><small>12月だけ。12月は冬季加算と合わせて15,820円の上乗せ</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>冬の合計：26,340円</b><small>見直し案のとおりになれば、来年度以降は2,630円少なくなる計算</small></div></div>
+    <div class="caution"><b>言いすぎないでおきます。</b>これは国の表の額です。働いた収入などがあると、その分が差し引かれるので、振り込まれる額はこのとおり増えるとは限りません。自分の明細の見方は、福祉事務所に聞けます。</div>
+  </section>
+  <a class="cta" href="fuyu.html"><span>自分の地域と人数で、月ごとの上乗せを確かめる（冬の上乗せしらべ）</span><span>→</span></a>
+
+  <section class="ch sum fade">
+    <h2><span class="b">✓</span>まとめ</h2>
+    <h3>分かっていること</h3>
+    <div class="card"><span class="mk y">✓</span><div><b>冬季加算は、地域で10月か11月から、3月か4月まで</b><small>ひとりで月2,630円（Ⅵ区）〜12,780円（Ⅰ区）</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>期末一時扶助は、12月に1回</b><small>ひとりで11,240円〜14,500円。2026年4月から少し上がった</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>国は、4つの加算・扶助を見直している</b><small>2026年11月5日の会議で、冬季加算と期末一時扶助の検証結果を示した</small></div></div>
+    <h3>まだ分からないこと</h3>
+    <div class="card"><span class="mk q">？</span><div><b>見直しが、いつ・どう決まるか</b><small>Ⅵ区の冬季加算が1か月短くなるかは、まだ検討中</small></div></div>
+    <div class="card"><span class="mk q">？</span><div><b>自分の振り込み額がいくら増えるか</b><small>収入などで差し引かれる額は人によって違う</small></div></div>
+  </section>
+
+  <div class="foot">
+    <h3>根拠資料</h3>
+    <ul>
+      <li><a href="https://www.mhlw.go.jp/web/t_doc?dataId=82051000&amp;dataType=0&amp;pageNo=4" target="_blank" rel="noopener">生活保護法による保護の基準（昭和38年厚生省告示第158号）厚労省 法令等データベース</a>：別表第1 第1章 第2類（地区別冬季加算額）・期末一時扶助費・地区の区分（<a href="https://www.mhlw.go.jp/web/t_doc?dataId=82051000&amp;dataType=0&amp;pageNo=7" target="_blank" rel="noopener">7ページ</a>）</li>
+      <li><a href="https://www.mhlw.go.jp/content/001677054.pdf" target="_blank" rel="noopener">厚労省「2026（令和8）年4月1日施行 生活保護実施要領等」</a>：告示の新旧対照表（期末一時扶助の改正前の額）、課長通知 問（第7の29の2）・問（第7の37）。※資料に「未定稿」の注記あり</li>
+      <li><a href="https://www.mhlw.go.jp/stf/newpage_77177.html" target="_blank" rel="noopener">第63回 社会保障審議会生活保護基準部会（2026年11月5日）</a> 資料1「児童養育加算、母子加算、冬季加算、期末一時扶助の検証について」</li>
+    </ul>
+    <h3>読むときの注意</h3>
+    <ul>
+      <li>額は、家で暮らしている人（居宅）の額です。入院中・施設にいる人は別の額です。確認日: 2026年11月8日</li>
+      <li>引用は原文のままです。「やさしく言うと」は私の言い換えです</li>
+      <li>冬の合計は、冬季加算の全期間と12月の期末一時扶助を足した計算です。収入などで差し引かれる額は入っていません</li>
+      <li>個人が作ったもので、行政の公式資料ではありません。個別の額は、福祉事務所で確かめてください</li>
+    </ul>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+// data/fuyu.json（告示の表）から作る。scripts/verify_fuyu.py で原本と照合
+const F = /*FUYU*/;
+const EX = /*EX*/;  // 例：[名前, 地区(1〜6), 級地(0〜5)]
+const yen = n => n.toLocaleString('ja-JP');
+const MONTHS = [10, 11, 12, 1, 2, 3, 4];
+const inPeriod = (m, [s, e]) => { const a = (m - s + 12) % 12, len = (e - s + 12) % 12; return a <= len; };
+
+// 2章の表
+const AREA_NAME = {"1":"北海道・青森・秋田","2":"岩手・山形・新潟","3":"宮城・福島・富山・長野","4":"石川・福井","5":"栃木・群馬・山梨・岐阜・鳥取・島根","6":"その他の都府県"};
+const ROMAN = ["", "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ"];
+document.getElementById('t6').innerHTML = ["1","2","3","4","5","6"].map(a =>
+  `<tr${a === "6" ? ' class="me"' : ''}><td>${ROMAN[a]}区</td><td>${AREA_NAME[a]}</td><td>${F.period[a][0]}月〜${F.period[a][1]}月</td><td class="r">${yen(F.touki[a][0])}円</td></tr>`).join('');
+
+// 1章の月ごとの棒
+const box = document.getElementById('months');
+box.innerHTML = MONTHS.map(() => `<div class="mo"><span class="amt"></span><div class="bar"><div class="t"></div><div class="k"></div></div></div>`).join('');
+const val = document.getElementById('exVal'), calc = document.getElementById('exCalc');
+const MAX = F.touki["1"][0] + Math.max(...F.kimatsu.map(r => r[0]));
+function show(i, anim) {
+  const [name, a, lv] = EX[i];
+  const t = F.touki[String(a)][0], k = F.kimatsu[lv][0], m = F.months[String(a)];
+  const total = t * m + k;
+  calc.textContent = `冬季加算 ${yen(t)}円 × ${m}か月 ＋ 期末一時扶助 ${yen(k)}円`;
+  [...box.children].forEach((el, j) => {
+    const mo = MONTHS[j], on = inPeriod(mo, F.period[String(a)]), tv = on ? t : 0, kv = mo === 12 ? k : 0;
+    el.querySelector('.amt').textContent = tv + kv ? yen(tv + kv) : '';
+    el.querySelector('.t').style.height = (tv / MAX * 150) + 'px';
+    el.querySelector('.k').style.height = (kv / MAX * 150) + 'px';
+  });
+  if (!anim || matchMedia('(prefers-reduced-motion:reduce)').matches) { val.textContent = yen(total); return; }
+  const t0 = performance.now();
+  (function step(tt) { const p = Math.min(1, (tt - t0) / 900); val.textContent = yen(Math.round(total * (1 - Math.pow(1 - p, 3)) / 10) * 10); if (p < 1) requestAnimationFrame(step); else val.textContent = yen(total); })(t0);
+}
+document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  show(+b.dataset.ex, true);
+}));
+
+// スクロールで表示（スマホで縦に長い要素も出るように threshold:0）
+let shown = false;
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in'); io.unobserve(e.target);
+  if (!shown && e.target.contains(box)) { shown = true; show(0, true); }
+  e.target.querySelectorAll('.bar-row .tr i').forEach(i => i.style.width = i.dataset.w + '%');
+}), {threshold: 0, rootMargin: '0px 0px -12% 0px'});
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
+</script>
+<script src="hub-items.js"></script>
+<script src="related.js" defer></script>
+</body>
+</html>

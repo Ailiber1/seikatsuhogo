@@ -12,6 +12,8 @@
 */
 (function () {
   var RELATED = {
+    "fuyu-setsumei.html":      ["fuyu.html", "hogohi.html", "chiiki-setsumei.html", "tokurei-setsumei.html"],
+    "fuyu.html":               ["fuyu-setsumei.html", "hogohi.html", "chiiki.html", "muryo.html"],
     "hikkoshi-setsumei.html":  ["hikkoshi.html", "muryo.html", "hogohi.html", "sodan.html"],
     "hikkoshi.html":           ["hikkoshi-setsumei.html", "muryo.html", "hogohi.html", "sodan.html"],
     "houritsu-setsumei.html":  ["houritsu.html", "sodan.html", "fuyo.html", "yatte-setsumei.html"],

@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>冬の上乗せしらべ</title>
+<meta name="description" content="住んでいる市区町村と人数を選ぶと、生活保護費の冬の上乗せ（冬季加算・12月の期末一時扶助）が、月ごとにいくらか、冬の合計いくらかを、国の告示の表で計算します">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:16px; line-height:1.75; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.nb{display:inline-block}
+.wrap{max-width:720px; margin:0 auto; padding:24px 16px 44px}
+h1{font-size:clamp(24px,5.2vw,32px); line-height:1.4; margin:0 0 8px; color:var(--navy); text-wrap:balance}
+.lead{color:var(--sub); font-size:15px; margin:0 0 16px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:18px; font-size:15px}
+.for-who b{color:var(--navy)}
+.for-who ul{margin:4px 0 0; padding-left:1.2em}
+.step{background:var(--panel); border:2px solid var(--line); border-radius:13px; padding:14px 16px; margin-bottom:12px; transition:border-color .3s, opacity .3s}
+.step.off{opacity:.5}
+.step.done{border-color:var(--navy)}
+.step h2{font-size:16.5px; margin:0 0 8px; display:flex; gap:9px; align-items:center}
+.step h2 .n{flex:none; width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; display:grid; place-items:center; font-size:13px}
+.step .hint{font-size:13px; color:var(--sub); margin:6px 0 0}
+select{font:inherit; font-size:16px; width:100%; min-height:44px; padding:8px 10px; border:2px solid var(--line); border-radius:9px; background:#fff; color:var(--ink)}
+select:focus{outline:3px solid var(--navy-soft); border-color:var(--navy)}
+select:disabled{background:var(--line-soft); color:var(--sub)}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+#result{margin-top:18px}
+.guide{border:2px dashed var(--line); border-radius:13px; padding:18px; text-align:center; color:var(--sub)}
+.guide b{color:var(--navy)}
+.res{animation:pop .45s ease}
+@keyframes pop{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+.verdict{border-left:6px solid var(--navy); background:var(--navy-soft); border-radius:0 13px 13px 0; padding:14px 16px; margin-bottom:12px}
+.verdict .k{font-size:13px; font-weight:700; color:var(--sub)}
+.verdict .place{font-size:14px; color:var(--sub); margin:0 0 2px}
+.amount{font-size:18px; font-weight:700; margin:2px 0}
+.amount b{font-size:clamp(38px,9vw,52px); color:var(--navy); font-variant-numeric:tabular-nums}
+.verdict .calc{font-size:14px; color:var(--sub); margin:0}
+.box{background:var(--panel); border:2px solid var(--line); border-radius:12px; padding:12px 15px; margin-bottom:10px}
+.box h3{font-size:15px; margin:0 0 6px; color:var(--navy)}
+.box p{margin:0 0 6px; font-size:15px} .box p:last-child{margin:0}
+.box ul{margin:0; padding-left:1.2em; font-size:14.5px}
+.box.warn{background:var(--warn-bg); border-color:var(--warn)}
+.box.warn h3{color:var(--warn)}
+.box a{color:var(--navy); font-weight:700}
+.months{display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:2px; align-items:end; height:180px; border-bottom:2px solid var(--line); padding-top:22px}
+.mo{display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:100%; min-width:0}
+.mo .amt{font-size:10px; font-weight:700; white-space:nowrap; margin-bottom:2px; font-variant-numeric:tabular-nums; letter-spacing:-.03em}
+.mo .bar{width:78%; display:flex; flex-direction:column-reverse; border-radius:6px 6px 0 0; overflow:hidden}
+.mo .t{background:var(--navy); height:0; transition:height .8s cubic-bezier(.2,.8,.2,1)}
+.mo .k{background:var(--ok); height:0; transition:height .8s cubic-bezier(.2,.8,.2,1) .2s}
+.mlab{display:grid; grid-template-columns:repeat(7,1fr); gap:4px; text-align:center; font-size:13px; font-weight:700; color:var(--sub); margin-top:4px}
+.lg{display:flex; flex-wrap:wrap; gap:4px 16px; font-size:13.5px; color:var(--sub); margin-top:6px}
+.lg span::before{content:""; display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-1px; background:var(--c)}
+table.two{width:100%; border-collapse:collapse; margin:6px 0 4px; background:#fff; border:1px solid var(--line); border-radius:9px}
+table.two th,table.two td{padding:8px 10px; border-bottom:1px solid var(--line); text-align:left}
+table.two tr:last-child th,table.two tr:last-child td{border-bottom:none}
+table.two th{font-size:15px}
+table.two th span{display:block; font-size:12px; font-weight:400; color:var(--sub)}
+table.two td{text-align:right; font-size:18px; font-weight:800; white-space:nowrap; font-variant-numeric:tabular-nums}
+.reset{font:inherit; font-size:14px; font-weight:700; color:var(--navy); background:var(--navy-soft); border:none; border-radius:8px; padding:8px 14px; min-height:40px; cursor:pointer; margin-top:4px}
+.foot{margin-top:24px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (max-width:480px){ .row2{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){ .res{animation:none} .mo .t,.mo .k{transition:none} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho"><span class="nb">冬の上乗せしらべ</span></h1>
+  <p class="lead">住んでいる市区町村と人数を選ぶと、生活保護費の<b>冬の上乗せ（冬季加算と、12月の期末一時扶助）が月ごとにいくらか</b>を、国の告示の表で計算します。</p>
+  <div class="for-who"><b>このツールは、こういう方へ</b>
+    <ul><li>生活保護を受けていて、冬にいくら増えるか知りたい方</li>
+    <li>11月・12月の保護費が、いつもと違う理由を知りたい方</li>
+    <li>自分の地域が、冬季加算の何区か知りたい方</li></ul></div>
+
+  <div class="step" id="s1">
+    <h2><span class="n">1</span>住んでいる場所</h2>
+    <div class="row2">
+      <select id="pref" aria-label="都道府県"><option value="">都道府県を選んでください</option></select>
+      <select id="city" disabled aria-label="市区町村"><option value="">市区町村を選んでください</option></select>
+    </div>
+  </div>
+  <div class="step off" id="s2">
+    <h2><span class="n">2</span>一緒に暮らす人数（あなたも含む）</h2>
+    <select id="size" disabled aria-label="一緒に暮らす人数"><option value="">選んでください</option></select>
+  </div>
+
+  <div id="result" aria-live="polite"></div>
+
+  <div class="foot">
+    <p>この結果は、厚生労働省の告示の表から計算した目安です。最終的な額は福祉事務所が決めます。入力した内容はこの画面の中だけで計算していて、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</p>
+    <p>根拠: <a href="https://www.mhlw.go.jp/web/t_doc?dataId=82051000&amp;dataType=0&amp;pageNo=4" target="_blank" rel="noopener">生活保護法による保護の基準（告示）別表第1 第1章</a>（地区別冬季加算額・期末一時扶助費。地区の区分は<a href="https://www.mhlw.go.jp/web/t_doc?dataId=82051000&amp;dataType=0&amp;pageNo=7" target="_blank" rel="noopener">7ページ</a>）／ 冬季加算の1.3倍・期末一時扶助の扱い: <a href="https://www.mhlw.go.jp/content/001677054.pdf" target="_blank" rel="noopener">厚労省 生活保護実施要領等 2026年4月施行</a> 課長通知 問（第7の29の2）・問（第7の37）／ 見直し: <a href="https://www.mhlw.go.jp/content/12002000/001766052.pdf" target="_blank" rel="noopener">第63回 生活保護基準部会 資料1</a> ／ 地域の区分（級地）は厚労省の資料によります。</p>
+    <p>確認日: 2026年11月8日 ／ 個人が作ったもので、行政の公式ツールではありません。</p>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+const KYUCHI = /*KYUCHI*/;
+const F = /*FUYU*/;
+const LV = ["1級地-1","1級地-2","2級地-1","2級地-2","3級地-1","3級地-2"];
+const ROMAN = ["", "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ"];
+const MONTHS = [10, 11, 12, 1, 2, 3, 4];
+const $ = id => document.getElementById(id);
+const yen = n => n.toLocaleString('ja-JP');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pref = $('pref'), city = $('city'), size = $('size');
+
+// CALC-START
+// 表の並びは [1〜9人, 10人以上1人を増すごとに加算する額]
+const byPeople = (row, n) => n <= 9 ? row[n - 1] : row[8] + row[9] * (n - 9);
+const inPeriod = (m, [s, e]) => (m - s + 12) % 12 <= (e - s + 12) % 12;
+function calcFuyu(prefName, lv, n) {
+  const area = String(F.pref_area[prefName] || 6);
+  const touki = byPeople(F.touki[area], n);
+  const kimatsu = byPeople(F.kimatsu[lv], n);
+  const months = F.months[area];
+  return {area, touki, kimatsu, months, period: F.period[area], total: touki * months + kimatsu};
+}
+// CALC-END
+
+Object.keys(KYUCHI).forEach(p => pref.add(new Option(p, p)));
+for (let i = 1; i <= 9; i++) size.add(new Option(i + '人', String(i)));
+for (let i = 10; i <= 12; i++) size.add(new Option(i + '人', String(i)));
+pref.addEventListener('change', () => {
+  city.innerHTML = '<option value="">市区町村を選んでください</option>';
+  (KYUCHI[pref.value] || []).slice().sort((a, b) => a[0].localeCompare(b[0], 'ja'))
+    .forEach(([nm, lv]) => city.add(new Option(nm, nm + '|' + lv)));
+  refresh();
+});
+city.addEventListener('change', refresh);
+size.addEventListener('change', refresh);
+const setStep = (el, on, done) => { el.classList.toggle('off', !on); el.classList.toggle('done', !!done); };
+
+function refresh() {
+  city.disabled = !pref.value;
+  size.disabled = !city.value;
+  setStep($('s1'), true, city.value);
+  setStep($('s2'), !size.disabled, size.value);
+  render();
+}
+
+function render() {
+  const out = $('result');
+  if (!city.value || !size.value) {
+    out.innerHTML = `<div class="guide">上の <b>1・2</b> を選ぶと、ここに<br><b>冬の上乗せが月ごとにいくらか・冬の合計</b>が出ます。</div>`; return;
+  }
+  const [name, lvs] = city.value.split('|'); const lv = +lvs; const n = +size.value;
+  const r = calcFuyu(pref.value, lv, n);
+  const mx = Math.max(r.touki + r.kimatsu, 1);
+  if (window.gcUse) gcUse('冬の上乗せしらべ');
+  out.innerHTML = `<div class="res">
+    <div class="verdict">
+      <p class="place"><b>${esc(pref.value)} ${esc(name)}</b>（冬季加算 ${ROMAN[r.area]}区・${LV[lv]}）／ ${n}人</p>
+      <div class="k">冬の間の上乗せの合計</div>
+      <p class="amount"><b id="amt"></b> 円</p>
+      <p class="calc">冬季加算 ${yen(r.touki)}円 × ${r.months}か月（${r.period[0]}月〜${r.period[1]}月）＋ 期末一時扶助 ${yen(r.kimatsu)}円（12月）</p>
+    </div>
+    <div class="box" style="background:#fff">
+      <h3>月ごとの上乗せ</h3>
+      <div class="months">${MONTHS.map(m => {
+        const t = inPeriod(m, r.period) ? r.touki : 0, k = m === 12 ? r.kimatsu : 0;
+        return `<div class="mo"><span class="amt">${t + k ? yen(t + k) : ''}</span><div class="bar"><div class="t" data-h="${t / mx * 140}"></div><div class="k" data-h="${k / mx * 140}"></div></div></div>`;
+      }).join('')}</div>
+      <div class="mlab">${MONTHS.map(m => `<span>${m}月</span>`).join('')}</div>
+      <div class="lg"><span style="--c:var(--navy)">冬季加算（毎月）</span><span style="--c:var(--ok)">期末一時扶助（12月だけ）</span></div>
+    </div>
+    <table class="two"><tbody>
+      <tr><th>冬季加算（毎月）<span>${r.period[0]}月から${r.period[1]}月まで</span></th><td>${yen(r.touki)}円</td></tr>
+      <tr><th>期末一時扶助<span>12月に1回</span></th><td>${yen(r.kimatsu)}円</td></tr>
+      <tr><th>12月の上乗せ<span>2つが重なる月</span></th><td>${yen(r.touki + r.kimatsu)}円</td></tr>
+    </tbody></table>
+    ${r.area === '6' ? `<div class="box warn"><h3>Ⅵ区は、見直しの話が出ています</h3><p>2026年11月5日の国の会議で、Ⅵ区の冬季加算の月が「1か月短くなる」という集計結果が示され、委員に意見を求めている段階です（まだ決まっていません）。もしそうなれば、冬の合計は<b>${yen(r.touki)}円少なくなる</b>計算です。くわしくは → <a href="fuyu-setsumei.html">解説の5章</a></p></div>` : ''}
+    <div class="box"><h3>こんな人は、額が変わることがあります</h3><ul>
+      <li>体のことで外出がとても難しく家にいることが多い人や、赤ちゃんがいる世帯は、冬季加算が<b>1.3倍</b>になることがあります（課長通知 問（第7の29の2））。福祉事務所に相談します</li>
+      <li>12月の途中で保護が始まった人も、期末一時扶助は全額。12月中に保護をやめる人は出ません（課長通知 問（第7の37））</li>
+      <li>働いた収入などがあると、その分が差し引かれます。入院中・施設にいる人は別の額です</li></ul></div>
+    <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button>
+  </div>`;
+  requestAnimationFrame(() => requestAnimationFrame(() => out.querySelectorAll('.mo .t,.mo .k').forEach(el => el.style.height = el.dataset.h + 'px')));
+  countUp($('amt'), r.total);
+}
+function countUp(el, to) {
+  if (matchMedia('(prefers-reduced-motion:reduce)').matches) { el.textContent = yen(to); return; }
+  const t0 = performance.now();
+  (function step(t) { const p = Math.min(1, (t - t0) / 800); el.textContent = yen(Math.round(to * (1 - Math.pow(1 - p, 3)) / 10) * 10); if (p < 1) requestAnimationFrame(step); else el.textContent = yen(to); })(t0);
+}
+function resetAll() {
+  pref.value = ''; size.value = '';
+  city.innerHTML = '<option value="">市区町村を選んでください</option>';
+  refresh(); window.scrollTo({top: 0, behavior: 'smooth'});
+}
+refresh();
+</script>
+<script src="hub-items.js"></script>
+<script src="related.js" defer></script>
+</body>
+</html>

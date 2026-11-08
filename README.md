@@ -54,6 +54,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `houritsu.html` | ツール | こんなとき、法律では？しらべ（「家族に相談してから」「書類がそろってから」「結果に納得できない」「保護費が減らされた」など11の場面を選ぶと、生活保護法・通知の原文が出る） | [/houritsu.html](https://ailiber1.github.io/seikatsuhogo/houritsu.html) |
 | `hikkoshi-setsumei.html` | 解説 | 生活保護でも引っ越し費用は出る？出る条件と出ない条件（出るのは課長通知 問（第7の30）の18の場合だけ・敷金等は特別基準額×3・引っ越し代は事前承認の実費・敷金の返還は収入・配信者の初期費用0円物件の内見の体験。`scripts/gen_hikkoshi.py` が生成） | [/hikkoshi-setsumei.html](https://ailiber1.github.io/seikatsuhogo/hikkoshi-setsumei.html) |
 | `hikkoshi.html` | ツール | 引っ越し費用 出る？しらべ（理由・引っ越し先・人数を選ぶと、18の場合の何番に当たるか・敷金等の上限・家賃の上限・やる順番が原文つきで出る。`scripts/gen_hikkoshi.py` が生成） | [/hikkoshi.html](https://ailiber1.github.io/seikatsuhogo/hikkoshi.html) |
+| `fuyu-setsumei.html` | 解説 | 冬の生活保護費はいくら増える？11月と12月の上乗せ（冬季加算と期末一時扶助・月ごとの棒・冬季加算の1.3倍・越年資金の扱い・12月の支出の増え方と第63回基準部会の見直し（Ⅵ区の1か月短縮の集計結果）。`scripts/gen_fuyu.py` が生成） | [/fuyu-setsumei.html](https://ailiber1.github.io/seikatsuhogo/fuyu-setsumei.html) |
+| `fuyu.html` | ツール | 冬の上乗せしらべ（市区町村・人数を選ぶと、冬季加算の区と期間・月ごとの上乗せ・12月の期末一時扶助・冬の合計が出る。`scripts/gen_fuyu.py` が生成） | [/fuyu.html](https://ailiber1.github.io/seikatsuhogo/fuyu.html) |
 | `database.rules.json` / `firebase.json` / `.firebaserc` | 設定 | 暇人スキャンと抜け出せない理由アンケートの保存先（Firebase Realtime Database）の書き込みルール | — |
 | `data/` | データ | ページに埋め込む元データ（JSON） | — |
 | `scripts/` | スクリプト | 公的資料からデータを作り、ページを生成する | — |
@@ -83,6 +85,9 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `hikkoshi.json` | 引っ越し費用が出る18の場合（課長通知 問（第7の30））と、局長通知・課長通知の引用の原文。配信者の言い換え（plain・group）つき | 下の写し |
 | `jisshi_yoryo_r8_source.pdf` | 厚労省「2026（令和8）年4月1日施行 生活保護実施要領等」の写し（告示・次官通知・局長通知・課長通知・問答集。未定稿の注記あり） | https://www.mhlw.go.jp/content/001677054.pdf |
 | `tokubetsu_kijun.json` | 住宅扶助の特別基準額（局長通知 第7の4の(1)のオ）。都道府県×級地と指定都市・中核市、1人〜7人以上。引っ越しの敷金等の上限はこの額×3 | `jutaku_limit_2015_source.pdf` の別表2 |
+| `fuyu.json` | 冬季加算（Ⅰ〜Ⅵ区・1〜9人と10人以上の加算・期間）、期末一時扶助（級地×人数、改正前の額も）、地区の区分、基準部会の12月の支出の数字 | 下の告示の写し・実施要領・基準部会の資料 |
+| `kokuji158_p4_source.html` / `kokuji158_p7_source.html` | 生活保護法による保護の基準（告示）の厚労省 法令等データベースのページ（4ページ＝冬季加算と期末一時扶助の表、7ページ＝地区の区分）。2026年11月8日取得 | https://www.mhlw.go.jp/web/t_doc?dataId=82051000&dataType=0&pageNo=4 |
+| `kijunbukai63_shiryo1_source.pdf` / `kijunbukai63_shidai_source.pdf` | 第63回 社会保障審議会生活保護基準部会（2026年11月5日）資料1と議事次第 | https://www.mhlw.go.jp/stf/newpage_77177.html |
 | `jikan_tsuchi_dai9_source.html` / `kacho_tsuchi_dai9_source.html` / `seikatsuhogo_page_source.html` | 次官通知 第9、課長通知 第9（問1〜問3）、厚労省「生活保護を申請したい方へ」の写し（2026年11月2日取得） | 厚労省 |
 | `research_keywords.json` | 他のチャンネルの伸びているタイトルを調べるときの検索語と参考チャンネル（`/seiho-week` の下調べ用） | ユーザーが挙げた参考チャンネルと、2026年10月12日に使った検索語 |
 | `kijun_r8.json` | 生活扶助の第1類・第2類・逓減率・特例加算と、照合用のモデル世帯9類型 | 厚労省「生活扶助基準額の算出方法（令和8年4月）」＋第55回生活保護基準部会 資料4 |
@@ -130,6 +135,9 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `extract_tokubetsu_kijun.py` | `jutaku_limit_2015_source.pdf` の別表2（特別基準額）を読み取り、限度額の表と地域の並び・率（1.3〜1.8倍）を照合して `data/tokubetsu_kijun.json` を作る |
 | `gen_hikkoshi.py` | `data/hikkoshi.json`・級地・家賃の上限・特別基準額を `hikkoshi-setsumei.template.html` と `hikkoshi.template.html` に埋め込んで、引っ越し費用の解説とツールを生成する |
 | `verify_hikkoshi.py` | 18の場合と引用の原文が実施要領の原本PDF（2段組みを左右に分けて読む）にそのままあるか、資料の引用・金額の例（長崎市141,000円・東京23区209,400円）が元データと合うかを確かめる |
+| `extract_fuyu.py` | 告示のページから冬季加算・期末一時扶助・地区の区分を読み取り、`chiiki.json`・実施要領の新旧対照表・基準部会の数字と照合して `data/fuyu.json` を作る |
+| `gen_fuyu.py` | `data/fuyu.json`・級地を `fuyu-setsumei.template.html` と `fuyu.template.html` に埋め込んで、冬の上乗せの解説とツールを生成する |
+| `verify_fuyu.py` | 解説の引用が告示・実施要領・基準部会の原本にそのままあるか、金額の例が元データと合うか、ツールの計算を node で動かして同じ額になるかを確かめる |
 | `verify_hogohi.py` | `hogohi.html` の計算式を node で動かし、資料4のモデル世帯54通りと1円単位で一致するか確かめる |
 | `xlsx_read.py` | openpyxl なしで xlsx を読む（ふりがなは除く） |
 | `extract_nukedasenai.py` | 被保護者調査の表の写しから `data/nukedasenai.json` を作る（見出しの並び、理由の和と総数、年齢・期間の和が合うかを確かめる） |

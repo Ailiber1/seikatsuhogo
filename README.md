@@ -52,6 +52,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `nukedasenai.html` | ツール | 抜け出せない理由アンケート（受けている／受けていた／受けていないと、いちばんの理由を選ぶと、答えた人の割合がリアルタイムで出る）。**リスナーの答えを名前なしで保存する2つ目のツール**（下の「リスナーの結果の保存」） | [/nukedasenai.html](https://ailiber1.github.io/seikatsuhogo/nukedasenai.html) |
 | `houritsu-setsumei.html` | 解説 | 【窓口では教えてくれない】生活保護で知っておくと役立つ法律5つ（申請は止められない・結果は書面で理由つき14日以内と審査請求・不利益変更の禁止・差押えと公課の禁止・指導の自由の尊重と従う義務。引用は原文のまま、「言いすぎないでおきます」の注記つき） | [/houritsu-setsumei.html](https://ailiber1.github.io/seikatsuhogo/houritsu-setsumei.html) |
 | `houritsu.html` | ツール | こんなとき、法律では？しらべ（「家族に相談してから」「書類がそろってから」「結果に納得できない」「保護費が減らされた」など11の場面を選ぶと、生活保護法・通知の原文が出る） | [/houritsu.html](https://ailiber1.github.io/seikatsuhogo/houritsu.html) |
+| `hikkoshi-setsumei.html` | 解説 | 生活保護でも引っ越し費用は出る？出る条件と出ない条件（出るのは課長通知 問（第7の30）の18の場合だけ・敷金等は特別基準額×3・引っ越し代は事前承認の実費・敷金の返還は収入・配信者の初期費用0円物件の内見の体験。`scripts/gen_hikkoshi.py` が生成） | [/hikkoshi-setsumei.html](https://ailiber1.github.io/seikatsuhogo/hikkoshi-setsumei.html) |
+| `hikkoshi.html` | ツール | 引っ越し費用 出る？しらべ（理由・引っ越し先・人数を選ぶと、18の場合の何番に当たるか・敷金等の上限・家賃の上限・やる順番が原文つきで出る。`scripts/gen_hikkoshi.py` が生成） | [/hikkoshi.html](https://ailiber1.github.io/seikatsuhogo/hikkoshi.html) |
 | `database.rules.json` / `firebase.json` / `.firebaserc` | 設定 | 暇人スキャンと抜け出せない理由アンケートの保存先（Firebase Realtime Database）の書き込みルール | — |
 | `data/` | データ | ページに埋め込む元データ（JSON） | — |
 | `scripts/` | スクリプト | 公的資料からデータを作り、ページを生成する | — |
@@ -78,6 +80,9 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `ai_shitsugyo.json` | AIと失業の解説の数字と原文（コンサルの倒産・休廃業、生成AIと人員、アメリカの解雇理由、若い人の雇用、失業率）、経済産業省の2040年推計の表（職種・業界×職種・学歴×職種・地域）、配信者本人の発言 | 帝国データバンク（写し `tdb_consulting_2026_1-5_source.pdf`）、東京商工リサーチ（写し `tsr_ai_2026_04_source.html`）、Challenger, Gray & Christmas（写し `challenger_2026_09_source.pdf`）、スタンフォード大学（写し `stanford_canaries_2026_08_source.pdf`）、経済産業省「2040年の就業構造推計（改訂版）」（写し `meti_shugyo2040_kaitei_source.pdf`）、労働力調査（写し `rodo_2026_08_gaiyou_source.pdf`） |
 | `houritsu.json` | 「こんなとき、法律では？しらべ」の11場面（答え・原文の引用・出典）と出典の一覧 | 下の2つと次の写し |
 | `houritsu_law.json` | 生活保護法 第2・7・24・27・56・57・58・62・64・65・69条、行政不服審査法 第18・82条の原文（`scripts/extract_houritsu_law.py` がe-Govから取得） | e-Gov法令検索 |
+| `hikkoshi.json` | 引っ越し費用が出る18の場合（課長通知 問（第7の30））と、局長通知・課長通知の引用の原文。配信者の言い換え（plain・group）つき | 下の写し |
+| `jisshi_yoryo_r8_source.pdf` | 厚労省「2026（令和8）年4月1日施行 生活保護実施要領等」の写し（告示・次官通知・局長通知・課長通知・問答集。未定稿の注記あり） | https://www.mhlw.go.jp/content/001677054.pdf |
+| `tokubetsu_kijun.json` | 住宅扶助の特別基準額（局長通知 第7の4の(1)のオ）。都道府県×級地と指定都市・中核市、1人〜7人以上。引っ越しの敷金等の上限はこの額×3 | `jutaku_limit_2015_source.pdf` の別表2 |
 | `jikan_tsuchi_dai9_source.html` / `kacho_tsuchi_dai9_source.html` / `seikatsuhogo_page_source.html` | 次官通知 第9、課長通知 第9（問1〜問3）、厚労省「生活保護を申請したい方へ」の写し（2026年11月2日取得） | 厚労省 |
 | `research_keywords.json` | 他のチャンネルの伸びているタイトルを調べるときの検索語と参考チャンネル（`/seiho-week` の下調べ用） | ユーザーが挙げた参考チャンネルと、2026年10月12日に使った検索語 |
 | `kijun_r8.json` | 生活扶助の第1類・第2類・逓減率・特例加算と、照合用のモデル世帯9類型 | 厚労省「生活扶助基準額の算出方法（令和8年4月）」＋第55回生活保護基準部会 資料4 |
@@ -122,6 +127,9 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `gen_houritsu_tool.py` | `data/houritsu.json` を `houritsu.template.html` に埋め込んで `houritsu.html` を生成する |
 | `gen_houritsu_setsumei.py` | `houritsu-base-head.html`（見た目）と `houritsu-setsumei.body.html`（本文）から `houritsu-setsumei.html` を生成する |
 | `verify_houritsu.py` | 資料とツールの引用（資料19件・ツール26件）が、条文の取得結果・通知の写しに（中略）以外そのまま入っているか、埋め込みデータ・リンク・計測を確かめる |
+| `extract_tokubetsu_kijun.py` | `jutaku_limit_2015_source.pdf` の別表2（特別基準額）を読み取り、限度額の表と地域の並び・率（1.3〜1.8倍）を照合して `data/tokubetsu_kijun.json` を作る |
+| `gen_hikkoshi.py` | `data/hikkoshi.json`・級地・家賃の上限・特別基準額を `hikkoshi-setsumei.template.html` と `hikkoshi.template.html` に埋め込んで、引っ越し費用の解説とツールを生成する |
+| `verify_hikkoshi.py` | 18の場合と引用の原文が実施要領の原本PDF（2段組みを左右に分けて読む）にそのままあるか、資料の引用・金額の例（長崎市141,000円・東京23区209,400円）が元データと合うかを確かめる |
 | `verify_hogohi.py` | `hogohi.html` の計算式を node で動かし、資料4のモデル世帯54通りと1円単位で一致するか確かめる |
 | `xlsx_read.py` | openpyxl なしで xlsx を読む（ふりがなは除く） |
 | `extract_nukedasenai.py` | 被保護者調査の表の写しから `data/nukedasenai.json` を作る（見出しの並び、理由の和と総数、年齢・期間の和が合うかを確かめる） |

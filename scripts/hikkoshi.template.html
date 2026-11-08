@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>引っ越し費用 出る？しらべ</title>
+<meta name="description" content="引っ越したい理由と引っ越し先を選ぶと、生活保護で引っ越し費用（敷金・礼金・仲介手数料・引っ越し代）が出るか、上限はいくらか、何から始めるかを、国の通知の原文で確かめられます">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:16px; line-height:1.75; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.nb{display:inline-block}
+.wrap{max-width:720px; margin:0 auto; padding:24px 16px 44px}
+h1{font-size:clamp(24px,5.2vw,32px); line-height:1.4; margin:0 0 8px; color:var(--navy); text-wrap:balance; word-break:auto-phrase}
+.lead{color:var(--sub); font-size:15px; margin:0 0 16px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:18px; font-size:15px}
+.for-who b{color:var(--navy)}
+.for-who ul{margin:4px 0 0; padding-left:1.2em}
+
+.step{background:var(--panel); border:2px solid var(--line); border-radius:13px; padding:14px 16px; margin-bottom:12px; transition:border-color .3s, opacity .3s}
+.step.off{opacity:.5}
+.step.done{border-color:var(--navy)}
+.step h2{font-size:16.5px; margin:0 0 8px; display:flex; gap:9px; align-items:center}
+.step h2 .n{flex:none; width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; display:grid; place-items:center; font-size:13px}
+.step .hint{font-size:13px; color:var(--sub); margin:6px 0 0}
+select{font:inherit; font-size:16px; width:100%; min-height:44px; padding:8px 10px; border:2px solid var(--line); border-radius:9px; background:#fff; color:var(--ink)}
+select:focus{outline:3px solid var(--navy-soft); border-color:var(--navy)}
+select:disabled{background:var(--line-soft); color:var(--sub)}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.chips{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.chips button{font:inherit; text-align:left; min-height:56px; border:2px solid var(--line); border-radius:11px; background:#fff; color:var(--ink); cursor:pointer; padding:8px 11px; line-height:1.45}
+.chips button b{display:block; font-size:15.5px}
+.chips button small{display:block; font-size:12.5px; color:var(--sub)}
+.chips button[aria-pressed=true]{border-color:var(--navy); background:var(--navy-soft)}
+.chips button[aria-pressed=true] b{color:var(--navy)}
+.chips.one{grid-template-columns:1fr}
+.chips:disabled,.chips[aria-disabled=true]{opacity:.6}
+
+#result{margin-top:18px}
+.guide{border:2px dashed var(--line); border-radius:13px; padding:18px; text-align:center; color:var(--sub)}
+.guide b{color:var(--navy)}
+.res{animation:pop .45s ease}
+@keyframes pop{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+.verdict{border-left:6px solid var(--ok); background:var(--ok-bg); border-radius:0 13px 13px 0; padding:14px 16px; margin-bottom:12px}
+.verdict.ng{border-color:var(--ng); background:var(--ng-bg)}
+.verdict .k{font-size:13px; font-weight:700; color:var(--sub)}
+.verdict .big{font-size:clamp(24px,6vw,30px); font-weight:800; color:var(--ok); line-height:1.4; margin:2px 0 4px; word-break:auto-phrase}
+.verdict.ng .big{color:var(--ng)}
+.verdict q{display:block; font-size:14px; color:var(--sub); border-left:3px solid var(--line); padding-left:8px; margin:6px 0 2px; quotes:"「" "」"}
+.verdict cite{display:block; font-style:normal; font-size:12.5px; color:var(--sub)}
+.place{font-size:14px; color:var(--sub); margin:0 0 4px}
+table.two{width:100%; border-collapse:collapse; margin:4px 0 4px; background:#fff; border:1px solid var(--line); border-radius:9px}
+table.two th,table.two td{padding:9px 10px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top}
+table.two tr:last-child th,table.two tr:last-child td{border-bottom:none}
+table.two th{font-size:15px}
+table.two th span{display:block; font-size:12px; font-weight:400; color:var(--sub)}
+table.two td{text-align:right; font-size:18px; font-weight:800; white-space:nowrap; font-variant-numeric:tabular-nums}
+table.two td.txt{font-size:14.5px; white-space:normal; font-weight:700}
+.top{font-size:clamp(34px,8.5vw,46px); font-weight:800; color:var(--navy); font-variant-numeric:tabular-nums; line-height:1.2}
+.top small{font-size:.4em; color:var(--ink)}
+.box{background:var(--panel); border:2px solid var(--line); border-radius:12px; padding:12px 15px; margin-bottom:10px}
+.box h3{font-size:15px; margin:0 0 6px; color:var(--navy)}
+.box p{margin:0 0 6px; font-size:15px} .box p:last-child{margin:0}
+.box ul,.box ol{margin:0; padding-left:1.3em; font-size:14.5px}
+.box li{margin-bottom:3px}
+.box.warn{background:var(--warn-bg); border-color:var(--warn)}
+.box.warn h3{color:var(--warn)}
+.box a{color:var(--navy); font-weight:700}
+.reset{font:inherit; font-size:14px; font-weight:700; color:var(--navy); background:var(--navy-soft); border:none; border-radius:8px; padding:8px 14px; min-height:40px; cursor:pointer; margin-top:4px}
+.foot{margin-top:24px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (max-width:480px){ .row2{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){ .res{animation:none} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho"><span class="nb">引っ越し費用</span> <span class="nb">出る？しらべ</span></h1>
+  <p class="lead">引っ越したい理由と引っ越し先を選ぶと、生活保護で<b>引っ越し費用が出るか・上限はいくらか・何から始めるか</b>が、国の通知の原文つきで出ます。</p>
+  <div class="for-who"><b>このツールは、こういう方へ</b>
+    <ul><li>生活保護を受けていて、引っ越しを考えている方</li>
+    <li>家主から出ていくよう言われた・家が古くて住めない方</li>
+    <li>自分の場合、敷金がいくらまで出るか知りたい方</li></ul></div>
+
+  <div class="step" id="s1">
+    <h2><span class="n">1</span>引っ越したい理由に、いちばん近いものは？</h2>
+    <div class="chips" id="grp"></div>
+  </div>
+
+  <div class="step off" id="s2">
+    <h2><span class="n">2</span>くわしく言うと？</h2>
+    <div class="chips one" id="cs"><p class="hint" style="margin:0">上で理由を選ぶと、ここに選べるものが出ます。</p></div>
+  </div>
+
+  <div class="step off" id="s3">
+    <h2><span class="n">3</span>引っ越し先と、一緒に暮らす人数</h2>
+    <div class="row2">
+      <select id="pref" disabled aria-label="都道府県"><option value="">都道府県を選んでください</option></select>
+      <select id="city" disabled aria-label="市区町村"><option value="">市区町村を選んでください</option></select>
+    </div>
+    <div style="margin-top:8px"><select id="size" disabled aria-label="一緒に暮らす人数"><option value="">人数を選んでください（あなたも含む）</option></select></div>
+    <p class="hint">同じ市の中で引っ越すなら、今の市を選んでください。</p>
+  </div>
+
+  <div id="result" aria-live="polite"></div>
+
+  <div class="foot">
+    <p>この結果は、厚生労働省の公開資料からの目安です。出るかどうか・いくら出るかは、最後に福祉事務所が決めます。入力した内容はこの画面の中だけで処理していて、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</p>
+    <p>出る場合（18の場合）と原文：<a href="https://www.mhlw.go.jp/content/001677054.pdf" target="_blank" rel="noopener">厚労省「2026（令和8）年4月1日施行 生活保護実施要領等」</a>の課長通知 問（第7の30）・問（第7の31）・問（第7の35）、局長通知 第7の4の(1)のオ・カ、第7の2の(7)のアの(ｻ)（資料に「未定稿」の注記あり）。原文はすべて、原本と1文字ずつ照らし合わせています。</p>
+    <p>家賃の上限と特別基準額：平成27年4月14日 社援発0414第9号の別表（2015年7月から適用）。2015年より後に中核市になった市は、県の額を出しています。地域の区分（級地）は厚労省の資料によります。</p>
+    <p>確認日: 2026年11月8日 ／ 個人が作ったもので、行政の公式ツールではありません。</p>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+const KYUCHI = /*KYUCHI*/;
+const JUTAKU = /*JUTAKU*/;
+const TOKU = /*TOKU*/;
+const D = /*HIKKOSHI*/;
+const LV = ["1級地-1","1級地-2","2級地-1","2級地-2","3級地-1","3級地-2"];
+const $ = id => document.getElementById(id);
+const yen = n => n.toLocaleString('ja-JP');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pref = $('pref'), city = $('city'), size = $('size');
+let grp = '', no = 0;
+
+// CALC-START
+// 家賃（住宅扶助）の上限。政令市・中核市は市の額、それ以外は都道府県×級地（1・2・3級地）の額。並びは [1人,2人,3〜5人,6人,7人以上]
+function jutakuLimit(prefName, cityName, lv, n) {
+  const row = JUTAKU.city[cityName] || JUTAKU.pref[prefName][String(Math.floor(lv / 2) + 1)];
+  return row[n === 1 ? 0 : n === 2 ? 1 : n <= 5 ? 2 : n === 6 ? 3 : 4];
+}
+// 敷金等の上限 = 特別基準額 × 3（局長通知 第7の4の(1)のカ）。特別基準額の並びは [1人〜6人, 7人以上]
+function shikikinLimit(prefName, cityName, lv, n) {
+  const row = TOKU.city[cityName] || TOKU.pref[prefName][String(Math.floor(lv / 2) + 1)];
+  const toku = row[Math.min(n, 7) - 1];
+  return {toku, cap: toku * 3};
+}
+// CALC-END
+
+// 1. 理由のボタン
+D.groups.forEach(g => {
+  const b = document.createElement('button');
+  b.type = 'button'; b.dataset.g = g.id; b.setAttribute('aria-pressed', 'false');
+  b.innerHTML = `<b>${esc(g.label)}</b><small>${esc(g.hint)}</small>`;
+  b.addEventListener('click', () => { grp = g.id; no = 0; paintGroups(); buildCases(); refresh(); });
+  $('grp').appendChild(b);
+});
+function paintGroups() { document.querySelectorAll('#grp button').forEach(b => b.setAttribute('aria-pressed', b.dataset.g === grp)); }
+
+// 2. くわしい理由
+function buildCases() {
+  const box = $('cs');
+  if (!grp) { box.innerHTML = '<p class="hint" style="margin:0">上で理由を選ぶと、ここに選べるものが出ます。</p>'; return; }
+  if (grp === 'konomi') { box.innerHTML = '<p class="hint" style="margin:0">この理由は、国の通知の18の場合に書かれていません。下に結果が出ています。</p>'; return; }
+  box.innerHTML = '';
+  D.cases.filter(c => c.group === grp).forEach(c => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.dataset.no = c.no; b.setAttribute('aria-pressed', 'false');
+    b.innerHTML = `<b>${esc(c.plain)}</b>`;
+    b.addEventListener('click', () => { no = c.no; paintCases(); refresh(); });
+    box.appendChild(b);
+  });
+}
+function paintCases() { document.querySelectorAll('#cs button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.no === no)); }
+
+// 3. 場所と人数
+Object.keys(KYUCHI).forEach(p => pref.add(new Option(p, p)));
+for (let i = 1; i <= 6; i++) size.add(new Option(i + '人', String(i)));
+size.add(new Option('7人以上', '7'));
+pref.addEventListener('change', () => {
+  city.innerHTML = '<option value="">市区町村を選んでください</option>';
+  (KYUCHI[pref.value] || []).slice().sort((a, b) => a[0].localeCompare(b[0], 'ja'))
+    .forEach(([nm, lv]) => city.add(new Option(nm, nm + '|' + lv)));
+  refresh();
+});
+city.addEventListener('change', refresh);
+size.addEventListener('change', refresh);
+
+const setStep = (el, on, done) => { el.classList.toggle('off', !on); el.classList.toggle('done', !!done); };
+
+function refresh() {
+  const caseDone = grp === 'konomi' || no > 0;
+  pref.disabled = !(no > 0);
+  city.disabled = pref.disabled || !pref.value;
+  size.disabled = city.disabled || !city.value;
+  setStep($('s1'), true, grp);
+  setStep($('s2'), !!grp, caseDone);
+  setStep($('s3'), no > 0, size.value);
+  render();
+}
+
+const STEPS = `<div class="box"><h3>やる順番（先に相談、あとで契約）</h3><ol>
+  <li><b>ケースワーカーに相談</b>する。引っ越したい理由を、具体的に話す</li>
+  <li>新しい部屋を探す。<b>家賃は上限の中</b>で。引っ越し業者の見積もりをもらう</li>
+  <li>福祉事務所の<b>OKをもらう</b>（引っ越し代は「事前に承認した」額だけ出る）</li>
+  <li>OKが出てから、<b>契約・引っ越し</b></li></ol></div>`;
+
+function render() {
+  const out = $('result');
+  if (!grp) { out.innerHTML = `<div class="guide">上の <b>1〜3</b> を選ぶと、ここに<br><b>引っ越し費用が出るか・上限はいくらか・やる順番</b>が出ます。</div>`; return; }
+  if (grp === 'konomi') {
+    if (window.gcUse) gcUse('引っ越し費用しらべ');
+    out.innerHTML = `<div class="res">
+      <div class="verdict ng"><div class="k">結果</div>
+        <p class="big">原則として、出ません</p>
+        <p style="margin:0;font-size:15px">国の通知は、敷金などが出る場合を18の場合に限っています。「もっと良い部屋に住みたい」「気分を変えたい」は、そのどれにも書かれていません。</p>
+        <q>${esc(D.q30_lead)}</q><cite>課長通知 問（第7の30）の答え</cite></div>
+      <div class="box"><h3>それでも、相談する価値はあります</h3><ul>
+        <li>騒音・湿気・体調など、事情をくわしく話すと、18の場合のどれか（たとえば「狭すぎる・ひどすぎて住めない」「病気の療養に悪い」）に当たると判断されることもあります</li>
+        <li>生活に困っている人の相談窓口を通すと、<b>初期費用のかからない部屋</b>を紹介してもらえることがあります（自治体によります）。私は長崎市で、そうした部屋を内見しました → <a href="hikkoshi-setsumei.html">解説の4章</a></li>
+        <li>近くの相談窓口は → <a href="sodan.html">相談窓口をさがす</a></li></ul></div>
+      <div class="box warn"><h3>自分で引っ越すときの注意</h3><ul>
+        <li>新しい家賃が上限を超えると、超えた分は保護費から出ません</li>
+        <li>前の家の敷金が戻ってきたら、収入として届け出ます（課長通知 問（第7の31））</li></ul></div>
+      <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button></div>`;
+    return;
+  }
+  if (!no) { out.innerHTML = `<div class="guide">あと少しです。<b>2のくわしい理由</b>を選んでください。</div>`; return; }
+  const c = D.cases.find(x => x.no === no);
+  if (!city.value || !size.value) {
+    out.innerHTML = `<div class="guide">あと少しです。<b>3の引っ越し先と人数</b>を選ぶと、上限の額が出ます。</div>`; return;
+  }
+  const [name, lvs] = city.value.split('|'); const lv = +lvs; const n = +size.value;
+  const lim = jutakuLimit(pref.value, name, lv, n);
+  const sk = shikikinLimit(pref.value, name, lv, n);
+  const later = JUTAKU.later_core_cities.includes(name);
+  const shido = no === 2;
+  if (window.gcUse) gcUse('引っ越し費用しらべ');
+  out.innerHTML = `<div class="res">
+    <div class="verdict"><div class="k">結果</div>
+      <p class="big">出る場合に、書かれています</p>
+      <p style="margin:0;font-size:15px">国の通知の18の場合の<b>${c.no}番目</b>に当たります。実際に当たるかは、福祉事務所が事情を聞いて決めます。</p>
+      <q>${esc(c.text)}</q><cite>課長通知 問（第7の30）の答え ${c.no}</cite></div>
+    <p class="place"><b>${esc(pref.value)} ${esc(name)}</b>（${LV[lv]}）／ ${n === 7 ? '7人以上' : n + '人'}で暮らす場合</p>
+    <div class="box" style="background:#fff;border-color:var(--navy)">
+      <h3>敷金・礼金・仲介手数料・火災保険料・保証料の上限</h3>
+      <div class="top"><span id="cap"></span><small> 円まで</small></div>
+      <p class="hint" style="font-size:13px;color:var(--sub);margin:2px 0 8px">特別基準額 ${yen(sk.toku)}円 × 3 の計算（局長通知 第7の4の(1)のカ）</p>
+      <table class="two"><tbody>
+        <tr><th>毎月の家賃の上限<span>新しい部屋は、この中で探すのが基本</span></th><td>${yen(lim)}円</td></tr>
+        <tr><th>荷造り・運搬の費用<span>局長通知 第7の2の(7)のアの(ｻ)</span></th><td class="txt">前もって認められた、必要最小限の額</td></tr>
+        <tr><th>布団・家具など<span>今の物が使えないとき</span></th><td class="txt"><a href="muryo.html">これは無料？出る？しらべ</a></td></tr>
+      </tbody></table></div>
+    ${STEPS}
+    <div class="box warn"><h3>気をつけること</h3><ul>
+      <li>前の家の敷金が戻ってきたら、<b>収入</b>として扱われます。${shido ? '<b>福祉事務所に言われて引っ越すときは、次の家の敷金にあててよい</b>とされています。' : '福祉事務所に言われて引っ越したときは、次の家の敷金にあててよいとされています。'}（課長通知 問（第7の31））</li>
+      <li>近いうちに保護をやめる見込みがあり、やめたあとに引っ越せば足りる人は、出ないことがあります（局長通知 第7の4の(1)のカのただし書き）</li>
+      <li>敷金などが出るのは、新しい家賃が特別基準額（${yen(sk.toku)}円）以内の部屋のときです。毎月の家賃として出るのは、原則として上限の${yen(lim)}円までです</li>
+      ${later ? `<li>${esc(name)}は2015年より後に中核市になったため、市ごとの額が別に決められています。ここでは<b>${esc(pref.value)}の額</b>を出しています。正確な額は市の窓口で確かめてください</li>` : ''}</ul></div>
+    <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button>
+  </div>`;
+  countUp($('cap'), sk.cap);
+}
+
+function countUp(el, to) {
+  if (matchMedia('(prefers-reduced-motion:reduce)').matches) { el.textContent = yen(to); return; }
+  const t0 = performance.now();
+  (function step(t) { const p = Math.min(1, (t - t0) / 800); el.textContent = yen(Math.round(to * (1 - Math.pow(1 - p, 3)) / 100) * 100); if (p < 1) requestAnimationFrame(step); else el.textContent = yen(to); })(t0);
+}
+
+function resetAll() {
+  grp = ''; no = 0; pref.value = ''; size.value = '';
+  city.innerHTML = '<option value="">市区町村を選んでください</option>';
+  paintGroups(); buildCases(); refresh();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+refresh();
+</script>
+<script src="hub-items.js"></script>
+<script src="related.js" defer></script>
+</body>
+</html>

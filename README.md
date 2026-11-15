@@ -56,6 +56,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `hikkoshi.html` | ツール | 引っ越し費用 出る？しらべ（理由・引っ越し先・人数を選ぶと、18の場合の何番に当たるか・敷金等の上限・家賃の上限・やる順番が原文つきで出る。`scripts/gen_hikkoshi.py` が生成） | [/hikkoshi.html](https://ailiber1.github.io/seikatsuhogo/hikkoshi.html) |
 | `fuyu-setsumei.html` | 解説 | 冬の生活保護費はいくら増える？11月と12月の上乗せ（冬季加算と期末一時扶助・月ごとの棒・冬季加算の1.3倍・越年資金の扱い・12月の支出の増え方と第63回基準部会の見直し（Ⅵ区の1か月短縮の集計結果）。`scripts/gen_fuyu.py` が生成） | [/fuyu-setsumei.html](https://ailiber1.github.io/seikatsuhogo/fuyu-setsumei.html) |
 | `fuyu.html` | ツール | 冬の上乗せしらべ（市区町村・人数を選ぶと、冬季加算の区と期間・月ごとの上乗せ・12月の期末一時扶助・冬の合計が出る。`scripts/gen_fuyu.py` が生成） | [/fuyu.html](https://ailiber1.github.io/seikatsuhogo/fuyu.html) |
+| `teishi-setsumei.html` | 解説 | 生活保護は、働くといくらで止まる？（保護費＝最低生活費−認められる収入・止まる目安＝最低生活費＋基礎控除・ひとり暮らし20〜40歳で札幌市・長崎市・東京23区の例・停止と廃止の分かれ目はおおむね6か月・止まる前に確かめること。`scripts/gen_teishi.py` が生成） | [/teishi-setsumei.html](https://ailiber1.github.io/seikatsuhogo/teishi-setsumei.html) |
+| `teishi.html` | ツール | 止まるラインしらべ（市区町村・人数・年齢を選ぶと、働いた給料が月いくらに届くと保護が必要なくなる目安かが出る。家賃・天引きの入力、今月の給料を入れた保護費と手元の合計。`scripts/gen_teishi.py` が生成） | [/teishi.html](https://ailiber1.github.io/seikatsuhogo/teishi.html) |
 | `database.rules.json` / `firebase.json` / `.firebaserc` | 設定 | 暇人スキャンと抜け出せない理由アンケートの保存先（Firebase Realtime Database）の書き込みルール | — |
 | `data/` | データ | ページに埋め込む元データ（JSON） | — |
 | `scripts/` | スクリプト | 公的資料からデータを作り、ページを生成する | — |
@@ -86,6 +88,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `jisshi_yoryo_r8_source.pdf` | 厚労省「2026（令和8）年4月1日施行 生活保護実施要領等」の写し（告示・次官通知・局長通知・課長通知・問答集。未定稿の注記あり） | https://www.mhlw.go.jp/content/001677054.pdf |
 | `tokubetsu_kijun.json` | 住宅扶助の特別基準額（局長通知 第7の4の(1)のオ）。都道府県×級地と指定都市・中核市、1人〜7人以上。引っ越しの敷金等の上限はこの額×3 | `jutaku_limit_2015_source.pdf` の別表2 |
 | `fuyu.json` | 冬季加算（Ⅰ〜Ⅵ区・1〜9人と10人以上の加算・期間）、期末一時扶助（級地×人数、改正前の額も）、地区の区分、基準部会の12月の支出の数字 | 下の告示の写し・実施要領・基準部会の資料 |
+| `teishi_law.json` | 生活保護法 第8条（基準及び程度の原則）・第26条（保護の停止及び廃止）の原文（`scripts/extract_teishi_law.py` がe-Govから取得）。止まる目安の計算には、既存の `kijun_r8.json`・`keika.json`・`jutaku_limit.json`・`kiso_kojo.json`・`kyuchi_by_city.json` を使う | e-Gov法令検索。停止・廃止の分かれ目（おおむね6か月）は `jisshi_yoryo_r8_source.pdf` の課長通知 問（第10の12） |
 | `kokuji158_p4_source.html` / `kokuji158_p7_source.html` | 生活保護法による保護の基準（告示）の厚労省 法令等データベースのページ（4ページ＝冬季加算と期末一時扶助の表、7ページ＝地区の区分）。2026年11月8日取得 | https://www.mhlw.go.jp/web/t_doc?dataId=82051000&dataType=0&pageNo=4 |
 | `kijunbukai63_shiryo1_source.pdf` / `kijunbukai63_shidai_source.pdf` | 第63回 社会保障審議会生活保護基準部会（2026年11月5日）資料1と議事次第 | https://www.mhlw.go.jp/stf/newpage_77177.html |
 | `jikan_tsuchi_dai9_source.html` / `kacho_tsuchi_dai9_source.html` / `seikatsuhogo_page_source.html` | 次官通知 第9、課長通知 第9（問1〜問3）、厚労省「生活保護を申請したい方へ」の写し（2026年11月2日取得） | 厚労省 |
@@ -138,6 +141,9 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `extract_fuyu.py` | 告示のページから冬季加算・期末一時扶助・地区の区分を読み取り、`chiiki.json`・実施要領の新旧対照表・基準部会の数字と照合して `data/fuyu.json` を作る |
 | `gen_fuyu.py` | `data/fuyu.json`・級地を `fuyu-setsumei.template.html` と `fuyu.template.html` に埋め込んで、冬の上乗せの解説とツールを生成する |
 | `verify_fuyu.py` | 解説の引用が告示・実施要領・基準部会の原本にそのままあるか、金額の例が元データと合うか、ツールの計算を node で動かして同じ額になるかを確かめる |
+| `extract_teishi_law.py` | e-Govから生活保護法 第8条・第26条を取得して `data/teishi_law.json` を作る |
+| `gen_teishi.py` | ツール `teishi.template.html` の計算（CALC-START〜END）を解説にも同じものとして埋め込み、解説の金額は node で動かして差し込んで、止まる目安の解説とツールを生成する |
+| `verify_teishi.py` | 引用が条文・実施要領の原本にそのままあるか、計算が貯金の境目しらべ・給料いくら残るしらべと同じか、止まる目安が1円ずつ数えた値と一致するか（240世帯・目安以上はずっと保護費0）、解説の金額が独立計算と合うかを確かめる |
 | `verify_hogohi.py` | `hogohi.html` の計算式を node で動かし、資料4のモデル世帯54通りと1円単位で一致するか確かめる |
 | `xlsx_read.py` | openpyxl なしで xlsx を読む（ふりがなは除く） |
 | `extract_nukedasenai.py` | 被保護者調査の表の写しから `data/nukedasenai.json` を作る（見出しの並び、理由の和と総数、年齢・期間の和が合うかを確かめる） |

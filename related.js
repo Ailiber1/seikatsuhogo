@@ -12,6 +12,8 @@
 */
 (function () {
   var RELATED = {
+    "teishi-setsumei.html":    ["teishi.html", "kyuryo.html", "nokoseru-setsumei.html", "nukedasenai-setsumei.html"],
+    "teishi.html":             ["teishi-setsumei.html", "kyuryo.html", "nokoseru.html", "hogohi.html"],
     "fuyu-setsumei.html":      ["fuyu.html", "hogohi.html", "chiiki-setsumei.html", "tokurei-setsumei.html"],
     "fuyu.html":               ["fuyu-setsumei.html", "hogohi.html", "chiiki.html", "muryo.html"],
     "hikkoshi-setsumei.html":  ["hikkoshi.html", "muryo.html", "hogohi.html", "sodan.html"],
@@ -20,9 +22,9 @@
     "houritsu.html":           ["houritsu-setsumei.html", "sodan.html", "fuyo.html", "nokoseru-setsumei.html"],
     "muryo-setsumei.html":     ["muryo.html", "jikohasan-setsumei.html", "nokoseru-setsumei.html", "yatte-setsumei.html"],
     "muryo.html":              ["muryo-setsumei.html", "hikkoshi-setsumei.html", "shinkoku.html", "hogohi.html"],
-    "nukedasenai-setsumei.html": ["nukedasenai.html", "kyuryo.html", "nokoseru-setsumei.html", "naiwake-setsumei.html"],
+    "nukedasenai-setsumei.html": ["nukedasenai.html", "kyuryo.html", "nokoseru-setsumei.html", "teishi-setsumei.html"],
     "nukedasenai.html":        ["nukedasenai-setsumei.html", "kyuryo.html", "hima-setsumei.html", "nokoseru-setsumei.html"],
-    "nokoseru-setsumei.html":  ["nokoseru.html", "kyuryo.html", "chokin-setsumei.html", "hogohi.html"],
+    "nokoseru-setsumei.html":  ["nokoseru.html", "kyuryo.html", "chokin-setsumei.html", "teishi-setsumei.html"],
     "nokoseru.html":           ["nokoseru-setsumei.html", "kyuryo.html", "hogohi.html", "chokin.html"],
     "yatte-setsumei.html":     ["shinkoku.html", "kyuryo.html", "chokin-setsumei.html", "nokoseru-setsumei.html"],
     "shinkoku.html":           ["yatte-setsumei.html", "kyuryo.html", "nokoseru-setsumei.html", "chokin-setsumei.html"],
@@ -42,7 +44,7 @@
     "chokin.html":             ["chokin-setsumei.html", "hogohi.html", "fuyo.html", "sodan.html"],
     "fuyo.html":               ["sodan.html", "chokin-setsumei.html", "shitsugyo-setsumei.html", "anti.html"],
     "hogohi.html":             ["tokurei-setsumei.html", "kyuryo.html", "chokin.html", "shitsugyo.html"],
-    "kyuryo.html":             ["hogohi.html", "shitsugyo.html", "hima-setsumei.html", "chokin.html"],
+    "kyuryo.html":             ["hogohi.html", "shitsugyo.html", "teishi.html", "chokin.html"],
     "tokurei-setsumei.html":   ["tokurei.html", "hogohi.html", "tsuika-setsumei.html"],
     "tokurei.html":            ["tokurei-setsumei.html", "hogohi.html", "tsuika.html"],
     "tsuika-setsumei.html":    ["tsuika.html", "tokurei-setsumei.html", "hogohi.html"],

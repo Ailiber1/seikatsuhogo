@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>生活保護は、働くといくらで止まる？</title>
+<meta name="description" content="働いた給料がいくらに届くと生活保護が必要なくなる目安になるかを、国の表と通知で計算します。停止と廃止の違いと、止まる前に確かめることも、生活保護3年目が説明します">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:17px; line-height:1.8; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+.nb{display:inline-block}
+h1,.conclusion p,.ch h2,.for-who li,.cta,.card b{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
+h1{font-size:clamp(26px,6vw,36px); line-height:1.4; margin:0 0 12px; color:var(--navy); text-wrap:balance}
+h1 small{display:block; font-size:.55em; color:var(--sub); font-weight:600; margin-top:4px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:16px; font-size:16.5px}
+.for-who b{color:var(--navy)} .for-who ul{margin:4px 0 0; padding-left:1.2em}
+.conclusion{border:2px solid var(--navy); border-radius:14px; padding:16px; margin-bottom:10px; background:#fff}
+.conclusion .k{font-size:14.5px; font-weight:700; color:var(--sub)}
+.conclusion p{margin:4px 0 0; font-size:18px; font-weight:700; line-height:1.6}
+.conclusion b{color:var(--navy)}
+.cta{display:flex; align-items:center; justify-content:space-between; gap:10px; text-decoration:none; color:var(--navy); background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:11px 14px; margin:12px 0 22px; font-weight:700; font-size:16.5px; min-height:48px}
+.cta span:last-child{flex:none}
+section.ch{margin:30px 0 8px}
+.ch h2{display:flex; align-items:center; gap:10px; font-size:clamp(19px,4.6vw,23px); line-height:1.45; margin:0 0 12px; color:var(--navy)}
+.ch h2 .b{flex:none; width:34px; height:34px; border-radius:50%; border:2px solid var(--navy); display:grid; place-items:center; font-size:16.5px; font-family:system-ui,sans-serif}
+.ch p{margin:0 0 12px}
+.ch a{color:var(--navy); font-weight:700}
+blockquote{margin:10px 0 4px; padding:10px 14px; background:var(--panel); border-left:4px solid var(--line); font-size:16px; border-radius:0 10px 10px 0}
+.src{font-size:14.5px; color:var(--sub); margin:0 0 8px} .src a{color:var(--navy); font-weight:400}
+.easy{background:var(--ok-bg); border-left:4px solid var(--ok); border-radius:0 10px 10px 0; padding:9px 14px; font-size:16.5px; margin:6px 0 12px}
+.easy b{color:var(--ok)}
+.note{font-size:14.5px; color:var(--sub); margin:4px 0 12px}
+.caution{background:var(--warn-bg); border-left:5px solid var(--warn); border-radius:0 11px 11px 0; padding:10px 14px; margin:8px 0 12px}
+.caution b{color:var(--warn)}
+
+/* 1章: 月ごとの棒 */
+.fig{border:1.5px solid var(--navy); border-radius:14px; padding:14px 14px 12px; background:#fff; margin:8px 0 12px}
+.seg{display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-bottom:10px}
+.seg button{font:inherit; font-size:15px; font-weight:700; min-height:48px; border:2px solid var(--line); border-radius:11px; background:#fff; color:var(--sub); cursor:pointer; padding:4px 4px; line-height:1.35}
+.seg button[aria-pressed=true]{border-color:var(--navy); background:var(--navy-soft); color:var(--navy)}
+.fig .cap{font-size:15px; font-weight:700; color:var(--sub); margin:0}
+.fig .val{font-size:clamp(34px,9vw,46px); font-weight:800; color:var(--navy); line-height:1.25}
+.fig .val small{font-size:.42em; color:var(--ink); font-weight:700}
+.fig .calc{font-size:14.5px; color:var(--sub); margin:2px 0 8px}
+.months{display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:2px; align-items:end; height:190px; border-bottom:2px solid var(--line); padding-top:22px}
+.mo{display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:100%; position:relative; min-width:0}
+.mo .amt{font-size:10px; font-weight:700; color:var(--ink); white-space:nowrap; margin-bottom:2px; font-variant-numeric:tabular-nums; letter-spacing:-.03em}
+.mo .bar{width:78%; display:flex; flex-direction:column-reverse; border-radius:6px 6px 0 0; overflow:hidden}
+.mo .t{background:var(--navy); height:0; transition:height .8s cubic-bezier(.2,.8,.2,1)}
+.mo .k{background:var(--ok); height:0; transition:height .8s cubic-bezier(.2,.8,.2,1) .2s}
+.mlab{display:grid; grid-template-columns:repeat(7,1fr); gap:4px; text-align:center; font-size:13px; font-weight:700; color:var(--sub); margin-top:4px}
+.lg{display:flex; flex-wrap:wrap; gap:4px 16px; font-size:14px; color:var(--sub); margin-top:6px}
+.lg span::before{content:""; display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-1px; background:var(--c)}
+
+table.t6{width:100%; border-collapse:collapse; font-size:15px; margin:6px 0 12px; background:#fff}
+.t6 th,.t6 td{padding:7px 6px; border-bottom:1px solid var(--line); text-align:left}
+.t6 td.r{text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums}
+.t6 thead th{font-size:13px; color:var(--sub)}
+.t6 tr.me td{background:var(--navy-soft); font-weight:700}
+
+/* 4章: 支出の棒 */
+.bars{border:1px solid var(--line); border-radius:13px; background:var(--panel); padding:12px 14px; margin:8px 0 12px}
+.bar-row{margin-bottom:10px} .bar-row:last-child{margin-bottom:0}
+.bar-row .tt{display:flex; justify-content:space-between; gap:8px; font-size:15.5px; font-weight:700}
+.bar-row .tt span:last-child{color:var(--navy)}
+.bar-row .tr{height:20px; border-radius:10px; background:var(--line-soft); overflow:hidden; margin-top:3px}
+.bar-row .tr i{display:block; height:100%; width:0; border-radius:10px; background:var(--navy); transition:width 1.3s cubic-bezier(.2,.8,.2,1)}
+.bar-row .tr i.g{background:var(--ok)}
+
+.card{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px; background:#fff}
+.card .mk{flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:14px}
+.card .mk.y{background:var(--ok-bg); color:var(--ok)} .card .mk.q{background:var(--warn-bg); color:var(--warn)}
+.card b{display:block; font-size:16.5px} .card small{color:var(--sub); font-size:14.5px; line-height:1.55; display:block}
+.sum h3{font-size:16px; margin:14px 0 6px; color:var(--navy)}
+.fade{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+.fade.in{opacity:1; transform:none}
+.foot{margin-top:28px; font-size:14.5px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot h3{font-size:15px; color:var(--ink); margin:12px 0 4px}
+.foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .fade{opacity:1; transform:none; transition:none} .mo .t,.mo .k,.bar-row .tr i{transition:none} }
+</style>
+<style>
+/* この資料専用の追加 */
+.stackbox{border:1.5px solid var(--navy); border-radius:14px; padding:14px; background:#fff; margin:8px 0 12px}
+.stackbox .cap{font-size:15px; font-weight:700; color:var(--sub); margin:0}
+.rng{width:100%; margin:10px 0 4px; accent-color:var(--navy); min-height:40px}
+.stack{position:relative; margin:14px 0 4px}
+.stack .tr{position:relative; height:30px; border-radius:15px; background:var(--line-soft); overflow:hidden}
+.stack .tr i{position:absolute; top:0; bottom:0; transition:width .25s ease, left .25s ease}
+.stack .w{background:var(--navy)} .stack .h{background:var(--ok)}
+.stack .line{position:absolute; top:-6px; bottom:-6px; border-left:3px solid var(--warn)}
+.stack .lt{position:absolute; top:34px; transform:translateX(-50%); font-size:12.5px; font-weight:700; color:var(--warn); white-space:nowrap}
+.stackbox .nums{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:34px}
+.stackbox .nums div{background:var(--panel); border:1px solid var(--line); border-radius:11px; padding:8px 10px; font-size:14px; color:var(--sub)}
+.stackbox .nums b{display:block; font-size:clamp(20px,5.4vw,26px); color:var(--ink); font-variant-numeric:tabular-nums}
+.stackbox .nums .tk{grid-column:1 / 3; border-color:var(--navy); background:var(--navy-soft)}
+.stackbox .nums .tk b{color:var(--navy)}
+.stackbox .msg{margin:8px 0 0; font-size:15px; min-height:1.6em}
+table.t3{width:100%; border-collapse:collapse; font-size:15px; margin:6px 0 12px; background:#fff}
+.t3 th,.t3 td{padding:7px 6px; border-bottom:1px solid var(--line); text-align:left}
+.t3 td.r{text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums}
+.t3 thead th{font-size:13px; color:var(--sub)}
+.t3 tr.me td{background:var(--navy-soft); font-weight:700}
+.t3 td.g{font-weight:800; color:var(--navy)}
+@media (prefers-reduced-motion:reduce){ .stack .tr i{transition:none} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho"><span class="nb">生活保護は、</span><span class="nb">働くといくらで止まる？</span><small><span class="nb">停止と廃止の分かれ目を、</span><span class="nb">国の表と通知で</span></small></h1>
+  <div class="for-who"><b>このページは、こういう方へ</b>
+    <ul><li>働き始めた、または<span class="nb">働く時間を増やしたい方</span></li>
+    <li>「稼ぐと保護が止まる」と聞いて、<span class="nb">いくらからなのか知りたい方</span></li>
+    <li>保護が止まったあとの暮らしを、<span class="nb">先に考えておきたい方</span></li></ul></div>
+
+  <div class="conclusion"><div class="k">結論</div>
+    <p>保護が必要なくなる目安は、<b>最低生活費に、給料のうち手元に残る分（基礎控除）を足した額</b>です。<br>ひとり暮らし（20〜40歳）の月の給料（額面）だと、<span class="nb">長崎市で<b class="num">約{{N_GMAN}}万円</b>、</span><span class="nb">札幌市で<b class="num">約{{S_GMAN}}万円</b>、</span><span class="nb">東京23区で<b class="num">約{{T_GMAN}}万円</b>。</span></p></div>
+  <a class="cta" href="teishi.html"><span>住んでいる所と人数を選ぶと、止まる目安の給料が分かる（止まるラインしらべ）</span><span>→</span></a>
+
+  <section class="ch fade">
+    <h2><span class="b">1</span>保護費は、「足りない分」だけ出る</h2>
+    <p>生活保護は、国が決めた「最低限の生活費（最低生活費）」に、<b>自分のお金で足りない分</b>だけを出す制度です。</p>
+    <blockquote>保護は、厚生労働大臣の定める基準により測定した要保護者の需要を基とし、そのうち、その者の金銭又は物品で満たすことのできない不足分を補う程度において行うものとする。</blockquote>
+    <p class="src">出典: <a href="https://laws.e-gov.go.jp/law/325AC0000000144" target="_blank" rel="noopener">生活保護法 第8条第1項（e-Gov法令検索）</a></p>
+    <p>給料が増えると、保護費は減ります。下のバーを動かして、ひとり暮らし（20〜40歳）の場合を見てください。</p>
+    <div class="stackbox">
+      <div class="seg" role="group" aria-label="例を切りかえる">
+        <button type="button" data-ex="0" aria-pressed="false">札幌市</button>
+        <button type="button" data-ex="1" aria-pressed="true">長崎市</button>
+        <button type="button" data-ex="2" aria-pressed="false">東京23区</button>
+      </div>
+      <p class="cap">今月の給料（額面）を動かす</p>
+      <input class="rng" id="rng" type="range" min="0" max="160000" step="1000" value="0" aria-label="今月の給料">
+      <div class="stack" aria-hidden="true"><div class="tr"><i class="w" id="bw"></i><i class="h" id="bh"></i></div><span class="line" id="bl"></span><span class="lt" id="bt">止まる目安</span></div>
+      <div class="nums">
+        <div>給料（額面）<b id="nx">0円</b></div>
+        <div>保護費<b id="nh"></b></div>
+        <div class="tk">手元に入るお金の合計<b id="nt"></b></div>
+      </div>
+      <p class="msg" id="msg"></p>
+    </div>
+    <p class="note">天引き（税・社会保険料・通勤費など）が無い場合の計算です。冬の上乗せや各種の加算は入っていません。</p>
+    <div class="easy"><b>やさしく言うと：</b>給料が1円増えても、保護費が1円減るわけではありません。給料のうち一部（基礎控除）は手元に残るので、<b>働いた分だけ手元の合計は少しずつ増えます</b>。→ いくら残るかは <a href="kyuryo.html">給料いくら残るしらべ</a>、保護費そのものは <a href="hogohi.html">保護費しらべ</a></div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">2</span>止まる目安は、最低生活費＋基礎控除</h2>
+    <p>保護費がゼロになるのは、給料から手元に残る分を引いた額が、最低生活費に届いたときです。式にすると、こうです。</p>
+    <div class="conclusion" style="margin:8px 0 12px"><p style="font-size:17px">止まる目安の給料 ＝ <b>最低生活費</b> ＋ <b>基礎控除</b></p></div>
+    <table class="t3"><thead><tr><th>ひとり暮らし<br>20〜40歳</th><th class="r">最低生活費</th><th class="r">基礎控除</th><th class="r">止まる目安</th></tr></thead><tbody>
+      <tr><td>札幌市</td><td class="r">{{S_M}}円</td><td class="r">{{S_KISO}}円</td><td class="r g">{{S_G}}円</td></tr>
+      <tr class="me"><td>長崎市</td><td class="r">{{N_M}}円</td><td class="r">{{N_KISO}}円</td><td class="r g">{{N_G}}円</td></tr>
+      <tr><td>東京23区</td><td class="r">{{T_M}}円</td><td class="r">{{T_KISO}}円</td><td class="r g">{{T_G}}円</td></tr></tbody></table>
+    <p class="note">最低生活費 ＝ 生活費（生活扶助）＋ 家賃の上限（住宅扶助）。例：長崎市は 生活費 {{N_LIFE}}円 ＋ 家賃の上限 {{N_LIM}}円。家賃がもっと安い方は、実際の家賃で計算されるので、目安も下がります。基礎控除は「給料いくら残るしらべ」と同じ、国の基礎控除額表です。</p>
+    <div class="easy"><b>やさしく言うと：</b>「最低生活費」ぶんの収入に、手元に残る分を足した給料まで稼ぐと、保護はいらなくなる計算。<b>税金や社会保険料などが天引きされる人は、その分、目安の給料も上がります。</b></div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">3</span>「停止」と「廃止」は、別のもの</h2>
+    <p>保護が必要なくなったとき、福祉事務所は「停止」か「廃止」を決めて、書面で知らせます。</p>
+    <blockquote>保護の実施機関は、被保護者が保護を必要としなくなつたときは、速やかに、保護の停止又は廃止を決定し、書面をもつて、これを被保護者に通知しなければならない。</blockquote>
+    <p class="src">出典: <a href="https://laws.e-gov.go.jp/law/325AC0000000144" target="_blank" rel="noopener">生活保護法 第26条（e-Gov法令検索）</a></p>
+    <p>どちらになるかの分かれ目は、<b>おおむね6か月</b>です。</p>
+    <blockquote>当該世帯における臨時的な収入の増加、最低生活費の減少等により、一時的に保護を必要としなくなった場合であって、以後において見込まれるその世帯の最低生活費及び収入の状況から判断して、おおむね６か月以内に再び保護を要する状態になることが予想されるとき。</blockquote>
+    <p class="src">出典: 課長通知 問（第10の12）の答え「１ 保護を停止すべき場合 (1)」（<a href="https://www.mhlw.go.jp/content/001677054.pdf" target="_blank" rel="noopener">厚労省 生活保護実施要領等 2026年4月施行</a>）</p>
+    <blockquote>当該世帯における収入の臨時的な増加、最低生活費の臨時的な減少等により、以後おおむね６か月を超えて保護を要しない状態が継続すると認められるとき。</blockquote>
+    <p class="src">出典: 同「２ 保護を廃止すべき場合 (2)」</p>
+    <div class="easy"><b>やさしく言うと：</b>「6か月以内にまた必要になりそう」なら停止、「6か月を超えて要らなさそう」なら廃止。<b>給料が目安に届いたら自動で決まるのではなく、これからの見込みで、福祉事務所が決めます。</b></div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">4</span>止まる前に、確かめておくこと</h2>
+    <p>止まる目安の給料に届いたとき、手元に入るお金は、止まる直前も直後も<b>ほぼ同じ</b>です（1章のバーで、給料が目安に届く所を見てください）。<b>違うのは、そこから先は自分で払うものが増えること</b>です。</p>
+    <div class="card"><span class="mk q">1</span><div><b>国民健康保険料・国民年金・税金・医療費の自己負担</b><small>保護が止まると、自分に回ってきます。この計算には入っていません → <a href="nukedasenai-setsumei.html">抜け出せない理由（抜けた後の国保・年金）</a></small></div></div>
+    <div class="card"><span class="mk y">2</span><div><b>就労自立給付金</b><small>抜けるときに、条件によって出ることがあります → <a href="nokoseru-setsumei.html">働いても残せるお金</a></small></div></div>
+    <div class="card"><span class="mk y">3</span><div><b>収入の届け出</b><small>収入があったら、すぐに届け出る決まりです。目安に近づいてきたら、早めにケースワーカーに話しておくと安心です</small></div></div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">5</span>私の場合（長崎市・ひとり暮らし）</h2>
+    <p>長崎市は<b>2級地-1</b>です。国の表で計算すると、こうなります。</p>
+    <div class="card"><span class="mk y">1</span><div><b>最低生活費：{{N_M}}円</b><small>生活費 {{N_LIFE}}円 ＋ 家賃の上限 {{N_LIM}}円</small></div></div>
+    <div class="card"><span class="mk y">2</span><div><b>止まる目安の給料：{{N_G}}円</b><small>最低生活費 {{N_M}}円 ＋ 基礎控除 {{N_KISO}}円</small></div></div>
+    <div class="caution"><b>言いすぎないでおきます。</b>これは国の表だけで計算した目安です。冬の上乗せや各種の加算、実際の家賃、天引きの額で変わります。実際に止まるかどうか、停止か廃止かは、福祉事務所が決めます。</div>
+  </section>
+  <a class="cta" href="teishi.html"><span>自分の地域・人数で、止まる目安の給料を確かめる（止まるラインしらべ）</span><span>→</span></a>
+
+  <section class="ch sum fade">
+    <h2><span class="b">✓</span>まとめ</h2>
+    <h3>分かっていること</h3>
+    <div class="card"><span class="mk y">✓</span><div><b>保護費は、最低生活費に足りない分だけ</b><small>給料が増えると減る。ただし給料のうち一部は手元に残る</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>止まる目安は、最低生活費＋基礎控除</b><small>ひとり暮らしで長崎市 約{{N_GMAN}}万円（天引き・加算なしの場合）</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>停止と廃止の分かれ目は、おおむね6か月</b><small>国の通知に書かれている</small></div></div>
+    <h3>まだ分からないこと</h3>
+    <div class="card"><span class="mk q">？</span><div><b>自分のぴったりの目安</b><small>加算・実際の家賃・天引きで変わる</small></div></div>
+    <div class="card"><span class="mk q">？</span><div><b>停止になるか、廃止になるか</b><small>福祉事務所が、これからの見込みで決める</small></div></div>
+  </section>
+
+  <div class="foot">
+    <h3>根拠資料</h3>
+    <ul>
+      <li><a href="https://laws.e-gov.go.jp/law/325AC0000000144" target="_blank" rel="noopener">生活保護法（e-Gov法令検索）</a>：第8条（基準及び程度の原則）・第26条（保護の停止及び廃止）</li>
+      <li><a href="https://www.mhlw.go.jp/content/001677054.pdf" target="_blank" rel="noopener">厚労省「2026（令和8）年4月1日施行 生活保護実施要領等」</a>：課長通知 問（第10の12）の答え。※資料に「未定稿」の注記あり</li>
+      <li><a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8431&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">厚労省「生活保護法による保護の実施要領について」（次官通知）第8・別表「基礎控除額表」</a></li>
+      <li><a href="https://www.mhlw.go.jp/content/001152601.pdf" target="_blank" rel="noopener">生活扶助基準額の算出方法（令和8年4月）</a>・<a href="https://www.mhlw.go.jp/content/12002000/001662704.pdf" target="_blank" rel="noopener">第55回生活保護基準部会 資料4</a>：最低生活費のうち生活扶助の計算</li>
+      <li>住宅扶助の上限：社援発0414第9号（平成27年）別表（<a href="hogohi.html">保護費しらべ</a>と同じ表）</li>
+    </ul>
+    <h3>読むときの注意</h3>
+    <ul>
+      <li>確認日: 2026年11月15日。額は家で暮らしている人（居宅）の1人目が働く場合の試算です</li>
+      <li>引用は原文のままです。「やさしく言うと」は私の言い換えです</li>
+      <li>計算に入っていないもの：冬季加算、障害・ひとり親・子育ての加算、世帯の2人目以降の収入、自営業・年金・仕送りなどの収入</li>
+      <li>個人が作ったもので、行政の公式資料ではありません。個別の判断は、福祉事務所で確かめてください</li>
+    </ul>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+// 計算は teishi.html（止まるラインしらべ）と同じもの。scripts/verify_teishi.py で確かめる
+/*CALC*/
+const KE = /*KEIKA*/;
+const K = /*KIJUN*/;
+const J = /*JUTAKU*/;
+const T = /*KISO*/;
+const EX = /*EX*/;  // [名前, 都道府県, 市区町村, 級地]
+const yen = n => n.toLocaleString('ja-JP');
+const $ = id => document.getElementById(id);
+
+const ROWS = EX.map(([nm, p, c, lv]) => {
+  const life = calcKijun(["20～40"], lv, true, K, KE).total, lim = jutakuLimit(J, p, c, lv, 1), M = life + lim;
+  return {nm, M, G: stopLine(M, 0, T)};
+});
+let cur = 1;
+function paint() {
+  const r = ROWS[cur], x = +$('rng').value;
+  const cnt = countable(x, 0, T), hogo = Math.max(0, r.M - cnt), take = x + hogo;
+  const S = $('rng').max * 1;
+  $('nx').textContent = yen(x) + '円';
+  $('nh').textContent = yen(hogo) + '円';
+  $('nt').textContent = yen(take) + '円';
+  const scale = Math.max(take, r.G, S);
+  $('bw').style.left = '0'; $('bw').style.width = (x / scale * 100) + '%';
+  $('bh').style.left = (x / scale * 100) + '%'; $('bh').style.width = (hogo / scale * 100) + '%';
+  $('bl').style.left = (r.G / scale * 100) + '%';
+  const lt = $('bt'); lt.style.left = Math.min(88, Math.max(10, r.G / scale * 100)) + '%'; lt.textContent = '止まる目安 ' + yen(r.G) + '円';
+  $('msg').innerHTML = x >= r.G
+    ? '<b>目安に届きました。</b>保護費はゼロ。停止か廃止かは、福祉事務所が見込みで決めます。'
+    : (x === 0 ? '右にバーを動かすと、給料が増えたときの保護費が出ます。' : `保護が必要なくなる目安まで、あと <b>${yen(r.G - x)}円</b>`);
+}
+function setEx(i) {
+  cur = i;
+  const r = ROWS[i];
+  $('rng').max = Math.ceil(r.G * 1.2 / 1000) * 1000;
+  $('rng').value = Math.min(+$('rng').value, +$('rng').max);
+  paint();
+}
+document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  setEx(+b.dataset.ex);
+}));
+$('rng').addEventListener('input', paint);
+setEx(1);
+
+// スクロールで表示（スマホで縦に長い要素も出るように threshold:0）
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in'); io.unobserve(e.target);
+}), {threshold: 0, rootMargin: '0px 0px -12% 0px'});
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
+</script>
+<script src="hub-items.js"></script>
+<script src="related.js" defer></script>
+</body>
+</html>

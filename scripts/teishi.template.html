@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>止まるラインしらべ</title>
+<meta name="description" content="住んでいる市区町村と世帯の人数・年齢を選ぶと、働いた給料がいくらに届くと生活保護が必要なくなる目安になるかを、国の表と通知で計算します">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:16px; line-height:1.75; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+/* 言葉の途中で改行しない（対応ブラウザは文節で折り返す） */
+h1,.lead,.for-who li,.ans h3,.ans p,.box h3,.guide{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:24px 16px 44px}
+h1{font-size:clamp(24px,5.2vw,32px); line-height:1.4; margin:0 0 8px; color:var(--navy); text-wrap:balance}
+.lead{color:var(--sub); font-size:15px; margin:0 0 16px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:18px; font-size:15px}
+.for-who b{color:var(--navy)}
+.for-who ul{margin:4px 0 0; padding-left:1.2em}
+
+.step{background:var(--panel); border:2px solid var(--line); border-radius:13px; padding:14px 16px; margin-bottom:12px; transition:border-color .3s, opacity .3s}
+.step.off{opacity:.5}
+.step.done{border-color:var(--navy)}
+.step h2{font-size:16.5px; margin:0 0 8px; display:flex; gap:9px; align-items:center}
+.step h2 .n{flex:none; width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; display:grid; place-items:center; font-size:13px}
+.step .hint{font-size:13px; color:var(--sub); margin:6px 0 0}
+select,input[type=number]{font:inherit; font-size:16px; width:100%; min-height:44px; padding:8px 10px; border:2px solid var(--line); border-radius:9px; background:#fff; color:var(--ink)}
+select:focus,input:focus{outline:3px solid var(--navy-soft); border-color:var(--navy)}
+select:disabled,input:disabled{background:var(--line-soft); color:var(--sub)}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.ages{display:grid; gap:8px}
+.ages label{font-size:13px; font-weight:700; color:var(--sub); display:block; margin-bottom:2px}
+.yen-in{display:flex; align-items:center; gap:8px}
+.yen-in span{flex:none; font-weight:700}
+
+#result{margin-top:18px}
+.guide{border:2px dashed var(--line); border-radius:13px; padding:18px; text-align:center; color:var(--sub)}
+.guide b{color:var(--navy)}
+.res{animation:pop .45s ease}
+@keyframes pop{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+.verdict{border-left:6px solid var(--navy); background:var(--navy-soft); border-radius:0 13px 13px 0; padding:14px 16px; margin-bottom:12px}
+.verdict .k{font-size:13px; font-weight:700; color:var(--sub)}
+.verdict .place{font-size:14px; color:var(--sub); margin:0 0 2px}
+.amount{font-size:18px; font-weight:700; margin:2px 0}
+.amount b{font-size:clamp(38px,9vw,52px); color:var(--navy); font-variant-numeric:tabular-nums; letter-spacing:.01em}
+.calc{font-size:14px; margin:2px 0 0; color:var(--sub)}
+.calc b{color:var(--ink)}
+
+.gauge{margin:14px 0 6px}
+.gauge .bar{position:relative; height:26px; border-radius:13px; background:var(--line-soft); overflow:hidden}
+.gauge .bar i{position:absolute; top:0; bottom:0; left:0; width:0; transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.gauge .keep{background:var(--ok)} .gauge .cut{background:var(--warn)} .gauge .over{background:var(--ng)}
+.gauge .ticks{position:relative; height:34px; font-size:12px; color:var(--sub)}
+.gauge .ticks span{position:absolute; top:3px; transform:translateX(-50%); white-space:nowrap; text-align:center; line-height:1.3}
+.gauge .ticks span::before{content:""; position:absolute; left:50%; top:-8px; height:8px; border-left:2px solid var(--sub)}
+.legend{display:flex; flex-wrap:wrap; gap:4px 14px; font-size:13px; color:var(--sub); margin:0 0 4px}
+.legend span::before{content:""; display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:5px; background:var(--c)}
+
+.ans{border-radius:0 13px 13px 0; padding:13px 16px; margin-bottom:12px; border-left:6px solid}
+.ans.ok{background:var(--ok-bg); border-color:var(--ok)} .ans.ok h3{color:var(--ok)}
+.ans.cut{background:var(--warn-bg); border-color:var(--warn)} .ans.cut h3{color:var(--warn)}
+.ans.over{background:var(--ng-bg); border-color:var(--ng)} .ans.over h3{color:var(--ng)}
+.ans h3{font-size:clamp(18px,4.6vw,21px); margin:0 0 4px; line-height:1.45}
+.ans p{margin:0 0 6px; font-size:15px} .ans p:last-child{margin:0}
+
+details.rentopt{margin:6px 0 2px}
+details.rentopt summary{cursor:pointer; font-size:14px; font-weight:700; color:var(--navy); min-height:40px; display:flex; align-items:center; list-style:none; gap:6px}
+details.rentopt summary::-webkit-details-marker{display:none}
+details.rentopt summary::before{content:"＋"; font-weight:800}
+details.rentopt[open] summary::before{content:"−"}
+details.rentopt .hint{font-size:13px; color:var(--sub); margin:6px 0 0}
+
+.box{background:var(--panel); border:2px solid var(--line); border-radius:12px; padding:12px 15px; margin-bottom:10px}
+.box h3{font-size:15.5px; margin:0 0 6px; color:var(--navy)}
+.box p{margin:0 0 6px; font-size:15px} .box p:last-child{margin:0}
+.box ul{margin:0; padding-left:1.2em; font-size:14.5px}
+.box.warn{background:var(--warn-bg); border-color:var(--warn)} .box.warn h3{color:var(--warn)}
+
+.chips{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 10px}
+.chip{font:inherit; font-size:15px; font-weight:700; color:var(--navy); background:#fff; border:2px solid var(--line); border-radius:22px; padding:6px 14px; min-height:42px; cursor:pointer}
+.chip[aria-pressed=true]{border-color:var(--navy); background:var(--navy-soft)}
+.item{border:1px solid var(--line); border-left:5px solid var(--c); border-radius:0 11px 11px 0; padding:10px 14px; margin-bottom:8px; background:#fff; animation:pop .35s ease}
+.item .tag{display:inline-block; font-size:13px; font-weight:800; color:var(--c); margin-bottom:2px}
+.item b.t{display:block; font-size:16px}
+.item p{margin:4px 0 0; font-size:14.5px}
+.item .q{font-size:13px; color:var(--sub); background:var(--panel); border-left:3px solid var(--line); padding:5px 9px; margin-top:6px}
+.item .q a{color:var(--navy)}
+.item.ok{--c:var(--ok)} .item.mid{--c:var(--warn)} .item.ng{--c:var(--ng)}
+
+.reset{font:inherit; font-size:14px; font-weight:700; color:var(--navy); background:var(--navy-soft); border:none; border-radius:8px; padding:8px 14px; min-height:40px; cursor:pointer; margin-top:4px}
+.foot{margin-top:24px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (max-width:480px){ .row2{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){ .res,.item{animation:none} .gauge .bar i{transition:none} }
+</style>
+<style>
+/* このツール専用の追加 */
+.try{background:var(--panel); border:2px solid var(--line); border-radius:13px; padding:12px 15px; margin-bottom:12px}
+.try h3{font-size:15.5px; margin:0 0 6px; color:var(--navy)}
+.try .out{margin-top:10px}
+.try table.two{width:100%; border-collapse:collapse; font-size:15px; background:#fff; border:1px solid var(--line); border-radius:10px}
+.try table.two th,.try table.two td{padding:7px 10px; border-bottom:1px solid var(--line-soft); text-align:left; font-weight:400}
+.try table.two td{text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums}
+.try table.two tr.em th,.try table.two tr.em td{font-weight:800; background:var(--navy-soft)}
+.try .stopmsg{margin:8px 0 0; padding:9px 12px; border-left:5px solid var(--warn); background:var(--warn-bg); border-radius:0 10px 10px 0; font-size:15px}
+.try .stopmsg b{color:var(--warn)}
+details.opt{margin:6px 0 2px}
+details.opt summary{cursor:pointer; font-size:14px; font-weight:700; color:var(--navy); min-height:40px; display:flex; align-items:center; list-style:none; gap:6px}
+details.opt summary::-webkit-details-marker{display:none}
+details.opt summary::before{content:"＋"; font-weight:800}
+details.opt[open] summary::before{content:"−"}
+details.opt .hint{font-size:13px; color:var(--sub); margin:6px 0 0}
+blockquote{margin:6px 0 4px; padding:8px 12px; background:#fff; border-left:4px solid var(--line); font-size:14.5px; border-radius:0 10px 10px 0}
+.src{font-size:13px; color:var(--sub); margin:0 0 6px} .src a{color:var(--navy)}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho">止まるラインしらべ</h1>
+  <p class="lead">住んでいる場所・人数・年齢を選ぶと、働いた給料が<b>月いくらに届くと、生活保護が必要なくなる目安</b>になるかを、国の決まりと国の表で計算します。</p>
+  <div class="for-who"><b>このツールは、こういう方へ</b>
+    <ul><li>働き始めた、または働く時間を増やしたい方</li>
+    <li>「稼ぐと保護が止まる」と聞いて、いくらからなのか知りたい方</li>
+    <li>保護が止まったあとの暮らしを、先に考えておきたい方</li></ul></div>
+
+  <div class="step" id="s1">
+    <h2><span class="n">1</span>住んでいる場所</h2>
+    <div class="row2">
+      <select id="pref" aria-label="都道府県"><option value="">都道府県を選んでください</option></select>
+      <select id="city" disabled aria-label="市区町村"><option value="">市区町村を選んでください</option></select>
+    </div>
+  </div>
+
+  <div class="step off" id="s2">
+    <h2><span class="n">2</span>一緒に暮らす人数（あなたも含む）</h2>
+    <select id="size" disabled aria-label="世帯の人数"><option value="">選んでください</option></select>
+  </div>
+
+  <div class="step off" id="s3">
+    <h2><span class="n">3</span>それぞれの年齢</h2>
+    <div class="ages" id="ages"><p class="hint" style="margin:0">上で人数を選ぶと、ここに年齢の欄が出ます。</p></div>
+  </div>
+
+  <div id="result" aria-live="polite"></div>
+
+  <div class="foot">
+    <p>この結果は、厚生労働省の公開資料から計算した目安（試算）です。最終的な判断は福祉事務所がします。入力した内容はこの画面の中だけで計算していて、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</p>
+    <p>計算のしかた：保護費＝最低生活費 − 収入として認められる額。給料から手元に残る分（基礎控除）を引いた残りが、最低生活費（生活扶助＋家賃の上限か実際の家賃。医療扶助・介護扶助を除く）に届くと、保護は必要なくなります。生活扶助の計算は「保護費しらべ」と同じ、基礎控除は「給料いくら残るしらべ」と同じ表です。</p>
+    <p>入っていないもの：冬の上乗せ（冬季加算）、障害のある方・ひとり親・子育て中の加算。入る方は最低生活費が高くなるので、止まる目安も上がります。世帯の中で2人以上が働いている場合や、自営業・年金・仕送りなどの収入も、この計算には入っていません。</p>
+    <p>根拠: <a href="https://laws.e-gov.go.jp/law/325AC0000000144" target="_blank" rel="noopener">生活保護法 第8条・第26条（e-Gov法令検索）</a> ／ <a href="https://www.mhlw.go.jp/content/001677054.pdf" target="_blank" rel="noopener">厚労省 生活保護実施要領等（2026年4月施行）課長通知 問（第10の12）</a> ／ <a href="https://www.mhlw.go.jp/web/t_doc?dataId=00ta8431&amp;dataType=1&amp;pageNo=1" target="_blank" rel="noopener">次官通知 第8・別表「基礎控除額表」</a> ／ <a href="https://www.mhlw.go.jp/content/001152601.pdf" target="_blank" rel="noopener">生活扶助基準額の算出方法（令和8年4月）</a> ／ <a href="https://www.mhlw.go.jp/content/12002000/001662704.pdf" target="_blank" rel="noopener">第55回生活保護基準部会 資料4</a></p>
+    <p>確認日: 2026年11月15日 ／ 個人が作ったもので、行政の公式ツールではありません。法律上の助言でもありません。</p>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+const KYUCHI = /*KYUCHI*/;
+const KEIKA = /*KEIKA*/;
+const KIJUN = /*KIJUN*/;
+const JUTAKU = /*JUTAKU*/;
+const KISO = /*KISO*/;
+const AGES = ["0～2","3～5","6～11","12～17","18～19","20～40","41～59","60～64","65～69","70～74","75～"];
+const AGE_LABEL = {"0～2":"0〜2歳","3～5":"3〜5歳","6～11":"6〜11歳","12～17":"12〜17歳","18～19":"18〜19歳","20～40":"20〜40歳","41～59":"41〜59歳","60～64":"60〜64歳","65～69":"65〜69歳","70～74":"70〜74歳","75～":"75歳以上"};
+const LV = ["1級地-1","1級地-2","2級地-1","2級地-2","3級地-1","3級地-2"];
+
+// CALC-START
+// 生活扶助 = 第1類の合計×逓減率（1円未満切り捨て→10円未満切り上げ）＋第2類＋特例加算＋経過的加算
+function calcKijun(ages, lv, oct, K, KE) {
+  const n = ages.length;
+  const raw = ages.reduce((s, a) => s + K.dai1[a][lv], 0);
+  const d1 = Math.ceil(Math.floor(Math.round(raw * K.teigen[n] * 1e6) / 1e6) / 10) * 10;
+  const d2 = K.dai2[n];
+  const per = oct ? K.tokurei.from_2026_10 : K.tokurei.until_2026_09;
+  const tok = per * n;
+  // 10月からは特例加算が1人1,000円増える分、経過的加算が1人最大1,000円減る（従前額保障）
+  const kei = ages.reduce((s, a) => { const k = KE[n][a][lv]; return s + (oct ? k - Math.min(1000, k) : k); }, 0);
+  return {raw, d1, d2, tok, kei, total: d1 + d2 + tok + kei};
+}
+// 基礎控除（1人目）。表の区分で決まる。0〜15,199円は全額。23万1千円以上は4,000円ごとに400円ずつ加算
+function kisoKojo(x, T) {
+  if (x >= T.over.from) {
+    const last = T.rows[T.rows.length - 1][2];
+    return last + T.over.add_first * (Math.floor((x - T.over.from) / T.over.step) + 1);
+  }
+  const row = T.rows.find(r => x >= r[0] && x <= r[1]);
+  return row[2] === null ? x : row[2];
+}
+// 家賃（住宅扶助）の上限。政令市・中核市は市の額、それ以外は都道府県×級地（1・2・3級地）の額
+function jutakuLimit(J, prefName, cityName, lv, n) {
+  const row = J.city[cityName] || J.pref[prefName][String(Math.floor(lv / 2) + 1)];
+  return row[n === 1 ? 0 : n === 2 ? 1 : n <= 5 ? 2 : n === 6 ? 3 : 4];
+}
+// 手元に残る分を引いた「収入として認められる額」（1人目が働く場合。jippi は天引きなど実際にかかった額）
+const countable = (gross, jippi, T) => Math.max(0, gross - Math.min(gross, jippi) - kisoKojo(gross, T));
+// 保護が必要なくなる目安 = 「これ以上の給料なら、ずっと保護費がゼロ」になる最小の給料（額面）。
+// 基礎控除は4,000円ごとに階段で増えるので、区分の境目で認められる額が数百円もどることがある。
+// そのため「最後にまだ届かない給料」を区分ごとに求め、その次の1円を目安にする
+function stopLine(M, jippi, T) {
+  let last = -1;
+  for (const [a, b, v] of T.rows) {
+    const lim = v === null ? b : Math.min(b, M + jippi + v - 1);
+    if (lim >= a) last = Math.max(last, lim);
+  }
+  const base = T.rows[T.rows.length - 1][2];
+  for (let k = 0; ; k++) {
+    const a = T.over.from + T.over.step * k, v = base + T.over.add_first * (k + 1);
+    const lim = Math.min(a + T.over.step - 1, M + jippi + v - 1);
+    if (lim < a) break;
+    last = Math.max(last, lim);
+  }
+  return last + 1;
+}
+// CALC-END
+
+const $ = id => document.getElementById(id);
+const pref = $('pref'), city = $('city'), size = $('size');
+let rentVal = '', jippiVal = '', tryVal = '', opened = {};
+const yen = n => n.toLocaleString('ja-JP');
+const toInt = v => Math.max(0, Math.min(99999999, Math.floor(+v || 0)));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+Object.keys(KYUCHI).forEach(p => pref.add(new Option(p, p)));
+for (let i = 1; i <= 5; i++) size.add(new Option(i + '人', String(i)));
+size.add(new Option('6人以上', '6'));
+
+function buildAges() {
+  const n = +size.value;
+  const prev = [...document.querySelectorAll('.age')].map(s => s.value);
+  if (!n) { $('ages').innerHTML = '<p class="hint" style="margin:0">上で人数を選ぶと、ここに年齢の欄が出ます。</p>'; return; }
+  if (n >= 6) { $('ages').innerHTML = '<p class="hint" style="margin:0">6人以上の世帯は、公表されている表に一部の金額が無いため計算できません。</p>'; return; }
+  $('ages').innerHTML = Array.from({length: n}, (_, i) => `
+    <div><label for="age${i}">${i === 0 ? 'あなた（働く人）' : (i + 1) + '人目'}</label>
+    <select class="age" id="age${i}"><option value="">選んでください</option>${AGES.map(a => `<option value="${a}">${AGE_LABEL[a]}</option>`).join('')}</select></div>`).join('');
+  document.querySelectorAll('.age').forEach((s, i) => { if (prev[i]) s.value = prev[i]; s.addEventListener('change', refresh); });
+}
+
+const setStep = (el, on, done) => { el.classList.toggle('off', !on); el.classList.toggle('done', !!done); };
+
+function refresh() {
+  const ages = [...document.querySelectorAll('.age')].map(s => s.value);
+  const agesDone = ages.length > 0 && ages.every(Boolean) && +size.value < 6;
+  city.disabled = !pref.value;
+  size.disabled = !city.value;
+  document.querySelectorAll('.age').forEach(s => s.disabled = !size.value);
+  setStep($('s1'), true, city.value);
+  setStep($('s2'), !size.disabled, size.value);
+  setStep($('s3'), !!size.value && +size.value < 6, agesDone);
+  render(ages, agesDone);
+}
+
+function render(ages, agesDone) {
+  const out = $('result');
+  if (!city.value) {
+    out.innerHTML = `<div class="guide">上の <b>1〜3</b> を選ぶと、ここに<br><b>保護が必要なくなる給料の目安</b>と、<b>今月の給料を入れたときの保護費</b>が出ます。</div>`;
+    return;
+  }
+  if (+size.value >= 6) {
+    out.innerHTML = `<div class="guide">6人以上の世帯は計算できません。<br>福祉事務所（役所の生活保護の窓口）で確かめてください。</div>`;
+    return;
+  }
+  if (!agesDone) {
+    out.innerHTML = `<div class="guide">あと少しです。<b>${size.value ? '全員の年齢' : '人数'}</b>を選んでください。</div>`;
+    return;
+  }
+  if (window.gcUse) gcUse('止まるラインしらべ');
+  const [name, lvs] = city.value.split('|');
+  const lv = +lvs, n = ages.length;
+  const life = calcKijun(ages, lv, true, KIJUN, KEIKA).total;
+  const lim = jutakuLimit(JUTAKU, pref.value, name, lv, n);
+  out.innerHTML = `<div class="res">
+    <div class="verdict">
+      <p class="place"><b>${esc(pref.value)} ${esc(name)}</b>（${LV[lv]}）／ ${n}人世帯</p>
+      <div class="k">保護が必要なくなる目安（あなたの月の給料・額面）</div>
+      <p class="amount">月 <b id="line"></b> 円</p>
+      <p class="calc" id="calcLine"></p>
+      <details class="opt" id="optRent"${opened.rent ? ' open' : ''}><summary>家賃が ${yen(lim)}円より安い方は、実際の家賃で計算できます</summary>
+        <div class="yen-in"><input type="number" id="rent" inputmode="numeric" min="0" step="1000" placeholder="例 30000" value="${esc(rentVal)}" aria-label="実際の家賃"><span>円</span></div>
+        <p class="hint">共益費・管理費は除いてください。</p></details>
+      <details class="opt" id="optJippi"${opened.jippi ? ' open' : ''}><summary>給料から税・社会保険料・通勤費などが天引きされる方</summary>
+        <div class="yen-in"><input type="number" id="jippi" inputmode="numeric" min="0" step="100" placeholder="例 15000" value="${esc(jippiVal)}" aria-label="天引きの額"><span>円</span></div>
+        <p class="hint">1か月に天引きされる額です。その分、止まる目安の給料も同じだけ上がります。</p></details>
+    </div>
+
+    <div class="try">
+      <h3>試しに、今月の給料（額面）を入れてみる</h3>
+      <div class="yen-in"><input type="number" id="try" inputmode="numeric" min="0" step="1000" placeholder="例 80000" value="${esc(tryVal)}" aria-label="今月の給料"><span>円</span></div>
+      <div class="out" id="tryOut"><p class="hint" style="margin:0">給料を入れると、保護費と手元に入るお金の合計が出ます。</p></div>
+    </div>
+
+    <div class="box">
+      <h3>「停止」と「廃止」は、別のものです</h3>
+      <p><b>停止</b>：一時的に保護が必要なくなったが、おおむね6か月以内にまた必要になりそうなとき。期間を決めて止めます。</p>
+      <p><b>廃止</b>：もう保護が必要なくなったと見込まれるとき。</p>
+      <blockquote>当該世帯における臨時的な収入の増加、最低生活費の減少等により、一時的に保護を必要としなくなった場合であって、以後において見込まれるその世帯の最低生活費及び収入の状況から判断して、おおむね６か月以内に再び保護を要する状態になることが予想されるとき。</blockquote>
+      <p class="src">出典: 課長通知 問（第10の12）の答え「１ 保護を停止すべき場合 (1)」（<a href="https://www.mhlw.go.jp/content/001677054.pdf" target="_blank" rel="noopener">厚労省 生活保護実施要領等 2026年4月施行</a>）</p>
+      <blockquote>当該世帯における収入の臨時的な増加、最低生活費の臨時的な減少等により、以後おおむね６か月を超えて保護を要しない状態が継続すると認められるとき。</blockquote>
+      <p class="src">出典: 同「２ 保護を廃止すべき場合 (2)」</p>
+      <p>どちらにするかは、上の目安だけでは決まりません。<b>福祉事務所が、これからの見込みで決めます。</b></p>
+    </div>
+    <div class="box warn"><h3>止まる前に、確かめておくこと</h3><ul>
+      <li>保護が止まると、<b>国民健康保険料・国民年金・税金・医療費の自己負担</b>が自分に回ってきます。この計算には入っていません → <a href="nukedasenai-setsumei.html">抜け出せない理由（抜けた後の国保・年金）</a></li>
+      <li>抜けるときは、条件によって<b>就労自立給付金</b>が出ることがあります → <a href="nokoseru-setsumei.html">働いても残せるお金</a></li>
+      <li>収入があったら、<b>すぐに届け出る</b>決まりです。今月いくら引かれるかは → <a href="kyuryo.html">給料いくら残るしらべ</a></li>
+      <li>冬の上乗せや各種の加算が入る方は、止まる目安がこの結果より高くなります</li></ul></div>
+    <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button>
+  </div>`;
+  window._ctx = {life, lim, n};
+  $('rent').addEventListener('input', e => { rentVal = e.target.value; paint(); });
+  $('jippi').addEventListener('input', e => { jippiVal = e.target.value; paint(); });
+  $('try').addEventListener('input', e => { tryVal = e.target.value; paint(); });
+  $('optRent').addEventListener('toggle', e => { opened.rent = e.target.open; });
+  $('optJippi').addEventListener('toggle', e => { opened.jippi = e.target.open; });
+  paint();
+}
+
+function paint() {
+  const {life, lim} = window._ctx;
+  const r = toInt(rentVal), j = toInt(jippiVal);
+  const house = r > 0 ? Math.min(r, lim) : lim;
+  const M = life + house;
+  const G = stopLine(M, j, KISO);
+  $('line').textContent = yen(G);
+  $('calcLine').innerHTML = `最低生活費 <b>${yen(M)}円</b>（生活費 ${yen(life)}円＋家賃${r > 0 ? '' : 'の上限'} ${yen(house)}円）に、給料のうち手元に残る分（基礎控除 ${yen(kisoKojo(G, KISO))}円${j > 0 ? '＋天引き ' + yen(Math.min(G, j)) + '円' : ''}）を足した額`;
+  const tt = $('tryOut');
+  if (tryVal === '') { tt.innerHTML = '<p class="hint" style="margin:0">給料を入れると、保護費と手元に入るお金の合計が出ます。</p>'; return; }
+  const x = toInt(tryVal);
+  const cnt = countable(x, j, KISO);
+  const hogo = Math.max(0, M - cnt);
+  const take = x - Math.min(x, j) + hogo;
+  const stop = cnt >= M;
+  tt.innerHTML = `<table class="two"><tbody>
+    <tr><th>給料（額面）</th><td>${yen(x)}円</td></tr>
+    <tr><th>収入として認められる額<br><small>給料から手元に残る分を引いた額</small></th><td>${yen(cnt)}円</td></tr>
+    <tr><th>保護費<br><small>最低生活費 ${yen(M)}円 − 認められる額</small></th><td>${yen(hogo)}円</td></tr>
+    <tr class="em"><th>手元に入るお金の合計<br><small>給料${j > 0 ? '−天引き' : ''}＋保護費</small></th><td>${yen(take)}円</td></tr></tbody></table>
+    ${stop ? `<p class="stopmsg"><b>この給料は、保護が必要なくなる目安に届いています。</b>停止か廃止かは、福祉事務所が見込みで決めます。</p>`
+           : `<p class="stopmsg">保護が必要なくなる目安まで、あと <b>${yen(G - x)}円</b> です。</p>`}`;
+}
+
+function resetAll() {
+  pref.value = ''; size.value = ''; rentVal = ''; jippiVal = ''; tryVal = ''; opened = {};
+  city.innerHTML = '<option value="">市区町村を選んでください</option>';
+  buildAges(); refresh();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+pref.addEventListener('change', () => {
+  city.innerHTML = '<option value="">市区町村を選んでください</option>';
+  (KYUCHI[pref.value] || []).slice().sort((a, b) => a[0].localeCompare(b[0], 'ja'))
+    .forEach(([nm, lv]) => city.add(new Option(nm, nm + '|' + lv)));
+  size.value = ''; buildAges(); refresh();
+});
+city.addEventListener('change', refresh);
+size.addEventListener('change', () => { buildAges(); refresh(); });
+refresh();
+</script>
+</body>
+</html>

@@ -166,7 +166,7 @@ function cases(use) {
   if (use === 'tsukin') {
     const extra = D.tsukin_extra.map(c => ({t: c.t, q: c.q, src: D.tsukin_extra_intro.src}));
     return D.tsukin_cases.map(c => ({
-      label: c.label, head: '通勤で車が認められる場合です。ただし、次の条件が必要です。',
+      label: c.label, head: c.extra ? '通勤で車が認められる場合です。ただし、次の条件が必要です。' : '通勤で車が認められる場合です。',
       lead: c.extra ? '次の4つの条件を、すべて満たす必要があります。' : '障害のある方の通勤は、上の4つの条件は付いていません。ただし、福祉事務所が「保有が社会的に適当」と認めることが必要です。',
       conds: c.extra ? extra : [], rule: D.tsukin_rule, src: 'src'
     })).concat([{label: NONE, none: true}]);

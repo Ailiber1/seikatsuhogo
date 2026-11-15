@@ -58,6 +58,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `fuyu.html` | ツール | 冬の上乗せしらべ（市区町村・人数を選ぶと、冬季加算の区と期間・月ごとの上乗せ・12月の期末一時扶助・冬の合計が出る。`scripts/gen_fuyu.py` が生成） | [/fuyu.html](https://ailiber1.github.io/seikatsuhogo/fuyu.html) |
 | `teishi-setsumei.html` | 解説 | 生活保護は、働くといくらで止まる？（保護費＝最低生活費−認められる収入・止まる目安＝最低生活費＋基礎控除・ひとり暮らし20〜40歳で札幌市・長崎市・東京23区の例・停止と廃止の分かれ目はおおむね6か月・止まる前に確かめること。`scripts/gen_teishi.py` が生成） | [/teishi-setsumei.html](https://ailiber1.github.io/seikatsuhogo/teishi-setsumei.html) |
 | `teishi.html` | ツール | 止まるラインしらべ（市区町村・人数・年齢を選ぶと、働いた給料が月いくらに届くと保護が必要なくなる目安かが出る。家賃・天引きの入力、今月の給料を入れた保護費と手元の合計。`scripts/gen_teishi.py` が生成） | [/teishi.html](https://ailiber1.github.io/seikatsuhogo/teishi.html) |
+| `kuruma-setsumei.html` | 解説 | 生活保護でも、車は持てる？（原則は持てない・例外は通勤4つの場合／通院5つの条件／失業中の処分保留・壊れたときの買い替え4つの条件と事前の承認。引用は課長通知 問（第3の9）（第3の9の2）（第3の12）（第3の23）。`scripts/gen_kuruma.py` が生成） | [/kuruma-setsumei.html](https://ailiber1.github.io/seikatsuhogo/kuruma-setsumei.html) |
+| `kuruma.html` | ツール | 車は持てる？しらべ（車の使い道と事情を選ぶと、条件の一覧が原文つきで出て、当てはまるものに印をつけて満たしているか確かめられる。`scripts/gen_kuruma.py` が生成） | [/kuruma.html](https://ailiber1.github.io/seikatsuhogo/kuruma.html) |
 | `database.rules.json` / `firebase.json` / `.firebaserc` | 設定 | 暇人スキャンと抜け出せない理由アンケートの保存先（Firebase Realtime Database）の書き込みルール | — |
 | `data/` | データ | ページに埋め込む元データ（JSON） | — |
 | `scripts/` | スクリプト | 公的資料からデータを作り、ページを生成する | — |
@@ -89,6 +91,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `tokubetsu_kijun.json` | 住宅扶助の特別基準額（局長通知 第7の4の(1)のオ）。都道府県×級地と指定都市・中核市、1人〜7人以上。引っ越しの敷金等の上限はこの額×3 | `jutaku_limit_2015_source.pdf` の別表2 |
 | `fuyu.json` | 冬季加算（Ⅰ〜Ⅵ区・1〜9人と10人以上の加算・期間）、期末一時扶助（級地×人数、改正前の額も）、地区の区分、基準部会の12月の支出の数字 | 下の告示の写し・実施要領・基準部会の資料 |
 | `teishi_law.json` | 生活保護法 第8条（基準及び程度の原則）・第26条（保護の停止及び廃止）の原文（`scripts/extract_teishi_law.py` がe-Govから取得）。止まる目安の計算には、既存の `kijun_r8.json`・`keika.json`・`jutaku_limit.json`・`kiso_kojo.json`・`kyuchi_by_city.json` を使う | e-Gov法令検索。停止・廃止の分かれ目（おおむね6か月）は `jisshi_yoryo_r8_source.pdf` の課長通知 問（第10の12） |
+| `kuruma.json` | 車の保有が認められる場合と条件（通勤4つの場合・通院2つの場合×5つの条件・失業中の処分保留・買い替え4つの条件）の原文の引用と、やさしい言い換え | `jisshi_yoryo_r8_source.pdf` の課長通知 第3 問（第3の9）（第3の9の2）（第3の12）（第3の23）、`seikatsuhogo_page_source.html`（厚労省「生活保護を申請したい方へ」） |
 | `kokuji158_p4_source.html` / `kokuji158_p7_source.html` | 生活保護法による保護の基準（告示）の厚労省 法令等データベースのページ（4ページ＝冬季加算と期末一時扶助の表、7ページ＝地区の区分）。2026年11月8日取得 | https://www.mhlw.go.jp/web/t_doc?dataId=82051000&dataType=0&pageNo=4 |
 | `kijunbukai63_shiryo1_source.pdf` / `kijunbukai63_shidai_source.pdf` | 第63回 社会保障審議会生活保護基準部会（2026年11月5日）資料1と議事次第 | https://www.mhlw.go.jp/stf/newpage_77177.html |
 | `jikan_tsuchi_dai9_source.html` / `kacho_tsuchi_dai9_source.html` / `seikatsuhogo_page_source.html` | 次官通知 第9、課長通知 第9（問1〜問3）、厚労省「生活保護を申請したい方へ」の写し（2026年11月2日取得） | 厚労省 |
@@ -144,6 +147,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `extract_teishi_law.py` | e-Govから生活保護法 第8条・第26条を取得して `data/teishi_law.json` を作る |
 | `gen_teishi.py` | ツール `teishi.template.html` の計算（CALC-START〜END）を解説にも同じものとして埋め込み、解説の金額は node で動かして差し込んで、止まる目安の解説とツールを生成する |
 | `verify_teishi.py` | 引用が条文・実施要領の原本にそのままあるか、計算が貯金の境目しらべ・給料いくら残るしらべと同じか、止まる目安が1円ずつ数えた値と一致するか（240世帯・目安以上はずっと保護費0）、解説の金額が独立計算と合うかを確かめる |
+| `gen_kuruma.py` | `data/kuruma.json` から、車の解説（引用を差し込み）とツール（データを埋め込み）を生成する |
+| `verify_kuruma.py` | 引用が実施要領の原本PDF・厚労省ページの写しにそのままあるか、条件の数と番号（通勤4つ・通院5つ×2・買い替え4つ）が原本と合うか、ツールの埋め込みデータが `data/kuruma.json` と同じかを確かめる |
 | `verify_hogohi.py` | `hogohi.html` の計算式を node で動かし、資料4のモデル世帯54通りと1円単位で一致するか確かめる |
 | `xlsx_read.py` | openpyxl なしで xlsx を読む（ふりがなは除く） |
 | `extract_nukedasenai.py` | 被保護者調査の表の写しから `data/nukedasenai.json` を作る（見出しの並び、理由の和と総数、年齢・期間の和が合うかを確かめる） |

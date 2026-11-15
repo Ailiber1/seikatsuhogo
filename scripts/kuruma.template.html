@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>車は持てる？しらべ</title>
+<meta name="description" content="車を何に使うかと、自分の事情を選ぶと、生活保護を受けながら車を持てる条件と、満たしているかを国の通知の原文つきで確かめられます">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:16px; line-height:1.75; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+/* 言葉の途中で改行しない（対応ブラウザは文節で折り返す） */
+h1,.lead,.for-who li,.ans h3,.ans p,.box h3,.guide{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:24px 16px 44px}
+h1{font-size:clamp(24px,5.2vw,32px); line-height:1.4; margin:0 0 8px; color:var(--navy); text-wrap:balance}
+.lead{color:var(--sub); font-size:15px; margin:0 0 16px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:18px; font-size:15px}
+.for-who b{color:var(--navy)}
+.for-who ul{margin:4px 0 0; padding-left:1.2em}
+
+.step{background:var(--panel); border:2px solid var(--line); border-radius:13px; padding:14px 16px; margin-bottom:12px; transition:border-color .3s, opacity .3s}
+.step.off{opacity:.5}
+.step.done{border-color:var(--navy)}
+.step h2{font-size:16.5px; margin:0 0 8px; display:flex; gap:9px; align-items:center}
+.step h2 .n{flex:none; width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; display:grid; place-items:center; font-size:13px}
+.step .hint{font-size:13px; color:var(--sub); margin:6px 0 0}
+select,input[type=number]{font:inherit; font-size:16px; width:100%; min-height:44px; padding:8px 10px; border:2px solid var(--line); border-radius:9px; background:#fff; color:var(--ink)}
+select:focus,input:focus{outline:3px solid var(--navy-soft); border-color:var(--navy)}
+select:disabled,input:disabled{background:var(--line-soft); color:var(--sub)}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.ages{display:grid; gap:8px}
+.ages label{font-size:13px; font-weight:700; color:var(--sub); display:block; margin-bottom:2px}
+.yen-in{display:flex; align-items:center; gap:8px}
+.yen-in span{flex:none; font-weight:700}
+
+#result{margin-top:18px}
+.guide{border:2px dashed var(--line); border-radius:13px; padding:18px; text-align:center; color:var(--sub)}
+.guide b{color:var(--navy)}
+.res{animation:pop .45s ease}
+@keyframes pop{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+.verdict{border-left:6px solid var(--navy); background:var(--navy-soft); border-radius:0 13px 13px 0; padding:14px 16px; margin-bottom:12px}
+.verdict .k{font-size:13px; font-weight:700; color:var(--sub)}
+.verdict .place{font-size:14px; color:var(--sub); margin:0 0 2px}
+.amount{font-size:18px; font-weight:700; margin:2px 0}
+.amount b{font-size:clamp(38px,9vw,52px); color:var(--navy); font-variant-numeric:tabular-nums; letter-spacing:.01em}
+.calc{font-size:14px; margin:2px 0 0; color:var(--sub)}
+.calc b{color:var(--ink)}
+
+.gauge{margin:14px 0 6px}
+.gauge .bar{position:relative; height:26px; border-radius:13px; background:var(--line-soft); overflow:hidden}
+.gauge .bar i{position:absolute; top:0; bottom:0; left:0; width:0; transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.gauge .keep{background:var(--ok)} .gauge .cut{background:var(--warn)} .gauge .over{background:var(--ng)}
+.gauge .ticks{position:relative; height:34px; font-size:12px; color:var(--sub)}
+.gauge .ticks span{position:absolute; top:3px; transform:translateX(-50%); white-space:nowrap; text-align:center; line-height:1.3}
+.gauge .ticks span::before{content:""; position:absolute; left:50%; top:-8px; height:8px; border-left:2px solid var(--sub)}
+.legend{display:flex; flex-wrap:wrap; gap:4px 14px; font-size:13px; color:var(--sub); margin:0 0 4px}
+.legend span::before{content:""; display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:5px; background:var(--c)}
+
+.ans{border-radius:0 13px 13px 0; padding:13px 16px; margin-bottom:12px; border-left:6px solid}
+.ans.ok{background:var(--ok-bg); border-color:var(--ok)} .ans.ok h3{color:var(--ok)}
+.ans.cut{background:var(--warn-bg); border-color:var(--warn)} .ans.cut h3{color:var(--warn)}
+.ans.over{background:var(--ng-bg); border-color:var(--ng)} .ans.over h3{color:var(--ng)}
+.ans h3{font-size:clamp(18px,4.6vw,21px); margin:0 0 4px; line-height:1.45}
+.ans p{margin:0 0 6px; font-size:15px} .ans p:last-child{margin:0}
+
+details.rentopt{margin:6px 0 2px}
+details.rentopt summary{cursor:pointer; font-size:14px; font-weight:700; color:var(--navy); min-height:40px; display:flex; align-items:center; list-style:none; gap:6px}
+details.rentopt summary::-webkit-details-marker{display:none}
+details.rentopt summary::before{content:"＋"; font-weight:800}
+details.rentopt[open] summary::before{content:"−"}
+details.rentopt .hint{font-size:13px; color:var(--sub); margin:6px 0 0}
+
+.box{background:var(--panel); border:2px solid var(--line); border-radius:12px; padding:12px 15px; margin-bottom:10px}
+.box h3{font-size:15.5px; margin:0 0 6px; color:var(--navy)}
+.box p{margin:0 0 6px; font-size:15px} .box p:last-child{margin:0}
+.box ul{margin:0; padding-left:1.2em; font-size:14.5px}
+.box.warn{background:var(--warn-bg); border-color:var(--warn)} .box.warn h3{color:var(--warn)}
+
+.chips{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 10px}
+.chip{font:inherit; font-size:15px; font-weight:700; color:var(--navy); background:#fff; border:2px solid var(--line); border-radius:22px; padding:6px 14px; min-height:42px; cursor:pointer}
+.chip[aria-pressed=true]{border-color:var(--navy); background:var(--navy-soft)}
+.item{border:1px solid var(--line); border-left:5px solid var(--c); border-radius:0 11px 11px 0; padding:10px 14px; margin-bottom:8px; background:#fff; animation:pop .35s ease}
+.item .tag{display:inline-block; font-size:13px; font-weight:800; color:var(--c); margin-bottom:2px}
+.item b.t{display:block; font-size:16px}
+.item p{margin:4px 0 0; font-size:14.5px}
+.item .q{font-size:13px; color:var(--sub); background:var(--panel); border-left:3px solid var(--line); padding:5px 9px; margin-top:6px}
+.item .q a{color:var(--navy)}
+.item.ok{--c:var(--ok)} .item.mid{--c:var(--warn)} .item.ng{--c:var(--ng)}
+
+.reset{font:inherit; font-size:14px; font-weight:700; color:var(--navy); background:var(--navy-soft); border:none; border-radius:8px; padding:8px 14px; min-height:40px; cursor:pointer; margin-top:4px}
+.foot{margin-top:24px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (max-width:480px){ .row2{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){ .res,.item{animation:none} .gauge .bar i{transition:none} }
+</style>
+<style>
+/* このツール専用の追加 */
+.conds{margin:8px 0 10px; padding:0; list-style:none}
+.cond{display:flex; gap:10px; align-items:flex-start; border:2px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px; background:#fff; cursor:pointer; min-height:48px}
+.cond input{flex:none; width:22px; height:22px; margin-top:3px; accent-color:var(--navy)}
+.cond.on{border-color:var(--ok); background:var(--ok-bg)}
+.cond b{display:block; font-size:15.5px; line-height:1.55}
+.cond .q{display:block; font-size:12.5px; color:var(--sub); margin-top:4px; line-height:1.55}
+.count{font-size:15px; margin:4px 0 8px}
+.count b{font-size:20px; color:var(--navy)}
+blockquote{margin:6px 0 4px; padding:8px 12px; background:#fff; border-left:4px solid var(--line); font-size:14.5px; border-radius:0 10px 10px 0}
+.src{font-size:13px; color:var(--sub); margin:0 0 6px} .src a{color:var(--navy)}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho">車は持てる？しらべ</h1>
+  <p class="lead">車を何に使うかと、自分の事情を選ぶと、生活保護を受けながら<b>車を持てる条件</b>と、<b>自分が満たしているか</b>を、国の通知の原文つきで確かめられます。</p>
+  <div class="for-who"><b>このツールは、こういう方へ</b>
+    <ul><li>車を持っていて、生活保護の申請を考えている方</li>
+    <li>受けている最中に、車が壊れた方</li>
+    <li>通勤や通院で車が必要な方</li></ul></div>
+
+  <div class="step" id="s1">
+    <h2><span class="n">1</span>車を何に使いますか？</h2>
+    <select id="use" aria-label="車の使い道"><option value="">選んでください</option></select>
+  </div>
+  <div class="step off" id="s2">
+    <h2><span class="n">2</span>あなたの事情は？</h2>
+    <select id="kase" disabled aria-label="事情"><option value="">選んでください</option></select>
+  </div>
+
+  <div id="result" aria-live="polite"></div>
+
+  <div class="foot">
+    <p>この結果は、国の通知（課長通知）に書かれた条件を、そのまま並べたものです。最終的な判断は福祉事務所がします。選んだ内容はこの画面の中だけで処理していて、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</p>
+    <p>根拠: <span id="srcLink"></span> ／ <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/seikatsuhogopage.html" target="_blank" rel="noopener">厚労省「生活保護を申請したい方へ」</a></p>
+    <p>引用元の「生活保護実施要領等（2026年4月施行）」の資料には「未定稿」の注記があります。確認日: 2026年11月15日 ／ 個人が作ったもので、行政の公式ツールではありません。法律上の助言でもありません。</p>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+const D = /*DATA*/;
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const USES = [
+  {k: 'tsukin', name: '通勤（仕事に行くため）'},
+  {k: 'tsuin', name: '通院（病院・施設に通うため）'},
+  {k: 'kyushoku', name: '失業中・求職中（保護の申請のとき）'},
+  {k: 'kaikae', name: '車が壊れた（買い替えたい）'}
+];
+const NONE = '上のどれにも当てはまらない';
+$('srcLink').innerHTML = `<a href="${D.source.url}" target="_blank" rel="noopener">${esc(D.source.label)}</a>`;
+USES.forEach(u => $('use').add(new Option(u.name, u.k)));
+
+// 事情の選択肢と、その結果（条件の一覧）を作る
+function cases(use) {
+  if (use === 'tsukin') {
+    const extra = D.tsukin_extra.map(c => ({t: c.t, q: c.q, src: D.tsukin_extra_intro.src}));
+    return D.tsukin_cases.map(c => ({
+      label: c.label, head: '通勤で車が認められる場合です。ただし、次の条件が必要です。',
+      lead: c.extra ? '次の4つの条件を、すべて満たす必要があります。' : '障害のある方の通勤は、上の4つの条件は付いていません。ただし、福祉事務所が「保有が社会的に適当」と認めることが必要です。',
+      conds: c.extra ? extra : [], rule: D.tsukin_rule, src: 'src'
+    })).concat([{label: NONE, none: true}]);
+  }
+  if (use === 'tsuin') {
+    return D.tsuin_cases.map(c => ({
+      label: c.label, head: '通院で車が認められる場合です。ただし、次の5つの条件を、すべて満たす必要があります。',
+      lead: '', conds: c.conds.map(x => ({t: x.t, q: x.q, cut: x.cut, src: D.tsuin_src}))
+    })).concat([{label: NONE, none: true}]);
+  }
+  if (use === 'kyushoku') {
+    const k = D.kyushoku;
+    const conds = k.conds.map(c => ({t: c.t, q: c.q, src: k.src}));
+    return [
+      {label: '電車やバスがふつうに使える地域に住んでいる', head: '申請のあいだ、車を処分しないでおいてもらえる場合です。',
+       lead: '次の条件がそろえば、処分の指導は保留されます。ただし、保留であって、車を使ってよいわけではありません。', conds, kyu: 'a'},
+      {label: '電車やバスの利用が著しく難しい地域に住んでいる', head: '申請のあいだ、車を処分しないでおいてもらえる場合です。',
+       lead: '次の条件がそろえば、処分の指導は保留されます。この地域に住む方は、求職活動に必要な場合に限り、車を使うことも認められます。', conds, kyu: 'b'},
+      {label: NONE, none: true}
+    ];
+  }
+  const kk = D.kaikae;
+  return [
+    {label: 'いま持っている車は、保有が認められている', head: '買い替え（更新）が認められる場合です。',
+     lead: '次の4つの条件を、すべて満たす必要があります。しかも、買う前に福祉事務所の承認をとるのが原則です。',
+     conds: kk.conds.map(c => ({t: c.t, q: c.q, src: kk.src})), kai: true},
+    {label: 'いま持っている車は、保有が認められていない', none: true, note: '買い替えが認められるのは、もともと保有を認められていた車だけです。'}
+  ];
+}
+
+let cur = [], sel = null, checked = new Set();
+$('use').addEventListener('change', () => {
+  cur = $('use').value ? cases($('use').value) : [];
+  $('kase').innerHTML = '<option value="">選んでください</option>';
+  cur.forEach((c, i) => $('kase').add(new Option(c.label, String(i))));
+  $('kase').value = ''; sel = null; checked = new Set(); refresh();
+});
+$('kase').addEventListener('change', () => { sel = $('kase').value === '' ? null : cur[+$('kase').value]; checked = new Set(); refresh(); });
+
+function refresh() {
+  $('kase').disabled = !$('use').value;
+  $('s2').classList.toggle('off', !$('use').value);
+  $('s1').classList.toggle('done', !!$('use').value);
+  $('s2').classList.toggle('done', !!sel);
+  render();
+}
+
+function render() {
+  const out = $('result');
+  if (!$('use').value) {
+    out.innerHTML = `<div class="guide">上の <b>1と2</b> を選ぶと、ここに<br><b>車を持てる条件と、満たしているか</b>が出ます。</div>`;
+    return;
+  }
+  if (!sel) { out.innerHTML = `<div class="guide">あと少しです。<b>あなたの事情</b>を選んでください。</div>`; return; }
+  if (window.gcUse) gcUse('車は持てる？しらべ');
+  if (sel.none) {
+    out.innerHTML = `<div class="res"><div class="ans over"><h3>この場合、原則として車は持てません</h3>
+      <p>${esc(sel.note || '国の通知に、車を持てる場合として書かれているのは、条件つきの例外だけです。')}</p></div>
+      <div class="box"><h3>国の説明</h3><blockquote>${esc(D.principle.q)}</blockquote>
+      <p class="src">出典: <a href="${D.principle.url}" target="_blank" rel="noopener">${esc(D.principle.src)}</a></p></div>
+      <div class="box warn"><h3>手放す前に</h3><ul>
+        <li>車を売る前に、<b>福祉事務所に事情を話して相談</b>してください。例外が認められる場合があります</li>
+        <li>勝手に売ったり、名義を変えたりする前に、相談するのが安全です</li></ul></div>
+      <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button></div>`;
+    return;
+  }
+  const n = sel.conds.length;
+  out.innerHTML = `<div class="res">
+    <div class="verdict"><div class="k">あなたの場合</div>
+      <p class="place"><b>${esc(sel.label)}</b></p>
+      <p class="amount" style="font-size:18px">${esc(sel.head)}</p></div>
+    ${sel.rule ? `<div class="box"><h3>基本の考え方</h3><blockquote>${esc(sel.rule.q)}</blockquote><p class="src">出典: ${esc(sel.rule.src)}</p></div>` : ''}
+    <p style="margin:8px 0">${esc(sel.lead)}</p>
+    ${n ? `<p class="count" id="count"></p><ul class="conds" id="conds">${sel.conds.map((c, i) => `<li><label class="cond" data-i="${i}"><input type="checkbox" data-i="${i}"><span><b>${esc(c.t)}</b>${c.q ? `<span class="q">原文：「${esc(c.q)}」${c.cut ? '…' : ''}（${esc(c.src)}）</span>` : `<span class="q">（${esc(c.src)}）</span>`}</span></label></li>`).join('')}</ul><div id="judge"></div>` : ''}
+    ${sel.kyu ? `<div class="box warn"><h3>大事な注意</h3><blockquote>${esc(D.kyushoku.q3)}</blockquote><p class="src">出典: ${esc(D.kyushoku.src)}</p></div>` : ''}
+    ${sel.kai ? `<div class="box"><h3>買う前に</h3><blockquote>${esc(D.kaikae.q_rule)}</blockquote><p class="src">出典: ${esc(D.kaikae.src)}</p></div>` : ''}
+    <div class="box warn"><h3>この結果を見るときの注意</h3><ul>
+      <li>国の通知に書かれた条件を並べたものです。<b>認められるかどうかは、福祉事務所が決めます</b></li>
+      <li>条件の「すべて」を満たす必要があります。1つでも足りないと、認められないことがあります</li>
+      <li>車を売る・買い替える前に、必ず福祉事務所に相談してください</li></ul></div>
+    <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button></div>`;
+  out.querySelectorAll('.cond input').forEach(el => el.addEventListener('change', () => {
+    const i = +el.dataset.i; el.checked ? checked.add(i) : checked.delete(i);
+    el.closest('.cond').classList.toggle('on', el.checked); judge();
+  }));
+  judge();
+}
+
+function judge() {
+  if (!sel || !sel.conds.length) return;
+  const n = sel.conds.length, k = checked.size;
+  $('count').innerHTML = `当てはまる条件に印をつけてください　<b>${k}</b> / ${n}`;
+  $('judge').innerHTML = k === n
+    ? `<div class="ans ok"><h3>条件を、すべて満たしています</h3><p>認められる可能性があります。福祉事務所に、車を持ち続けたい（買い替えたい）と伝えて、確かめてください。</p></div>`
+    : `<div class="ans cut"><h3>${n - k}つの条件が、まだ当てはまっていません</h3><p>印のついていない条件は、福祉事務所に相談して確かめましょう。条件のうち「確実にまかなえる見通し」などは、書類や説明が必要になることがあります。</p></div>`;
+}
+
+function resetAll() {
+  $('use').value = ''; cur = []; sel = null; checked = new Set();
+  $('kase').innerHTML = '<option value="">選んでください</option>';
+  refresh(); window.scrollTo({top: 0, behavior: 'smooth'});
+}
+refresh();
+</script>
+</body>
+</html>

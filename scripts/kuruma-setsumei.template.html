@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>生活保護でも、車は持てる？</title>
+<meta name="description" content="生活保護では車は原則として持てません。例外として認められる通勤・通院・求職中・買い替えの条件を、国の通知の原文で、生活保護3年目が説明します">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:17px; line-height:1.8; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+.nb{display:inline-block}
+h1,.conclusion p,.ch h2,.for-who li,.cta,.card b{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
+h1{font-size:clamp(26px,6vw,36px); line-height:1.4; margin:0 0 12px; color:var(--navy); text-wrap:balance}
+h1 small{display:block; font-size:.55em; color:var(--sub); font-weight:600; margin-top:4px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:16px; font-size:16.5px}
+.for-who b{color:var(--navy)} .for-who ul{margin:4px 0 0; padding-left:1.2em}
+.conclusion{border:2px solid var(--navy); border-radius:14px; padding:16px; margin-bottom:10px; background:#fff}
+.conclusion .k{font-size:14.5px; font-weight:700; color:var(--sub)}
+.conclusion p{margin:4px 0 0; font-size:18px; font-weight:700; line-height:1.6}
+.conclusion b{color:var(--navy)}
+.cta{display:flex; align-items:center; justify-content:space-between; gap:10px; text-decoration:none; color:var(--navy); background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:11px 14px; margin:12px 0 22px; font-weight:700; font-size:16.5px; min-height:48px}
+.cta span:last-child{flex:none}
+section.ch{margin:30px 0 8px}
+.ch h2{display:flex; align-items:center; gap:10px; font-size:clamp(19px,4.6vw,23px); line-height:1.45; margin:0 0 12px; color:var(--navy)}
+.ch h2 .b{flex:none; width:34px; height:34px; border-radius:50%; border:2px solid var(--navy); display:grid; place-items:center; font-size:16.5px; font-family:system-ui,sans-serif}
+.ch p{margin:0 0 12px}
+.ch a{color:var(--navy); font-weight:700}
+blockquote{margin:10px 0 4px; padding:10px 14px; background:var(--panel); border-left:4px solid var(--line); font-size:16px; border-radius:0 10px 10px 0}
+.src{font-size:14.5px; color:var(--sub); margin:0 0 8px} .src a{color:var(--navy); font-weight:400}
+.easy{background:var(--ok-bg); border-left:4px solid var(--ok); border-radius:0 10px 10px 0; padding:9px 14px; font-size:16.5px; margin:6px 0 12px}
+.easy b{color:var(--ok)}
+.note{font-size:14.5px; color:var(--sub); margin:4px 0 12px}
+.caution{background:var(--warn-bg); border-left:5px solid var(--warn); border-radius:0 11px 11px 0; padding:10px 14px; margin:8px 0 12px}
+.caution b{color:var(--warn)}
+
+/* 1章: 月ごとの棒 */
+.fig{border:1.5px solid var(--navy); border-radius:14px; padding:14px 14px 12px; background:#fff; margin:8px 0 12px}
+.seg{display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-bottom:10px}
+.seg button{font:inherit; font-size:15px; font-weight:700; min-height:48px; border:2px solid var(--line); border-radius:11px; background:#fff; color:var(--sub); cursor:pointer; padding:4px 4px; line-height:1.35}
+.seg button[aria-pressed=true]{border-color:var(--navy); background:var(--navy-soft); color:var(--navy)}
+.fig .cap{font-size:15px; font-weight:700; color:var(--sub); margin:0}
+.fig .val{font-size:clamp(34px,9vw,46px); font-weight:800; color:var(--navy); line-height:1.25}
+.fig .val small{font-size:.42em; color:var(--ink); font-weight:700}
+.fig .calc{font-size:14.5px; color:var(--sub); margin:2px 0 8px}
+.months{display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:2px; align-items:end; height:190px; border-bottom:2px solid var(--line); padding-top:22px}
+.mo{display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:100%; position:relative; min-width:0}
+.mo .amt{font-size:10px; font-weight:700; color:var(--ink); white-space:nowrap; margin-bottom:2px; font-variant-numeric:tabular-nums; letter-spacing:-.03em}
+.mo .bar{width:78%; display:flex; flex-direction:column-reverse; border-radius:6px 6px 0 0; overflow:hidden}
+.mo .t{background:var(--navy); height:0; transition:height .8s cubic-bezier(.2,.8,.2,1)}
+.mo .k{background:var(--ok); height:0; transition:height .8s cubic-bezier(.2,.8,.2,1) .2s}
+.mlab{display:grid; grid-template-columns:repeat(7,1fr); gap:4px; text-align:center; font-size:13px; font-weight:700; color:var(--sub); margin-top:4px}
+.lg{display:flex; flex-wrap:wrap; gap:4px 16px; font-size:14px; color:var(--sub); margin-top:6px}
+.lg span::before{content:""; display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-1px; background:var(--c)}
+
+table.t6{width:100%; border-collapse:collapse; font-size:15px; margin:6px 0 12px; background:#fff}
+.t6 th,.t6 td{padding:7px 6px; border-bottom:1px solid var(--line); text-align:left}
+.t6 td.r{text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums}
+.t6 thead th{font-size:13px; color:var(--sub)}
+.t6 tr.me td{background:var(--navy-soft); font-weight:700}
+
+/* 4章: 支出の棒 */
+.bars{border:1px solid var(--line); border-radius:13px; background:var(--panel); padding:12px 14px; margin:8px 0 12px}
+.bar-row{margin-bottom:10px} .bar-row:last-child{margin-bottom:0}
+.bar-row .tt{display:flex; justify-content:space-between; gap:8px; font-size:15.5px; font-weight:700}
+.bar-row .tt span:last-child{color:var(--navy)}
+.bar-row .tr{height:20px; border-radius:10px; background:var(--line-soft); overflow:hidden; margin-top:3px}
+.bar-row .tr i{display:block; height:100%; width:0; border-radius:10px; background:var(--navy); transition:width 1.3s cubic-bezier(.2,.8,.2,1)}
+.bar-row .tr i.g{background:var(--ok)}
+
+.card{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px; background:#fff}
+.card .mk{flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:14px}
+.card .mk.y{background:var(--ok-bg); color:var(--ok)} .card .mk.q{background:var(--warn-bg); color:var(--warn)}
+.card b{display:block; font-size:16.5px} .card small{color:var(--sub); font-size:14.5px; line-height:1.55; display:block}
+.sum h3{font-size:16px; margin:14px 0 6px; color:var(--navy)}
+.fade{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+.fade.in{opacity:1; transform:none}
+.foot{margin-top:28px; font-size:14.5px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot h3{font-size:15px; color:var(--ink); margin:12px 0 4px}
+.foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .fade{opacity:1; transform:none; transition:none} .mo .t,.mo .k,.bar-row .tr i{transition:none} }
+</style>
+<style>
+/* この資料専用の追加 */
+.two{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:8px 0 12px}
+.two .tile{border:1.5px solid var(--line); border-radius:12px; padding:10px 12px; background:#fff}
+.two .tile b{display:block; font-size:16px; color:var(--navy)}
+.two .tile small{display:block; color:var(--sub); font-size:14px; line-height:1.55; margin-top:3px}
+.ex3{display:grid; gap:8px; margin:10px 0 12px}
+.ex3 .ex{display:flex; gap:10px; align-items:flex-start; border-left:5px solid var(--navy); background:var(--navy-soft); border-radius:0 11px 11px 0; padding:10px 14px}
+.ex3 .ex .nn{flex:none; width:28px; height:28px; border-radius:50%; background:#fff; border:2px solid var(--navy); color:var(--navy); display:grid; place-items:center; font-weight:800; font-size:15px; font-family:system-ui,sans-serif}
+.ex3 .ex b{display:block; font-size:16.5px}
+.ex3 .ex small{display:block; font-size:14.5px; color:var(--sub); line-height:1.55}
+@media (max-width:480px){ .two{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho"><span class="nb">生活保護でも、</span><span class="nb">車は持てる？</span><small><span class="nb">持てる場合と、</span><span class="nb">手放す前に確かめること</span></small></h1>
+  <div class="for-who"><b>このページは、こういう方へ</b>
+    <ul><li>車を持っていて、<span class="nb">生活保護の申請を考えている方</span></li>
+    <li>受けている最中に、<span class="nb">車が壊れた方</span></li>
+    <li>通勤や通院で、<span class="nb">車が必要な方</span></li></ul></div>
+
+  <div class="conclusion"><div class="k">結論</div>
+    <p>車は、原則として<b>持てません</b>。ただし、国の通知に<b>条件つきの例外</b>があります。<br>① <b>通勤</b>に必要な場合　② <b>通院</b>に必要な場合<br>③ <b>失業中</b>に、処分を待ってもらえる場合<br>壊れたときの<b>買い替え</b>にも、条件があります。<br>どれも、福祉事務所が認めた場合だけです。</p></div>
+  <a class="cta" href="kuruma.html"><span>自分の事情を選ぶと、条件を満たしているか確かめられる（車は持てる？しらべ）</span><span>→</span></a>
+
+  <section class="ch fade">
+    <h2><span class="b">1</span>原則は、持てない</h2>
+    <blockquote>{{Q_PRINCIPLE}}</blockquote>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/seikatsuhogopage.html" target="_blank" rel="noopener">厚労省「生活保護を申請したい方へ」</a></p>
+    <div class="easy"><b>やさしく言うと：</b>車は、処分する（手放す）のが原則。ただし、仕事や通院でどうしても必要な人には、例外があります。車の持ち物の扱いは → <a href="chokin-setsumei.html">貯金の境目（持ち物ごとの答え）</a></div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">2</span>例外① 通勤：認められるのは4つの場合</h2>
+    <p>国の通知は、「車でないと通勤できない、またはとても難しい」場合として、次の4つを挙げています。</p>
+    <blockquote>{{Q_TSUKIN}}</blockquote>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/content/001677054.pdf" target="_blank" rel="noopener">課長通知 問（第3の9）</a>（厚労省 生活保護実施要領等 2026年4月施行）</p>
+    <p>障害のある方（1）以外の、2・3・4には、<b>さらに4つの条件</b>がつきます。そのうち、いちばん大事なのは、これです。</p>
+    <blockquote>{{Q_TSUKIN4}}</blockquote>
+    <p class="src">出典: 同 問（第3の9）</p>
+    <div class="easy"><b>やさしく言うと：</b>車で通う仕事の収入が、車の維持費よりずっと多いこと。ほかにも「車は必要な範囲のものか」などの条件があります（ツールで確かめられます）。申請前の車の話は → <a href="yatte-setsumei.html">やってはいけないこと5つ（車も1つ）</a></div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">3</span>例外② 通院：条件は5つ</h2>
+    <p>病院に通うための車が認められるのは、次の2つの場合です。</p>
+    <div class="two">
+      <div class="tile"><b>障害のある方</b><small>通院・通所・通学のために、車が必要</small></div>
+      <div class="tile"><b>電車やバスが著しく使いにくい地域に住む方</b><small>通院のために、車が必要</small></div>
+    </div>
+    <p>どちらも、次の<b>5つの条件をすべて</b>満たす必要があります。</p>
+    <div class="ex3">
+      <div class="ex"><span class="nn">1</span><div><b>定期的に使うことが明らか</b><small>通院のために、ふだんから車を使っている</small></div></div>
+      <div class="ex"><span class="nn">2</span><div><b>車で通うしかない</b><small>送迎サービス・家族の送迎・タクシーでは難しい</small></div></div>
+      <div class="ex"><span class="nn">3</span><div><b>必要最小限の車</b><small>処分価値が小さく、排気量はおおむね2,000cc以下</small></div></div>
+      <div class="ex"><span class="nn">4</span><div><b>維持費の見通しがある</b><small>ガソリン代を除く維持費が、援助などで確実にまかなえる</small></div></div>
+      <div class="ex"><span class="nn">5</span><div><b>運転する人が決まっている</b><small>本人、または専ら本人の通院のために運転する同じ生計の人・介護者</small></div></div>
+    </div>
+    <blockquote>{{Q_TSUIN3}}</blockquote>
+    <blockquote>{{Q_TSUIN4}}</blockquote>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/content/001677054.pdf" target="_blank" rel="noopener">課長通知 問（第3の12）</a>の答え「２ 公共交通機関の利用が著しく困難な地域に居住する者」の(3)(4)</p>
+    <div class="easy"><b>やさしく言うと：</b>「車がないと病院に行けない」だけでは足りません。<b>維持費を、自分以外の援助などで確実に出せる見通し</b>まで求められます。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">4</span>例外③ 失業中：処分を待ってもらえる場合</h2>
+    <p>申請のときに失業していても、すぐに働いて保護を抜けられる見込みなら、車の処分を待ってもらえます。</p>
+    <blockquote>{{Q_KYU}}</blockquote>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/content/001677054.pdf" target="_blank" rel="noopener">課長通知 問（第3の9の2）</a>の答え</p>
+    <div class="caution"><b>ただし、車に乗ってよいわけではありません。</b>
+      <blockquote style="margin-top:6px">{{Q_KYU3}}</blockquote>
+      <p class="note" style="margin:6px 0 0">電車やバスの利用が著しく難しい地域に住む方は、求職活動に必要な場合に限り、車の使用が認められます。また、<b>維持費を出すのが難しい場合は、この待ってもらえる扱いの対象外</b>です。</p></div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">5</span>壊れたら：買い替えの条件は4つ</h2>
+    <p>車を持つことを認められていても、壊れたときに、自由に買い替えられるわけではありません。</p>
+    <div class="ex3">
+      <div class="ex"><span class="nn">1</span><div><b>車が使えない状態になった</b></div></div>
+      <div class="ex"><span class="nn">2</span><div><b>車を持てていた事情が変わらない</b><small>買い替えたあとも、通勤・通院の条件を満たし続ける</small></div></div>
+      <div class="ex"><span class="nn">3</span><div><b>処分価値が小さく、必要な範囲の車</b></div></div>
+      <div class="ex"><span class="nn">4</span><div><b>買い替えの費用が、確実にまかなえる</b><small>家族などの援助か、保護費のやり繰りでためたお金で</small></div></div>
+    </div>
+    <blockquote>{{Q_KAI}}</blockquote>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/content/001677054.pdf" target="_blank" rel="noopener">課長通知 問（第3の23）</a>の答え</p>
+    <div class="easy"><b>やさしく言うと：</b>壊れたら、<b>買う前に</b>福祉事務所に相談して、承認をもらうのが原則。先に買ってしまうのは危険です。</div>
+  </section>
+  <a class="cta" href="kuruma.html"><span>自分の場合に当てはまる条件を、1つずつ確かめる（車は持てる？しらべ）</span><span>→</span></a>
+
+  <section class="ch sum fade">
+    <h2><span class="b">✓</span>まとめ</h2>
+    <h3>分かっていること</h3>
+    <div class="card"><span class="mk y">✓</span><div><b>車は、原則として持てない</b><small>例外は、通勤・通院・失業中の処分保留。どれも条件つき</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>通勤は4つの場合、通院は5つの条件</b><small>通院の車は、維持費の見通しと排気量2,000cc以下がポイント</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>壊れたときの買い替えは、事前の承認が原則</b><small>4つの条件をすべて満たすことが必要</small></div></div>
+    <h3>まだ分からないこと</h3>
+    <div class="card"><span class="mk q">？</span><div><b>自分が認められるか</b><small>福祉事務所が、事情を聞いて決める</small></div></div>
+    <div class="card"><span class="mk q">？</span><div><b>国が車の保有要件を見直すか</b><small>見直しを検討していると報じられていますが、正式な通知は確認できていません（2026年11月15日時点）</small></div></div>
+  </section>
+
+  <div class="foot">
+    <h3>根拠資料</h3>
+    <ul>
+      <li><a href="https://www.mhlw.go.jp/content/001677054.pdf" target="_blank" rel="noopener">厚労省「2026（令和8）年4月1日施行 生活保護実施要領等」</a>：課長通知 第3 問（第3の9）・問（第3の9の2）・問（第3の12）・問（第3の23）。※資料に「未定稿」の注記あり</li>
+      <li><a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/seikatsuhogopage.html" target="_blank" rel="noopener">厚労省「生活保護を申請したい方へ」</a></li>
+    </ul>
+    <h3>読むときの注意</h3>
+    <ul>
+      <li>確認日: 2026年11月15日。引用は原文のままです。「やさしく言うと」は私の言い換えです</li>
+      <li>通院の5つの条件は、障害のある方と、電車やバスが著しく使いにくい地域の方で、文言が少し違います。同じ5項目の形で書かれています</li>
+      <li>個人が作ったもので、行政の公式資料ではありません。個別の判断は、福祉事務所で確かめてください</li>
+    </ul>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+// スクロールで表示（スマホで縦に長い要素も出るように threshold:0）
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in'); io.unobserve(e.target);
+}), {threshold: 0, rootMargin: '0px 0px -12% 0px'});
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
+</script>
+<script src="hub-items.js"></script>
+<script src="related.js" defer></script>
+</body>
+</html>

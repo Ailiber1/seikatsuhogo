@@ -54,6 +54,8 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `houritsu.html` | ツール | こんなとき、法律では？しらべ（「家族に相談してから」「書類がそろってから」「結果に納得できない」「保護費が減らされた」など11の場面を選ぶと、生活保護法・通知の原文が出る） | [/houritsu.html](https://ailiber1.github.io/seikatsuhogo/houritsu.html) |
 | `hikkoshi-setsumei.html` | 解説 | 生活保護でも引っ越し費用は出る？出る条件と出ない条件（出るのは課長通知 問（第7の30）の18の場合だけ・敷金等は特別基準額×3・引っ越し代は事前承認の実費・敷金の返還は収入・配信者の初期費用0円物件の内見の体験。`scripts/gen_hikkoshi.py` が生成） | [/hikkoshi-setsumei.html](https://ailiber1.github.io/seikatsuhogo/hikkoshi-setsumei.html) |
 | `hikkoshi.html` | ツール | 引っ越し費用 出る？しらべ（理由・引っ越し先・人数を選ぶと、18の場合の何番に当たるか・敷金等の上限・家賃の上限・やる順番が原文つきで出る。`scripts/gen_hikkoshi.py` が生成） | [/hikkoshi.html](https://ailiber1.github.io/seikatsuhogo/hikkoshi.html) |
+| `mitoshi-setsumei.html` | 解説 | 生活保護費の見直しが本格化。国の検証で分かった数字（第64回基準部会 資料1：夫婦子1人の低所得世帯の生活扶助相当支出161,998円と基準額148,681円の差9.0%・食料の寄与・第1十分位の妥当性の論点・世帯構成別の中位所得対比・長崎市ひとりの「もしも」。`scripts/gen_mitoshi.py` が生成、`scripts/verify_mitoshi.py` で照合） | [/mitoshi-setsumei.html](https://ailiber1.github.io/seikatsuhogo/mitoshi-setsumei.html) |
+| `mitoshi.html` | ツール | 見直しのもしもしらべ（市区町村・人数・年齢を選ぶと、今の生活扶助と、もし◯%変わったら月・年いくら変わるか、国の検証で近い世帯の結果。`scripts/gen_mitoshi.py` が生成） | [/mitoshi.html](https://ailiber1.github.io/seikatsuhogo/mitoshi.html) |
 | `fuyu-setsumei.html` | 解説 | 冬の生活保護費はいくら増える？11月と12月の上乗せ（冬季加算と期末一時扶助・月ごとの棒・冬季加算の1.3倍・越年資金の扱い・12月の支出の増え方と第63回基準部会の見直し（Ⅵ区の1か月短縮の集計結果）。`scripts/gen_fuyu.py` が生成） | [/fuyu-setsumei.html](https://ailiber1.github.io/seikatsuhogo/fuyu-setsumei.html) |
 | `fuyu.html` | ツール | 冬の上乗せしらべ（市区町村・人数を選ぶと、冬季加算の区と期間・月ごとの上乗せ・12月の期末一時扶助・冬の合計が出る。`scripts/gen_fuyu.py` が生成） | [/fuyu.html](https://ailiber1.github.io/seikatsuhogo/fuyu.html) |
 | `teishi-setsumei.html` | 解説 | 生活保護は、働くといくらで止まる？（保護費＝最低生活費−認められる収入・止まる目安＝最低生活費＋基礎控除・ひとり暮らし20〜40歳で札幌市・長崎市・東京23区の例・停止と廃止の分かれ目はおおむね6か月・止まる前に確かめること。`scripts/gen_teishi.py` が生成） | [/teishi-setsumei.html](https://ailiber1.github.io/seikatsuhogo/teishi-setsumei.html) |
@@ -89,6 +91,7 @@ YouTubeチャンネル「リベル_Liber」の生活保護配信で使う、解�
 | `hikkoshi.json` | 引っ越し費用が出る18の場合（課長通知 問（第7の30））と、局長通知・課長通知の引用の原文。配信者の言い換え（plain・group）つき | 下の写し |
 | `jisshi_yoryo_r8_source.pdf` | 厚労省「2026（令和8）年4月1日施行 生活保護実施要領等」の写し（告示・次官通知・局長通知・課長通知・問答集。未定稿の注記あり） | https://www.mhlw.go.jp/content/001677054.pdf |
 | `tokubetsu_kijun.json` | 住宅扶助の特別基準額（局長通知 第7の4の(1)のオ）。都道府県×級地と指定都市・中核市、1人〜7人以上。引っ越しの敷金等の上限はこの額×3 | `jutaku_limit_2015_source.pdf` の別表2 |
+| `mitoshi.json` | 第64回基準部会 資料1の数字（夫婦子1人の基準額・生活扶助相当支出・差、食料、改善の指標、世帯構成別の中位所得対比） | `kijunbukai64_shiryo1_source.pdf`（第64回 資料1の写し） |
 | `fuyu.json` | 冬季加算（Ⅰ〜Ⅵ区・1〜9人と10人以上の加算・期間）、期末一時扶助（級地×人数、改正前の額も）、地区の区分、基準部会の12月の支出の数字 | 下の告示の写し・実施要領・基準部会の資料 |
 | `teishi_law.json` | 生活保護法 第8条（基準及び程度の原則）・第26条（保護の停止及び廃止）の原文（`scripts/extract_teishi_law.py` がe-Govから取得）。止まる目安の計算には、既存の `kijun_r8.json`・`keika.json`・`jutaku_limit.json`・`kiso_kojo.json`・`kyuchi_by_city.json` を使う | e-Gov法令検索。停止・廃止の分かれ目（おおむね6か月）は `jisshi_yoryo_r8_source.pdf` の課長通知 問（第10の12） |
 | `kuruma.json` | 車の保有が認められる場合と条件（通勤4つの場合・通院2つの場合×5つの条件・失業中の処分保留・買い替え4つの条件）の原文の引用と、やさしい言い換え | `jisshi_yoryo_r8_source.pdf` の課長通知 第3 問（第3の9）（第3の9の2）（第3の12）（第3の23）、`seikatsuhogo_page_source.html`（厚労省「生活保護を申請したい方へ」） |

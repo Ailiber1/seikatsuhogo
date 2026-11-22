@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>生活保護費の見直しが本格化。国の検証で分かった数字</title>
+<meta name="description" content="生活保護費（生活扶助）の見直しの検証が進んでいます。2026年11月17日の国の会議の資料に出た「低所得世帯の生活費と基準額の差」を、生活保護3年目がやさしく説明します。まだ決まっていないことも分けて書きます">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:17px; line-height:1.8; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.num{font-variant-numeric:tabular-nums}
+.nb{display:inline-block}
+h1,.conclusion p,.ch h2,.for-who li,.cta,.card b{word-break:auto-phrase}
+.wrap{max-width:720px; margin:0 auto; padding:26px 16px 44px}
+h1{font-size:clamp(26px,6vw,36px); line-height:1.4; margin:0 0 12px; color:var(--navy); text-wrap:balance}
+h1 small{display:block; font-size:.55em; color:var(--sub); font-weight:600; margin-top:4px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:16px; font-size:16.5px}
+.for-who b{color:var(--navy)} .for-who ul{margin:4px 0 0; padding-left:1.2em}
+.conclusion{border:2px solid var(--navy); border-radius:14px; padding:16px; margin-bottom:10px; background:#fff}
+.conclusion .k{font-size:14.5px; font-weight:700; color:var(--sub)}
+.conclusion p{margin:4px 0 0; font-size:18px; font-weight:700; line-height:1.6}
+.conclusion b{color:var(--navy)}
+.cta{display:flex; align-items:center; justify-content:space-between; gap:10px; text-decoration:none; color:var(--navy); background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:11px 14px; margin:12px 0 22px; font-weight:700}
+.cta span:last-child{flex:none}
+section.ch{margin:30px 0 8px}
+.ch h2{display:flex; align-items:center; gap:10px; font-size:clamp(19px,4.6vw,23px); line-height:1.45; margin:0 0 12px; color:var(--navy)}
+.ch h2 .b{flex:none; width:34px; height:34px; border-radius:50%; border:2px solid var(--navy); display:grid; place-items:center; font-size:16.5px; font-family:system-ui,sans-serif}
+.ch p{margin:0 0 12px}
+.ch a{color:var(--navy); font-weight:700}
+blockquote{margin:10px 0 4px; padding:10px 14px; background:var(--panel); border-left:4px solid var(--line); font-size:16px; border-radius:0 10px 10px 0}
+.src{font-size:14.5px; color:var(--sub); margin:0 0 8px} .src a{color:var(--navy); font-weight:400}
+.easy{background:var(--ok-bg); border-left:4px solid var(--ok); border-radius:0 10px 10px 0; padding:9px 14px; font-size:16.5px; margin:6px 0 12px}
+.easy b{color:var(--ok)}
+.note{font-size:14.5px; color:var(--sub); margin:4px 0 12px}
+.caution{background:var(--warn-bg); border-left:5px solid var(--warn); border-radius:0 11px 11px 0; padding:10px 14px; margin:8px 0 12px}
+.caution b{color:var(--warn)}
+
+/* 2章: 比べ方の図 */
+.fig{border:1.5px solid var(--navy); border-radius:14px; padding:14px; background:#fff; margin:8px 0 12px}
+.fig svg{display:block; width:100%; height:auto}
+.fig .cap{font-size:14.5px; color:var(--sub); margin:6px 0 0}
+
+/* 3章: 金額の棒 */
+.bars{border:1px solid var(--line); border-radius:13px; background:var(--panel); padding:12px 14px; margin:8px 0 12px}
+.bar-row{margin-bottom:12px} .bar-row:last-child{margin-bottom:0}
+.bar-row .tt{display:flex; justify-content:space-between; gap:8px; font-size:15.5px; font-weight:700}
+.bar-row .tt span:last-child{color:var(--navy); white-space:nowrap}
+.bar-row .tr{height:22px; border-radius:11px; background:var(--line-soft); overflow:hidden; margin-top:3px}
+.bar-row .tr i{display:block; height:100%; width:0; border-radius:11px; background:var(--navy); transition:width 1.3s cubic-bezier(.2,.8,.2,1)}
+.bar-row .tr i.g{background:var(--ok)}
+.bar-row .tr i.s{background:#8fa9c4}
+.gap{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 12px}
+.gap > div{flex:1 1 200px; border:1px solid var(--line); border-radius:12px; background:#fff; padding:10px 12px}
+.gap .k{font-size:13.5px; color:var(--sub); font-weight:700}
+.gap .v{font-size:clamp(24px,6vw,30px); font-weight:800; color:var(--navy); line-height:1.3}
+.gap .v small{font-size:.5em; color:var(--ink)}
+
+table.t6{width:100%; border-collapse:collapse; font-size:15px; margin:6px 0 12px; background:#fff}
+.t6 th,.t6 td{padding:7px 6px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top}
+.t6 td.r,.t6 th.r{text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums}
+.t6 thead th{font-size:13px; color:var(--sub)}
+.t6 tr.me td{background:var(--navy-soft); font-weight:700}
+.tbl-scroll{overflow-x:auto}
+
+.card{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px; background:#fff}
+.card .mk{flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:14px}
+.card .mk.y{background:var(--ok-bg); color:var(--ok)} .card .mk.q{background:var(--warn-bg); color:var(--warn)}
+.card b{display:block; font-size:16.5px} .card small{color:var(--sub); font-size:14.5px; line-height:1.55; display:block}
+.sum h3{font-size:16px; margin:14px 0 6px; color:var(--navy)}
+.fade{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
+.fade.in{opacity:1; transform:none}
+.foot{margin-top:28px; font-size:14.5px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot h3{font-size:15px; color:var(--ink); margin:12px 0 4px}
+.foot ul{margin:0; padding-left:1.2em} .foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ .fade{opacity:1; transform:none; transition:none} .bar-row .tr i{transition:none} }
+</style>
+<script>
+/* URLの後ろの ?… は付けず、ページの場所だけで数える（同じページが別々に数えられないように） */
+window.goatcounter = {path: function () { return location.pathname; }};
+</script>
+<script data-goatcounter="https://liber-seiho.goatcounter.com/count" async src="https://gc.zgo.at/count.v5.js" crossorigin="anonymous" integrity="sha384-atnOLvQb9t+jTSipvd75X2yginT4PjVbqDdlJAmxMm+wYElFmeR6EmLP5bYeoRVQ"></script>
+<script>
+/* ツールで結果が出たときに1回だけ「利用/ツール名」を数える。入力した内容は送らない */
+window.gcUse = function (name) {
+  window.gcUse.done = window.gcUse.done || {};
+  if (window.gcUse.done[name]) return;
+  window.gcUse.done[name] = true;
+  var tries = 0;
+  (function send() {
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({path: '利用/' + name, title: name, event: true});
+    } else if (tries++ < 20) {
+      setTimeout(send, 500);
+    }
+  })();
+};
+</script>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho"><span class="nb">生活保護費の見直しが</span><span class="nb">本格化。</span><small><span class="nb">国の検証で分かった数字を、</span><span class="nb">やさしく</span></small></h1>
+  <div class="for-who"><b>このページは、こういう方へ</b>
+    <ul><li>生活保護費が見直されると聞いて、<span class="nb">上がるのか下がるのか気になる方</span></li>
+    <li>ニュースの「9%」が、<span class="nb">何の数字か知りたい方</span></li>
+    <li>自分の保護費に関係するのか、<span class="nb">先に知っておきたい方</span></li></ul></div>
+
+  <div class="conclusion"><div class="k">結論</div>
+    <p>2026年11月17日の国の会議で、<b>収入が低い一般の世帯（夫婦と子1人）の生活費は月<span class="num">161,998円</span></b>、今の生活保護の基準額は<b class="num">148,681円</b>で、<b>差は<span class="num">13,317円（9.0%）</span></b>と示されました。<br>ただし、<b>上げる・下げるは、まだ決まっていません。</b>これは検証の途中の数字です。</p></div>
+  <a class="cta" href="mitoshi.html"><span>住んでいる所と人数を選ぶと、今の生活扶助と「もし◯%変わったら」が分かる（見直しのもしもしらべ）</span><span>→</span></a>
+
+  <section class="ch fade">
+    <h2><span class="b">1</span>いま、何が行われている？</h2>
+    <p>生活保護費のうち、食費や光熱費にあたる<b>生活扶助</b>の額が、世の中の暮らしと比べて合っているかを、国の専門家の会議（<b>生活保護基準部会</b>）が調べています。これを<b>検証</b>と呼びます。</p>
+    <p>報道によると、検証はふだん<b>5年に1度</b>（前回は2022年）ですが、物価が上がっているため、今回は<b>1年早めて</b>行われています。政府は<b>年内に新しい基準額の大枠を決め、2027年10月に改定する予定</b>と報じられています。</p>
+    <p class="src">出典: <a href="https://kumanichi.com/articles/2058075" target="_blank" rel="noopener">共同通信「政府、生活保護費見直しへ 物価高の反映焦点」（2026年11月15日・熊本日日新聞の掲載）</a>　※改定の時期は報道で、国の正式な発表は確かめられていません</p>
+    <div class="easy"><b>やさしく言うと：</b>「生活保護の生活費は、今の物価で足りているか」を、国が数字で確かめている最中。答えが出るのは、まだ先。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">2</span>どうやって比べている？</h2>
+    <p>国は、生活保護を受けていない一般の世帯のうち、<b>年収が低いほうから1割の世帯</b>が、生活費に実際にいくら使っているかを調べ、それと<b>生活保護の基準額</b>を比べています。比べる見本は<b>夫婦と子1人の世帯</b>です。</p>
+    <blockquote>生活扶助基準の水準（高さ）の検証については、前回検証に引き続き、夫婦子１人世帯（勤労者世帯）をモデル世帯として、低所得世帯の消費実態と生活扶助基準の比較による検証を行う。</blockquote>
+    <p class="src">出典: 第58回 生活保護基準部会（2026年6月30日）資料1「今回検証の方針（案）」（<a href="https://www.mhlw.go.jp/content/12002000/001770020.pdf" target="_blank" rel="noopener">第64回 資料1</a>の中に再掲）</p>
+    <div class="fig" role="img" aria-label="一般の低所得世帯の生活費と、生活保護の基準額を比べる図">
+      <svg viewBox="0 0 640 230" xmlns="http://www.w3.org/2000/svg" font-family="Hiragino Sans, sans-serif">
+        <rect x="10" y="20" width="270" height="150" rx="14" fill="#eef3f8" stroke="#2b5d8f" stroke-width="2"/>
+        <text x="145" y="58" text-anchor="middle" font-size="20" font-weight="700" fill="#2b5d8f">一般の世帯</text>
+        <text x="145" y="88" text-anchor="middle" font-size="16" fill="#242c36">年収が低いほうから1割</text>
+        <text x="145" y="114" text-anchor="middle" font-size="16" fill="#242c36">（夫婦と子1人）</text>
+        <text x="145" y="148" text-anchor="middle" font-size="17" font-weight="700" fill="#242c36">生活費に使った額</text>
+        <rect x="360" y="20" width="270" height="150" rx="14" fill="#f1f7f4" stroke="#2a7355" stroke-width="2"/>
+        <text x="495" y="58" text-anchor="middle" font-size="20" font-weight="700" fill="#2a7355">生活保護</text>
+        <text x="495" y="88" text-anchor="middle" font-size="16" fill="#242c36">同じような世帯の</text>
+        <text x="495" y="114" text-anchor="middle" font-size="16" fill="#242c36">年齢・地域で計算</text>
+        <text x="495" y="148" text-anchor="middle" font-size="17" font-weight="700" fill="#242c36">生活扶助の基準額</text>
+        <text x="320" y="104" text-anchor="middle" font-size="26" font-weight="800" fill="#2b5d8f">⇔</text>
+        <text x="320" y="210" text-anchor="middle" font-size="16" fill="#5f6a77">差が大きいほど「基準額が低め」と見る材料になる</text>
+      </svg>
+      <p class="cap">家賃・教育費・医療など、生活扶助で出ないものは、一般の世帯の側からも除いて比べます（国の言葉で「生活扶助相当支出」）。</p>
+    </div>
+    <div class="easy"><b>やさしく言うと：</b>「生活保護を受けていない、収入が低めの家庭」と同じくらいの暮らしができる額か、を見ている。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">3</span>11月17日に出た数字</h2>
+    <p>2024年の国の調査（全国家計構造調査）で計算した結果です。夫婦と子1人の世帯の、ひと月の額です。</p>
+    <div class="bars">
+      <div class="bar-row"><div class="tt"><span>一般の低所得世帯の生活費</span><span class="num">161,998円</span></div><div class="tr"><i data-w="100"></i></div></div>
+      <div class="bar-row"><div class="tt"><span>今の生活保護の基準額（2026年10月から）</span><span class="num">148,681円</span></div><div class="tr"><i class="g" data-w="91.8"></i></div></div>
+      <div class="bar-row"><div class="tt"><span>2024年10月時点の基準額</span><span class="num">144,289円</span></div><div class="tr"><i class="s" data-w="89.1"></i></div></div>
+    </div>
+    <div class="gap">
+      <div><span class="k">今の基準額との差</span><div class="v num">13,317<small> 円（9.0%）</small></div></div>
+      <div><span class="k">2024年10月時点との差</span><div class="v num">17,709<small> 円（12.3%）</small></div></div>
+    </div>
+    <blockquote>夫婦子１人世帯、年収階級第１十分位の生活扶助相当支出は161,998円となり、令和６年時点の生活扶助基準額（特例加算1,000円を含む）と比較すると17,709円（12.3％）の上昇（現行の生活扶助基準額（特例加算2,500円を含む）との対比では13,317円（9.0％）の上昇）が確認された。</blockquote>
+    <p class="src">出典: <a href="https://www.mhlw.go.jp/content/12002000/001770020.pdf" target="_blank" rel="noopener">第64回 社会保障審議会生活保護基準部会（2026年11月17日）資料1「生活扶助基準の水準の検証について」</a></p>
+    <p>前回の検証（2022年）では、基準額137,790円に対して生活費140,514円で、差は<b>約2%</b>（1.020倍）でした。今回は差が広がっています。</p>
+    <p>基準額の2つの額のちがいは、物価高の上乗せ（<b>特例加算</b>）が1人1,000円から2,500円に増えた分などです。→ <a href="tokurei-setsumei.html">10月から保護費が上がる（特例加算）</a></p>
+    <div class="caution"><b>気をつけたいこと：</b>この基準額は、実際に調べた世帯の年齢・地域で計算した<b>平均</b>で、子育ての加算などは入っていません。調べた世帯は<b>243世帯</b>（生活保護を受けていると見られる4世帯を除く）で、生活費の数字には<b>±5,285円ほどの誤差の目安</b>（標準誤差）があります。</div>
+    <blockquote>様々な世帯類型の消費実態については、上記の結果だけではなく、級地、世帯人員数及び世帯員の年齢階級ごとの消費実態の較差の分析結果を踏まえて見る必要がある。</blockquote>
+    <p class="src">出典: 同じ資料の注</p>
+    <div class="easy"><b>やさしく言うと：</b>ニュースの「9%」は、<b>夫婦と子1人の世帯</b>で比べたときの差。ひとり暮らしなど、ほかの世帯もそのまま9%というわけではない。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">4</span>何が増えた？ いちばんは食費</h2>
+    <p>同じ「年収が低いほうから1割」の世帯の生活費は、2019年の調査の140,514円から、2024年は161,998円へ<b>15.3%</b>増えました。増えた分の大半は<b>食料</b>です（50,370円 → 67,485円）。</p>
+    <blockquote>全国家計構造調査の結果を品目別にみると、生活扶助相当支出は令和元年調査と比較して15.3％上昇しており、そのうち「食料」の寄与が12.2％を占めている。</blockquote>
+    <p class="src">出典: 第64回 資料1「夫婦子１人世帯の消費水準の変化及び費目別寄与度」</p>
+    <p>同じ資料の参考では、2019年から2025年に<b>物価は12.0%</b>、<b>賃金は10.4%</b>上がっています。</p>
+    <div class="easy"><b>やさしく言うと：</b>収入が低い家庭でも、食べ物の値上がりで、食費が月1万7千円ほど増えた。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">5</span>国の会議は、まだ「どう考えるか」の段階</h2>
+    <p>資料は、結論ではなく<b>委員への問いかけ</b>で終わっています。理由のひとつは、比べる相手の「低所得世帯」の暮らしが、前回より<b>良くなっている</b>指標があることです。</p>
+    <blockquote>消費支出額が減少する一方で、生活扶助相当支出額は15.3％増加するとともに、その中位所得層対比は71.1％から71.9％に上昇、</blockquote>
+    <blockquote>固定的経費割合（生活扶助相当支出を用いて算出）は、56.6％から54.4％に低下、</blockquote>
+    <blockquote>年間可処分所得は18.1％増加し、夫婦子１人世帯の中央値対比でも51.3％から53.1％に上昇</blockquote>
+    <blockquote>こうした状況を踏まえ、第１十分位を比較対象とすることの妥当性についてどのように考えるか。</blockquote>
+    <blockquote>生活扶助基準の改定に当たって、今回の検証結果をどのように考慮することが考えられるか。</blockquote>
+    <p class="src">出典: 第64回 資料1「水準検証の算出結果に関する論点」</p>
+    <div class="caution"><b>まだ決まっていません。</b>「差が9.0%あるから9.0%上がる」とは書かれていません。比べる相手を「年収が低いほうから1割」のままにするか、検証の結果をどう使うかも含めて、これから話し合われます。</div>
+    <div class="easy"><b>やさしく言うと：</b>「差は出た。でも、比べる相手が前より暮らし向きが良くなっているので、そのまま当てはめていいのか」を議論している。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">6</span>ひとり暮らしや高齢の世帯は？</h2>
+    <p>夫婦と子1人以外の世帯は、金額ではなく、<b>真ん中くらいの収入の世帯の生活費と比べて何割か</b>（中位所得対比）で示されています。</p>
+    <div class="tbl-scroll"><table class="t6"><thead><tr><th>世帯</th><th class="r">今回</th><th class="r">前回</th><th class="r">展開後<br>今回</th><th class="r">展開後<br>前回</th></tr></thead><tbody id="t6"></tbody></table></div>
+    <p class="note">年収で分けた行だけを載せています（貯蓄も加えて分けた行は省略）。「展開後」は、夫婦子1人の結果を、年齢・地域・人数の差で機械的に広げた額で比べたものです。</p>
+    <blockquote>モデル世帯における生活扶助相当支出を中位所得層との比較でみると、その水準は概ね６～７割程度となっている。</blockquote>
+    <blockquote>一定の仮定の下で機械的に算出したものであり、実際の生活扶助基準額ではない点に留意が必要。</blockquote>
+    <p class="src">出典: 第64回 資料1「世帯構成別の低所得世帯における消費水準の中位所得対比」</p>
+    <div class="easy"><b>やさしく言うと：</b>どの世帯も「真ん中の家庭の6〜7割くらいで暮らしている」という結果。ひとり暮らし（65歳未満）は、展開後で前回65%→今回67%。この表から「ひとり暮らしは◯円上がる」とは言えない。</div>
+  </section>
+
+  <section class="ch fade">
+    <h2><span class="b">7</span>私の場合（長崎市・ひとり暮らし）</h2>
+    <p>長崎市（2級地-1）・20〜40歳のひとり暮らしの生活扶助は、2026年10月から月<b class="num">73,930円</b>です（第1類43,640円＋第2類27,790円＋特例加算2,500円）。</p>
+    <div class="card"><span class="mk y">1</span><div><b>仮に1%変わると、月 約740円</b><small>生活扶助だけの単純な計算。家賃の分（住宅扶助）は入れていない</small></div></div>
+    <div class="card"><span class="mk y">2</span><div><b>仮に9.0%変わると、月 約6,650円</b><small>夫婦子1人の差を、そのまま当てはめた場合の計算。実際にこうなるとは限らない</small></div></div>
+    <div class="caution"><b>言いすぎないでおきます。</b>これは「もしも」の計算です。実際の改定は、第1類・第2類・加算ごとに別の計算をするので、この単純な割合とは一致しません。働いた収入などがあると、その分は差し引かれます。今の額の内訳は → <a href="hogohi.html">保護費しらべ</a></div>
+  </section>
+  <a class="cta" href="mitoshi.html"><span>自分の地域・人数・年齢で、今の生活扶助と「もし◯%変わったら」を確かめる（見直しのもしもしらべ）</span><span>→</span></a>
+
+  <section class="ch sum fade">
+    <h2><span class="b">✓</span>まとめ</h2>
+    <h3>分かっていること</h3>
+    <div class="card"><span class="mk y">✓</span><div><b>国の比較で、低所得世帯の生活費が基準額より9.0%高かった</b><small>夫婦と子1人の世帯で、161,998円と148,681円。前回の検証の差は約2%</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>増えた分の大半は食費</b><small>2019年から2024年に、低所得世帯の生活費は15.3%増。そのうち12.2%分が食料</small></div></div>
+    <div class="card"><span class="mk y">✓</span><div><b>冬の加算なども、同じ会議で検証中</b><small>11月5日の会議の中身は → <a href="fuyu-setsumei.html">冬の生活保護費はいくら増える？</a></small></div></div>
+    <h3>まだ分からないこと</h3>
+    <div class="card"><span class="mk q">？</span><div><b>上げるか、下げるか、いくらか</b><small>国の会議は「どう考えるか」を話し合っている段階</small></div></div>
+    <div class="card"><span class="mk q">？</span><div><b>いつから変わるか</b><small>2027年10月の予定と報じられているが、国の正式な発表は確かめられていない</small></div></div>
+  </section>
+
+  <div class="foot">
+    <h3>根拠資料</h3>
+    <ul>
+      <li><a href="https://www.mhlw.go.jp/content/12002000/001770020.pdf" target="_blank" rel="noopener">第64回 社会保障審議会生活保護基準部会（2026年11月17日）資料1「生活扶助基準の水準の検証について」</a>（第58回 資料1の方針・令和4年検証の比較結果を含む）</li>
+      <li><a href="https://kumanichi.com/articles/2058075" target="_blank" rel="noopener">共同通信「政府、生活保護費見直しへ 物価高の反映焦点」（2026年11月15日・熊本日日新聞の掲載）</a>：検証の前倒し・年内に大枠・2027年10月の改定予定（報道）</li>
+      <li><a href="https://www.mhlw.go.jp/content/001152601.pdf" target="_blank" rel="noopener">厚労省「生活扶助基準額の算出方法（令和8年4月）」</a>：7章の長崎市の額（<a href="hogohi.html">保護費しらべ</a>と同じ計算）</li>
+    </ul>
+    <h3>読むときの注意</h3>
+    <ul>
+      <li>引用は原文のままです。「やさしく言うと」は私の言い換えです。確認日: 2026年11月22日</li>
+      <li>「年収が低いほうから1割」は、国の資料の「年収階級第１・十分位」のことです。生活費は、生活扶助で出るものにあたる支出（生活扶助相当支出）です</li>
+      <li>7章の「もしも」の計算は、生活扶助の合計に割合をかけて10円単位に丸めただけのものです。国の改定の計算方法ではありません</li>
+      <li>個人が作ったもので、行政の公式資料ではありません。個別の額は、福祉事務所で確かめてください</li>
+    </ul>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+// data/mitoshi.json（第64回 資料1の数字）から作る。scripts/verify_mitoshi.py で原本と照合
+const M = {"fufuko":{"kijun_r6":144289,"kijun_r8":148681,"shishutsu_r6":161998,"sa_r6":17709,"sa_r8":13317,"ritsu_r6":"12.3","ritsu_r8":"9.0","chui_taihi":"71.9","chui_taihi_prev":"71.1","shishutsu_r1":140514,"kijun_r4kensho":137790,"ritsu_r4kensho":"1.020","hyojun_gosa":5285,"setai":243,"setai_hogo":4},"setai_kosei":[{"key":"fufuko","name":"夫婦子1人世帯（働いている）","now":72,"ten":70,"prev":71,"prev_ten":71},{"key":"tanshin","name":"単身世帯（65歳未満・働いている）","now":82,"ten":67,"prev":71,"prev_ten":65},{"key":"k_tan65","name":"高齢単身世帯（65歳以上）","now":63,"ten":64,"prev":63,"prev_ten":62},{"key":"k_tan75","name":"高齢単身世帯（75歳以上）","now":56,"ten":58,"prev":65,"prev_ten":55},{"key":"k_fu65","name":"高齢夫婦世帯（65歳以上）","now":63,"ten":64,"prev":64,"prev_ten":60},{"key":"k_fu75","name":"高齢夫婦世帯（75歳以上）","now":68,"ten":64,"prev":65,"prev_ten":58}]};
+document.getElementById('t6').innerHTML = M.setai_kosei.map(r =>
+  `<tr${r.key === 'tanshin' ? ' class="me"' : ''}><td>${r.name}</td><td class="r">${r.now}%</td><td class="r">${r.prev}%</td><td class="r">${r.ten}%</td><td class="r">${r.prev_ten}%</td></tr>`).join('');
+
+// スクロールで表示（スマホで縦に長い要素も出るように threshold:0）
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in'); io.unobserve(e.target);
+  e.target.querySelectorAll('.bar-row .tr i').forEach(i => i.style.width = i.dataset.w + '%');
+}), {threshold: 0, rootMargin: '0px 0px -12% 0px'});
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
+</script>
+<script src="hub-items.js"></script>
+<script src="related.js" defer></script>
+</body>
+</html>

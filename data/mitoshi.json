@@ -1,0 +1,33 @@
+{
+  "note": "第64回 社会保障審議会生活保護基準部会（2026年11月17日）資料1「生活扶助基準の水準の検証について」から写した数字。原本は data/kijunbukai64_shiryo1_source.pdf（https://www.mhlw.go.jp/content/12002000/001770020.pdf）。scripts/verify_mitoshi.py で原本と照合する",
+  "source_url": "https://www.mhlw.go.jp/content/12002000/001770020.pdf",
+  "fufuko": {
+    "kijun_r6": 144289,
+    "kijun_r8": 148681,
+    "shishutsu_r6": 161998,
+    "sa_r6": 17709,
+    "sa_r8": 13317,
+    "ritsu_r6": "12.3",
+    "ritsu_r8": "9.0",
+    "chui_taihi": "71.9",
+    "chui_taihi_prev": "71.1",
+    "shishutsu_r1": 140514,
+    "kijun_r4kensho": 137790,
+    "ritsu_r4kensho": "1.020",
+    "hyojun_gosa": 5285,
+    "setai": 243,
+    "setai_hogo": 4
+  },
+  "shokuryo": {"r1": 50370, "r6": 67485, "kiyo": "12.2", "zentai": "15.3"},
+  "shihyo": {"kotei_prev": "56.6", "kotei_now": "54.4", "kashobun_up": "18.1", "kashobun_prev": "51.3", "kashobun_now": "53.1"},
+  "bukka": {"price": "12.0", "wage": "10.4"},
+  "setai_kosei": [
+    {"key": "fufuko",  "name": "夫婦子1人世帯（働いている）", "now": 72, "ten": 70, "prev": 71, "prev_ten": 71},
+    {"key": "tanshin", "name": "単身世帯（65歳未満・働いている）", "now": 82, "ten": 67, "prev": 71, "prev_ten": 65},
+    {"key": "k_tan65", "name": "高齢単身世帯（65歳以上）", "now": 63, "ten": 64, "prev": 63, "prev_ten": 62},
+    {"key": "k_tan75", "name": "高齢単身世帯（75歳以上）", "now": 56, "ten": 58, "prev": 65, "prev_ten": 55},
+    {"key": "k_fu65",  "name": "高齢夫婦世帯（65歳以上）", "now": 63, "ten": 64, "prev": 64, "prev_ten": 60},
+    {"key": "k_fu75",  "name": "高齢夫婦世帯（75歳以上）", "now": 68, "ten": 64, "prev": 65, "prev_ten": 58}
+  ],
+  "setai_kosei_note": "年収階級で分けた行（貯蓄加味年収階級の行は省略）。now=今回の中位所得対比、ten=展開後の中位所得対比、prev/prev_ten=前回の検証結果"
+}

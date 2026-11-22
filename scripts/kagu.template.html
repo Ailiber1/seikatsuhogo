@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ストーブ・布団・家具 出る？しらべ</title>
+<meta name="description" content="ほしい物（ストーブ・エアコン・布団・家具）と今の場面を選ぶと、生活保護で買うお金が出るか、上限いくらかを、国の通知の原文つきで確かめられます">
+<style>
+:root{
+  /* 常に白基調。ダークモードには切り替えない */
+  --ground:#ffffff; --panel:#fafbfc; --ink:#242c36; --sub:#5f6a77;
+  --navy:#2b5d8f; --navy-soft:#eef3f8; --on-navy:#ffffff;
+  --ok:#2a7355; --ok-bg:#f1f7f4; --ng:#a4483c; --ng-bg:#fdf3f1;
+  --warn:#8a6420; --warn-bg:#fdf7ea; --line:#e2e7ec; --line-soft:#f0f3f6;
+}
+*{box-sizing:border-box}
+body{background:var(--ground); color:var(--ink); margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic Medium","Meiryo",system-ui,sans-serif;
+  font-size:16px; line-height:1.75; -webkit-text-size-adjust:100%}
+.mincho{font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif}
+.wrap{max-width:720px; margin:0 auto; padding:24px 16px 44px}
+h1{font-size:clamp(24px,5.2vw,32px); line-height:1.4; margin:0 0 8px; color:var(--navy); text-wrap:balance}
+.lead{color:var(--sub); font-size:15px; margin:0 0 16px}
+.for-who{background:var(--navy-soft); border-left:5px solid var(--navy); border-radius:0 11px 11px 0; padding:12px 16px; margin-bottom:18px; font-size:15px}
+.for-who b{color:var(--navy)}
+.for-who ul{margin:4px 0 0; padding-left:1.2em}
+
+.step{background:var(--panel); border:2px solid var(--line); border-radius:13px; padding:14px 16px; margin-bottom:12px; transition:border-color .3s, opacity .3s}
+.step.off{opacity:.5}
+.step.done{border-color:var(--navy)}
+.step h2{font-size:16.5px; margin:0 0 8px; display:flex; gap:9px; align-items:center}
+.step h2 .n{flex:none; width:26px; height:26px; border-radius:50%; background:var(--navy); color:#fff; display:grid; place-items:center; font-size:13px}
+.step .hint{font-size:13px; color:var(--sub); margin:6px 0 0}
+select,input[type=number]{font:inherit; font-size:16px; width:100%; min-height:44px; padding:8px 10px; border:2px solid var(--line); border-radius:9px; background:#fff; color:var(--ink)}
+select:focus,input:focus{outline:3px solid var(--navy-soft); border-color:var(--navy)}
+select:disabled,input:disabled{background:var(--line-soft); color:var(--sub)}
+.row2{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.ages{display:grid; gap:8px}
+.ages label{font-size:13px; font-weight:700; color:var(--sub); display:block; margin-bottom:2px}
+
+#result{margin-top:18px}
+.guide{border:2px dashed var(--line); border-radius:13px; padding:18px; text-align:center; color:var(--sub)}
+.guide b{color:var(--navy)}
+.res{animation:pop .45s ease}
+@keyframes pop{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+.verdict{border-left:6px solid var(--ok); background:var(--ok-bg); border-radius:0 13px 13px 0; padding:14px 16px; margin-bottom:12px}
+.verdict .k{font-size:13px; font-weight:700; color:var(--sub)}
+.verdict .place{font-size:14px; color:var(--sub); margin:0 0 2px}
+.amount{font-size:18px; font-weight:700; margin:2px 0}
+.amount b{font-size:clamp(38px,9vw,52px); color:var(--ok); font-variant-numeric:tabular-nums; letter-spacing:.01em}
+.box{background:var(--panel); border:2px solid var(--line); border-radius:12px; padding:12px 15px; margin-bottom:10px}
+.box h3{font-size:15px; margin:0 0 6px; color:var(--navy)}
+.box p{margin:0 0 6px; font-size:15px} .box p:last-child{margin:0}
+.box ul{margin:0; padding-left:1.2em; font-size:14.5px}
+.box.warn{background:var(--warn-bg); border-color:var(--warn)}
+.box.warn h3{color:var(--warn)}
+.box.gov{background:var(--navy-soft); border-color:var(--navy)}
+.seg{display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin:4px 0 10px}
+.seg button{font:inherit; font-size:16px; font-weight:800; min-height:46px; border:2px solid var(--line); border-radius:11px; background:#fff; color:var(--sub); cursor:pointer; font-variant-numeric:tabular-nums}
+.seg button[aria-pressed=true]{border-color:var(--navy); background:var(--navy-soft); color:var(--navy)}
+.custom{display:flex; align-items:center; gap:8px; margin:0 0 10px}
+.custom input{max-width:140px}
+.custom span{flex:none; font-weight:700}
+.if-out{background:#fff; border:2px solid var(--navy); border-radius:12px; padding:12px 14px}
+.if-out .k{font-size:13px; font-weight:700; color:var(--sub)}
+.if-out .v{font-size:clamp(30px,8vw,42px); font-weight:800; color:var(--navy); font-variant-numeric:tabular-nums; line-height:1.3}
+.if-out .v small{font-size:.45em; color:var(--ink)}
+.if-out .d{font-size:16px; font-weight:700; margin:2px 0 0; font-variant-numeric:tabular-nums}
+.if-out .d.up{color:var(--ok)} .if-out .d.down{color:var(--ng)}
+.if-out .wait{color:var(--sub); font-size:15px; margin:0}
+table.t6{width:100%; border-collapse:collapse; font-size:14.5px; background:#fff; margin:6px 0 4px}
+.t6 th,.t6 td{padding:6px; border-bottom:1px solid var(--line); text-align:left}
+.t6 td.r,.t6 th.r{text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums}
+.t6 thead th{font-size:12.5px; color:var(--sub)}
+.box blockquote{margin:8px 0 2px; padding:8px 12px; background:#fff; border-left:4px solid var(--line); border-radius:0 9px 9px 0; font-size:14.5px; line-height:1.7}
+.small{font-size:13px; color:var(--sub)}
+.reset{font:inherit; font-size:14px; font-weight:700; color:var(--navy); background:var(--navy-soft); border:none; border-radius:8px; padding:8px 14px; min-height:40px; cursor:pointer; margin-top:4px}
+.foot{margin-top:24px; font-size:13px; color:var(--sub); border-top:1px solid var(--line); padding-top:14px}
+.foot a{color:var(--navy); word-break:break-all}
+.foot .credit{margin-top:14px; padding-top:12px; border-top:1px solid var(--line); text-align:center; font-size:14px; font-weight:700; color:var(--ink)}
+@media (max-width:480px){ .row2{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){ .res{animation:none} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="mincho">ストーブ・布団・家具 出る？しらべ</h1>
+  <p class="lead">ほしい物と、いまの場面を選ぶと、生活保護で<b>買うお金が出るか</b>・<b>上限いくらか</b>を、国の通知の原文つきで確かめられます。</p>
+  <div class="for-who"><b>このツールは、こういう方へ</b>
+    <ul><li>保護が始まったばかりで、ストーブや布団がない方</li>
+    <li>引っ越し・退院で、家具がそろっていない方</li>
+    <li>ケースワーカーに相談する前に、条件を知っておきたい方</li></ul></div>
+
+  <div class="step" id="s1">
+    <h2><span class="n">1</span>ほしい物</h2>
+    <select id="item" aria-label="ほしい物"><option value="">選んでください</option></select>
+  </div>
+  <div class="step off" id="s2">
+    <h2><span class="n">2</span>いまの場面</h2>
+    <select id="scene" disabled aria-label="いまの場面"><option value="">選んでください</option></select>
+    <p class="hint">いちばん近いものを選んでください。</p>
+  </div>
+  <div class="step off" id="s3">
+    <h2><span class="n">3</span>くわしい事情</h2>
+    <div class="ages" id="qs"><p class="hint" style="margin:0">上の1と2を選ぶと、ここに質問が出ます。</p></div>
+  </div>
+
+  <div id="result" aria-live="polite"></div>
+
+  <div class="foot">
+    <p>この結果は、厚生労働省の通知から作った目安です。実際に出るか・いくら出るかは、福祉事務所が世帯の事情を見て決めます。入力した内容はこの画面の中だけで判定していて、どこにも送信していません。ページが開かれた回数と結果が出た回数だけは、Cookieを使わず、個人を特定しない方法で数えています。</p>
+    <p>原文は、実施要領の原本と1文字ずつ照合しています（scripts/verify_kagu.py）。</p>
+    <p>根拠: <a href="https://www.mhlw.go.jp/content/001677054.pdf" target="_blank" rel="noopener">厚労省「2026（令和8）年4月1日施行 生活保護実施要領等」</a>（局長通知 第7の2の(5)(6)、課長通知 問（第7の99）・問（第8の61）。※「未定稿」の注記あり）</p>
+    <p>確認日: 2026年11月22日 ／ 個人が作ったもので、行政の公式ツールではありません。</p>
+    <p class="credit">作成：<a href="https://www.youtube.com/channel/UCHLF5SOHCHcA-tiVJWGGshA" target="_blank" rel="noopener">リベル_Liber</a>（YouTubeチャンネル）</p>
+  </div>
+</main>
+
+<script>
+// data/kagu.json から作る。scripts/verify_kagu.py で原本と照合
+const D = /*KAGU*/;
+const A = D.amounts, Q = D.quotes;
+const ITEM_NAMES = {danbo: "ストーブなどの暖房器具", aircon: "エアコン（冷房と暖房）", futon: "布団", kagu: "炊事用具・食器などの家具"};
+const NONE = {key: "none", label: "どれでもない（受けている途中で壊れた・古くなった など）"};
+const $ = id => document.getElementById(id);
+const yen = n => n.toLocaleString('ja-JP');
+const item = $('item'), scene = $('scene');
+Object.entries(ITEM_NAMES).forEach(([k, v]) => item.add(new Option(v, k)));
+D.cases.concat([NONE]).forEach(c => scene.add(new Option(c.label, c.key)));
+
+// 場面と物に応じて出す質問
+function questions(it, sc) {
+  if (!it || !sc || sc === 'none') return [];
+  const q = [{id: 'has', label: 'その物を、いま持っていますか', opts: [['no', '持っていない'], ['broken', '持っているが、まったく使えない'], ['yes', '使える物を持っている']]}];
+  if (sc === 'taiin' && it !== 'futon') q.push({id: 'single', label: '退院・退所のあと、ひとりで暮らし始めますか', opts: [['yes', 'はい'], ['no', 'いいえ（家族と暮らす）']]});
+  if (it === 'danbo') q.push({id: 'first', label: 'その場面のあと、冬季加算がつく冬を迎えるのは初めてですか', opts: [['yes', 'はい（初めての冬）'], ['no', 'いいえ（2回目以降の冬）']]});
+  if (it === 'aircon') q.push({id: 'first', label: 'その場面のあと、初めての冬（熱中症に気をつける人がいる世帯は、初めての夏）を迎えるところですか', opts: [['yes', 'はい'], ['no', 'いいえ（2回目以降）']]});
+  if (it === 'aircon') q.push({id: 'heat', label: '熱中症に特に気をつける人（高齢の方・障害のある方・小さな子・難病の方など）がいますか', opts: [['yes', 'いる'], ['no', 'いない']]});
+  if (it === 'danbo') q.push({id: 'ff', label: '寒さや住まいの事情で、FF式・煙突式などのストーブが必要ですか', opts: [['no', 'いいえ・わからない'], ['yes', 'はい']]});
+  if (it === 'futon' && sc !== 'saigai' && sc !== 'tenkyo') q.push({id: 'saisei', label: '今の布団を、打ち直すなどで再生できますか', opts: [['no', 'できない・わからない'], ['yes', 'できる']]});
+  return q;
+}
+
+function buildQs() {
+  const prev = {}; document.querySelectorAll('#qs select').forEach(s => prev[s.id] = s.value);
+  const qs = questions(item.value, scene.value);
+  $('qs').innerHTML = qs.length ? qs.map(q => `<div><label for="${q.id}">${q.label}</label>
+    <select id="${q.id}"><option value="">選んでください</option>${q.opts.map(([v, t]) => `<option value="${v}">${t}</option>`).join('')}</select></div>`).join('')
+    : `<p class="hint" style="margin:0">${scene.value === 'none' ? 'この場面では、追加の質問はありません。' : '上の1と2を選ぶと、ここに質問が出ます。'}</p>`;
+  document.querySelectorAll('#qs select').forEach(s => { if (prev[s.id]) s.value = prev[s.id]; s.addEventListener('change', refresh); });
+}
+
+const setStep = (el, on, done) => { el.classList.toggle('off', !on); el.classList.toggle('done', !!done); };
+const bq = k => `<blockquote>${Q[k].text}</blockquote><p class="small">出典: ${Q[k].src}</p>`;
+
+// CALC-START
+// 判定: {ok:true/false, amount, note, quotes:[...]} を返す。ans は質問への答え
+function judge(it, sc, ans) {
+  if (sc === 'none') return {ok: false, why: 'この決まりの「5つの場面」に当たりません。受けている途中で必要になった物は、ふだんの保護費の中で計画的に買うのが原則です。', quotes: ['keijo'], loan: true};
+  if (it === 'futon' && sc === 'tenkyo') return {ok: false, why: '布団は、この場面（引っ越しで設備が合わない）では通知に書かれていません。家具・ストーブ・エアコンは、この場面でも出ることがあります。', quotes: ['futon']};
+  if (ans.has === 'yes') return {ok: false, why: '使える物を持っているときは出ません。どの決まりも「持ち合わせがない」「全く使えない」ことが条件です。', quotes: [it === 'futon' ? 'futon' : it === 'kagu' ? 'kagu' : 'danbo']};
+  if (ans.single === 'no') return {ok: false, why: '退院・退所の場面で家具・ストーブ・エアコンが出るのは、ひとりで暮らし始める場合です。', quotes: []};
+  if ((it === 'danbo' || it === 'aircon') && ans.first === 'no') return {ok: false, why: '暖房器具が出るのは、その場面のあと「初めての冬（冬季加算がつく月）」です。2回目以降の冬は、この決まりでは出ません。', quotes: ['danbo'], loan: true};
+  if (it === 'danbo') return ans.ff === 'yes'
+    ? {ok: true, amount: A.danbo_ff, label: 'FF式・煙突式などが、やむを得ないと認められたとき', note: `ふつうは${yen(A.danbo)}円まで。FF式・煙突式などがやむを得ないと認められたときに${yen(A.danbo_ff)}円まで。`, quotes: ['danbo', 'danbo_ff', 'genbutsu']}
+    : {ok: true, amount: A.danbo, label: '暖房器具の購入費', note: '寒さや住まいの事情でFF式・煙突式などが必要なときは、78,000円まで認められることがあります。', quotes: ['danbo', 'genbutsu']};
+  if (it === 'aircon') return ans.heat === 'yes'
+    ? {ok: true, amount: A.reibo, label: '熱中症に特に気をつける人がいる世帯', note: '熱中症に気をつける人がいる世帯は、初めての夏の前に、冷房器具として出ることもあります。取り付け費用が別に必要なときも、相談できます。', quotes: ['aircon', 'reibo', 'secchi']}
+    : {ok: true, amount: A.danbo, label: 'ストーブと同じ扱い（熱中症に特に気をつける人がいない世帯）', note: '取り付け費用が別に必要なときも、相談できます。', quotes: ['aircon', 'danbo', 'secchi']};
+  if (it === 'kagu') return {ok: true, amount: A.kagu, label: '炊事用具・食器などの家具', note: `本当にやむを得ないときは${yen(A.kagu_max)}円まで。`, quotes: ['kagu', 'genbutsu']};
+  if (it === 'futon' && sc === 'saigai') return {ok: true, table: true, label: '災害で失った布団と服（世帯の人数で決まる）', note: '災害救助法の救助や、自治体などの救護で足りないときです。', quotes: []};
+  return ans.saisei === 'yes'
+    ? {ok: true, amount: A.futon_saisei, label: '布団を再生する（1組）', note: '再生して使うことが第一とされています。', quotes: ['futon', 'futon_saisei']}
+    : {ok: true, amount: A.futon_shinki, label: '布団を新しく買う（1組）', note: `再生できる場合は1組${yen(A.futon_saisei)}円まで。再生して使うことが第一とされています。`, quotes: ['futon', 'futon_saisei']};
+}
+// CALC-END
+
+function refresh() {
+  scene.disabled = !item.value;
+  const qs = questions(item.value, scene.value);
+  const ans = {}; document.querySelectorAll('#qs select').forEach(s => ans[s.id] = s.value);
+  const qsDone = qs.every(q => ans[q.id]);
+  setStep($('s1'), true, item.value);
+  setStep($('s2'), !scene.disabled, scene.value);
+  setStep($('s3'), !!scene.value, scene.value && qsDone);
+  const out = $('result');
+  if (!item.value || !scene.value) { out.innerHTML = `<div class="guide">上の <b>1〜3</b> を選ぶと、ここに<br><b>出るか・上限いくらか</b>と、国の通知の原文が出ます。</div>`; return; }
+  if (!qsDone) { out.innerHTML = `<div class="guide">あと少しです。<b>3の質問</b>に答えると結果が出ます。</div>`; return; }
+  const r = judge(item.value, scene.value, ans);
+  if (window.gcUse) gcUse('ストーブ・布団・家具 出る？しらべ');
+  const todo = `<div class="box"><h3>次にやること</h3><ul>
+    <li><b>先に自分で買わない。</b>物で渡す（現物給付）のが原則なので、買う前にケースワーカーに相談</li>
+    <li>「${item.value === 'futon' ? '被服費（布団類）' : item.value === 'kagu' ? '家具什器費' : '家具什器費の暖房器具'}は出ますか」と、通知の言葉で聞くと話が早い</li>
+    <li>見積もりを求められることがあります</li></ul></div>`;
+  const loan = r.loan ? `<div class="box warn"><h3>どうしても今すぐ必要なとき</h3>
+    <p>国や自治体の貸付で急いで買ったとき、条件を満たせば、その借りたお金を<b>収入として扱わない（保護費から引かない）</b>扱いがあります。借りるお金なので返す必要があり、<b>事前にケースワーカーの承認</b>が要ります。</p>${bq('kashitsuke1')}${bq('kashitsuke2')}</div>` : '';
+  const table = r.table ? `<table class="t6"><thead><tr><th>世帯の人数</th><th class="r">冬（10〜3月）</th><th class="r">夏（4〜9月）</th></tr></thead><tbody>${A.saigai_fuyu.map((x, i) => `<tr><td>${x[0]}</td><td class="r">${yen(x[1])}円</td><td class="r">${yen(A.saigai_natsu[i][1])}円</td></tr>`).join('')}</tbody></table>` : '';
+  out.innerHTML = `<div class="res">
+    <div class="verdict" style="${r.ok ? '' : 'border-left-color:var(--ng);background:var(--ng-bg)'}">
+      <p class="place"><b>${ITEM_NAMES[item.value]}</b> ／ ${scene.options[scene.selectedIndex].text}</p>
+      <div class="k">${r.ok ? '出る可能性があります' : 'この決まりでは出ません'}</div>
+      ${r.ok ? (r.table ? `<p class="amount" style="font-size:18px">${r.label}</p>${table}` : `<p class="amount">上限 <b>${yen(r.amount)}</b> 円</p><p class="small">${r.label}</p>`) : `<p style="margin:4px 0 0; font-weight:700">${r.why}</p>`}
+      ${r.ok && r.note ? `<p class="small">${r.note}</p>` : ''}
+    </div>
+    ${r.ok ? todo : ''}${loan}
+    ${r.quotes.length ? `<details class="box" open><summary style="cursor:pointer; font-weight:700; color:var(--navy)">国の通知の原文</summary>${r.quotes.map(bq).join('')}</details>` : ''}
+    ${item.value === 'danbo' || item.value === 'aircon' ? `<p class="small">灯油代・電気代は、毎月の冬季加算の話です → <a href="fuyu.html">冬の上乗せしらべ</a></p>` : ''}
+    <button class="reset" type="button" onclick="resetAll()">最初からやりなおす</button>
+  </div>`;
+}
+
+function resetAll() { item.value = ''; scene.value = ''; buildQs(); refresh(); window.scrollTo({top: 0, behavior: 'smooth'}); }
+item.addEventListener('change', () => { buildQs(); refresh(); });
+scene.addEventListener('change', () => { buildQs(); refresh(); });
+buildQs(); refresh();
+</script>
+<script src="hub-items.js"></script>
+<script src="related.js" defer></script>
+</body>
+</html>

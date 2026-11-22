@@ -16,6 +16,8 @@
     "kuruma.html":             ["kuruma-setsumei.html", "chokin.html", "yatte-setsumei.html", "sodan.html"],
     "teishi-setsumei.html":    ["teishi.html", "kyuryo.html", "nokoseru-setsumei.html", "nukedasenai-setsumei.html"],
     "teishi.html":             ["teishi-setsumei.html", "kyuryo.html", "nokoseru.html", "hogohi.html"],
+    "kagu-setsumei.html":      ["kagu.html", "muryo-setsumei.html", "fuyu-setsumei.html", "hikkoshi-setsumei.html"],
+    "kagu.html":               ["kagu-setsumei.html", "muryo.html", "fuyu.html", "hikkoshi.html"],
     "mitoshi-setsumei.html":   ["mitoshi.html", "tokurei-setsumei.html", "fuyu-setsumei.html", "hogohi.html"],
     "mitoshi.html":            ["mitoshi-setsumei.html", "hogohi.html", "fuyu.html", "teishi.html"],
     "fuyu-setsumei.html":      ["fuyu.html", "mitoshi-setsumei.html", "hogohi.html", "tokurei-setsumei.html"],
